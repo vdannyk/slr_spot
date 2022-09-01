@@ -1,5 +1,5 @@
 import { Header, Features, Footer, WhatSLRSpot } from './containers';
-import { Brand, Navbar } from './components';
+import { Navbar } from './components';
 
 import './App.css';
 

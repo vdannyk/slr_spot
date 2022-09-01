@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { RiCloseLine, RiMenu3Line } from 'react-icons/ri';
 import './navbar.css'
 import slrspot_logo from '../../assets/slrspot_logo.png';
+import { SignUpPopup } from '../../components'
 
 const Menu = () => (
   <>
@@ -11,8 +12,26 @@ const Menu = () => (
   </>
 )
 
+const useScrollLock = () => {
+  const lockScroll = () => {
+    document.body.style.overflow = 'hidden';
+  }
+
+  const unlockScroll = () => {
+    document.body.style.overflow = '';
+  }
+  return {
+    lockScroll,
+    unlockScroll
+  }
+}
+
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const [signUpPopup, setSignUpPopup] = useState(false);
+  const { lockScroll, unlockScroll } = useScrollLock();
+
+  signUpPopup ? lockScroll() : unlockScroll();
 
   return (
     <div className='slrspot__navbar'>
@@ -25,8 +44,8 @@ const Navbar = () => {
         </div>
       </div>
       <div className='slrspot__navbar-sign'>
-        <p>Sign in</p>
-        <button type='button'>Sign up</button>
+        <p onClick={() =>  setSignUpPopup(true)}>Sign in</p>
+        <button type='button' onClick={() =>  setSignUpPopup(true)}>Sign up</button>
       </div>
       <div className='slrspot__navbar-menu'>
         {toggleMenu
@@ -44,6 +63,7 @@ const Navbar = () => {
           </div>
         )}
       </div>
+      <SignUpPopup trigger={signUpPopup} setTrigger={setSignUpPopup}>TESTOWNIA</SignUpPopup>
     </div>
   )
 }
