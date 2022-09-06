@@ -1,5 +1,5 @@
 import { Header, Features, Footer, WhatSLRSpot } from './containers';
-import { Brand, Navbar } from './components';
+import { Navbar } from './components';
 
 import './App.css';
 
@@ -9,9 +9,9 @@ function App() {
       <div className='gradient__bg'>
         <Navbar />
         <Header />
+        <WhatSLRSpot />
+        {/* <Features /> */}
       </div>
-      <WhatSLRSpot />
-      <Features />
       <Footer />
     </div>
   );
