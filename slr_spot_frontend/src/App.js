@@ -9,9 +9,9 @@ function App() {
       <div className='gradient__bg'>
         <Navbar />
         <Header />
+        <WhatSLRSpot />
+        {/* <Features /> */}
       </div>
-      <WhatSLRSpot />
-      <Features />
       <Footer />
     </div>
   );

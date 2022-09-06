@@ -4,7 +4,7 @@ import './whatSLRSpot.css';
 
 const WhatSLRSpot = () => {
     return (
-      <div className='slrspot__whatslrspot section__margin' id='whspot'>
+      <div className='slrspot__whatslrspot' id='whspot'>
         <div className='slrspot__whatslrspot-feature'>
             <Feature title='What is SLR Spot?' text='To cos niesamowitego. adcxzcasdasdasddasdasdasdasdasdasdasdasdczxczxcvzfasdasdasdasdacxzcvzvxcvxcvcbsdsadasdasdasdcvxwasdvfewdsfvewdsfvewdasfesdf'/>
         </div>
