@@ -1,4 +1,4 @@
-.slrspot__loginPopup {
+.slrspot__accessPopup {
     position: fixed;
     top: 0;
     left: 0;
@@ -11,7 +11,7 @@
     backdrop-filter: blur(8px);
 }
 
-.slrspot__loginPopup-inner {
+.slrspot__accessPopup-inner {
     position: relative;
     padding: 12rem 6rem;
     width: 100%;
@@ -21,7 +21,7 @@
     justify-content: center;
 }
 
-.slrspot__loginPopup-inner .slrspot__loginPopup-closeBtn {
+.slrspot__accessPopup-inner .slrspot__accessPopup-closeBtn {
     position: absolute;
     top: 16px;
     right: 16px;

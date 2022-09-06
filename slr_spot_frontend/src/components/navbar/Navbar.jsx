@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { RiCloseLine, RiMenu3Line } from 'react-icons/ri';
 import './navbar.css'
 import slrspot_logo from '../../assets/slrspot_logo.png';
-import { LoginPopup } from '../../containers'
+import { AccessPopup } from '../../containers'
+import { SignIn, SignUp } from '../../components'
+
 
 const Menu = () => (
   <>
@@ -28,10 +30,13 @@ const useScrollLock = () => {
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
-  const [loginPopup, setLoginPopup] = useState(false);
+  const [isAccessPopup, setIsAccessPopup] = useState(false);
   const { lockScroll, unlockScroll } = useScrollLock();
+  const [accessPopup, setAccessPopup] = useState();
+  const signIn = <SignIn />
+  const signUp = <SignUp />
 
-  loginPopup ? lockScroll() : unlockScroll();
+  isAccessPopup ? lockScroll() : unlockScroll();
 
   return (
     <div className='slrspot__navbar'>
@@ -44,8 +49,8 @@ const Navbar = () => {
         </div>
       </div>
       <div className='slrspot__navbar-sign'>
-        <p onClick={() =>  setLoginPopup(true)}>Sign in</p>
-        <button type='button' onClick={() =>  setLoginPopup(true)}>Sign up</button>
+        <p onClick={() =>  {setIsAccessPopup(true); setAccessPopup(signIn);}}>Sign in</p>
+        <button type='button' onClick={() =>  {setIsAccessPopup(true); setAccessPopup(signUp);}}>Sign up</button>
       </div>
       <div className='slrspot__navbar-menu'>
         {toggleMenu
@@ -63,7 +68,7 @@ const Navbar = () => {
           </div>
         )}
       </div>
-      <LoginPopup trigger={loginPopup} setTrigger={setLoginPopup} />
+      <AccessPopup trigger={isAccessPopup} popup={accessPopup} setTrigger={setIsAccessPopup} />
     </div>
   )
 }
