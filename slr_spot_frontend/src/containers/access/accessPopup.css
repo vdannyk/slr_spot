@@ -11,18 +11,29 @@
     backdrop-filter: blur(8px);
 }
 
-.slrspot__accessPopup-inner {
+.slrspot__accessPopup-box {
+    width: 380px;
+    height: 480px;
     position: relative;
-    padding: 12rem 6rem;
-    width: 100%;
-    max-width: 640px;
-    background-color: white;
-    display: grid;
-    justify-content: center;
+    margin: 6% auto;
+    background: white;
+    padding: 5px;
+    border-radius: 10px;
 }
 
-.slrspot__accessPopup-inner .slrspot__accessPopup-closeBtn {
-    position: absolute;
-    top: 16px;
-    right: 16px;
+.slrspot__accessPopup-closeBtn_container {
+    width: 220px;
+    margin: 5px auto;
+    position: relative;
+    left: 230px;
+}
+
+.slrspot__accessPopup-closeBtn {
+    width: 60px;
+    cursor: pointer;
+    background: transparent;
+    border: 1;
+    border-radius: 5px;
+    outline: none;
+    position: relative;
 }
