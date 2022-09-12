@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.http.HttpServletResponse;
+
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -41,10 +43,20 @@ public class SecurityConfig {
         // Set STATELESS session management
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
 
+        // Handle unathorized requests exceptions
+//        http.exceptionHandling().authenticationEntryPoint(
+//                ((request, response, authException) -> {
+//                    response.sendError(
+//                            HttpServletResponse.SC_UNAUTHORIZED,
+//                            authException.getMessage()
+//                    );
+//                })
+//        );
+
         // Set endpoints to authorize
-        http.authorizeRequests().antMatchers("/login/**").permitAll();
-        http.authorizeRequests().antMatchers(GET, "api/user/**").hasAnyAuthority("ROLE_USER");
-        http.authorizeRequests().antMatchers(POST, "api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers("/login/**", "/api//token/refresh/**").permitAll();
+        http.authorizeRequests().antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers(POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
 
         // Add authentication filter
