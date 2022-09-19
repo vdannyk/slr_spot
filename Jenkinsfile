@@ -37,16 +37,16 @@ pipeline {
         //     }
         // }
 
-        stage('Build docker image') {
-            when {
-                branch 'develop'
-            }
-			steps {
-                dir('slr_spot_backend') {
-				    sh 'docker build -t vdannys/slrapp:lts .'
-                }
-			}
-		}
+        // stage('Build docker image') {
+        //     when {
+        //         branch 'develop'
+        //     }
+		// 	steps {
+        //         dir('slr_spot_backend') {
+		// 		    sh 'docker build -t vdannys/slrapp:lts .'
+        //         }
+		// 	}
+		// }
 
 		// stage('Push docker image') {
         //     when {
