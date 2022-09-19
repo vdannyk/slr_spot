@@ -65,7 +65,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                echo 'Deploying to servers...'
+                echo 'Deploying to servers....'
             }
         }
     }
