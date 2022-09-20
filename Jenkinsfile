@@ -27,15 +27,15 @@ pipeline {
             }
         }
 
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         dir('slr_spot_backend') {
-        //             withSonarQubeEnv(installationName: 'SonarQube') {
-        //                 sh 'mvn sonar:sonar -Dsonar.projectKey=slr-app'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('SonarQube Analysis') {
+            steps {
+                dir('slr_spot_backend') {
+                    withSonarQubeEnv(installationName: 'sonarqube') {
+                        sh 'mvn sonar:sonar -Dsonar.projectKey=slr-spot'
+                    }
+                }
+            }
+        }
 
         // stage('Build docker image') {
         //     when {
