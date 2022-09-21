@@ -53,9 +53,8 @@ pipeline {
                 branch 'develop'
             }
 			steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     dir('slr_spot_backend') {
-                        // sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                         sh 'docker login -u $USERNAME -p $PASSWORD'
                         sh 'docker push vdannys/slrapp:lts'
                     }
