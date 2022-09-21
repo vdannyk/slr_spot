@@ -14,7 +14,7 @@ pipeline {
         stage("build") {
             steps {
                 dir('slr_spot_backend') {
-                    echo ${USER}
+                    sh 'echo ${USER}'
                     sh 'mvn -Dmaven.test.failure.ignore=true clean install'
                 }
             }
