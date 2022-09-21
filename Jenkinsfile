@@ -8,6 +8,7 @@ pipeline {
 
     environment {
 		DOCKERHUB_CREDENTIALS=credentials('dockerhub-token')
+        dockerImage = ''
 	}
 
     stages {
@@ -45,9 +46,10 @@ pipeline {
                 branch 'develop'
             }
 			steps {
-                dir('slr_spot_backend') {
-				    sh 'docker build -t vdannys/slrapp:lts .'
-                }
+                // dir('slr_spot_backend') {
+				//     sh 'docker build -t vdannys/slrapp:lts .'
+                // }
+                dockerImage = docker.build + 'vdannys/slrapp:lts'
 			}
 		}
 
