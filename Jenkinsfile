@@ -30,7 +30,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             when {
-                branch 'develop'
+                branch 'main'
             }
             steps {
                 dir('slr_spot_backend') {
