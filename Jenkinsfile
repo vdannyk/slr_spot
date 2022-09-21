@@ -6,9 +6,9 @@ pipeline {
         jdk 'jdk17'
     }
 
-    // environment {
-	// 	DOCKERHUB_CREDENTIALS=credentials('dockerhub-token')
-	// }
+    environment {
+		DOCKERHUB_CREDENTIALS=credentials('dockerhub-token')
+	}
 
     stages {
         stage("build") {
@@ -28,6 +28,9 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
+            when {
+                branch 'develop'
+            }
             steps {
                 dir('slr_spot_backend') {
                     withSonarQubeEnv(installationName: 'sonarqube') {
@@ -37,28 +40,28 @@ pipeline {
             }
         }
 
-        // stage('Build docker image') {
-        //     when {
-        //         branch 'develop'
-        //     }
-		// 	steps {
-        //         dir('slr_spot_backend') {
-		// 		    sh 'docker build -t vdannys/slrapp:lts .'
-        //         }
-		// 	}
-		// }
+        stage('Build docker image') {
+            when {
+                branch 'develop'
+            }
+			steps {
+                dir('slr_spot_backend') {
+				    sh 'docker build -t vdannys/slrapp:lts .'
+                }
+			}
+		}
 
-		// stage('Push docker image') {
-        //     when {
-        //         branch 'develop'
-        //     }
-		// 	steps {
-        //         dir('slr_spot_backend') {
-        //             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-        //             sh 'docker push vdannys/slrapp:lts'
-        //         }
-		// 	}
-		// }
+		stage('Push docker image') {
+            when {
+                branch 'develop'
+            }
+			steps {
+                dir('slr_spot_backend') {
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh 'docker push vdannys/slrapp:lts'
+                }
+			}
+		}
 
         stage("deploy") {
             when {
