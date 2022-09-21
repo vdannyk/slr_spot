@@ -45,12 +45,12 @@ pipeline {
             when {
                 branch 'develop'
             }
-			steps {
+			// steps {
                 // dir('slr_spot_backend') {
 				//     sh 'docker build -t vdannys/slrapp:lts .'
                 // }
-                dockerImage = docker.build + 'vdannys/slrapp:lts'
-			}
+            dockerImage = docker.build + 'vdannys/slrapp:lts'
+			// }
 		}
 
 		stage('Push docker image') {
