@@ -31,14 +31,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // Disable CSRF
-        http.csrf().disable();
-
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
         http.authenticationManager(authenticationManager);
+
+        // Disable CSRF
+        http.csrf().disable();
+
+//        http.formLogin()
+//                .loginProcessingUrl("/api/auth/signin");
 
         // Set STATELESS session management
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
@@ -54,13 +57,15 @@ public class SecurityConfig {
 //        );
 
         // Set endpoints to authorize
-        http.authorizeRequests().antMatchers("/login/**", "/api//token/refresh/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/auth/signin/**", "/api/token/refresh/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().antMatchers(POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
 
         // Add authentication filter
-        http.addFilter(new CustomAuthenticationFilter(authenticationManager));
+        var customAuthFilter = new CustomAuthenticationFilter(authenticationManager);
+        customAuthFilter.setFilterProcessesUrl("/api/auth/signin");
+        http.addFilter(customAuthFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
