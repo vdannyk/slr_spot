@@ -1,12 +1,6 @@
 import React, { useState, useRef } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate  } from 'react-router-dom';
-
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-
-import { login } from "../../actions/auth";
+import axios from 'axios';
+import './signIn.css';
 
 const required = (value) => {
   if (!value) {
@@ -19,19 +13,10 @@ const required = (value) => {
 };
 
 const SignIn = () => {
-  let navigate = useNavigate();
-
   const form = useRef();
-  const checkBtn = useRef();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  // const { isLoggedIn } = useSelector(state => state.auth);
-  // const { message } = useSelector(state => state.message);
-
-  // const dispatch = useDispatch();
 
   const onChangeUsername = (e) => {
     const username = e.target.value;
@@ -45,25 +30,24 @@ const SignIn = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-
-    setLoading(true);
-
-    form.current.validateAll();
-
-    login(username, password);
-    setLoading(false);
-    // if (checkBtn.current.context._errors.length === 0) {
-    //   dispatch(login(username, password))
-    //     .then(() => {
-    //       navigate("/profile");
-    //       window.location.reload();
-    //     })
-    //     .catch(() => {
-    //       setLoading(false);
-    //     });
-    // } else {
-    //   setLoading(false);
-    // }
+    var bodyFormData = new FormData();
+    bodyFormData.append("username", username);
+    bodyFormData.append("password", password);
+    
+    return axios({
+      method: "post",
+      url: "http://localhost:8080/api/auth/signin",
+      data: bodyFormData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then(function (response) {
+      // handle success
+      console.log(response);
+    })
+    .catch(function (response) {
+      // handle error
+      console.log(response);
+    })
   };
 
   // if (isLoggedIn) {
@@ -71,43 +55,47 @@ const SignIn = () => {
   // }
 
   return (
-    <Form onSubmit={handleLogin} ref={form}>
-        <div className="form-inner">
+    <form onSubmit={handleLogin} ref={form}>
+        <div className="slrspot___signIn-container">
             <h3>Sign In</h3>
             <p>New user? Create an account</p>
 
             <div className="form-group">
                 <label htmlFor='email'>Email:</label>
-                <Input 
-                  type='text' 
-                  className="form-control" 
+                <input 
+                  type='email' 
+                  className='slrspot__signIn-inputField' 
+                  placeholder='Email' 
                   name='email' 
-                  value={username} 
-                  onChange={onChangeUsername} 
-                  validations={[required]}
+                  id='email' 
+                  required
+                  onChange={onChangeUsername}
                 />
             </div>
 
             <div className="form-group">
                 <label htmlFor='password'>Password:</label>
-                <Input 
+                <input 
                   type='password' 
-                  className='form-control' 
+                  className='slrspot__signIn-inputField' 
+                  placeholder='Password' 
                   name='password' 
-                  value={password} 
-                  onChange={onChangePassword} 
-                  validations={[required]}
+                  id='password' 
+                  required
+                  onChange={onChangePassword}
                 />
             </div>
 
             <p>Forgot password</p>
-            <button type="submit">Login</button>
+            <button type="submit" className='slrspot__signIn-submitBtn'>Login</button>
 
-            <p>OR</p>
-            <h2>Sign in with Google</h2>
-            <h2>Sign in with Facebook</h2>
+            <div className='slrspot___signIn-auth_container'>
+              <p>OR</p>
+              <h2>Sign in with Google</h2>
+              <h2>Sign in with Facebook</h2>
+            </div>
         </div>
-    </Form>
+    </form>
   )
 }
 
