@@ -26,8 +26,8 @@ public class SlrSpotBackendApplication {
 			userService.saveRole(new Role(null, "ROLE_USER"));
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
 
-			userService.saveUser(new User(null, "danny@gmail.com", "1234", new ArrayList<>()));
-			userService.saveUser(new User(null, "tobi@gmail.com", "1234", new ArrayList<>()));
+			userService.saveUser(new User(null, "Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>()));
+			userService.saveUser(new User(null, "Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>()));
 
 			userService.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
 			userService.addRoleToUser("tobi@gmail.com", "ROLE_USER");

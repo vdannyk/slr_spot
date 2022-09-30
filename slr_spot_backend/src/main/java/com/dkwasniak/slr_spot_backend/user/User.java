@@ -29,7 +29,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotBlank(message = "E-mail may not be blank")
+    private String firstName;
+    private String lastName;
+    //    @NotBlank(message = "E-mail may not be blank")
 //    @Email
 //    @Size(max = 50)
     private String email;
