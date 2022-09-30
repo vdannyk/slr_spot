@@ -14,6 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,6 +41,7 @@ public class SecurityConfig {
         http.authenticationManager(authenticationManager);
 
         // Disable CSRF
+        http.cors();
         http.csrf().disable();
 
 //        http.formLogin()
@@ -57,7 +61,11 @@ public class SecurityConfig {
 //        );
 
         // Set endpoints to authorize
-        http.authorizeRequests().antMatchers("/api/auth/signin/**", "/api/token/refresh/**").permitAll();
+        http.authorizeRequests().antMatchers(
+                "/api/auth/signin/**",
+                "/api/token/refresh/**",
+                "/api/user/save/**"
+                ).permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().antMatchers(POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
@@ -76,4 +84,10 @@ public class SecurityConfig {
         return http.getSharedObject(AuthenticationManager.class);
     }
 
+    @Bean
+    protected CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
+    }
 }
