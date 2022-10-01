@@ -1,7 +1,7 @@
 import { Header, Features, Footer, WhatSLRSpot } from './containers';
 import { Navbar } from './components';
-
 import './App.css';
+
 
 function App() {
   return (
