@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.dkwasniak.slr_spot_backend.registration.ConfirmationToken;
+import com.dkwasniak.slr_spot_backend.registration.ConfirmationTokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -17,18 +19,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -41,6 +46,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class UserController {
 
     private final UserService userService;
+    private final ConfirmationTokenService confirmationTokenService;
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {
@@ -48,17 +54,16 @@ public class UserController {
     }
 
     @PostMapping("/user/save")
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
+    public ResponseEntity<String> saveUser(@RequestBody User user) {
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
-    @PostMapping("/role/save")
-    public ResponseEntity<Role> saveUser(@RequestBody Role role) {
-        URI uri = URI.create(ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/api/role/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveRole(role));
+    @GetMapping("/user/confirm")
+    public ResponseEntity<String> confirmToken(@RequestParam String confirmationToken) {
+        userService.confirmToken(confirmationToken);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/role/addtouser")

@@ -64,7 +64,8 @@ public class SecurityConfig {
         http.authorizeRequests().antMatchers(
                 "/api/auth/signin/**",
                 "/api/token/refresh/**",
-                "/api/user/save/**"
+                "/api/user/save/**",
+                "/api/user/confirm/**"
                 ).permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().antMatchers(POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");

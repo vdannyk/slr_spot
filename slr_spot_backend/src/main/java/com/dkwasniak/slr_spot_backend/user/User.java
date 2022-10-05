@@ -21,7 +21,6 @@ import java.util.Collection;
                 @UniqueConstraint(columnNames = "email")
         })
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class User {
 
@@ -31,15 +30,18 @@ public class User {
 
     private String firstName;
     private String lastName;
-    //    @NotBlank(message = "E-mail may not be blank")
-//    @Email
-//    @Size(max = 50)
     private String email;
-
-//    @NotBlank(message = "Password may not be blank")
-//    @Size(max = 100)
     private String password;
+    private Boolean confirmed = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles;
+
+    public User(String firstName, String lastName, String email, String password, Collection<Role> roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
 }
