@@ -1,5 +1,8 @@
 package com.dkwasniak.slr_spot_backend.user;
 
+import com.dkwasniak.slr_spot_backend.email.EmailSender;
+import com.dkwasniak.slr_spot_backend.registration.ConfirmationToken;
+import com.dkwasniak.slr_spot_backend.registration.ConfirmationTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,11 +14,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
+
+import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +33,9 @@ public class DefaultUserService implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    // need to be refactored (facade)
+    private final ConfirmationTokenService confirmationTokenService;
+    private final EmailSender emailSender;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -50,10 +60,44 @@ public class DefaultUserService implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) {
+    public String saveUser(User user) {
         log.info("Saving new user: {}", user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // confirmation token
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                savedUser
+        );
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        String link = String.format("http://localhost:8080/api/user/confirm?confirmationToken=%s", token);
+        emailSender.send(user.getEmail(), String.format(
+                "Click to activate: <a href=%s>Activate Now</a>", link));
+        return token;
+    }
+
+    @Override
+    @Transactional
+    public void confirmToken(String token) {
+//        log.info("Saving new role: {}", role.getName());
+        ConfirmationToken confirmationToken = confirmationTokenService
+                .getConfirmationToken(token)
+                .orElseThrow(() -> new IllegalStateException("Token not found"));
+
+        if (!isNull(confirmationToken.getConfirmedAt())) {
+            throw new IllegalStateException("Email already confirmed");
+        }
+
+        if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("Token expired");
+        }
+        confirmationTokenService.setConfirmedAt(token);
+        this.enableUser(confirmationToken.getUser().getEmail());
     }
 
     @Override
@@ -68,6 +112,10 @@ public class DefaultUserService implements UserService, UserDetailsService {
         User user = userRepository.findByEmail(username).orElseThrow();
         Role role = roleRepository.findByName(roleName).orElseThrow();
         user.getRoles().add(role);
+    }
+
+    public int enableUser(String email) {
+        return userRepository.enableUser(email);
     }
 
     @Override

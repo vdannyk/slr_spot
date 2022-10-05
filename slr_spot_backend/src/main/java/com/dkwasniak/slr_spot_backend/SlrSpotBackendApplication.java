@@ -6,7 +6,6 @@ import com.dkwasniak.slr_spot_backend.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,11 +22,11 @@ public class SlrSpotBackendApplication {
 	@Bean
 	CommandLineRunner run(UserService userService) {
 		return args -> {
-			userService.saveRole(new Role(null, "ROLE_USER"));
-			userService.saveRole(new Role(null, "ROLE_ADMIN"));
+			userService.saveRole(new Role("ROLE_USER"));
+			userService.saveRole(new Role("ROLE_ADMIN"));
 
-			userService.saveUser(new User(null, "Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>()));
-			userService.saveUser(new User(null, "Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>()));
+			userService.saveUser(new User("Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>()));
+			userService.saveUser(new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>()));
 
 			userService.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
 			userService.addRoleToUser("tobi@gmail.com", "ROLE_USER");
