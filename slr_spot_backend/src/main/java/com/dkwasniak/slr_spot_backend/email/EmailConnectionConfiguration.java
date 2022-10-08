@@ -13,13 +13,13 @@ public class EmailConnectionConfiguration {
     private final JavaMailSender javaMailSender;
 
     @Bean
-    @ConditionalOnProperty(name = "spring.mail.host", havingValue = "localhost")
+    @ConditionalOnProperty(name = "mail.enabled", matchIfMissing = true)
     EmailSender emailService() {
         return new EmailService(javaMailSender);
     }
 
     @Bean
-    @ConditionalOnProperty(name = "spring.mail.host", matchIfMissing = true)
+    @ConditionalOnProperty(name = "mail.enabled", havingValue = "false")
     EmailSender dummyEmailService() {
         return new DummyEmailService();
     }
