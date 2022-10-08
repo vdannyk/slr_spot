@@ -5,6 +5,7 @@ import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationToken;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
+import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,23 +46,24 @@ public class DefaultUserService implements UserService, UserDetailsService {
         if (optUser.isEmpty()) {
             log.error("User not found in the database");
             throw new UsernameNotFoundException("User " + username + " not found");
-        } else {
-            User user = optUser.get();
-//        User user = new User(1L, "test", "test@gmail.com", passwordEncoder.encode("test"), new ArrayList<>());
-            Collection<GrantedAuthority> authorities = new HashSet<>();
-            user.getRoles().forEach(role -> {
-                authorities.add(new SimpleGrantedAuthority(role.getName())) ;
-            });
-            return org.springframework.security.core.userdetails.User
-                    .withUsername(user.getEmail())
-                    .password(user.getPassword())
-                    .authorities(authorities)
-                    .build();
         }
+        User user = optUser.get();
+        Collection<GrantedAuthority> authorities = new HashSet<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName())) ;
+        });
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getEmail())
+                .password(user.getPassword())
+                .authorities(authorities)
+                .build();
     }
 
     @Override
     public String saveUser(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new UserAlreadyExistException("User already exists");
+        }
         log.info("Saving new user: {}", user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
@@ -85,7 +87,6 @@ public class DefaultUserService implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void confirmToken(String token) {
-//        log.info("Saving new role: {}", role.getName());
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getConfirmationToken(token)
                 .orElseThrow(() -> new IllegalStateException("Token not found"));

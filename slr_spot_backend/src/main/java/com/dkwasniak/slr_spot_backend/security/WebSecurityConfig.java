@@ -1,6 +1,6 @@
 package com.dkwasniak.slr_spot_backend.security;
 
-import com.dkwasniak.slr_spot_backend.filter.CustomAuthenticationFilter;
+import com.dkwasniak.slr_spot_backend.jwt.JwtAuthenticationFilter;
 import com.dkwasniak.slr_spot_backend.filter.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -56,7 +56,7 @@ public class WebSecurityConfig {
         http.authorizeRequests().anyRequest().authenticated();
 
         // Add authentication filter
-        var customAuthFilter = new CustomAuthenticationFilter(
+        var customAuthFilter = new JwtAuthenticationFilter(
                 authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)));
         customAuthFilter.setFilterProcessesUrl("/api/auth/signin");
         http.addFilter(customAuthFilter);

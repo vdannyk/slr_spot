@@ -15,4 +15,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "SET u.confirmed = TRUE " +
             "WHERE u.email = ?1")
     int enableUser(String email);
+    Boolean existsByEmail(String email);
 }
