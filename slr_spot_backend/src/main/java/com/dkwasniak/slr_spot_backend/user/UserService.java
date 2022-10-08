@@ -1,5 +1,7 @@
 package com.dkwasniak.slr_spot_backend.user;
 
+import com.dkwasniak.slr_spot_backend.role.Role;
+
 import java.util.List;
 
 public interface UserService {

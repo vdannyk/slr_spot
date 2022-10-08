@@ -1,6 +1,5 @@
-package com.dkwasniak.slr_spot_backend.registration;
+package com.dkwasniak.slr_spot_backend.confirmationToken;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

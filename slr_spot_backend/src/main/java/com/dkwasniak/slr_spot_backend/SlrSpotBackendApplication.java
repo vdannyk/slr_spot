@@ -1,6 +1,6 @@
 package com.dkwasniak.slr_spot_backend;
 
-import com.dkwasniak.slr_spot_backend.user.Role;
+import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import org.springframework.boot.CommandLineRunner;
