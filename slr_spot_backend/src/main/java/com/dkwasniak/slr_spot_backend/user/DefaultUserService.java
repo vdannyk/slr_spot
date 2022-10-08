@@ -45,19 +45,17 @@ public class DefaultUserService implements UserService, UserDetailsService {
         if (optUser.isEmpty()) {
             log.error("User not found in the database");
             throw new UsernameNotFoundException("User " + username + " not found");
-        } else {
-            User user = optUser.get();
-//        User user = new User(1L, "test", "test@gmail.com", passwordEncoder.encode("test"), new ArrayList<>());
-            Collection<GrantedAuthority> authorities = new HashSet<>();
-            user.getRoles().forEach(role -> {
-                authorities.add(new SimpleGrantedAuthority(role.getName())) ;
-            });
-            return org.springframework.security.core.userdetails.User
-                    .withUsername(user.getEmail())
-                    .password(user.getPassword())
-                    .authorities(authorities)
-                    .build();
         }
+        User user = optUser.get();
+        Collection<GrantedAuthority> authorities = new HashSet<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName())) ;
+        });
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getEmail())
+                .password(user.getPassword())
+                .authorities(authorities)
+                .build();
     }
 
     @Override
