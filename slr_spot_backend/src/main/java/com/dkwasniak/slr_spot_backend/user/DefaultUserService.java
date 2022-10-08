@@ -1,8 +1,10 @@
 package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.email.EmailSender;
-import com.dkwasniak.slr_spot_backend.registration.ConfirmationToken;
-import com.dkwasniak.slr_spot_backend.registration.ConfirmationTokenService;
+import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationToken;
+import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
+import com.dkwasniak.slr_spot_backend.role.Role;
+import com.dkwasniak.slr_spot_backend.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +21,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import static java.util.Objects.isNull;

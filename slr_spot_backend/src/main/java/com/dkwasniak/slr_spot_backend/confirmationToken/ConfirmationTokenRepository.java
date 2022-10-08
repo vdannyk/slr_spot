@@ -1,4 +1,4 @@
-package com.dkwasniak.slr_spot_backend.registration;
+package com.dkwasniak.slr_spot_backend.confirmationToken;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

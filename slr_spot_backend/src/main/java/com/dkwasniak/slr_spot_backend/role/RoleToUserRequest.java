@@ -1,4 +1,4 @@
-package com.dkwasniak.slr_spot_backend.user;
+package com.dkwasniak.slr_spot_backend.role;
 
 import lombok.Data;
 
