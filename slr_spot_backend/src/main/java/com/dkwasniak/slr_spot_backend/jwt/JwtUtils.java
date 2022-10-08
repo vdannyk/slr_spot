@@ -1,4 +1,4 @@
-package com.dkwasniak.slr_spot_backend.util;
+package com.dkwasniak.slr_spot_backend.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

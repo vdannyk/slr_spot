@@ -1,5 +1,7 @@
-package com.dkwasniak.slr_spot_backend.filter;
+package com.dkwasniak.slr_spot_backend.jwt;
 
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,23 +18,29 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.dkwasniak.slr_spot_backend.util.JwtUtils.generateJwt;
-import static com.dkwasniak.slr_spot_backend.util.JwtUtils.generateRefreshToken;
+import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.generateJwt;
+import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.generateRefreshToken;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
-public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        return authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getParameter("username"),
-                        request.getParameter("password")
-                )
-        );
+        try {
+            AuthenticationRequest authenticationRequest = new ObjectMapper()
+                    .readValue(request.getInputStream(), AuthenticationRequest.class);
+
+            return authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authenticationRequest.getUsername(),
+                            authenticationRequest.getPassword())
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -41,11 +49,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         User user = (User) authResult.getPrincipal();
         String jwtToken = generateJwt(user, request);
         String refreshToken = generateRefreshToken(user, request);
-        Map<String, String> tokens = new HashMap<>() {{
-            put("accessToken", jwtToken);
-            put("refreshToken", refreshToken);
-        }};
+        JwtResponse jwtResponse = new JwtResponse(
+                jwtToken,
+                refreshToken
+        );
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        new ObjectMapper().writeValue(response.getOutputStream(), jwtResponse);
     }
 }

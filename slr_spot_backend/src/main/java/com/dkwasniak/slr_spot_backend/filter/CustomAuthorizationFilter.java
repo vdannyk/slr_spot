@@ -18,9 +18,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.dkwasniak.slr_spot_backend.util.JwtUtils.getAuthorities;
-import static com.dkwasniak.slr_spot_backend.util.JwtUtils.getUsername;
-import static com.dkwasniak.slr_spot_backend.util.JwtUtils.validateJwt;
+import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getAuthorities;
+import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getUsername;
+import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateJwt;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
