@@ -6,6 +6,7 @@ import { AccessPopup } from '../../containers'
 import { SignIn, SignUp } from '../../components'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../../actions/auth";
 
 
 const Menu = () => (
@@ -41,8 +42,16 @@ const Navbar = () => {
   const [accessPopup, setAccessPopup] = useState();
   const signIn = <SignIn />
   const signUp = <SignUp />
+  const dispatch = useDispatch();
 
-  const { user: currentUser } = useSelector((state) => state.auth);
+  const { isLoggedIn } = useSelector(state => state.auth);
+
+  const logOut = useCallback(() => {
+    dispatch(logout())
+    .then(() => {
+      window.location.reload();
+    });
+  }, [dispatch]);
 
   isAccessPopup ? lockScroll() : unlockScroll();
 
@@ -59,8 +68,23 @@ const Navbar = () => {
         </div>
       </div>
       <div className='slrspot__navbar-sign'>
-        <p onClick={() =>  {setIsAccessPopup(true); setAccessPopup(signIn);}}>Sign in</p>
-        <button type='button' onClick={() =>  {setIsAccessPopup(true); setAccessPopup(signUp);}}>Sign up</button>
+        {isLoggedIn 
+          ? (            
+            <button type='button' onClick={logOut}>
+              Logout
+            </button>
+            )
+          : (
+            <div className='slrspot__navbar-sign'>
+              <p onClick={() => { setIsAccessPopup(true); setAccessPopup(signIn); }}>
+                Sign in
+              </p>
+              <button type='button' onClick={() => { setIsAccessPopup(true); setAccessPopup(signUp); }}>
+                Sign up
+              </button>
+            </div>
+            )
+        }
       </div>
       <div className='slrspot__navbar-menu'>
         {toggleMenu
