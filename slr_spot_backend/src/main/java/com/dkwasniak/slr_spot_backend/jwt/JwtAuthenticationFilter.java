@@ -1,7 +1,5 @@
 package com.dkwasniak.slr_spot_backend.jwt;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,8 +13,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.generateJwt;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.generateRefreshToken;
