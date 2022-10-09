@@ -74,10 +74,10 @@ const SignIn = () => {
 
         <p>Forgot password</p>
         <button type="submit" className='slrspot__signIn-submitBtn' disabled={loading}>
+          <span>Login</span>
           {loading && (
             <span className="spinner-border spinner-border-sm">LOADING</span>
           )}
-          <span>Login</span>
         </button>
 
         <div className='slrspot___signIn-auth_container'>
