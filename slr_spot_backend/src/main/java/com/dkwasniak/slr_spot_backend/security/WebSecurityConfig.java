@@ -47,7 +47,7 @@ public class WebSecurityConfig {
         // Set endpoints to authorize
         http.authorizeRequests().antMatchers(
                 "/api/auth/signin/**",
-                "/api/token/refresh/**",
+                "/api/user/refreshtoken/**",
                 "/api/user/save/**",
                 "/api/user/confirm/**"
                 ).permitAll();

@@ -23,13 +23,14 @@ import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getUsername;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateJwt;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     private static final String SIGN_IN_PATH = "/api/auth/signin";
-    private static final String REFRESH_JWT_TOKEN_PATH = "/api/token/refresh";
+    private static final String REFRESH_JWT_TOKEN_PATH = "/api/user/refreshtoken";
     private static final String AUTHORIZATION_PREFIX = "Bearer ";
 
     @Override
@@ -54,7 +55,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 } catch (Exception exception) {
                     log.error("Error while logging: {}", exception.getMessage());
                     response.setHeader("error", exception.getMessage());
-                    response.setStatus(FORBIDDEN.value());
+                    response.setStatus(UNAUTHORIZED.value());
                     Map<String, String> error = new HashMap<>() {{
                         put("error_msg", exception.getMessage());
                     }};

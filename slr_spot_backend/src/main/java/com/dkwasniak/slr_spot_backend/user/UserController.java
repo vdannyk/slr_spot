@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
 import com.dkwasniak.slr_spot_backend.jwt.JwtResponse;
+import com.dkwasniak.slr_spot_backend.jwt.RefreshTokenRequest;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleToUserRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,12 +67,14 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/user/refreshtoken")
+    @PostMapping("/user/refreshtoken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
+        RefreshTokenRequest refreshTokenRequest =
+                new ObjectMapper().readValue(request.getInputStream(), RefreshTokenRequest.class);
         if (!StringUtils.isEmpty(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
             try {
-                String refreshToken = authorizationHeader.substring("Bearer ".length());
+                String refreshToken = refreshTokenRequest.getRefreshToken();
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refreshToken);

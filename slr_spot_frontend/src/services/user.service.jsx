@@ -1,12 +1,11 @@
-import axios from "axios";
-import authHeader from "./auth_header";
-
-const API_URL = "http://localhost:8080/api/";
+import axiosInstance from "./api";
 
 const getAdminBoard = () => {
-    return axios.get(API_URL + "users", { headers: authHeader() });
+    return axiosInstance.get("/users");
 };
 
-export default {
+const UserService = {
     getAdminBoard,
 };
+
+export default UserService;

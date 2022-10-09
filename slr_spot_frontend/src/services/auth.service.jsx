@@ -1,45 +1,55 @@
-import axios from "axios";
+import TokenService from "./token.service";
+import axiosInstance from "./api";
 
-const register = (firstName, lastName, email, password) => {
-    return axios.post("/user/save", {
-        firstName,
-        lastName,
-        email,
-        password,
-    });
+const register = (firstName, lastName, username, password) => {
+  return axiosInstance.post("/user/save", {
+    firstName: firstName,
+    lastName: lastName,
+    email: username,
+    password: password,
+  })
+  .then(function (response) {
+    // handle success
+    console.log(response);
+  })
+  .catch(function (response) {
+    // handle error
+    console.log(response);
+  })
 };
 
 const login = (username, password) => {
-    var bodyFormData = new FormData();
-    bodyFormData.append("username", username);
-    bodyFormData.append("password", password);
-    
-    return axios({
-      method: "post",
-      url: "http://localhost:8080/api/auth/signin",
-      data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data" },
+    return axiosInstance.post("/auth/signin", {
+      username,
+      password,
     })
     .then(function (response) {
       // handle success
       if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+        TokenService.setUser(response.data);
       }
       console.log(response);
       return response.data;
+    })
+    .catch(function (response) {
+      // handle error
+      console.log(response);
     });
-    // .catch(function (response) {
-    //   // handle error
-    //   console.log(response);
-    // })
 };
 
 const logout = () => {
-    localStorage.removeItem("user");
+  TokenService.removeUser();
 };
 
-export default {
-    register,
-    login,
-    logout,
+const getCurrentUser = () => {
+  return JSON.parse(localStorage.getItem("user"));
 };
+
+const AuthService = {
+  register,
+  login,
+  logout,
+  getCurrentUser,
+};
+
+export default AuthService;
