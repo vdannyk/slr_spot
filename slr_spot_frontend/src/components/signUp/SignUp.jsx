@@ -56,74 +56,62 @@ const SignUp = () => {
       <form onSubmit={handleRegister} ref={form}>
         {!successful && (
           <div className="slrspot___signUp-container">
-            <h3>Sign Up</h3>
-
-            <div className="form-group">
-              <label>First Name:</label>
-              <input 
-                type='text' 
-                className='slrspot__signUp-inputField' 
-                placeholder='First Name'
-                name='firstName' 
-                required
-                onChange={onChangeFirstName}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Last Name:</label>
-              <input 
-                type='text' 
-                className='slrspot__signUp-inputField' 
-                placeholder='Last Name'
-                name='lastName' 
-                required
-                onChange={onChangeLastName}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Email:</label>
-              <input 
-                type='email' 
-                className='slrspot__signUp-inputField' 
-                placeholder='Email'
-                name='email' 
-                required
-                onChange={onChangeUsername}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Password:</label>
-              <input 
-                type='password' 
-                className='slrspot__signUp-inputField' 
-                placeholder='Password'
-                name='password' 
-                required
-                onChange={onChangePassword}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Confirm Password:</label>
-              <input 
-                type='password' 
-                className='slrspot__signUp-inputField' 
-                placeholder='Confirm Password' 
-              />
-            </div>
+            <h1>Create Account</h1>
+            <input 
+              type='text' 
+              className='slrspot__signUp-inputField' 
+              placeholder='First Name'
+              name='firstName' 
+              required
+              onChange={onChangeFirstName}
+            />
+            <input 
+              type='text' 
+              className='slrspot__signUp-inputField' 
+              placeholder='Last Name'
+              name='lastName' 
+              required
+              onChange={onChangeLastName}
+            />
+            <input 
+              type='email' 
+              className='slrspot__signUp-inputField' 
+              placeholder='Email'
+              name='email' 
+              required
+              onChange={onChangeUsername}
+            />
+            <input 
+              type='password' 
+              className='slrspot__signUp-inputField' 
+              placeholder='Password'
+              name='password' 
+              required
+              onChange={onChangePassword}
+            />
+            <input 
+              type='password' 
+              className='slrspot__signUp-inputField' 
+              placeholder='Confirm Password' 
+            />
 
             <button type='submit' className='slrspot__signUp-submitBtn'>Register</button>
+            {/* <span>-- Or Sign in with --</span>
+            <div className='slrspot___signIn-auth_container'>
+              <h2>GOOGLE</h2>
+              <h2>FACEBOOK</h2>
+            </div> */}
+            <div>
+              <span>Already have an account?</span>
+              <a href="#">Log In</a>
+            </div>
           </div>
         )}
       </form>
-      {message && (
-        <div className="form-group">
-            {message}
+      <div class="slrspot__accessPopup-overlay-container">
+        <div class="slrspot__accessPopup-overlay">
         </div>
-      )}
+      </div>
     </div>
   )
 }

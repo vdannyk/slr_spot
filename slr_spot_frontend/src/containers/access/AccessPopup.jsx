@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './accessPopup.css';
-import { SignIn, SignUp } from '../../components'
 
 const AccessPopup = (props) => {
 
@@ -8,13 +7,11 @@ const AccessPopup = (props) => {
     <div className='slrspot__accessPopup'>
         <div className="slrspot__accessPopup-box scale-up-center">
             <div className="slrspot__accessPopup-closeBtn_container">
-              <button type="button" className='slrspot__accessPopup-closeBtn' onClick={() => props.setTrigger(false)}>
-                CLOSE
-              </button>
+              <p className='slrspot__accessPopup-closeBtn' onClick={() => props.setTrigger(false)}>
+                &#x2715;
+              </p>
             </div>
-            <div>
-              { props.popup }
-            </div>
+            { props.popup }
         </div>
     </div>
   ) : "";
