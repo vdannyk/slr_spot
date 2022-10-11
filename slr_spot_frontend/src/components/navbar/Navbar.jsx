@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { RiCloseLine, RiMenu3Line } from 'react-icons/ri';
 import './navbar.css'
 import slrspot_logo from '../../assets/slrspot_logo.png';
@@ -39,10 +39,11 @@ const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [isAccessPopup, setIsAccessPopup] = useState(false);
   const { lockScroll, unlockScroll } = useScrollLock();
-  const [accessPopup, setAccessPopup] = useState();
   const signIn = <SignIn />
   const signUp = <SignUp />
   const dispatch = useDispatch();
+  const [isSignInPopup, setIsSignInPopup] = useState(false);
+  const [isSignUpPopup, setIsSignUpPopup] = useState(false);
 
   const { isLoggedIn } = useSelector(state => state.auth);
 
@@ -76,10 +77,10 @@ const Navbar = () => {
             )
           : (
             <div className='slrspot__navbar-sign'>
-              <p onClick={() => { setIsAccessPopup(true); setAccessPopup(signIn); }}>
+              <p onClick={() => { setIsAccessPopup(true); setIsSignInPopup(true); }}>
                 Sign in
               </p>
-              <button type='button' onClick={() => { setIsAccessPopup(true); setAccessPopup(signUp); }}>
+              <button type='button' onClick={() => { setIsAccessPopup(true); setIsSignUpPopup(true); }}>
                 Sign up
               </button>
             </div>
@@ -102,7 +103,16 @@ const Navbar = () => {
           </div>
         )}
       </div>
-      <AccessPopup trigger={isAccessPopup} popup={accessPopup} setTrigger={setIsAccessPopup} />
+      
+      {isAccessPopup && (
+        <AccessPopup 
+          trigger={isAccessPopup} 
+          isSignIn={isSignInPopup}
+          isSignUp={isSignUpPopup}
+          setTrigger={setIsAccessPopup}
+          setIsSignIn={setIsSignInPopup}
+          setIsSignUp={setIsSignUpPopup} /> 
+      )}
     </nav>
   )
 }

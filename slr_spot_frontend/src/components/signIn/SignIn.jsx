@@ -1,12 +1,10 @@
 import React, { useState, useRef } from "react";
 import './signIn.css';
-import { Navigate, useNavigate  } from 'react-router-dom';
 import { login } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 
 
-const SignIn = () => {
-  let navigate = useNavigate();
+const SignIn = (props) => {
   const form = useRef();
 
   const [username, setUsername] = useState("");
@@ -36,6 +34,11 @@ const SignIn = () => {
       .catch(() => {
         setLoading(false);
       });
+  };
+
+  const handleSignUpClick = (props) => {
+    props.signInTrigger(false);
+    props.signUpTrigger(true);
   };
 
   // if (isLoggedIn) {
@@ -80,7 +83,7 @@ const SignIn = () => {
           </div> */}
           <div>
             <span>Don't have an account?</span>
-            <a href="#">Sign Up</a>
+            <a onClick={() => handleSignUpClick(props) }>Sign Up</a>
           </div>
         </div>
       </form>

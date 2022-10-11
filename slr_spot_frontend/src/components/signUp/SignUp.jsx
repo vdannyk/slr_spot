@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../actions/auth";
 import './signUp.css';
 
-const SignUp = () => {
+const SignUp = (props) => {
   const form = useRef();
 
   const [firstName, setFirstName] = useState("");
@@ -49,6 +49,11 @@ const SignUp = () => {
       .catch(() => {
         setSuccessful(false);
       });
+  };
+
+  const handleSignInClick = (props) => {
+    props.signInTrigger(true);
+    props.signUpTrigger(false);
   };
       
   return (
@@ -103,7 +108,7 @@ const SignUp = () => {
             </div> */}
             <div>
               <span>Already have an account?</span>
-              <a href="#">Log In</a>
+              <a onClick={() => handleSignInClick(props) }>Sign In</a>
             </div>
           </div>
         )}

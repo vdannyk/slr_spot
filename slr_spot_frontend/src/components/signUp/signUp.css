@@ -24,3 +24,11 @@
     outline: none;
     border-radius: 30px;
 } */
+
+.slrspot___signUp-container a{
+    color: rgb(76, 116, 247);
+    font-weight: 500;
+    font-size: 18px;
+    text-transform: capitalize;
+    cursor: pointer;
+}

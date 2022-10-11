@@ -19,6 +19,14 @@
     padding: 0 30px;
 }
 
+.slrspot___signIn-container a{
+    color: rgb(76, 116, 247);
+    font-weight: 500;
+    font-size: 18px;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
 /* .slrspot__signIn-submitBtn {
     width: 85%;
     padding: 10px 30px;
