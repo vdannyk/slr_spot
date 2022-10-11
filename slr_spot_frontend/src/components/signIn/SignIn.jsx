@@ -1,12 +1,10 @@
 import React, { useState, useRef } from "react";
 import './signIn.css';
-import { Navigate, useNavigate  } from 'react-router-dom';
 import { login } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 
 
-const SignIn = () => {
-  let navigate = useNavigate();
+const SignIn = (props) => {
   const form = useRef();
 
   const [username, setUsername] = useState("");
@@ -38,18 +36,26 @@ const SignIn = () => {
       });
   };
 
+  const handleSignUpClick = (props) => {
+    props.signInTrigger(false);
+    props.signUpTrigger(true);
+  };
+
+  const handleForgotPasswordClick = (props) => {
+    props.signInTrigger(false);
+    props.forgotPasswordTrigger(true);
+  };
+
   // if (isLoggedIn) {
   //   return <Navigate to="/profile" />;
   // }
 
   return (
-    <form onSubmit={handleLogin} ref={form}>
-      <div className="slrspot___signIn-container">
-        <h3>Sign In</h3>
-        <p>New user? Create an account</p>
-
-        <div className="form-group">
-          <label htmlFor='email'>Email:</label>
+    <div>
+      <form onSubmit={handleLogin} ref={form}>
+        <div className="slrspot___signIn-container">
+          <h1>SIGN IN</h1>
+          <p>Enter your details to get sign in to your account</p>
           <input 
             type='email' 
             className='slrspot__signIn-inputField' 
@@ -58,10 +64,6 @@ const SignIn = () => {
             required
             onChange={onChangeUsername}
           />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor='password'>Password:</label>
           <input 
             type='password' 
             className='slrspot__signIn-inputField' 
@@ -70,23 +72,31 @@ const SignIn = () => {
             required
             onChange={onChangePassword}
           />
+
+          <a onClick={() => handleForgotPasswordClick(props) }>Forgot your password?</a>
+          <button type="submit" className='slrspot__signIn-submitBtn' disabled={loading}>
+            Sign In
+            {/* {loading && (
+              <span className="spinner-border spinner-border-sm">LOADING</span>
+            )} */}
+          </button>
+
+          {/* <span>-- Or Sign in with --</span>
+          <div className='slrspot___signIn-auth_container'>
+            <h2>GOOGLE</h2>
+            <h2>FACEBOOK</h2>
+          </div> */}
+          <div>
+            <span>Don't have an account?</span>
+            <a onClick={() => handleSignUpClick(props) }>Sign Up</a>
+          </div>
         </div>
-
-        <p>Forgot password</p>
-        <button type="submit" className='slrspot__signIn-submitBtn' disabled={loading}>
-          <span>Login</span>
-          {loading && (
-            <span className="spinner-border spinner-border-sm">LOADING</span>
-          )}
-        </button>
-
-        <div className='slrspot___signIn-auth_container'>
-          <p>OR</p>
-          <h2>Sign in with Google</h2>
-          <h2>Sign in with Facebook</h2>
+      </form>
+      <div class="slrspot__accessPopup-overlay-container">
+        <div class="slrspot__accessPopup-overlay">
         </div>
       </div>
-    </form>
+    </div>
   )
 }
 

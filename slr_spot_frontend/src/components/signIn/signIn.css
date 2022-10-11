@@ -1,26 +1,33 @@
+* {
+    box-sizing: border-box;
+}
+
 .slrspot___signIn-container {
-    top: 60px;
+    left: 0;
     position: absolute;
-    width: 360px;
-    transition: .5s;
-    align-items: center;
-    justify-content: center;
+    display: flex;
+	flex-direction: column;
+	align-items: center;
     text-align: center;
+	justify-content: center;
+    height: 100%;
+    width: 50%;
+	padding: 0 30px;
 }
 
-.slrspot__signIn-inputField {
-    width: 100%;
-    padding: 10px 0;
-    margin: 5px 0;
-    border-left: 0;
-    border-right: 0;
-    border-top: 0;
-    border-bottom: 1px solid #999;
-    outline: none;
-    background: transparent;
+.slrspot___signIn-container p {
+    padding: 0 30px;
 }
 
-.slrspot__signIn-submitBtn {
+.slrspot___signIn-container a{
+    color: rgb(8, 60, 229);
+    font-weight: 500;
+    font-size: 18px;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+/* .slrspot__signIn-submitBtn {
     width: 85%;
     padding: 10px 30px;
     cursor: pointer;
@@ -32,4 +39,4 @@
     border: 0;
     outline: none;
     border-radius: 30px;
-}
+} */
