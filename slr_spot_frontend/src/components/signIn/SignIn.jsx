@@ -41,6 +41,11 @@ const SignIn = (props) => {
     props.signUpTrigger(true);
   };
 
+  const handleForgotPasswordClick = (props) => {
+    props.signInTrigger(false);
+    props.forgotPasswordTrigger(true);
+  };
+
   // if (isLoggedIn) {
   //   return <Navigate to="/profile" />;
   // }
@@ -68,7 +73,7 @@ const SignIn = (props) => {
             onChange={onChangePassword}
           />
 
-          <a href="#">Forgot your password?</a>
+          <a onClick={() => handleForgotPasswordClick(props) }>Forgot your password?</a>
           <button type="submit" className='slrspot__signIn-submitBtn' disabled={loading}>
             Sign In
             {/* {loading && (

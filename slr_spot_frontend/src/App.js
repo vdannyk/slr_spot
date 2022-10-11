@@ -1,18 +1,16 @@
-import { Header, Features, Footer, WhatSLRSpot } from './containers';
 import { Navbar } from './components';
 import './App.css';
+import AppRoutes from './AppRoutes';
+import { BrowserRouter as Router } from "react-router-dom";
 
 
 function App() {
   return (
     <div className="App">
-      <div className='gradient__bg'>
+      <Router>
         <Navbar />
-        <Header />
-        <WhatSLRSpot />
-        {/* <Features /> */}
-      </div>
-      <Footer />
+        <AppRoutes />
+      </Router>
     </div>
   );
 }

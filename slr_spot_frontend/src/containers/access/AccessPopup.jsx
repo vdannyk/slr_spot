@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SignIn, SignUp } from '../../components';
+import ForgotPassword from '../../components/forgotPassword/ForgotPassword';
 import './accessPopup.css';
 
 const AccessPopup = (props) => {
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   const handleCloseClick = (props) => {
     props.setTrigger(false);
@@ -22,12 +24,19 @@ const AccessPopup = (props) => {
               <SignIn 
                 signInTrigger={props.setIsSignIn}
                 signUpTrigger={props.setIsSignUp}
+                forgotPasswordTrigger={setIsForgotPassword}
               />
             )}
             { props.isSignUp && (
               <SignUp 
                 signInTrigger={props.setIsSignIn}
                 signUpTrigger={props.setIsSignUp}
+              />
+            )}
+            { isForgotPassword && (
+              <ForgotPassword 
+                forgotPasswordTrigger={setIsForgotPassword}
+                signInTrigger={props.setIsSignIn}
               />
             )}
         </div>
