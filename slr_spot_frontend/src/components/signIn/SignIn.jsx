@@ -1,22 +1,19 @@
 import React, { useState, useRef } from "react";
-import axios from 'axios';
 import './signIn.css';
+import { Navigate, useNavigate  } from 'react-router-dom';
+import { login } from "../../actions/auth";
+import { useDispatch } from "react-redux";
 
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
 
 const SignIn = () => {
+  let navigate = useNavigate();
   const form = useRef();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const onChangeUsername = (e) => {
     const username = e.target.value;
@@ -30,24 +27,15 @@ const SignIn = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    var bodyFormData = new FormData();
-    bodyFormData.append("username", username);
-    bodyFormData.append("password", password);
-    
-    return axios({
-      method: "post",
-      url: "http://localhost:8080/api/auth/signin",
-      data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-    .then(function (response) {
-      // handle success
-      console.log(response);
-    })
-    .catch(function (response) {
-      // handle error
-      console.log(response);
-    })
+    setLoading(true);
+
+    dispatch(login(username, password))
+      .then(() => {
+        window.location.reload();
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   };
 
   // if (isLoggedIn) {
@@ -85,7 +73,12 @@ const SignIn = () => {
         </div>
 
         <p>Forgot password</p>
-        <button type="submit" className='slrspot__signIn-submitBtn'>Login</button>
+        <button type="submit" className='slrspot__signIn-submitBtn' disabled={loading}>
+          <span>Login</span>
+          {loading && (
+            <span className="spinner-border spinner-border-sm">LOADING</span>
+          )}
+        </button>
 
         <div className='slrspot___signIn-auth_container'>
           <p>OR</p>

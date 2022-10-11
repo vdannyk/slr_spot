@@ -1,25 +1,11 @@
-import axios from "axios";
-import authHeader from "./auth_header";
-
-const getPublicContent = () => {
-    return axios.get(API_URL + "all");
-};
-
-const getUserBoard = () => {
-    return axios.get(API_URL + "user", { headers: authHeader() });
-};
-
-const getModeratorBoard = () => {
-    return axios.get(API_URL + "mod", { headers: authHeader() });
-};
+import axiosInstance from "./api";
 
 const getAdminBoard = () => {
-    return axios.get(API_URL + "admin", { headers: authHeader() });
+    return axiosInstance.get("/users");
 };
 
-export default {
-    getPublicContent,
-    getUserBoard,
-    getModeratorBoard,
+const UserService = {
     getAdminBoard,
 };
+
+export default UserService;
