@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react'
+import axiosInstance from "../../services/api";
+import './forgotPassword.css';
 
 const ForgotPassword = (props) => {
   const form = useRef();
@@ -9,8 +11,18 @@ const ForgotPassword = (props) => {
     setEmail(email);
   };
 
-  const handleForgotPassword = (e) => {
-    window.location.reload();
+  const handleForgotPassword = () => {
+    return axiosInstance.post(`/user/resetpassword`, null, { params: {
+      email
+    }})
+    .then(function (response) {
+      // handle success
+      console.log(response);
+    })
+    .catch(function (response) {
+      // handle error
+      console.log(response);
+    });
   };
 
   const handleBackToLoginClick = (props) => {
@@ -42,10 +54,6 @@ const ForgotPassword = (props) => {
           </div>
         </div>
       </form>
-      <div class="slrspot__accessPopup-overlay-container">
-        <div class="slrspot__accessPopup-overlay">
-        </div>
-      </div>
     </div>
   )
 }

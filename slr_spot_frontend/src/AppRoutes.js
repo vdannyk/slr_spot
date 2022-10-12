@@ -8,6 +8,6 @@ export default () => (
   <Routes>
     <Route path="/" element={<HomePage />} />
     <Route path="users" element={<UsersPage />} />
-    <Route path="password-recovery" element={<PasswordRecovery />} />
+    <Route path="password-recovery/:resetToken" element={<PasswordRecovery />} />
   </Routes>
 );
