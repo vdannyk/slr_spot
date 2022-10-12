@@ -4,43 +4,11 @@
     justify-content: center;
     align-items: center;
 
+    padding: 2rem 6rem;
     background: var(--color-footer);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
-.slrspot__footer-heading {
-    width: 100%;
-    text-align: center;
-
-    margin-bottom: 3rem;
-}
-
-.slrspot__footer-heading h1 {
-    font-family: var(--font-family);
-    font-weight: 800;
-    font-size: 64px;
-    line-height: 70px;
-}
-
-.slrspot__footer-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 1rem;
-    border: 1px solid #fff;
-    text-align: center;
-
-    margin-bottom: 10rem;
-    cursor: pointer;
-}
-
-.slrspot__footer-btn p {
-    font-size: 18px;
-    font-family: var(--font-family);
-    line-height: 21px;
-    color: #fff;
-    word-spacing: 2px;
-}
 
 .slrspot__footer-links {
     display: flex;
@@ -60,21 +28,13 @@
 
 .slrspot__footer-links_logo {
     display: flex;
+    align-items: center;
     flex-direction: column;
 }
 
 .slrspot__footer-links_logo img {
-    width: 118px;
-    height: 30px;
-
-    margin-bottom: 1rem;
-}
-
-.slrspot__footer-links_logo p {
-    font-family: var(--font-family);
-    font-size: 12px;
-    line-height: 15px;
-    color: #fff;
+    width: 180px;
+    height: 100px;
 }
 
 .slrspot__footer-links_div {

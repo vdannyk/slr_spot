@@ -1,12 +1,13 @@
 .slrspot__header {
     display: flex;
+    padding: 20rem 6rem;
 }
 
 .slrspot__header-content {
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
 
     margin-right: 5rem;
@@ -15,20 +16,31 @@
 .slrspot__header-content h1 {
     font-family: var(--font-family);
     font-weight: 800;
-    font-size: 62px;
-    line-height: 75px;
-    letter-spacing: -0.04em;
+    font-size: 80px;
+    line-height: 100px;
 }
 
 .slrspot__header-content p {
     font-family: var(--font-family);
     font-style: normal;
     font-weight: normal;
-    font-size: 20px;
+    font-size: 24px;
     line-height: 27px;
     color: var(--color-text);
 
-    margin-top: 1.5rem;
+    margin: 20px 0px;
+}
+
+.slrspot__header-content button {
+    border-radius: 20px;
+	border: 0;
+	background: linear-gradient(89.97deg, #AE67FA 1.84%, #F49867 102.67%);
+	color: #FFFFFF;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 20px 40px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
 }
 
 @media screen and (max-width: 1050px) {

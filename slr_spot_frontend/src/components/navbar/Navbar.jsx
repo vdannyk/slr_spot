@@ -3,7 +3,6 @@ import { RiCloseLine, RiMenu3Line } from 'react-icons/ri';
 import './navbar.css'
 import slrspot_logo from '../../assets/slrspot_logo.png';
 import { AccessPopup } from '../../containers'
-import { SignIn, SignUp } from '../../components'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../../actions/auth";
@@ -11,13 +10,9 @@ import { logout } from "../../actions/auth";
 
 const Menu = () => (
   <>
-    <p><a href='#home'>Home</a></p>
-    <p><a href='#whspot'>What</a></p>
-    <p>
-      <Link to={'/users'}>
-        Users
-      </Link>
-    </p>
+    <p><a><Link to={'/users'}>about</Link></a></p>
+    <p><a><Link to={'/users'}>users</Link></a></p>
+    <p><a><Link to={'/users'}>contact</Link></a></p>
   </>
 )
 
@@ -38,12 +33,11 @@ const useScrollLock = () => {
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [isAccessPopup, setIsAccessPopup] = useState(false);
-  const { lockScroll, unlockScroll } = useScrollLock();
-  const signIn = <SignIn />
-  const signUp = <SignUp />
-  const dispatch = useDispatch();
   const [isSignInPopup, setIsSignInPopup] = useState(false);
   const [isSignUpPopup, setIsSignUpPopup] = useState(false);
+  const { lockScroll, unlockScroll } = useScrollLock();
+  const dispatch = useDispatch();
+
 
   const { isLoggedIn } = useSelector(state => state.auth);
 

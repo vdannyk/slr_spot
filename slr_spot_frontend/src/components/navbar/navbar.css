@@ -4,7 +4,7 @@
     align-items: center;
     background-color: white;
 
-    padding: 0.1rem 6rem;
+    padding: 0.08rem 6rem;
     border-bottom: thin dotted #000000;
 }
 
@@ -20,8 +20,8 @@
 }
 
 .slrspot__navbar-links_logo img {
-    width: 200px;
-    height: 128px;
+    width: 180px;
+    height: 100px;
 }
 
 .slrspot__navbar-links-container {
@@ -40,10 +40,10 @@
 .slrspot__navbar-menu_container p{
     color: black;
     font-family: var(--font-family);
-    font-weight: 500;
-    font-size: 18px;
+    font-weight: normal;
+    font-size: 25px;
     line-height: 25px;
-    text-transform: capitalize;
+    text-transform: uppercase;
 
     margin: 0 1rem;
     cursor: pointer;
@@ -52,15 +52,14 @@
 .slrspot__navbar-sign button,
 .slrspot__navbar-menu_container button {
     padding: 0.5rem 2rem;
-    color: black;
-    background: #FF4820;
+    color: white;
+    background: #00a6ff;
     font-family: var(--font-family);
-    font-weight: 500;
-    font-size: 18px;
+    font-weight: bold;
+    font-size: 25px;
     line-height: 25px;
     border-radius: 5px;
     border: 0;
-    outline: none;
     cursor: pointer;
 }
 

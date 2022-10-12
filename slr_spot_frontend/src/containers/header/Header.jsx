@@ -3,10 +3,11 @@ import './header.css';
 
 const Header = () => {
   return (
-    <div className='slrspot__header section__padding' id='home'>
+    <div className='slrspot__header'>
       <div className='slrspot__header-content'>
-        <h1 className='gradient__text'>Dzien dobry panstwu</h1>
-        <p>Witaj w swiecie systematycznego przegladu literatury, cos nieprawdopodobnego</p>
+        <h1 className='gradient__text'>Move work forward</h1>
+        <p>SLR Spot is the easiest way for teams to manage their work through systematic literature review</p>
+        <button>get started</button>
       </div>
     </div>
   )
