@@ -29,8 +29,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -106,5 +108,33 @@ public class UserController {
         } else {
             throw new RuntimeException("Refreshing token error");
         }
+    }
+
+    @PostMapping("/user/resetpassword")
+    public ResponseEntity<String> resetPassword(@RequestParam String email) throws Exception {
+        User user = userService.getUser(email);
+        if (isNull(user)) {
+            throw new Exception("User not found exception");
+        }
+
+        String token = UUID.randomUUID().toString();
+        userService.createPasswordResetToken(user, token);
+        userService.constructResetTokenEmail(token, user);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/user/changepassword")
+    public ResponseEntity<String> changePassword(@RequestParam String resetToken) throws Exception {
+        userService.validateResetPasswordToken(resetToken);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/user/savePassword")
+    public ResponseEntity<String> resetPassword(@RequestBody PasswordDto passwordDto) throws Exception {
+        User user = userService.getUserByPasswordResetToken(passwordDto.getToken());
+        userService.changePassword(user, passwordDto.getNewPassword());
+        return ResponseEntity.ok().build();
     }
 }
