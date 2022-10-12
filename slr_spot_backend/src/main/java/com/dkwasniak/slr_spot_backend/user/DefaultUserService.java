@@ -8,6 +8,7 @@ import com.dkwasniak.slr_spot_backend.role.RoleRepository;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,6 +40,7 @@ public class DefaultUserService implements UserService, UserDetailsService {
     // need to be refactored (facade)
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -128,6 +131,46 @@ public class DefaultUserService implements UserService, UserDetailsService {
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void createPasswordResetToken(User user, String token) {
+        PasswordResetToken resetToken = new PasswordResetToken(token, user);
+        passwordResetTokenRepository.save(resetToken);
+    }
+
+    @Override
+    public void constructResetTokenEmail(String token, User user) {
+        String url =  "http://localhost:3000/password-recovery/" + token;
+        emailSender.send(user.getEmail(), String.format("RESET PASSWORD HERE: <a href=%s>RESET/a>", url));
+    }
+
+    @Override
+    public void validateResetPasswordToken(String token) throws Exception {
+        Optional<PasswordResetToken> passwordResetToken = passwordResetTokenRepository.findByToken(token);
+
+        if (passwordResetToken.isEmpty())
+            throw new Exception("Reset token not found");
+        if (isResetPasswordTokenExpired(passwordResetToken.get()))
+            throw new Exception("Reset token expired");
+    }
+
+    private boolean isResetPasswordTokenExpired(PasswordResetToken token) {
+        return token.getExpiresAt().isBefore(LocalDateTime.now());
+    }
+
+    @Override
+    public User getUserByPasswordResetToken(String token) {
+        Optional<PasswordResetToken> resetToken = passwordResetTokenRepository.findByToken(token);
+        if (resetToken.isEmpty())
+            return null;
+        return resetToken.get().getUser();
+    }
+
+    @Override
+    public void changePassword(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 
 }
