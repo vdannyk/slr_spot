@@ -8,7 +8,7 @@ const homePage = () => {
     <div className="Home">
       <div className='gradient__bg'>
         <Header />
-        <WhatSLRSpot />
+        {/* <WhatSLRSpot /> */}
       </div>
       <Footer />
     </div>
