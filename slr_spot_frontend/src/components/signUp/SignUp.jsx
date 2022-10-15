@@ -101,12 +101,7 @@ const SignUp = (props) => {
           />
 
           <button type='submit' className='slrspot__signUp-submitBtn'>Register</button>
-          {/* <span>-- Or Sign in with --</span>
-          <div className='slrspot___signIn-auth_container'>
-            <h2>GOOGLE</h2>
-            <h2>FACEBOOK</h2>
-          </div> */}
-          <div>
+          <div className="slrspot___signIn-haveAccount">
             <span>Already have an account?</span>
             <a onClick={() => handleSignInClick(props) }>Sign In</a>
           </div>
