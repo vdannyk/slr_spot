@@ -31,9 +31,8 @@ const ForgotPassword = (props) => {
   };
 
   return (
-    <div>
+    <div className="slrspot___forgotPassword-container">
       <form onSubmit={handleForgotPassword} ref={form}>
-        <div className="slrspot___forgotPassword-container">
           <h1>RESET PASSWORD</h1>
           <p>Enter the email address associated with your account and we'll send you a link to reset your password</p>
           <input 
@@ -52,7 +51,6 @@ const ForgotPassword = (props) => {
           <div>
             <a onClick={() => handleBackToLoginClick(props) }>Back to login</a>
           </div>
-        </div>
       </form>
     </div>
   )

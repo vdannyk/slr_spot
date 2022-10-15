@@ -51,7 +51,7 @@ const SignIn = (props) => {
   // }
 
   return (
-    <div>
+    <div className="slrspot___signIn">
       <form onSubmit={handleLogin} ref={form}>
         <div className="slrspot___signIn-container">
           <h1>SIGN IN</h1>

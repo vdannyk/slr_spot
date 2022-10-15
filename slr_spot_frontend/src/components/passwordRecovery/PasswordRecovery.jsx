@@ -62,7 +62,7 @@ const PasswordRecovery = () => {
       <form onSubmit={handleResetPassword} ref={form}>
         {successful && (
         <div className="slrspot___passwordRecovery-box">
-          <h1>Create Account</h1>
+          <h1>Set new password</h1>
           <input 
             type='password' 
             className='slrspot__passwordRecovery-inputField' 
