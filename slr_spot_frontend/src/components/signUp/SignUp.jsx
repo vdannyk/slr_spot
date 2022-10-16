@@ -3,14 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { register as registerAccount } from "../../actions/auth";
 import { useForm } from "react-hook-form";
 import './signUp.css';
+import { BeatLoader } from "react-spinners";
+
 
 const SignUp = (props) => {
   const {register, handleSubmit, watch, formState: { errors }} = useForm();
   const [successful, setSuccessful] = useState(false);
   const { message } = useSelector(state => state.message);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (formData) => {
+    setLoading(true);
     setSuccessful(false);
 
     dispatch(registerAccount(formData.firstName, 
@@ -19,10 +23,12 @@ const SignUp = (props) => {
                               formData.password))
       .then(() => {
         setSuccessful(true);
+        setLoading(true);
         window.location.reload();
       })
       .catch(() => {
         setSuccessful(false);
+        setLoading(false);
       });
   };
 
@@ -38,6 +44,13 @@ const SignUp = (props) => {
         <div className='slrspot___signUp-container'>
           <div className="slrspot___signUp-fields">
             <h1>Create Account</h1>
+            {message && (
+              <div className="form-group">
+                <div className="alert alert-danger" style={{color: 'red'}}>
+                  {message}
+                </div>
+              </div>
+            )}
             <input 
               {...register("firstName", { required: true })}
               type='text' 
@@ -99,6 +112,7 @@ const SignUp = (props) => {
             }
 
             <button type='submit'>Register</button>
+            { loading && (<BeatLoader color="#AE67FA" />)}
             <div className="slrspot___signIn-haveAccount">
               <span>Already have an account?</span>
               <a onClick={() => handleSignInClick(props) }>Sign In</a>

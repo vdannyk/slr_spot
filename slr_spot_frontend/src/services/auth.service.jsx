@@ -7,15 +7,15 @@ const register = (firstName, lastName, username, password) => {
     lastName: lastName,
     email: username,
     password: password,
-  })
-  .then(function (response) {
-    // handle success
-    console.log(response);
-  })
-  .catch(function (response) {
-    // handle error
-    console.log(response);
-  })
+  });
+  // .then(function (response) {
+  //   // handle success
+  //   console.log(response);
+  // })
+  // .catch(function (response) {
+  //   // handle error
+  //   console.log(response);
+  // })
 };
 
 const login = (username, password) => {
