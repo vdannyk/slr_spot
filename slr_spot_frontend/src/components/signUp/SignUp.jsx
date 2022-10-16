@@ -24,7 +24,6 @@ const SignUp = (props) => {
       .then(() => {
         setSuccessful(true);
         setLoading(true);
-        window.location.reload();
       })
       .catch(() => {
         setSuccessful(false);
@@ -118,6 +117,12 @@ const SignUp = (props) => {
               <a onClick={() => handleSignInClick(props) }>Sign In</a>
             </div>
           </div>
+        </div>
+      )}
+      {successful && (
+        <div className='slrspot___signUp-container'>
+          <h1 style={{color: 'green'}}>CONGRATULATIONS</h1>
+          <a onClick={() => handleSignInClick(props) }>Sign In</a>
         </div>
       )}
     </form>
