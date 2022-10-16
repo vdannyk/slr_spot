@@ -121,7 +121,9 @@ const SignUp = (props) => {
       )}
       {successful && (
         <div className='slrspot___signUp-container'>
-          <h1 style={{color: 'green'}}>CONGRATULATIONS</h1>
+          <h1 style={{color: 'green'}}>Success</h1>
+          <p>Your account has been created.</p>
+          <p>To activate your account check your email and confirm your registration.</p>
           <a onClick={() => handleSignInClick(props) }>Sign In</a>
         </div>
       )}
