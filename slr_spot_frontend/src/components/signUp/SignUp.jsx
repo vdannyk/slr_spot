@@ -1,53 +1,33 @@
 import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "../../actions/auth";
+import { register as registerAccount } from "../../actions/auth";
+import { useForm } from "react-hook-form";
 import './signUp.css';
+import { BeatLoader } from "react-spinners";
+
 
 const SignUp = (props) => {
-  const form = useRef();
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const {register, handleSubmit, watch, formState: { errors }} = useForm();
   const [successful, setSuccessful] = useState(false);
-
   const { message } = useSelector(state => state.message);
-
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
-  const onChangeFirstName = (e) => {
-    const firstName = e.target.value;
-    setFirstName(firstName);
-  };
-
-  const onChangeLastName = (e) => {
-    const lastName = e.target.value;
-    setLastName(lastName);
-  };
-
-  const onChangeUsername = (e) => {
-    const username = e.target.value;
-    setUsername(username);
-  };
-
-  const onChangePassword = (e) => {
-    const password = e.target.value;
-    setPassword(password);
-  };
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-
+  const onSubmit = (formData) => {
+    setLoading(true);
     setSuccessful(false);
 
-    dispatch(register(firstName, lastName, username, password))
+    dispatch(registerAccount(formData.firstName, 
+                              formData.lastName, 
+                              formData.email, 
+                              formData.password))
       .then(() => {
         setSuccessful(true);
-        // window.location.reload();
+        setLoading(true);
       })
       .catch(() => {
         setSuccessful(false);
+        setLoading(false);
       });
   };
 
@@ -57,64 +37,101 @@ const SignUp = (props) => {
   };
       
   return (
-    <div>
-      <form onSubmit={handleRegister} ref={form}>
-        {!successful && (
-          <div className="slrspot___signUp-container">
+    <div className='slrspot___signUp'>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {!successful && (
+        <div className='slrspot___signUp-container'>
+          <div className="slrspot___signUp-fields">
             <h1>Create Account</h1>
+            {message && (
+              <div className="form-group">
+                <div className="alert alert-danger" style={{color: 'red'}}>
+                  {message}
+                </div>
+              </div>
+            )}
             <input 
+              {...register("firstName", { required: true })}
               type='text' 
-              className='slrspot__signUp-inputField' 
               placeholder='First Name'
               name='firstName' 
-              required
-              onChange={onChangeFirstName}
             />
-            <input 
+            {errors.firstName && 
+              <p className="slrspot__signIn-error">This field is required</p>
+            }
+            <input
+              {...register("lastName", { required: true })}
               type='text' 
-              className='slrspot__signUp-inputField' 
               placeholder='Last Name'
               name='lastName' 
-              required
-              onChange={onChangeLastName}
             />
-            <input 
-              type='email' 
-              className='slrspot__signUp-inputField' 
+            {errors.lastName && 
+              <p className="slrspot__signIn-error">This field is required</p>
+            }
+            <input
+              {...register("email", { 
+                required: true, 
+                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  
+              })}
               placeholder='Email'
-              name='email' 
-              required
-              onChange={onChangeUsername}
+              name='email'
             />
-            <input 
+            {errors.email && errors.email.type === "pattern" &&  
+              <p className="slrspot__signIn-error">Invalid email</p>
+            }
+            {errors.email && errors.email.type=== "required" && 
+              <p className="slrspot__signIn-error">This field is required</p>
+            }
+            <input
+              {...register("password", { 
+                required: true,
+              })}
               type='password' 
-              className='slrspot__signUp-inputField' 
               placeholder='Password'
-              name='password' 
-              required
-              onChange={onChangePassword}
+              name='password'   
             />
+            {errors.password && 
+              <p className="slrspot__signIn-error">This field is required</p>
+            }
             <input 
+              {...register("confirmPassword", { 
+                required: true, 
+                validate: (value) => {
+                  return watch('password') == value;}
+              })}
               type='password' 
-              className='slrspot__signUp-inputField' 
-              placeholder='Confirm Password' 
+              placeholder='Confirm Password'
+              name='confirmPassword'
             />
+            {errors.confirmPassword && errors.confirmPassword.type === "validate" &&  
+              <p className="slrspot__signIn-error">Passwords do not match</p>
+            }
+            {errors.confirmPassword && errors.confirmPassword.type=== "required" && 
+              <p className="slrspot__signIn-error">This field is required</p>
+            }
 
-            <button type='submit' className='slrspot__signUp-submitBtn'>Register</button>
-            {/* <span>-- Or Sign in with --</span>
-            <div className='slrspot___signIn-auth_container'>
-              <h2>GOOGLE</h2>
-              <h2>FACEBOOK</h2>
-            </div> */}
-            <div>
+            <button type='submit'>Register</button>
+            { loading && (<BeatLoader color="#AE67FA" />)}
+            <div className="slrspot___signIn-haveAccount">
               <span>Already have an account?</span>
               <a onClick={() => handleSignInClick(props) }>Sign In</a>
             </div>
           </div>
-        )}
-      </form>
+        </div>
+      )}
+      {successful && (
+        <div className='slrspot___signUp-container'>
+          <h1 style={{color: 'green'}}>Success</h1>
+          <p>Your account has been created.</p>
+          <p>To activate your account check your email and confirm your registration.</p>
+          <a onClick={() => handleSignInClick(props) }>Sign In</a>
+        </div>
+      )}
+    </form>
       <div class="slrspot__accessPopup-overlay-container">
         <div class="slrspot__accessPopup-overlay">
+          <h2>Welcome</h2>
+          <p>Get started with your free account</p>
         </div>
       </div>
     </div>

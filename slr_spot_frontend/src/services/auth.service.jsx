@@ -7,34 +7,34 @@ const register = (firstName, lastName, username, password) => {
     lastName: lastName,
     email: username,
     password: password,
-  })
-  .then(function (response) {
-    // handle success
-    console.log(response);
-  })
-  .catch(function (response) {
-    // handle error
-    console.log(response);
-  })
+  });
+  // .then(function (response) {
+  //   // handle success
+  //   console.log(response);
+  // })
+  // .catch(function (response) {
+  //   // handle error
+  //   console.log(response);
+  // })
 };
 
 const login = (username, password) => {
-    return axiosInstance.post("/auth/signin", {
-      username,
-      password,
-    })
-    .then(function (response) {
-      // handle success
-      if (response.data.accessToken) {
-        TokenService.setUser(response.data);
-      }
-      console.log(response);
-      return response.data;
-    })
-    .catch(function (response) {
-      // handle error
-      console.log(response);
-    });
+  return axiosInstance.post("/auth/signin", {
+    username,
+    password,
+  })
+  .then(function (response) {
+    // handle success
+    if (response.data.accessToken) {
+      TokenService.setUser(response.data);
+    }
+    console.log(response);
+    return response.data;
+  });
+  // .catch(function (response) {
+  //   // handle error
+  //   console.log(response);
+  // });
 };
 
 const logout = () => {

@@ -50,6 +50,10 @@ public class DefaultUserService implements UserService, UserDetailsService {
             log.error("User not found in the database");
             throw new UsernameNotFoundException("User " + username + " not found");
         }
+        if (!optUser.get().getConfirmed()) {
+            log.error("User account is not activated");
+            throw new IllegalStateException("User " + username + " not activated");
+        }
         User user = optUser.get();
         Collection<GrantedAuthority> authorities = new HashSet<>();
         user.getRoles().forEach(role -> {
@@ -81,9 +85,9 @@ public class DefaultUserService implements UserService, UserDetailsService {
         );
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String link = String.format("http://localhost:8080/api/user/confirm?confirmationToken=%s", token);
+        String activationLink =  String.format("http://localhost:3000/activate/%s", token);
         emailSender.send(user.getEmail(), String.format(
-                "Click to activate: <a href=%s>Activate Now</a>", link));
+                "Click to activate: <a href=%s>Activate Now</a>", activationLink));
         return token;
     }
 
@@ -141,8 +145,8 @@ public class DefaultUserService implements UserService, UserDetailsService {
 
     @Override
     public void constructResetTokenEmail(String token, User user) {
-        String url =  "http://localhost:3000/password-recovery/" + token;
-        emailSender.send(user.getEmail(), String.format("RESET PASSWORD HERE: <a href=%s>RESET/a>", url));
+        String resetPasswordLink =  String.format("http://localhost:3000/password-recovery/%s", token);
+        emailSender.send(user.getEmail(), String.format("RESET PASSWORD HERE: <a href=%s>RESET/a>", resetPasswordLink));
     }
 
     @Override
