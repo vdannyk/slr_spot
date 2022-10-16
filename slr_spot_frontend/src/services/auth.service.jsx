@@ -19,22 +19,22 @@ const register = (firstName, lastName, username, password) => {
 };
 
 const login = (username, password) => {
-    return axiosInstance.post("/auth/signin", {
-      username,
-      password,
-    })
-    .then(function (response) {
-      // handle success
-      if (response.data.accessToken) {
-        TokenService.setUser(response.data);
-      }
-      console.log(response);
-      return response.data;
-    })
-    .catch(function (response) {
-      // handle error
-      console.log(response);
-    });
+  return axiosInstance.post("/auth/signin", {
+    username,
+    password,
+  })
+  .then(function (response) {
+    // handle success
+    if (response.data.accessToken) {
+      TokenService.setUser(response.data);
+    }
+    console.log(response);
+    return response.data;
+  });
+  // .catch(function (response) {
+  //   // handle error
+  //   console.log(response);
+  // });
 };
 
 const logout = () => {

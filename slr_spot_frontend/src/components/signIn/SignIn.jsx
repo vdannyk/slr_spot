@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import './signIn.css';
 import { login } from "../../actions/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { BeatLoader } from "react-spinners";
 
@@ -9,6 +9,7 @@ import { BeatLoader } from "react-spinners";
 const SignIn = (props) => {
   const [loading, setLoading] = useState(false);
   const {register, handleSubmit, formState: { errors }} = useForm();
+  const { message } = useSelector(state => state.message);
 
   const dispatch = useDispatch();
 
@@ -41,6 +42,13 @@ const SignIn = (props) => {
           <div className="slrspot___signIn-fields">
             <h1>SIGN IN</h1>
             <p>Enter your details to get sign in to your account</p>
+            {message && (
+              <div className="form-group">
+                <div className="alert alert-danger" style={{color: 'red'}}>
+                  {message}
+                </div>
+              </div>
+            )}
             <input  
               {...register("email", { 
                 required: true, 
