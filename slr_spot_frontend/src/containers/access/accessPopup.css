@@ -81,6 +81,7 @@
 	width: 50%;
 	height: 100%;
 	overflow: hidden;
+
 }
 
 .slrspot__accessPopup-overlay {
@@ -89,4 +90,9 @@
 	position: relative;
 	height: 100%;
 	width: 100%;
+	padding: 0 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
 }

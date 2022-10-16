@@ -6,7 +6,7 @@ import { AccessPopup } from '../../containers'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../../actions/auth";
-
+import { CgProfile } from "react-icons/cg";
 
 const Menu = () => (
   <>
@@ -64,10 +64,13 @@ const Navbar = () => {
       </div>
       <div className='slrspot__navbar-sign'>
         {isLoggedIn 
-          ? (            
-            <button type='button' onClick={logOut}>
-              Logout
-            </button>
+          ? (
+            <div className="slrspot__navbar-profile">
+              <CgProfile size={45}></CgProfile>     
+              <button type='button' onClick={logOut}>
+                Logout
+              </button>
+            </div>
             )
           : (
             <div className='slrspot__navbar-sign'>

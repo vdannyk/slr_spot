@@ -12,12 +12,6 @@ const SignIn = (props) => {
 
   const dispatch = useDispatch();
 
-  const isValidEmail = email =>
-  // eslint-disable-next-line no-useless-escape
-  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-    email
-  );
-
   const onSubmit = (formData) => {
     setLoading(true);
 
@@ -47,12 +41,15 @@ const SignIn = (props) => {
           <div className="slrspot___signIn-fields">
             <h1>SIGN IN</h1>
             <p>Enter your details to get sign in to your account</p>
-            <input 
-              {...register("email", { required: true, validate: isValidEmail })}
+            <input  
+              {...register("email", { 
+                required: true, 
+                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  
+              })}
               placeholder='Email' 
               name='email' 
             />
-            {errors.email && errors.email.type === "validate" &&  
+            {errors.email && errors.email.type === "pattern" &&  
               <p className="slrspot__signIn-error">Invalid email</p>
             }
             {errors.email && errors.email.type=== "required" && 
@@ -88,6 +85,8 @@ const SignIn = (props) => {
       </form>
       <div class="slrspot__accessPopup-overlay-container">
         <div class="slrspot__accessPopup-overlay">
+          <h2>Welcome Back</h2>
+          <p>Good to see you again. You can sign in to access with your existing account.</p>
         </div>
       </div>
     </div>
