@@ -57,10 +57,19 @@ const PasswordRecovery = () => {
     );
   }
 
+  if (!successful) {
+    return (
+      <div className="slrspot___passwordRecovery">
+        <div className="slrspot___passwordRecovery-box">
+          <h1>Failed</h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="slrspot___passwordRecovery">
       <form onSubmit={handleResetPassword} ref={form}>
-        {successful && (
         <div className="slrspot___passwordRecovery-box">
           <h1>Set new password</h1>
           <input 
@@ -79,12 +88,6 @@ const PasswordRecovery = () => {
 
           <button type='submit' className='slrspot__passwordRecovery-submitBtn'>Reset password</button>
         </div> 
-        )}
-        {!successful && (
-          <div className="slrspot___passwordRecovery-box">
-            <h1>INVALID TOKEN</h1>
-          </div>
-        )}
       </form>
     </div>
   )
