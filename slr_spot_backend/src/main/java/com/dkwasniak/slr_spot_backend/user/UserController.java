@@ -58,8 +58,8 @@ public class UserController {
     }
 
     @GetMapping("/user/confirm")
-    public ResponseEntity<String> confirmToken(@RequestParam String confirmationToken) {
-        userService.confirmToken(confirmationToken);
+    public ResponseEntity<String> confirmToken(@RequestParam String activationToken) {
+        userService.confirmToken(activationToken);
         return ResponseEntity.ok().build();
     }
 
