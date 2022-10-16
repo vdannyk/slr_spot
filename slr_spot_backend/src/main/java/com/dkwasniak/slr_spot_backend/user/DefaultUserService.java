@@ -50,6 +50,10 @@ public class DefaultUserService implements UserService, UserDetailsService {
             log.error("User not found in the database");
             throw new UsernameNotFoundException("User " + username + " not found");
         }
+        if (!optUser.get().getConfirmed()) {
+            log.error("User account is not activated");
+            throw new IllegalStateException("User " + username + " not activated");
+        }
         User user = optUser.get();
         Collection<GrantedAuthority> authorities = new HashSet<>();
         user.getRoles().forEach(role -> {
