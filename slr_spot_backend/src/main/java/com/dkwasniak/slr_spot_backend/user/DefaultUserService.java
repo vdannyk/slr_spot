@@ -8,7 +8,6 @@ import com.dkwasniak.slr_spot_backend.role.RoleRepository;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -86,8 +84,7 @@ public class DefaultUserService implements UserService, UserDetailsService {
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
         String activationLink =  String.format("http://localhost:3000/activate/%s", token);
-        emailSender.send(user.getEmail(), String.format(
-                "Click to activate: <a href=%s>Activate Now</a>", activationLink));
+        emailSender.sendVerificationEmail(user.getEmail(), activationLink);
         return token;
     }
 
@@ -146,7 +143,7 @@ public class DefaultUserService implements UserService, UserDetailsService {
     @Override
     public void constructResetTokenEmail(String token, User user) {
         String resetPasswordLink =  String.format("http://localhost:3000/password-recovery/%s", token);
-        emailSender.send(user.getEmail(), String.format("RESET PASSWORD HERE: <a href=%s>RESET/a>", resetPasswordLink));
+        emailSender.sendResetPasswordEmail(user.getEmail(), resetPasswordLink);
     }
 
     @Override
