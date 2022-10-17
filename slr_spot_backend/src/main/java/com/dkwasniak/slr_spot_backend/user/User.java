@@ -32,7 +32,7 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    private Boolean confirmed = false;
+    private Boolean isActivated = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles;

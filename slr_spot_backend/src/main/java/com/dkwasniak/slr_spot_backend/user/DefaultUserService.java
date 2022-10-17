@@ -48,7 +48,7 @@ public class DefaultUserService implements UserService, UserDetailsService {
             log.error("User not found in the database");
             throw new UsernameNotFoundException("User " + username + " not found");
         }
-        if (!optUser.get().getConfirmed()) {
+        if (!optUser.get().getIsActivated()) {
             log.error("User account is not activated");
             throw new IllegalStateException("User " + username + " not activated");
         }
@@ -83,7 +83,7 @@ public class DefaultUserService implements UserService, UserDetailsService {
         );
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String activationLink =  String.format("http://localhost:3000/activate/%s", token);
+        String activationLink = String.format("http://localhost:3000/activate/%s", token);
         emailSender.sendVerificationEmail(user.getEmail(), activationLink);
         return token;
     }
@@ -120,8 +120,8 @@ public class DefaultUserService implements UserService, UserDetailsService {
         user.getRoles().add(role);
     }
 
-    public int enableUser(String email) {
-        return userRepository.enableUser(email);
+    public void enableUser(String email) {
+        userRepository.enableUser(email);
     }
 
     @Override

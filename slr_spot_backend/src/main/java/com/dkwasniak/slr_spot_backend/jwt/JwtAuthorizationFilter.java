@@ -23,7 +23,6 @@ import java.util.Map;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getAuthorities;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getUsername;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateJwt;
-import static java.time.Instant.now;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -61,7 +60,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     Map<String, Object> error = new HashMap<>();
                     error.put("status", UNAUTHORIZED.value());
                     error.put("message", exception.getMessage());
-                    error.put("timestamp", LocalDateTime.ofInstant(now(), ZoneId.systemDefault()));
+//                    error.put("timestamp", LocalDateTime.ofInstant(now(), ZoneId.systemDefault()));
                     error.put("path", request.getServletPath());
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }

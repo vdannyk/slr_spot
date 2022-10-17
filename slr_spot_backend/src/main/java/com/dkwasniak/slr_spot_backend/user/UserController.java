@@ -92,7 +92,7 @@ public class UserController {
                 Map<String, Object> error = new HashMap<>();
                 error.put("status", FORBIDDEN.value());
                 error.put("message", exception.getMessage());
-                error.put("timestamp", LocalDateTime.ofInstant(now(), ZoneId.systemDefault()));
+//                error.put("timestamp", LocalDateTime.ofInstant(now(), ZoneId.systemDefault()));
                 error.put("path", request.getServletPath());
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
