@@ -19,7 +19,7 @@ public class DefaultEmailService implements EmailService {
     private static final String RESET_PASSWORD__EMAIL_TEMPLATE = "reset-password-email";
     private static final String VERIFICATION_EMAIL_TITLE = "Confirm your account";
     private static final String RESET_PASSWORD_EMAIL_TITLE = "Reset your password";
-    private static final String EMAIL_FROM = "slrspot-support@gmail.com";
+    private static final String EMAIL_FROM = "slrspot.welcome@gmail.com";
 
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
