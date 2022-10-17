@@ -19,6 +19,7 @@ public class EmailService implements EmailSender {
     private static final String RESET_PASSWORD__EMAIL_TEMPLATE = "reset-password-email";
     private static final String VERIFICATION_EMAIL_TITLE = "Confirm your account";
     private static final String RESET_PASSWORD_EMAIL_TITLE = "Reset your password";
+    private static final String EMAIL_FROM = "slrspot-support@gmail.com";
 
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
@@ -33,7 +34,7 @@ public class EmailService implements EmailSender {
             helper.setText(content, true);
             helper.setTo(to);
             helper.setSubject(title);
-            helper.setFrom("slrspot-support@gmail.com");
+            helper.setFrom(EMAIL_FROM);
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             log.error("Failed to send email", e);
@@ -52,7 +53,7 @@ public class EmailService implements EmailSender {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setTo(to);
             helper.setSubject(VERIFICATION_EMAIL_TITLE);
-            helper.setFrom("slrspot-support@gmail.com");
+            helper.setFrom(EMAIL_FROM);
             helper.setText(content, true);
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
@@ -72,7 +73,7 @@ public class EmailService implements EmailSender {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setTo(to);
             helper.setSubject(RESET_PASSWORD_EMAIL_TITLE);
-            helper.setFrom("slrspot-support@gmail.com");
+            helper.setFrom(EMAIL_FROM);
             helper.setText(content, true);
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
