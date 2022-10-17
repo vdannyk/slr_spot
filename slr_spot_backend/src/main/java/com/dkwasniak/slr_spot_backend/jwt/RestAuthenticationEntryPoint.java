@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import static java.time.Instant.now;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -27,7 +28,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException {
-        response.setContentType("application/json");
+        response.setContentType(APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         String msg = "Authentication failed";
         String errorBody = String.format("{\n" +

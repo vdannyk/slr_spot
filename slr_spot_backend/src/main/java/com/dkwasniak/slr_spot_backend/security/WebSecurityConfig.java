@@ -1,16 +1,11 @@
 package com.dkwasniak.slr_spot_backend.security;
 
 import com.dkwasniak.slr_spot_backend.jwt.JwtAuthenticationFilter;
-import com.dkwasniak.slr_spot_backend.filter.CustomAuthorizationFilter;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.dkwasniak.slr_spot_backend.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -26,12 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -92,7 +82,7 @@ public class WebSecurityConfig {
                 authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)));
         customAuthFilter.setFilterProcessesUrl("/api/auth/signin");
         http.addFilter(customAuthFilter);
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
