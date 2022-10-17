@@ -1,5 +1,6 @@
-package com.dkwasniak.slr_spot_backend.user;
+package com.dkwasniak.slr_spot_backend.passwordResetToken;
 
+import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
