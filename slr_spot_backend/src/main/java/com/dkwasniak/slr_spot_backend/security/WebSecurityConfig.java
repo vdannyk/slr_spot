@@ -46,21 +46,6 @@ public class WebSecurityConfig {
         // Set STATELESS session management
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
 
-        // Handle unathorized requests exceptions
-//        http.exceptionHandling().authenticationEntryPoint(
-//                ((request, response, authException) -> {
-//                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                    Map<String, Object> error = new HashMap<>();
-//                    error.put("status", HttpServletResponse.SC_UNAUTHORIZED);
-//                    error.put("error", "Unauthorized");
-//                    error.put("message", "Authentication failed");
-//                    error.put("path", request.getServletPath());
-//
-//                    response.getOutputStream()
-//                            .println(new ObjectMapper().writeValueAsString(error));
-//                })
-//        );
         http.exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
         // Set endpoints to authorize

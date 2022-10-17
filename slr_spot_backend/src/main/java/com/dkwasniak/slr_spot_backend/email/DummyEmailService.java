@@ -1,6 +1,6 @@
 package com.dkwasniak.slr_spot_backend.email;
 
-public class DummyEmailService implements EmailSender {
+public class DummyEmailService implements EmailService {
 
     public DummyEmailService() {
     }

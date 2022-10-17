@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.generateJwt;
-import static java.time.Instant.now;
 import static java.util.Objects.isNull;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -42,6 +41,7 @@ import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateJwt;
 public class UserController {
 
     private final UserService userService;
+    private final UserFacade userFacade;
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {
@@ -52,18 +52,18 @@ public class UserController {
     public ResponseEntity<String> saveUser(@RequestBody User user) {
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/api/user/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+        return ResponseEntity.created(uri).body(userFacade.saveUser(user));
     }
 
     @GetMapping("/user/confirm")
     public ResponseEntity<String> confirmToken(@RequestParam String activationToken) {
-        userService.confirmToken(activationToken);
+        userFacade.confirmToken(activationToken);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/role/addtouser")
     public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserRequest roleToUserRq) {
-        userService.addRoleToUser(roleToUserRq.getUsername(), roleToUserRq.getRoleName());
+        userFacade.addRoleToUser(roleToUserRq.getUsername(), roleToUserRq.getRoleName());
         return ResponseEntity.ok().build();
     }
 
@@ -109,22 +109,22 @@ public class UserController {
         }
 
         String token = UUID.randomUUID().toString();
-        userService.createPasswordResetToken(user, token);
-        userService.constructResetTokenEmail(token, user);
+        userFacade.createPasswordResetToken(user, token);
+        userFacade.constructResetTokenEmail(token, user);
 
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/user/changepassword")
     public ResponseEntity<String> changePassword(@RequestParam String resetToken) throws Exception {
-        userService.validateResetPasswordToken(resetToken);
+        userFacade.validateResetPasswordToken(resetToken);
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/user/savePassword")
     public ResponseEntity<String> resetPassword(@RequestBody PasswordDto passwordDto) throws Exception {
-        User user = userService.getUserByPasswordResetToken(passwordDto.getToken());
+        User user = userFacade.getUserByPasswordResetToken(passwordDto.getToken());
         userService.changePassword(user, passwordDto.getNewPassword());
         return ResponseEntity.ok().build();
     }

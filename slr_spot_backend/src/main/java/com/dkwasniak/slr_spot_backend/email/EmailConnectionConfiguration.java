@@ -16,13 +16,13 @@ public class EmailConnectionConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "mail.enabled", matchIfMissing = true)
-    EmailSender emailService() {
-        return new EmailService(javaMailSender, templateEngine);
+    EmailService emailService() {
+        return new DefaultEmailService(javaMailSender, templateEngine);
     }
 
     @Bean
     @ConditionalOnProperty(name = "mail.enabled", havingValue = "false")
-    EmailSender dummyEmailService() {
+    EmailService dummyEmailService() {
         return new DummyEmailService();
     }
 }
