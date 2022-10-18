@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../services/api";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { RiErrorWarningLine } from "react-icons/ri";
+import { BeatLoader } from "react-spinners";
 import './accountActivation.css';
 
 
@@ -10,6 +12,11 @@ const AccountActivation = () => {
   const { activationToken } = useParams();
   const [isLoading, setLoading] = useState(true);
   const [successful, setSuccessful] = useState(false);
+  const navigate = useNavigate();
+
+  const onHomeClick = () => {
+    navigate('/');
+  };
 
   useEffect(() => {
     axiosInstance.get("/user/confirm", { params: {
@@ -26,9 +33,9 @@ const AccountActivation = () => {
 
   if (isLoading) {
     return (
-      <div className="slrspot___passwordRecovery">
-        <div className="slrspot___passwordRecovery-box">
-          <h1>Loading...</h1>
+      <div className="slrspot___accountActivation">
+        <div className="slrspot___accountActivation-loading">
+          <BeatLoader size={100} color="#AE67FA" />
         </div>
       </div>
     );
@@ -36,9 +43,12 @@ const AccountActivation = () => {
 
   if (!successful) {
     return (
-      <div className="slrspot___passwordRecovery">
-        <div className="slrspot___passwordRecovery-box">
-          <h1>Failed</h1>
+      <div className="slrspot___accountActivation">
+        <div className="slrspot___accountActivation-box">
+          <RiErrorWarningLine size={150} color='red' style={{ "margin-top": '50px'}}></RiErrorWarningLine>
+          <h1>Account confirmation failed!</h1>
+          <p>We were unable to activate the account using this link.</p>
+          <button style={{ background:'red'}} onClick={onHomeClick}>Home</button>
         </div>
       </div>
     );

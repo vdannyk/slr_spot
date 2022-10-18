@@ -8,6 +8,25 @@
   align-items: center;
 }
 
+.slrspot___accountActivation-loading {
+  background: white;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  width: 768px;
+  max-width: 100%;
+  min-height: 480px;
+  position: relative;
+  margin: auto;
+
+  border-radius: 3px; 
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
 .slrspot___accountActivation-box {
   background: white;
   font-family: 'Montserrat', sans-serif;
@@ -29,6 +48,7 @@
 
 .slrspot___accountActivation-box h1 {
   font-size: 40px;
+  text-transform: capitalize;
 }
 
 .slrspot___accountActivation-box p {
@@ -46,4 +66,5 @@
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	margin-top: 20px;
+	cursor: pointer;
 }
