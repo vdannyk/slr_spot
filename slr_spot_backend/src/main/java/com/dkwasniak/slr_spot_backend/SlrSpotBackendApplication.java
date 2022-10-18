@@ -25,15 +25,15 @@ public class SlrSpotBackendApplication {
 	@Bean
 	CommandLineRunner run(UserService userService, UserFacade userFacade) {
 		return args -> {
-//			userService.saveRole(new Role("ROLE_USER"));
-//			userService.saveRole(new Role("ROLE_ADMIN"));
-//
-//			userFacade.saveUser(new User("Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>()));
-//			userService.activateUser("danny@gmail.com");
-//			userFacade.saveUser(new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>()));
-//
-//			userFacade.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
-//			userFacade.addRoleToUser("tobi@gmail.com", "ROLE_USER");
+			userService.saveRole(new Role("ROLE_USER"));
+			userService.saveRole(new Role("ROLE_ADMIN"));
+
+			userFacade.saveUser(new User("Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>()));
+			userService.activateUser("danny@gmail.com");
+			userFacade.saveUser(new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>()));
+
+			userFacade.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
+			userFacade.addRoleToUser("tobi@gmail.com", "ROLE_USER");
 		};
 	}
 
