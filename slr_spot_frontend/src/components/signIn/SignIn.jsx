@@ -39,43 +39,47 @@ const SignIn = (props) => {
     <div className="slrspot___signIn">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="slrspot___signIn-container">
-          <div className="slrspot___signIn-fields">
+          <div className="slrspot__signIn-header">
             <h1>SIGN IN</h1>
             <p>Enter your details to get sign in to your account</p>
             {message && (
-              <div className="form-group">
-                <div className="alert alert-danger" style={{color: 'red'}}>
-                  {message}
-                </div>
+              <div style={{color: 'red'}}>
+                <p>{message}</p>
               </div>
             )}
-            <input  
-              {...register("email", { 
-                required: true, 
-                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  
-              })}
-              placeholder='Email' 
-              name='email' 
-            />
-            {errors.email && errors.email.type === "pattern" &&  
-              <p className="slrspot__signIn-error">Invalid email</p>
-            }
-            {errors.email && errors.email.type=== "required" && 
-              <p className="slrspot__signIn-error">This field is required</p>
-            }
-            <input 
-              {...register("password", { required: true })}
-              type='password'
-              placeholder='Password' 
-              name='password'
-            />
-            {errors.password && 
-              <p className="slrspot__signIn-error">This field is required</p>
-            }
           </div>
-
-          <div className="slrspot___signIn-forgotPassword">
-            <a onClick={() => handleForgotPasswordClick(props) }>Forgot your password?</a>
+          <div className="slrspot___signIn-fields">
+            <div className="slrspot__signIn-field">
+              <input  
+                {...register("email", { 
+                  required: true, 
+                  pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  
+                })}
+                placeholder='Email' 
+                name='email' 
+              />
+              {errors.email && errors.email.type === "pattern" &&  
+                <p className="slrspot__signIn-error">Invalid email</p>
+              }
+              {errors.email && errors.email.type=== "required" && 
+                <p className="slrspot__signIn-error">This field is required</p>
+              }
+            </div>
+            
+            <div className="slrspot__signIn-field">
+              <input 
+                {...register("password", { required: true })}
+                type='password'
+                placeholder='Password' 
+                name='password'
+              />
+              {errors.password && 
+                <p className="slrspot__signIn-error">This field is required</p>
+              }
+              <div className="slrspot___signIn-forgotPassword">
+              <a onClick={() => handleForgotPasswordClick(props) }>Forgot your password?</a>
+              </div>
+            </div>
           </div>
 
           <div className="slrspot___signIn-submit">
