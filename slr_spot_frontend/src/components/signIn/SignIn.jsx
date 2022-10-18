@@ -95,8 +95,8 @@ const SignIn = (props) => {
           </div>
         </div>
       </form>
-      <div class="slrspot__accessPopup-overlay-container">
-        <div class="slrspot__accessPopup-overlay">
+      <div className="slrspot__accessPopup-overlay-container">
+        <div className="slrspot__accessPopup-overlay">
           <h2>Welcome Back</h2>
           <p>Good to see you again. You can sign in to access with your existing account.</p>
         </div>

@@ -55,7 +55,7 @@ const Navbar = () => {
       <div className='slrspot__navbar-links'>
         <div className='slrspot__navbar-links_logo'>
           <Link to={'/'}>
-            <img src={slrspot_logo} />
+            <img src={slrspot_logo}/>
           </Link>
         </div>
         <div className='slrspot__navbar-links-container'>

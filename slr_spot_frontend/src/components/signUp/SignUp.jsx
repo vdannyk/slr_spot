@@ -53,31 +53,47 @@ const SignUp = (props) => {
           <div className="slrspot___signUp-fields">
             <div className="slrspot__signUp-field">
               <input 
-                {...register("firstName", { required: true })}
+                {...register("firstName", { 
+                  required: true,
+                  validate: () => {
+                    return watch('firstName').length <= 50;}
+                })}
                 type='text' 
                 placeholder='First Name'
                 name='firstName' 
               />
-              {errors.firstName && 
+              {errors.firstName && errors.firstName.type === "required" && 
                 <p className="slrspot__signIn-error">This field is required</p>
+              }
+              {errors.firstName && errors.firstName.type === "validate" &&  
+                <p className="slrspot__signIn-error">Input is too long</p>
               }
             </div>
             <div className="slrspot__signUp-field">
               <input
-                {...register("lastName", { required: true })}
+                {...register("lastName", { 
+                  required: true,
+                  validate: () => {
+                    return watch('lastName').length <= 50;}
+                })}
                 type='text' 
                 placeholder='Last Name'
                 name='lastName' 
               />
-              {errors.lastName && 
+              {errors.lastName && errors.lastName.type === "required" &&  
                 <p className="slrspot__signIn-error">This field is required</p>
+              }
+              {errors.lastName && errors.lastName.type === "validate" &&  
+                <p className="slrspot__signIn-error">Input is too long</p>
               }
             </div>
             <div className="slrspot__signUp-field">
               <input
                 {...register("email", { 
                   required: true, 
-                  pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  
+                  pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  validate: () => {
+                    return watch('email').length <= 65;}  
                 })}
                 placeholder='Email'
                 name='email'
@@ -87,6 +103,9 @@ const SignUp = (props) => {
               }
               {errors.email && errors.email.type=== "required" && 
                 <p className="slrspot__signIn-error">This field is required</p>
+              }
+              {errors.email && errors.email.type === "validate" &&  
+                <p className="slrspot__signIn-error">Input is too long</p>
               }
             </div>
             <div className="slrspot__signUp-field">
@@ -140,8 +159,8 @@ const SignUp = (props) => {
         </div>
       )}
     </form>
-      <div class="slrspot__accessPopup-overlay-container">
-        <div class="slrspot__accessPopup-overlay">
+      <div className="slrspot__accessPopup-overlay-container">
+        <div className="slrspot__accessPopup-overlay">
           <h2>Welcome</h2>
           <p>Get started with your free account</p>
         </div>
