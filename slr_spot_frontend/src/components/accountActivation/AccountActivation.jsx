@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../services/api";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import './accountActivation.css';
 
 
@@ -46,7 +47,9 @@ const AccountActivation = () => {
   return (
     <div className="slrspot___accountActivation">
       <div className="slrspot___accountActivation-box">
-        <h1>Account activated</h1>
+        <IoMdCheckmarkCircleOutline size={150} color='#2ae158' style={{ "margin-top": '50px'}}></IoMdCheckmarkCircleOutline>
+        <h1>Success!</h1>
+        <p>You have successfuly confirmed account.</p>
         <button>Log in</button>
       </div>
     </div>
