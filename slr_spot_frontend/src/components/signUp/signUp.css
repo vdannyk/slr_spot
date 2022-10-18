@@ -8,20 +8,6 @@
 	padding: 0 30px;
 }
 
-/* .slrspot__signUp-submitBtn {
-    width: 85%;
-    padding: 10px 30px;
-    cursor: pointer;
-    display: block;
-    margin: 0 auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background: linear-gradient(to right, #ff105f, #ffad06);
-    border: 0;
-    outline: none;
-    border-radius: 30px;
-} */
-
 .slrspot___signUp-container a{
   color: rgb(76, 116, 247);
   font-weight: 500;
@@ -30,21 +16,37 @@
   cursor: pointer;
 }
 
+.slrspot__signUp-header {
+  position: fixed;
+  align-items: center;
+  text-align: center;
+  width: 40%;
+  top: 5%;
+  left: 25%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
+}
+
 .slrspot___signUp-fields {
+  height: 70%;
   text-align: center;
 }
 
-.slrspot___signUp-fields input {
-  padding: 10px 15px;
-	margin-top: 14px;
+.slrspot__signUp-field {
+  height: 18%;
 }
 
-.slrspot___signUp-fields button {
-	padding: 10px 50px;
-	margin-top: 10px;
+.slrspot___signUp-submit {
+  position: fixed;
+  align-items: center;
+  text-align: center;
+  bottom: 5%;
+  left: 25%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
 }
 
-.slrspot___signIn-haveAccount {
+.slrspot___signUp-haveAccount {
   position: fixed;
   align-items: center;
   text-align: center;
@@ -54,7 +56,7 @@
   margin-bottom: 10px;
 }
   
-.slrspot___signIn-haveAccount a{
+.slrspot___signUp-haveAccount a{
   font-size: 16px;
   margin-left: 5px;
 }
