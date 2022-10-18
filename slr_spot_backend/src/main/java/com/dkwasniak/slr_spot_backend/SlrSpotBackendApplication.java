@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend;
 
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.user.User;
+import com.dkwasniak.slr_spot_backend.user.UserFacade;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,16 +23,17 @@ public class SlrSpotBackendApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(UserService userService) {
+	CommandLineRunner run(UserService userService, UserFacade userFacade) {
 		return args -> {
-			userService.saveRole(new Role("ROLE_USER"));
-			userService.saveRole(new Role("ROLE_ADMIN"));
-
-			userService.saveUser(new User("Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>()));
-			userService.saveUser(new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>()));
-
-			userService.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
-			userService.addRoleToUser("tobi@gmail.com", "ROLE_USER");
+//			userService.saveRole(new Role("ROLE_USER"));
+//			userService.saveRole(new Role("ROLE_ADMIN"));
+//
+//			userFacade.saveUser(new User("Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>()));
+//			userService.activateUser("danny@gmail.com");
+//			userFacade.saveUser(new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>()));
+//
+//			userFacade.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
+//			userFacade.addRoleToUser("tobi@gmail.com", "ROLE_USER");
 		};
 	}
 

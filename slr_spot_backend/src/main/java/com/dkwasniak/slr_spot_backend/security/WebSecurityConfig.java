@@ -1,14 +1,11 @@
 package com.dkwasniak.slr_spot_backend.security;
 
 import com.dkwasniak.slr_spot_backend.jwt.JwtAuthenticationFilter;
-import com.dkwasniak.slr_spot_backend.filter.CustomAuthorizationFilter;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.dkwasniak.slr_spot_backend.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -17,18 +14,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -41,6 +34,7 @@ public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AuthenticationEntryPoint authEntryPoint;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -52,21 +46,7 @@ public class WebSecurityConfig {
         // Set STATELESS session management
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
 
-        // Handle unathorized requests exceptions
-        http.exceptionHandling().authenticationEntryPoint(
-                ((request, response, authException) -> {
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    Map<String, Object> error = new HashMap<>();
-                    error.put("status", HttpServletResponse.SC_UNAUTHORIZED);
-                    error.put("error", "Unauthorized");
-                    error.put("message", "Authentication failed");
-                    error.put("path", request.getServletPath());
-
-                    response.getOutputStream()
-                            .println(new ObjectMapper().writeValueAsString(error));
-                })
-        );
+        http.exceptionHandling().authenticationEntryPoint(authEntryPoint);
 
         // Set endpoints to authorize
         http.authorizeRequests().antMatchers(
@@ -87,7 +67,7 @@ public class WebSecurityConfig {
                 authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)));
         customAuthFilter.setFilterProcessesUrl("/api/auth/signin");
         http.addFilter(customAuthFilter);
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
