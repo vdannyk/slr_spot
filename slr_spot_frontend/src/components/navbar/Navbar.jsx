@@ -11,9 +11,9 @@ import { useNavigate } from "react-router-dom";
 
 const Menu = () => (
   <>
-    <p><a><Link to={'/users'}>about</Link></a></p>
+    <p><a><Link to={'/about'}>about</Link></a></p>
+    <p><a><Link to={'/contact'}>contact</Link></a></p>
     <p><a><Link to={'/users'}>users</Link></a></p>
-    <p><a><Link to={'/users'}>contact</Link></a></p>
   </>
 )
 
