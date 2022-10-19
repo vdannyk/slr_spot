@@ -20,27 +20,38 @@
   cursor: pointer;
 }
 
-/* .slrspot__signIn-submitBtn {
-    width: 85%;
-    padding: 10px 30px;
-    cursor: pointer;
-    display: block;
-    margin: 0 auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background: linear-gradient(to right, #ff105f, #ffad06);
-    border: 0;
-    outline: none;
-    border-radius: 30px;
-} */
+.slrspot__signIn-header {
+  position: fixed;
+  align-items: center;
+  text-align: center;
+  width: 40%;
+  top: 15%;
+  left: 25%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
+}
 
 .slrspot___signIn-fields {
+  height: 35%;
   text-align: center;
 }
 
+.slrspot___signIn-fields input {
+	margin-top: 30px;
+}
+
+.slrspot__signIn-field {
+  height: 40%;
+}
+
 .slrspot___signIn-submit {
+  position: fixed;
+  align-items: center;
   text-align: center;
-	align-items: center;
+  bottom: 15%;
+  left: 25%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
 }
 
 .slrspot___signIn-forgotPassword {

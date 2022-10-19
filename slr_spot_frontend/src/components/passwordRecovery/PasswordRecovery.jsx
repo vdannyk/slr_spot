@@ -1,17 +1,27 @@
 import React, { useState, useRef } from "react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import axiosInstance from "../../services/api";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { RiErrorWarningLine } from "react-icons/ri";
 import './passwordRecovery.css'
 
 const PasswordRecovery = () => {
-  const form = useRef();
+  const {register, handleSubmit, watch, formState: { errors }} = useForm();
   const { resetToken } = useParams();
   const [isLoading, setLoading] = useState(true);
-  const [successful, setSuccessful] = useState(false);
-  const [changeSuccessful, setChangeSuccessful] = useState(false);
-  const [password, setPassword] = useState("");
+  const [isSuccessful, setIsSuccessful] = useState(false);
+  const [isChangeSuccessful, setIsChangeSuccessful] = useState(false);
   const navigate = useNavigate();
+
+  const onHomeClick = () => {
+    navigate('/');
+  };
+
+  const onLoginClick = () => {
+    navigate('/signin');
+  };
 
   useEffect(() => {
     axiosInstance.get("/user/changepassword", { params: {
@@ -19,49 +29,49 @@ const PasswordRecovery = () => {
     }})
     .then(() => {
       setLoading(false);
-      setSuccessful(true);
+      setIsSuccessful(true);
     })
     .catch(() => {
       setLoading(false);
-      setSuccessful(false);
+      setIsSuccessful(false);
     });
   }, []);
 
-  const onChangePassword = (e) => {
-    const password = e.target.value;
-    setPassword(password);
-  };
-
-
-  const handleResetPassword = () => {
+  const onSubmit = (formData) => {
     axiosInstance.post("/user/savePassword", {
       token: resetToken,
-      newPassword: password
+      newPassword: formData.password
     })
     .then(() => {
-      setChangeSuccessful(true);
-      navigate("/");
+      setIsChangeSuccessful(true);
     })
     .catch(() => {
-      setChangeSuccessful(false);
+      setIsChangeSuccessful(false);
     });
   };
 
-  if (isLoading) {
+  if (isChangeSuccessful) {
     return (
       <div className="slrspot___passwordRecovery">
         <div className="slrspot___passwordRecovery-box">
-          <h1>Loading...</h1>
+          <IoMdCheckmarkCircleOutline size={150} color='#2ae158'></IoMdCheckmarkCircleOutline>
+          <h1>Success!</h1>
+          <p>You have successfuly changed account password.</p>
+          <p>Please login to your account again.</p>
+          <button onClick={onLoginClick}>Log in</button>
         </div>
       </div>
     );
   }
 
-  if (!successful) {
+  if (!isSuccessful) {
     return (
       <div className="slrspot___passwordRecovery">
         <div className="slrspot___passwordRecovery-box">
-          <h1>Failed</h1>
+          <RiErrorWarningLine size={150} color='red' style={{ "margin-top": '50px'}}></RiErrorWarningLine>
+          <h1>Reset password failed!</h1>
+          <p>We were unable to procces reset token.</p>
+          <button style={{ background:'red'}} onClick={onHomeClick}>Home</button>
         </div>
       </div>
     );
@@ -69,23 +79,36 @@ const PasswordRecovery = () => {
 
   return (
     <div className="slrspot___passwordRecovery">
-      <form onSubmit={handleResetPassword} ref={form}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="slrspot___passwordRecovery-box">
           <h1>Set new password</h1>
-          <input 
+          <input
+            {...register("password", { 
+              required: true,
+            })}
             type='password' 
-            className='slrspot__passwordRecovery-inputField' 
             placeholder='Password'
-            name='password' 
-            required
-            onChange={onChangePassword}
+            name='password'   
           />
+          {errors.password && 
+            <p className="slrspot__signIn-error">This field is required</p>
+          }
           <input 
+            {...register("confirmPassword", { 
+              required: true, 
+              validate: (value) => {
+                return watch('password') == value;}
+            })}
             type='password' 
-            className='slrspot__passwordRecovery-inputField' 
-            placeholder='Confirm Password' 
+            placeholder='Confirm Password'
+            name='confirmPassword'
           />
-
+          {errors.confirmPassword && errors.confirmPassword.type === "validate" &&  
+            <p className="slrspot__signIn-error">Passwords do not match</p>
+          }
+          {errors.confirmPassword && errors.confirmPassword.type=== "required" && 
+            <p className="slrspot__signIn-error">This field is required</p>
+          }
           <button type='submit' className='slrspot__passwordRecovery-submitBtn'>Reset password</button>
         </div> 
       </form>
