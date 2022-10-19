@@ -19,6 +19,10 @@ const PasswordRecovery = () => {
     navigate('/');
   };
 
+  const onLoginClick = () => {
+    navigate('/signin');
+  };
+
   useEffect(() => {
     axiosInstance.get("/user/changepassword", { params: {
       resetToken
@@ -54,7 +58,7 @@ const PasswordRecovery = () => {
           <h1>Success!</h1>
           <p>You have successfuly changed account password.</p>
           <p>Please login to your account again.</p>
-          <button>Log in</button>
+          <button onClick={onLoginClick}>Log in</button>
         </div>
       </div>
     );
