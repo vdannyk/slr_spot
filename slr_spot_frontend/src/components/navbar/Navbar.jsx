@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../../actions/auth";
 import { CgProfile } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
 
 const Menu = () => (
   <>
@@ -37,9 +38,15 @@ const Navbar = () => {
   const [isSignUpPopup, setIsSignUpPopup] = useState(false);
   const { lockScroll, unlockScroll } = useScrollLock();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
 
   const { isLoggedIn } = useSelector(state => state.auth);
+
+  const onLogoClick = () => {
+    navigate('/');
+    window.location.reload()
+  };
 
   const logOut = useCallback(() => {
     dispatch(logout())
@@ -54,9 +61,7 @@ const Navbar = () => {
     <nav className='slrspot__navbar'>
       <div className='slrspot__navbar-links'>
         <div className='slrspot__navbar-links_logo'>
-          <Link to={'/'}>
-            <img src={slrspot_logo}/>
-          </Link>
+          <img onClick={onLogoClick} src={slrspot_logo}/>
         </div>
         <div className='slrspot__navbar-links-container'>
           <Menu />

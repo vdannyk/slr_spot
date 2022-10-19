@@ -18,6 +18,10 @@ const AccountActivation = () => {
     navigate('/');
   };
 
+  const onLoginClick = () => {
+    navigate('/signin');
+  };
+
   useEffect(() => {
     axiosInstance.get("/user/confirm", { params: {
       activationToken
@@ -60,7 +64,7 @@ const AccountActivation = () => {
         <IoMdCheckmarkCircleOutline size={150} color='#2ae158' style={{ "margin-top": '50px'}}></IoMdCheckmarkCircleOutline>
         <h1>Success!</h1>
         <p>You have successfuly confirmed account.</p>
-        <button>Log in</button>
+        <button onClick={onLoginClick}>Log in</button>
       </div>
     </div>
   )

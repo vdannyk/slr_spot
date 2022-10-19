@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import axiosInstance from "../../services/api";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RiErrorWarningLine } from "react-icons/ri";
-import { BeatLoader } from "react-spinners";
 import './passwordRecovery.css'
 
 const PasswordRecovery = () => {
