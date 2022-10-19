@@ -60,3 +60,31 @@
   font-size: 16px;
   margin-left: 5px;
 }
+
+.slrspot___signUp-success {
+  height: 80%;
+  text-align: center;
+}
+
+.slrspot___signUp-success h1 {
+  font-size: 40px;
+  text-transform: capitalize;
+}
+
+.slrspot___signUp-success p {
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+.slrspot___signUp-success button {
+	border-radius: 20px;
+	background: #2ae158;
+	color: black;
+  font-size: 20px;
+	font-weight: bold;
+	padding: 12px 50px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	margin-top: 10px;
+	cursor: pointer;
+}
