@@ -91,4 +91,33 @@ public class DefaultUserService implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
+    @Override
+    public void updatePassword(String username, String oldPassword, String newPassword) {
+        User user = getUser(username);
+        if (!checkIfCorrectPassword(user, oldPassword)) {
+            throw new IllegalStateException("Invalid old password");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changeEmail(String username, String oldPassword, String newPassword) {
+        User user = getUser(username);
+        if (!checkIfCorrectPassword(user, oldPassword)) {
+            throw new IllegalStateException("Invalid old password");
+        }
+    }
+
+    @Override
+    public void updateEmail(String oldEmail, String newEmail) {
+        User user = getUser(oldEmail);
+        user.setEmail(newEmail);
+        userRepository.save(user);
+    }
+
+    private boolean checkIfCorrectPassword(User user, String password) {
+        return passwordEncoder.matches(password, user.getPassword());
+    }
+
 }

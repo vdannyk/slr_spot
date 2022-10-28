@@ -56,6 +56,7 @@ public class WebSecurityConfig {
                 "/api/user/confirm/**",
                 "/api/user/resetpassword/**",
                 "/api/user/changepassword/**",
+                "/api/users/updatePassword/**",
                 "/api/user/savePassword/**"
                 ).permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER");

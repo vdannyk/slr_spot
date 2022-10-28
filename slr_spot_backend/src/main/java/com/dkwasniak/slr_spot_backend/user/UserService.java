@@ -11,4 +11,7 @@ public interface UserService {
     User getUser(String username);
     List<User> getUsers();
     void changePassword(User user, String password);
+    void updatePassword(String username, String oldPassword, String newPassword);
+    void changeEmail(String oldEmail, String newEmail, String password);
+    void updateEmail(String oldEmail, String newEmail);
 }
