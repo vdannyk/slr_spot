@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -125,6 +126,25 @@ public class UserController {
     public ResponseEntity<String> resetPassword(@RequestBody PasswordDto passwordDto) throws Exception {
         User user = userFacade.getUserByPasswordResetToken(passwordDto.getToken());
         userService.changePassword(user, passwordDto.getNewPassword());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/users/updatePassword")
+    public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRq) throws Exception {
+        userFacade.updatePassword(updatePasswordRq.getUsername(), updatePasswordRq.getOldPassword(),
+                updatePasswordRq.getNewPassword());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/users/changeEmail")
+    public ResponseEntity<String> changeEmail(@RequestBody UpdateEmailRequest updateEmailRq) throws Exception {
+        userFacade.changeEmail(updateEmailRq.getOldEmail(), updateEmailRq.getNewEmail(), updateEmailRq.getPassword());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/users/updateEmail")
+    public ResponseEntity<String> updateEmail(@RequestParam String oldEmail, @RequestParam String newEmail) throws Exception {
+        userFacade.updateEmail(oldEmail, newEmail);
         return ResponseEntity.ok().build();
     }
 }

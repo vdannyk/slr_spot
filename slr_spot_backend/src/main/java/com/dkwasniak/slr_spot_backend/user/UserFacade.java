@@ -101,4 +101,19 @@ public class UserFacade {
         Role role = roleRepository.findByName(roleName).orElseThrow();
         user.getRoles().add(role);
     }
+
+    public void updatePassword(String username, String oldPassword, String newPassword) {
+        userService.updatePassword(username, oldPassword, newPassword);
+    }
+
+
+    public void changeEmail(String oldEmail, String newEmail, String password) {
+        userService.changeEmail(oldEmail, newEmail, password);
+        String activationLink = "http://localhost:3000/users/confirmEmail";
+        emailService.sendVerificationEmail(newEmail, activationLink);
+    }
+
+    public void updateEmail(String oldEmail, String newEmail) {
+        userService.updateEmail(oldEmail, newEmail);
+    }
 }
