@@ -104,6 +104,31 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    cursor: pointer;
+}
+
+.slrspot__navbar-profile-dropdown {
+    position: absolute;
+    top: 76px;
+    width: 300px;
+    transform: translateX(35%);
+    background-color: #7e9bff;
+    padding: 1rem;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.slrspot__navbar-profile-dropdown-item {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    transition: background 100ms;
+    padding: 0.5rem;
+}
+
+.slrspot__navbar-profile-dropdown-item a {
+    color: white;
+    font-weight: bold;
 }
 
 @media screen and (max-width: 1050px) {
