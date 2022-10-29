@@ -26,6 +26,11 @@ button {
 	text-transform: uppercase;
 }
 
+.slrspot__app {
+  display: flex;
+  flex-direction: column;
+}
+
 .gradient__bg {
 
     /* ff 3.6+ */
