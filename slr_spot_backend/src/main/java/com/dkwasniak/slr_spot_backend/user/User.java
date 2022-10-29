@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.user;
 
+import com.dkwasniak.slr_spot_backend.project.Project;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,9 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Project> projects;
 
     public User(String firstName, String lastName, String email, String password, Collection<Role> roles) {
         this.firstName = firstName;
