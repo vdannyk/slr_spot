@@ -31,6 +31,12 @@
   margin-bottom: 10px;
 }
 
+.slrspot__signIn-header h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0;
+}
+
 .slrspot___signIn-fields {
   height: 35%;
   text-align: center;
@@ -83,4 +89,5 @@
   /* background-color: red; */
   font-size: 12px;
   color: red;
+  margin-bottom: 0;
 }

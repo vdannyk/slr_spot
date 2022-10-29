@@ -1,0 +1,4 @@
+.table-bordered {
+  background-color: white;
+  border: 5px double black !important;
+}

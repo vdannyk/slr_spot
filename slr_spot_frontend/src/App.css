@@ -3,6 +3,7 @@
     padding: 0;
     margin: 0;
     scroll-behavior: smooth;
+    font-family: var(--font-family);
 }
 
 body {
@@ -23,6 +24,11 @@ button {
 	font-weight: bold;
 	letter-spacing: 1px;
 	text-transform: uppercase;
+}
+
+.slrspot__app {
+  display: flex;
+  flex-direction: column;
 }
 
 .gradient__bg {
