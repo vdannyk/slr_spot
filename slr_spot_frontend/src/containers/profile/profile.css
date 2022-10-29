@@ -1,0 +1,21 @@
+.slrspot__profile {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.slrspot__profile-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 25px;
+  border-radius: 10px;
+  background: white;
+  padding: 230px 700px;
+}
+
+.slrspot__profile-menu {
+}
+
+.slrspot__profile-profileSettings {
+
+}

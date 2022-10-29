@@ -13,5 +13,6 @@ export default () => (
     <Route path="password-recovery/:resetToken" element={<PasswordRecovery />} />
     <Route path="activate/:activationToken" element={<AccountActivation />} />
     <Route path="reviews" element={<Reviews />} />
+    <Route path="reviews/new" element={<Reviews />} />
   </Routes>
 );

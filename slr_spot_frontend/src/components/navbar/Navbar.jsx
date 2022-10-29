@@ -83,7 +83,7 @@ const Navbar = () => {
               <AiFillCaretDown size={30}></AiFillCaretDown>
               { openDropdown && (
                 <div className="slrspot__navbar-profile-dropdown">
-                  <a className="slrspot__navbar-profile-dropdown-item"><Link>Settings</Link></a>
+                  <a className="slrspot__navbar-profile-dropdown-item"><Link to={'/profile'}>Settings</Link></a>
                   <a className="slrspot__navbar-profile-dropdown-item" onClick={logOut}><Link>Logout</Link></a>
                 </div>
               )}
