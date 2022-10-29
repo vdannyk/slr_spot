@@ -10,11 +10,14 @@ const Reviews = () => {
   ];
 
   const listItems = data.map((d) => 
-  <li key={d.title}>
-    <span>{d.title}</span>
-    <span> - </span>
-    <span>{d.author}</span>
-  </li>);
+    <tbody key={d.title}>
+      <tr>
+        <td>1</td>
+        <td>{d.title}</td>
+        <td>{d.author}</td>
+      </tr>
+    </tbody>
+  );
 
   return (
     <div className='slrspot__reviews'>
@@ -22,31 +25,11 @@ const Reviews = () => {
         <thead>
           <tr>
             <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Contact</th>
+            <th>Title</th>
+            <th>Author</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>TEST 123</td>
-            <td>test@test123.com</td>
-            <td>1122334455</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>TEST 456</td>
-            <td>test@test456.com</td>
-            <td>6677889910</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>TEST 789</td>
-            <td>test@test789.com</td>
-            <td>6677889911</td>
-          </tr>
-        </tbody>
+        {listItems}
       </Table>
     </div>
   )

@@ -1,3 +1,4 @@
 .table-bordered {
-  border: 5px double orange !important;
+  background-color: white;
+  border: 5px double black !important;
 }

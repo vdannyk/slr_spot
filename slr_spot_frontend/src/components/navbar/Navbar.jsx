@@ -34,7 +34,8 @@ const Navbar = () => {
   const navigate = useNavigate();
 
 
-  const { isLoggedIn } = useSelector(state => state.auth);
+  // const { isLoggedIn } = useSelector(state => state.auth);
+  const [isLoggedIn, setisLoggedIn] = useState(true);
 
   const onLogoClick = () => {
     navigate('/');
