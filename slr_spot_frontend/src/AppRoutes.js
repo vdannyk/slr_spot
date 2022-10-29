@@ -1,9 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom'
-import PasswordRecovery from './components/passwordRecovery/PasswordRecovery';
 import { HomePage, Profile, Reviews } from './containers';
-import AccountActivation from './components/accountActivation/AccountActivation';
-import SignInPage from './components/signIn/SignInPage';
+import { NewReview, SignInPage, AccountActivation, PasswordRecovery } from './components';
 
 export default () => (
   <Routes>
@@ -13,6 +11,6 @@ export default () => (
     <Route path="password-recovery/:resetToken" element={<PasswordRecovery />} />
     <Route path="activate/:activationToken" element={<AccountActivation />} />
     <Route path="reviews" element={<Reviews />} />
-    <Route path="reviews/new" element={<Reviews />} />
+    <Route path="reviews/new" element={<NewReview />} />
   </Routes>
 );

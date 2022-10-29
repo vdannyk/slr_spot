@@ -1,21 +1,66 @@
 .slrspot__profile {
-  width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  background-color: white;
+  margin: 20px 20px;
+  border-radius: 5px;
+}
+
+.slrspot__profile-header {
+  border-bottom: thin dotted #000000;
 }
 
 .slrspot__profile-container {
   display: flex;
   flex-direction: row;
-  margin-top: 25px;
-  border-radius: 10px;
-  background: white;
-  padding: 230px 700px;
+  justify-content: space-around;
 }
 
 .slrspot__profile-menu {
+  width: 20%;
 }
 
 .slrspot__profile-profileSettings {
+  width: 80%;
+  border-left: 1px solid #eee;
+}
 
+.slrspot__profile-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: thin dotted #000000;
+}
+
+.slrspot__profile-avatar button {
+	border-radius: 5px;
+	background: #AE67FA;
+	color: black;
+  font-size: 14px;
+	font-weight: bold;
+	padding: 10px 20px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.slrspot__profile-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: thin dotted #000000;
+}
+
+.slrspot__profile-email {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: thin dotted #000000;
+}
+
+.slrspot__profile-password {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

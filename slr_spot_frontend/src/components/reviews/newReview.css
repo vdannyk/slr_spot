@@ -1,0 +1,19 @@
+.slrspot__newReview {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  margin: 20px 20px;
+  border-radius: 5px;
+}
+
+.slrspot__newReview-header {
+  display: flex;
+  justify-content: center;
+}
+
+.slrspot__newReview-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
