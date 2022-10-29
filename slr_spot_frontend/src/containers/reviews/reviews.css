@@ -1,3 +1,35 @@
+.slrspot__reviews {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+.slrspot__reviews-header {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.slrspot__reviews-container {
+  
+}
+
+.slrspot__reviews-container button {
+	border-radius: 5px;
+	background: #AE67FA;
+	color: black;
+  font-size: 14px;
+	font-weight: bold;
+	padding: 10px 20px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.slrspot__reviews-select {
+  display: flex;
+}
+
 .table-bordered {
   background-color: white;
   border: 5px double black !important;

@@ -36,17 +36,25 @@ const Reviews = () => {
 
   return (
     <div className='slrspot__reviews'>
-      <h1>Reviews</h1>
-      <button onClick={onClick}>New review</button>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Title</th>
-          </tr>
-        </thead>
-        {listItems}
-      </Table>
+      <div className='slrspot__reviews-header'>
+        <h1>Reviews</h1>
+      </div>
+      <div className='slrspot__reviews-container'>
+        <button onClick={onClick}>New review</button>
+        <div className='slrspot__reviews-select'>
+          <h2>Your reviews</h2>
+          <h2>All reviews</h2>
+        </div>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+            </tr>
+          </thead>
+          {listItems}
+        </Table>
+      </div>
     </div>
   )
 }
