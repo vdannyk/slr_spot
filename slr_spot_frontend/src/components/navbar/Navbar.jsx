@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
 import { RiCloseLine, RiMenu3Line } from 'react-icons/ri';
-import './navbar.css'
 import slrspot_logo from '../../assets/slrspot_logo.png';
 import { AccessPopup } from '../../containers'
 import { useDispatch, useSelector } from "react-redux";
@@ -8,14 +7,8 @@ import { Link } from "react-router-dom";
 import { logout } from "../../actions/auth";
 import { CgProfile } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
+import './navbar.css'
 
-const Menu = () => (
-  <>
-    <p><a><Link to={'/about'}>about</Link></a></p>
-    <p><a><Link to={'/contact'}>contact</Link></a></p>
-    <p><a><Link to={'/users'}>users</Link></a></p>
-  </>
-)
 
 const useScrollLock = () => {
   const lockScroll = () => {
@@ -57,6 +50,17 @@ const Navbar = () => {
 
   isAccessPopup ? lockScroll() : unlockScroll();
 
+  const Menu = () => (
+    <>
+      <p><Link to={'/about'}>about</Link></p>
+      <p><Link to={'/contact'}>contact</Link></p>
+      {/* <p><a><Link to={'/users'}>users</Link></a></p> */}
+      { isLoggedIn && (
+        <p><Link to={'/reviews'}>reviews</Link></p>
+      )}
+    </>
+  )
+
   return (
     <nav className='slrspot__navbar'>
       <div className='slrspot__navbar-links'>
@@ -80,7 +84,7 @@ const Navbar = () => {
           : (
             <div className='slrspot__navbar-sign'>
               <p onClick={() => { setIsAccessPopup(true); setIsSignInPopup(true); }}>
-                Sign in
+                <Link>Sign in</Link>
               </p>
               <button type='button' onClick={() => { setIsAccessPopup(true); setIsSignUpPopup(true); }}>
                 Sign up

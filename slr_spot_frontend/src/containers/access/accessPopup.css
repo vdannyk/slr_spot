@@ -1,11 +1,12 @@
 .slrspot__accessPopup input {
 	background-color: #eee;
 	border: none;
-	padding: 12px 15px;
+	padding: 8px 15px;
 	margin-top: 20px;
 	margin-bottom: 0;
 	/* margin: 10px 0; */
 	width: 80%;
+	font-size: 16px;
 }
 
 .slrspot__accessPopup button {
@@ -13,9 +14,9 @@
 	border: 0;
 	background: #AE67FA;
 	color: #FFFFFF;
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: bold;
-	padding: 12px 50px;
+	padding: 10px 50px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	margin-top: 20px;
@@ -35,7 +36,7 @@
 }
 
 .slrspot__accessPopup a {
-	color: rgb(8, 60, 229);
+	color: rgb(8, 60, 229) !important;
 	font-weight: 500;
 	font-size: 18px;
 	text-transform: capitalize;

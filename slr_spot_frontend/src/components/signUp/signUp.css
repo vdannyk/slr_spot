@@ -27,6 +27,11 @@
   margin-bottom: 10px;
 }
 
+.slrspot__signUp-header h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
 .slrspot___signUp-fields {
   height: 70%;
   text-align: center;
@@ -69,6 +74,7 @@
 .slrspot___signUp-success h1 {
   font-size: 40px;
   text-transform: capitalize;
+  font-family: var(--font-family);
 }
 
 .slrspot___signUp-success p {
