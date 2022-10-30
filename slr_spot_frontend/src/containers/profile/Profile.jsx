@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CgProfile } from "react-icons/cg";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import axiosInstance from "../../services/api";
 import './profile.css'
 
 
 const Profile = () => {
+  const [isNameChangeSuccessful, setIsNameChangeSuccessful] = useState(false);
+  const [isEmailChangeSuccessful, setIsEmailChangeSuccessful] = useState(false);
+  const [isPasswordChangeSuccessful, setIsPasswordChangeSuccessful] = useState(false);
   const { user: currentUser } = useSelector((state) => state.auth);
   const {register, handleSubmit, watch, formState: { errors }} = useForm();
   const {
@@ -24,14 +28,42 @@ const Profile = () => {
 
   const onEmailSubmit = (formData) => {
     console.log(formData);
+    axiosInstance.post("/users/changeEmail", {
+      newEmail: formData.email
+    })
+    .then(() => {
+      setIsEmailChangeSuccessful(true);
+    })
+    .catch((response) => {
+      console.log(response);
+    });
   };
 
   const onNameSubmit = (formData) => {
-    console.log(formData);
+    axiosInstance.post("/users/updatePersonal", {
+      firstName: formData.firstName,
+      lastName: formData.lastName
+    })
+    .then(() => {
+      setIsNameChangeSuccessful(true);
+    })
+    .catch((response) => {
+      console.log(response);
+    });
   };
 
   const onPasswordSubmit = (formData) => {
-    console.log(formData);
+    axiosInstance.post("/users/updatePassword", {
+      oldPassword: formData.oldPassword,
+      newPassword: formData.newPassword,
+      confirmPassword: formData.confirmPassword
+    })
+    .then(() => {
+      setIsPasswordChangeSuccessful(true);
+    })
+    .catch((response) => {
+      console.log(response);
+    });
   };
 
   return (
@@ -88,6 +120,9 @@ const Profile = () => {
                 {errorsName.lastName && errorsName.lastName.type === "validate" &&  
                   <p className="slrspot__profile-error">Input is too long</p>
                 }
+                {isNameChangeSuccessful && (
+                  <p className="slrspot__profile-error" style={{color:'green'}}>Success</p>
+                )}
                 <button type='submit'>Save</button>
               </div>
             </form>
@@ -116,6 +151,9 @@ const Profile = () => {
               {errors.email && errors.email.type === "validate" &&  
                 <p className="slrspot__profile-error">Input is too long</p>
               }
+              {isEmailChangeSuccessful && (
+                <p className="slrspot__profile-error" style={{color:'green'}}>Activation link send</p>
+              )}
               <button type="submit">Save</button>
             </div>
           </form>
@@ -169,6 +207,9 @@ const Profile = () => {
               {errorsPassword.confirmPassword && errorsPassword.confirmPassword.type=== "required" && 
                 <p className="slrspot__profile-error">This field is required</p>
               }
+              {isPasswordChangeSuccessful && (
+                <p className="slrspot__profile-error" style={{color:'green'}}>Password changed</p>
+              )}
               <button type="submit">Save</button>
             </div>
           </form>
