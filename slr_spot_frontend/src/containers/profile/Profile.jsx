@@ -1,13 +1,16 @@
 import React from 'react'
 import { CgProfile } from "react-icons/cg";
+import { useDispatch, useSelector } from "react-redux";
 import './profile.css'
 
 
 const Profile = () => {
+  const { user: currentUser } = useSelector((state) => state.auth);
+
   return (
     <div className='slrspot__profile'>
       <div className='slrspot__profile-header'>
-        <h2>Settings</h2>
+        <h1>Settings</h1>
       </div>
       <div className='slrspot__profile-container'>
         <div className='slrspot__profile-menu'>
@@ -22,16 +25,16 @@ const Profile = () => {
             </div>
             <div className='slrspot__profile-name'>
               <label>First name</label>
-              <input/>
+              <input placeholder={currentUser.firstName}/>
               <label>Last name</label>
-              <input/>
+              <input placeholder={currentUser.lastName}/>
               <button>Save</button>
             </div>
           </div>
           <h2>Change your email</h2>
           <div className='slrspot__profile-email'>
             <label>Email</label>
-            <input/>
+            <input placeholder={currentUser.username}/>
             <button>Save</button>
           </div>
           <h2>Change your password</h2>
