@@ -1,17 +1,12 @@
 .slrspot__homePage {
   width: 100%;
-  background: white;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
 }
 
 .slrspot__home-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  cursor: pointer;
-
-  margin-bottom: auto;
-  height: 65vh;
 }
 
 .slrspot__home-header {

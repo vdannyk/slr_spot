@@ -38,17 +38,15 @@ const Navbar = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
 
   const { isLoggedIn } = useSelector(state => state.auth);
-  // const [isLoggedIn, setisLoggedIn] = useState(true);
 
   const onLogoClick = () => {
     navigate('/');
-    window.location.reload()
   };
 
   const logOut = useCallback(() => {
     dispatch(logout())
     .then(() => {
-      window.location.reload();
+      navigate('/');
     });
   }, [dispatch]);
 
@@ -78,7 +76,7 @@ const Navbar = () => {
         {isLoggedIn 
           ? (
             <div className="slrspot__navbar-profile" onClick={() => setOpenDropdown(!openDropdown)}>
-              <p>FirstName LastName</p>
+              <p>{currentUser.firstName} {currentUser.lastName}</p>
               <CgProfile size={45}></CgProfile>
               <AiFillCaretDown size={30}></AiFillCaretDown>
               { openDropdown && (

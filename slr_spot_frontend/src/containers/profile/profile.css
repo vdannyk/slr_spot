@@ -6,8 +6,51 @@
   border-radius: 5px;
 }
 
+.slrspot__profile input {
+	background-color: rgb(220, 220, 220);
+	border: none;
+	padding: 8px 15px;
+	font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.slrspot__profile h1 {
+  text-transform: uppercase;
+  font-size: 40px;
+  margin: 10px;
+}
+
+.slrspot__profile h2 {
+  text-transform: uppercase;
+  font-size: 20px;
+  margin: 10px;
+}
+
+.slrspot__profile p {
+  text-transform: uppercase;
+  font-size: 20px;
+  margin: 10px;
+}
+
+.slrspot__profile button {
+  border-radius: 5px;
+	background: #967aff;
+	color: white;
+  font-size: 14px;
+	font-weight: bold;
+	padding: 10px 20px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	cursor: pointer;
+  margin-top: 10px;
+}
+
 .slrspot__profile-header {
-  border-bottom: thin dotted #000000;
+  border-bottom: thin solid #000000;
+}
+
+.slrspot__profile-header h2 {
+  margin: 10px 20px;
 }
 
 .slrspot__profile-container {
@@ -17,7 +60,20 @@
 }
 
 .slrspot__profile-menu {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   width: 20%;
+}
+
+.slrspot__profile-menu p {
+  width: 100%;
+  font-size: 20px;
+  text-align: center;
+  background-color: #967aff;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
 }
 
 .slrspot__profile-profileSettings {
@@ -25,42 +81,50 @@
   border-left: 1px solid #eee;
 }
 
+.slrspot__profile-baseInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  border-bottom: thin solid #000000;
+  border-width: 0.01rem;
+}
+
 .slrspot__profile-avatar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: thin dotted #000000;
-}
-
-.slrspot__profile-avatar button {
-	border-radius: 5px;
-	background: #AE67FA;
-	color: black;
-  font-size: 14px;
-	font-weight: bold;
-	padding: 10px 20px;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	cursor: pointer;
-  margin-bottom: 5px;
+  border-width: 0.01rem;
+  padding: 20px 60px;
 }
 
 .slrspot__profile-name {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  border-bottom: thin dotted #000000;
+  border-width: 0.01rem;
+  padding: 20px 60px;
 }
 
 .slrspot__profile-email {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  border-bottom: thin dotted #000000;
+  align-items: flex-start;
+  border-bottom: thin solid #000000;
+  border-width: 0.01rem;
+  padding: 20px 60px;
 }
 
 .slrspot__profile-password {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  padding: 20px 60px;
+}
+
+.slrspot__profile-error {
+  /* background-color: red; */
+  font-size: 12px !important;
+  color: red;
+  margin: 0 !important;
 }

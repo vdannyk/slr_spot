@@ -6,20 +6,22 @@
 
 .slrspot__reviews-header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  margin: 20px 20px 0;
+  border-bottom: 1px solid #eee;
 }
 
 .slrspot__reviews-container {
-  
+  margin: 0 20px;
 }
 
-.slrspot__reviews-container button {
+.slrspot__reviews button {
 	border-radius: 5px;
-	background: #AE67FA;
-	color: black;
+	background: #967aff;
+	color: white;
   font-size: 14px;
 	font-weight: bold;
-	padding: 10px 20px;
+	padding: 5px 10px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	cursor: pointer;
@@ -28,6 +30,13 @@
 
 .slrspot__reviews-select {
   display: flex;
+  margin: 10px 0;
+}
+
+.slrspot__reviews-select a {
+  padding: 0 20px;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .table-bordered {
