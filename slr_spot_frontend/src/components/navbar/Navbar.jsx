@@ -78,7 +78,7 @@ const Navbar = () => {
         {isLoggedIn 
           ? (
             <div className="slrspot__navbar-profile" onClick={() => setOpenDropdown(!openDropdown)}>
-              <p>FirstName LastName</p>
+              <p>{currentUser.firstName} {currentUser.lastName}</p>
               <CgProfile size={45}></CgProfile>
               <AiFillCaretDown size={30}></AiFillCaretDown>
               { openDropdown && (
