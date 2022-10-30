@@ -4,7 +4,9 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.dkwasniak.slr_spot_backend.jwt.JwtResponse;
 import com.dkwasniak.slr_spot_backend.jwt.RefreshTokenRequest;
 import com.dkwasniak.slr_spot_backend.role.RoleToUserRequest;
+import com.dkwasniak.slr_spot_backend.user.dto.EmailUpdateDto;
 import com.dkwasniak.slr_spot_backend.user.dto.PasswordDto;
+import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -78,11 +80,16 @@ public class UserController {
                 DecodedJWT decodedJWT = validateJwt(refreshToken);
                 String username = decodedJWT.getSubject();
                 User user = userService.getUser(username);
-                String jwtToken = generateJwt(user.getEmail(), user.getRoles(), request);
+                String jwtToken = generateJwt(user, request);
 
                 JwtResponse jwtResponse = new JwtResponse(
-                        jwtToken,
-                        refreshToken
+                    user.getId(),
+                    user.getEmail(),
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getRoles(),
+                    jwtToken,
+                    refreshToken
                 );
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), jwtResponse);
@@ -131,20 +138,29 @@ public class UserController {
 
     @PostMapping("/users/updatePassword")
     public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRq) throws Exception {
-        userFacade.updatePassword(updatePasswordRq.getUsername(), updatePasswordRq.getOldPassword(),
-                updatePasswordRq.getNewPassword());
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        userFacade.updatePassword(username, updatePasswordRq.getOldPassword(), updatePasswordRq.getNewPassword(),
+                updatePasswordRq.getConfirmPassword());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/users/changeEmail")
-    public ResponseEntity<String> changeEmail(@RequestBody UpdateEmailRequest updateEmailRq) throws Exception {
-        userFacade.changeEmail(updateEmailRq.getOldEmail(), updateEmailRq.getNewEmail(), updateEmailRq.getPassword());
+    public ResponseEntity<String> changeEmail(@RequestBody EmailUpdateDto emailUpdateDto) throws Exception {
+        userFacade.changeEmail(emailUpdateDto.getNewEmail());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/users/updateEmail")
-    public ResponseEntity<String> updateEmail(@RequestParam String oldEmail, @RequestParam String newEmail) throws Exception {
-        userFacade.updateEmail(oldEmail, newEmail);
+    public ResponseEntity<String> updateEmail(@RequestBody EmailUpdateDto emailUpdateDto) throws Exception {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        userFacade.updateEmail(username, emailUpdateDto.getNewEmail());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/users/updatePersonal")
+    public ResponseEntity<String> updateEmail(@RequestBody PersonalInformationDto personalInfoDto) throws Exception {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        userFacade.updatePersonalInformation(username, personalInfoDto);
         return ResponseEntity.ok().build();
     }
 }

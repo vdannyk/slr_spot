@@ -7,6 +7,7 @@ import com.dkwasniak.slr_spot_backend.passwordResetToken.PasswordResetToken;
 import com.dkwasniak.slr_spot_backend.passwordResetToken.PasswordResetTokenRepository;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
+import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -102,18 +103,21 @@ public class UserFacade {
         user.getRoles().add(role);
     }
 
-    public void updatePassword(String username, String oldPassword, String newPassword) {
-        userService.updatePassword(username, oldPassword, newPassword);
+    public void updatePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
+        userService.updatePassword(username, oldPassword, newPassword, confirmPassword);
     }
 
 
-    public void changeEmail(String oldEmail, String newEmail, String password) {
-        userService.changeEmail(oldEmail, newEmail, password);
+    public void changeEmail(String newEmail) {
         String activationLink = "http://localhost:3000/users/confirmEmail";
         emailService.sendVerificationEmail(newEmail, activationLink);
     }
 
-    public void updateEmail(String oldEmail, String newEmail) {
-        userService.updateEmail(oldEmail, newEmail);
+    public void updateEmail(String username, String newEmail) {
+        userService.updateEmail(username, newEmail);
+    }
+
+    public void updatePersonalInformation(String username, PersonalInformationDto personalInformationDto) {
+        userService.updatePersonalInformation(username, personalInformationDto);
     }
 }

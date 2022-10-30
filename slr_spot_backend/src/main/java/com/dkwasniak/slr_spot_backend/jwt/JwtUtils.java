@@ -5,10 +5,9 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.dkwasniak.slr_spot_backend.role.Role;
+import com.dkwasniak.slr_spot_backend.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,28 +45,17 @@ public class JwtUtils {
     public static String generateJwt(User user, HttpServletRequest request) {
         Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes());
         return JWT.create()
-                .withSubject(user.getUsername())
+                .withSubject(user.getEmail())
                 .withExpiresAt(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
                 .withIssuer(request.getRequestURL().toString())
-                .withClaim(ROLES_CLAIM, user.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-                .sign(algorithm);
-    }
-
-    public static String generateJwt(String username, Collection<Role> roles, HttpServletRequest request) {
-        Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes());
-        return JWT.create()
-                .withSubject(username)
-                .withExpiresAt(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
-                .withIssuer(request.getRequestURL().toString())
-                .withClaim(ROLES_CLAIM, roles.stream().map(Role::getName).collect(Collectors.toList()))
+                .withClaim(ROLES_CLAIM, user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                 .sign(algorithm);
     }
 
     public static String generateRefreshToken(User user, HttpServletRequest request) {
         Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes());
         return JWT.create()
-                .withSubject(user.getUsername())
+                .withSubject(user.getEmail())
                 .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);

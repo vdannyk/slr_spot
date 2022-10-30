@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
+import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -92,7 +93,7 @@ public class DefaultUserService implements UserService, UserDetailsService {
     }
 
     @Override
-    public void updatePassword(String username, String oldPassword, String newPassword) {
+    public void updatePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
         User user = getUser(username);
         if (!checkIfCorrectPassword(user, oldPassword)) {
             throw new IllegalStateException("Invalid old password");
@@ -110,14 +111,25 @@ public class DefaultUserService implements UserService, UserDetailsService {
     }
 
     @Override
-    public void updateEmail(String oldEmail, String newEmail) {
-        User user = getUser(oldEmail);
+    public void updateEmail(String username, String newEmail) {
+        User user = getUser(username);
         user.setEmail(newEmail);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updatePersonalInformation(String username, PersonalInformationDto personalInformationDto) {
+        User user = getUser(username);
+        if (personalInformationDto.getFirstName() != null && !personalInformationDto.getFirstName().isEmpty()) {
+            user.setFirstName(personalInformationDto.getFirstName());
+        }
+        if (personalInformationDto.getLastName() != null && !personalInformationDto.getLastName().isEmpty()) {
+            user.setLastName(personalInformationDto.getLastName());
+        }
         userRepository.save(user);
     }
 
     private boolean checkIfCorrectPassword(User user, String password) {
         return passwordEncoder.matches(password, user.getPassword());
     }
-
 }
