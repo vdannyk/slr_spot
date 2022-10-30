@@ -33,17 +33,23 @@ public class SlrSpotBackendApplication {
 			var danny = new User("Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>());
 			userFacade.saveUser(danny);
 			userService.activateUser("danny@gmail.com");
-			userFacade.saveUser(new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>()));
+			var tobi = new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>());
+			userFacade.saveUser(tobi);
 			userService.activateUser("tobi@gmail.com");
 
 			userFacade.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
 			userFacade.addRoleToUser("tobi@gmail.com", "ROLE_USER");
 
-			projectService.saveProject(new Project("testowy projekt"));
-			projectService.saveProject(new Project("testowy projekt1"));
-			projectService.saveProject(new Project("testowy projekt2"));
-			projectService.saveProject(new Project("testowy projekt3"));
-			projectService.saveProject(new Project("testowy projekt4"));
+			var proj1 = new Project("testowy projekt", danny);
+			var proj2 = new Project("testowy projekt1", danny);
+			var proj3 = new Project("testowy projekt2", danny);
+			var proj4 = new Project("testowy projekt3", tobi);
+			var proj5 = new Project("testowy projekt4", tobi);
+			projectService.saveProject(proj1);
+			projectService.saveProject(proj2);
+			projectService.saveProject(proj3);
+			projectService.saveProject(proj4);
+			projectService.saveProject(proj5);
 		};
 	}
 

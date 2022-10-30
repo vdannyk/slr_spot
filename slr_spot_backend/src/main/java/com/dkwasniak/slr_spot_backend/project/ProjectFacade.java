@@ -6,7 +6,10 @@ import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 @Component
+@Transactional
 @RequiredArgsConstructor
 public class ProjectFacade {
 
@@ -15,7 +18,6 @@ public class ProjectFacade {
 
     public void createProject(ProjectDto projectDto, String username) {
         User user = userService.getUser(username);
-        Project project = projectService.saveProject(new Project(projectDto.getTitle()));
-        user.getProjects().add(project);
+        Project project = projectService.saveProject(new Project(projectDto.getTitle(), user));
     }
 }

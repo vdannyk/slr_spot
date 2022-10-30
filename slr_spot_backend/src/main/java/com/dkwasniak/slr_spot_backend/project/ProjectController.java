@@ -23,9 +23,14 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping
-    public ResponseEntity<List<Project>> getUserProjects() {
-        var user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+    public ResponseEntity<List<Project>> getAllProjects() {
         return ResponseEntity.ok().body(projectService.getReviews());
+    }
+
+    @GetMapping("/yours")
+    public ResponseEntity<List<Project>> getUserProjects() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return ResponseEntity.ok().body(projectService.getReviewsByUser(username));
     }
 
     @PostMapping("/save")

@@ -24,8 +24,15 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @ManyToOne
+    @JoinColumn(
+            nullable = false,
+            name = "user_id"
+    )
+    private User user;
 
-    public Project(String title) {
+    public Project(String title, User user) {
         this.title = title;
+        this.user = user;
     }
 }

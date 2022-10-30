@@ -26,6 +26,10 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
+    public List<Project> getReviewsByUser(String username) {
+        return projectRepository.findByUser(userService.getUser(username));
+    }
+
     public Optional<Project> getReviewByTitle(String title) {
         return projectRepository.findByTitle(title);
     }
