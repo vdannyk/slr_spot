@@ -1,5 +1,7 @@
 package com.dkwasniak.slr_spot_backend;
 
+import com.dkwasniak.slr_spot_backend.project.Project;
+import com.dkwasniak.slr_spot_backend.project.ProjectService;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserFacade;
@@ -23,17 +25,25 @@ public class SlrSpotBackendApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(UserService userService, UserFacade userFacade) {
+	CommandLineRunner run(UserService userService, UserFacade userFacade, ProjectService projectService) {
 		return args -> {
 			userService.saveRole(new Role("ROLE_USER"));
 			userService.saveRole(new Role("ROLE_ADMIN"));
 
-			userFacade.saveUser(new User("Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>()));
+			var danny = new User("Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>());
+			userFacade.saveUser(danny);
 			userService.activateUser("danny@gmail.com");
 			userFacade.saveUser(new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>()));
+			userService.activateUser("tobi@gmail.com");
 
 			userFacade.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
 			userFacade.addRoleToUser("tobi@gmail.com", "ROLE_USER");
+
+			projectService.saveProject(new Project("testowy projekt"));
+			projectService.saveProject(new Project("testowy projekt1"));
+			projectService.saveProject(new Project("testowy projekt2"));
+			projectService.saveProject(new Project("testowy projekt3"));
+			projectService.saveProject(new Project("testowy projekt4"));
 		};
 	}
 
