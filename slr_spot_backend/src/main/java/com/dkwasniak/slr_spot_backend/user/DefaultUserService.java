@@ -111,8 +111,8 @@ public class DefaultUserService implements UserService, UserDetailsService {
     }
 
     @Override
-    public void updateEmail(String oldEmail, String newEmail) {
-        User user = getUser(oldEmail);
+    public void updateEmail(String username, String newEmail) {
+        User user = getUser(username);
         user.setEmail(newEmail);
         userRepository.save(user);
     }

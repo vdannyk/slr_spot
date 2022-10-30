@@ -4,6 +4,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.dkwasniak.slr_spot_backend.jwt.JwtResponse;
 import com.dkwasniak.slr_spot_backend.jwt.RefreshTokenRequest;
 import com.dkwasniak.slr_spot_backend.role.RoleToUserRequest;
+import com.dkwasniak.slr_spot_backend.user.dto.EmailUpdateDto;
 import com.dkwasniak.slr_spot_backend.user.dto.PasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -144,14 +145,15 @@ public class UserController {
     }
 
     @PostMapping("/users/changeEmail")
-    public ResponseEntity<String> changeEmail(@RequestBody UpdateEmailRequest updateEmailRq) throws Exception {
-        userFacade.changeEmail(updateEmailRq.getOldEmail(), updateEmailRq.getNewEmail(), updateEmailRq.getPassword());
+    public ResponseEntity<String> changeEmail(@RequestBody EmailUpdateDto emailUpdateDto) throws Exception {
+        userFacade.changeEmail(emailUpdateDto.getNewEmail());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/users/updateEmail")
-    public ResponseEntity<String> updateEmail(@RequestParam String oldEmail, @RequestParam String newEmail) throws Exception {
-        userFacade.updateEmail(oldEmail, newEmail);
+    public ResponseEntity<String> updateEmail(@RequestBody EmailUpdateDto emailUpdateDto) throws Exception {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        userFacade.updateEmail(username, emailUpdateDto.getNewEmail());
         return ResponseEntity.ok().build();
     }
 

@@ -108,14 +108,13 @@ public class UserFacade {
     }
 
 
-    public void changeEmail(String oldEmail, String newEmail, String password) {
-        userService.changeEmail(oldEmail, newEmail, password);
+    public void changeEmail(String newEmail) {
         String activationLink = "http://localhost:3000/users/confirmEmail";
         emailService.sendVerificationEmail(newEmail, activationLink);
     }
 
-    public void updateEmail(String oldEmail, String newEmail) {
-        userService.updateEmail(oldEmail, newEmail);
+    public void updateEmail(String username, String newEmail) {
+        userService.updateEmail(username, newEmail);
     }
 
     public void updatePersonalInformation(String username, PersonalInformationDto personalInformationDto) {

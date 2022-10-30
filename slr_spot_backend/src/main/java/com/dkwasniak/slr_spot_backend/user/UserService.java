@@ -14,6 +14,6 @@ public interface UserService {
     void changePassword(User user, String password);
     void updatePassword(String username, String oldPassword, String newPassword, String confirmPassword);
     void changeEmail(String oldEmail, String newEmail, String password);
-    void updateEmail(String oldEmail, String newEmail);
+    void updateEmail(String username, String newEmail);
     void updatePersonalInformation(String username, PersonalInformationDto personalInformationDto);
 }
