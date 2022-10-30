@@ -14,23 +14,27 @@ const Profile = () => {
           <p>Profile</p>
         </div>
         <div className='slrspot__profile-profileSettings'>
-          <div className='slrspot__profile-avatar'>
-            <p>Your Avatar</p>
-            <CgProfile size={100}></CgProfile>
-            <button>Update</button>
+          <div className='slrspot__profile-baseInfo'>
+            <div className='slrspot__profile-avatar'>
+              <p>Your Avatar</p>
+              <CgProfile size={100}></CgProfile>
+              <button>Change avatar</button>
+            </div>
+            <div className='slrspot__profile-name'>
+              <label>First name</label>
+              <input/>
+              <label>Last name</label>
+              <input/>
+              <button>Save</button>
+            </div>
           </div>
-          <div className='slrspot__profile-name'>
-            <label>First name</label>
-            <input/>
-            <label>Last name</label>
-            <input/>
-            <button>Update</button>
-          </div>
+          <h2>Change your email</h2>
           <div className='slrspot__profile-email'>
-            <label>Change your email</label>
+            <label>Email</label>
             <input/>
-            <button>Update</button>
+            <button>Save</button>
           </div>
+          <h2>Change your password</h2>
           <div className='slrspot__profile-password'>
             <label>Old password</label>
             <input/>
@@ -38,7 +42,7 @@ const Profile = () => {
             <input/>
             <label>Confirm New Password</label>
             <input/>
-            <button>Update</button>
+            <button>Save</button>
           </div>
         </div>
       </div>

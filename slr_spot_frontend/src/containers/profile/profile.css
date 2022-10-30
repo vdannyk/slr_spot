@@ -6,17 +6,37 @@
   border-radius: 5px;
 }
 
+.slrspot__profile input {
+	background-color: rgb(220, 220, 220);
+	border: none;
+	padding: 8px 15px;
+	font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.slrspot__profile h2 {
+  text-transform: uppercase;
+  font-size: 20px;
+  margin: 10px;
+}
+
+.slrspot__profile p {
+  text-transform: uppercase;
+  font-size: 20px;
+  margin: 10px;
+}
+
 .slrspot__profile button {
   border-radius: 5px;
 	background: #967aff;
-	color: black;
+	color: white;
   font-size: 14px;
 	font-weight: bold;
 	padding: 10px 20px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	cursor: pointer;
-  margin-bottom: 5px;
+  margin-top: 10px;
 }
 
 .slrspot__profile-header {
@@ -55,48 +75,45 @@
   border-left: 1px solid #eee;
 }
 
+.slrspot__profile-baseInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  border-bottom: thin solid #000000;
+  border-width: 0.01rem;
+}
+
 .slrspot__profile-avatar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: thin solid #000000;
   border-width: 0.01rem;
-}
-
-.slrspot__profile-avatar button {
-	border-radius: 5px;
-	background: #967aff;
-	color: black;
-  font-size: 14px;
-	font-weight: bold;
-	padding: 10px 20px;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	cursor: pointer;
-  margin-bottom: 5px;
+  padding: 20px 60px;
 }
 
 .slrspot__profile-name {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  border-bottom: thin solid #000000;
   border-width: 0.01rem;
+  padding: 20px 60px;
 }
 
 .slrspot__profile-email {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   border-bottom: thin solid #000000;
   border-width: 0.01rem;
+  padding: 20px 60px;
 }
 
 .slrspot__profile-password {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  padding: 20px 60px;
 }
 
 .break {
