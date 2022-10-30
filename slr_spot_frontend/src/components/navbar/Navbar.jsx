@@ -38,17 +38,15 @@ const Navbar = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
 
   const { isLoggedIn } = useSelector(state => state.auth);
-  // const [isLoggedIn, setisLoggedIn] = useState(true);
 
   const onLogoClick = () => {
     navigate('/');
-    window.location.reload()
   };
 
   const logOut = useCallback(() => {
     dispatch(logout())
     .then(() => {
-      window.location.reload();
+      navigate('/');
     });
   }, [dispatch]);
 
