@@ -78,7 +78,7 @@ public class UserController {
                 DecodedJWT decodedJWT = validateJwt(refreshToken);
                 String username = decodedJWT.getSubject();
                 User user = userService.getUser(username);
-                String jwtToken = generateJwt(user.getEmail(), user.getRoles(), request);
+                String jwtToken = generateJwt(user, request);
 
                 JwtResponse jwtResponse = new JwtResponse(
                         jwtToken,

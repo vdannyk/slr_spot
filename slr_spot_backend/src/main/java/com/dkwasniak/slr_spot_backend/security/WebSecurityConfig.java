@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend.security;
 
 import com.dkwasniak.slr_spot_backend.jwt.JwtAuthenticationFilter;
 import com.dkwasniak.slr_spot_backend.jwt.JwtAuthorizationFilter;
+import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,7 @@ public class WebSecurityConfig {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationEntryPoint authEntryPoint;
+    private final UserService userService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,7 +59,8 @@ public class WebSecurityConfig {
                 "/api/user/resetpassword/**",
                 "/api/user/changepassword/**",
                 "/api/users/updatePassword/**",
-                "/api/user/savePassword/**"
+                "/api/user/savePassword/**",
+                "/api/reviews/**"
                 ).permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().antMatchers(POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
@@ -65,7 +68,9 @@ public class WebSecurityConfig {
 
         // Add authentication filter
         var customAuthFilter = new JwtAuthenticationFilter(
-                authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)));
+            authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)),
+            userService
+        );
         customAuthFilter.setFilterProcessesUrl("/api/auth/signin");
         http.addFilter(customAuthFilter);
         http.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
