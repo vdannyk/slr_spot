@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
+import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -116,8 +117,19 @@ public class DefaultUserService implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
+    @Override
+    public void updatePersonalInformation(String username, PersonalInformationDto personalInformationDto) {
+        User user = getUser(username);
+        if (personalInformationDto.getFirstName() != null && !personalInformationDto.getFirstName().isEmpty()) {
+            user.setFirstName(personalInformationDto.getFirstName());
+        }
+        if (personalInformationDto.getLastName() != null && !personalInformationDto.getLastName().isEmpty()) {
+            user.setLastName(personalInformationDto.getLastName());
+        }
+        userRepository.save(user);
+    }
+
     private boolean checkIfCorrectPassword(User user, String password) {
         return passwordEncoder.matches(password, user.getPassword());
     }
-
 }

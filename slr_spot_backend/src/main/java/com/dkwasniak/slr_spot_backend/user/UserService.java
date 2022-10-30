@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.role.Role;
+import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface UserService {
     void updatePassword(String username, String oldPassword, String newPassword, String confirmPassword);
     void changeEmail(String oldEmail, String newEmail, String password);
     void updateEmail(String oldEmail, String newEmail);
+    void updatePersonalInformation(String username, PersonalInformationDto personalInformationDto);
 }

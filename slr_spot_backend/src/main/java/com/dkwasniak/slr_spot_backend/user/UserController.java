@@ -5,6 +5,7 @@ import com.dkwasniak.slr_spot_backend.jwt.JwtResponse;
 import com.dkwasniak.slr_spot_backend.jwt.RefreshTokenRequest;
 import com.dkwasniak.slr_spot_backend.role.RoleToUserRequest;
 import com.dkwasniak.slr_spot_backend.user.dto.PasswordDto;
+import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -151,6 +152,13 @@ public class UserController {
     @PostMapping("/users/updateEmail")
     public ResponseEntity<String> updateEmail(@RequestParam String oldEmail, @RequestParam String newEmail) throws Exception {
         userFacade.updateEmail(oldEmail, newEmail);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/users/updatePersonal")
+    public ResponseEntity<String> updateEmail(@RequestBody PersonalInformationDto personalInfoDto) throws Exception {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        userFacade.updatePersonalInformation(username, personalInfoDto);
         return ResponseEntity.ok().build();
     }
 }
