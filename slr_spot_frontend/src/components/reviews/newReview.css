@@ -4,16 +4,79 @@
   background-color: white;
   margin: 20px 20px;
   border-radius: 5px;
+  height: 80vh;
+}
+
+.slrspot__newReview input {
+	background-color: rgb(220, 220, 220);
+	border: none;
+	padding: 8px 15px;
+	font-size: 16px;
+  margin-bottom: 5px;
 }
 
 .slrspot__newReview-header {
-  display: flex;
-  justify-content: center;
+  border-bottom: thin solid #000000;
+}
+
+.slrspot__newReview-header h1 {
+  text-transform: uppercase;
+  font-size: 40px;
+  margin: 10px;
 }
 
 .slrspot__newReview-container {
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.slrspot__newReview-menu {
+  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 20%;
+}
+
+.slrspot__newReview-menu p {
+  width: 100%;
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0;
+  border-bottom: 1px solid #eee;
+}
+
+.slrspot__newReview-menu p:hover {
+  background-color: #967aff;
+}
+
+.slrspot__newReview-menu-selected {
+  background-color: #967aff;
+  color: white;
+}
+
+.slrspot__newReview-settings {
+  width: 80%;
+  border-left: 1px solid black;
+}
+
+.slrspot__newReview-reviewSettings {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 40px;
+}
+
+.slrspot__newReview-reviewSettings button {
+  border-radius: 5px;
+	background: #967aff;
+	color: white;
+  font-size: 14px;
+	font-weight: bold;
+	padding: 10px 20px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	cursor: pointer;
+  margin-top: 10px;
 }

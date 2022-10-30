@@ -7,29 +7,34 @@ import './reviews.css'
 const Reviews = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const [isShowAll, setIsShowAll] = useState(false);
 
   const onClick = () => {
     navigate('/reviews/new');
   };
 
   useEffect(() => {
-    axiosInstance.get("/reviews")
-    .then((response) => {
-      setData(response.data);
-      console.log(response.data);
-    });
-  }, []);
+    if (isShowAll) {
+      axiosInstance.get("/reviews")
+      .then((response) => {
+        setData(response.data);
+        console.log(response.data);
+      });
+    } else {
+      axiosInstance.get("/reviews/yours")
+      .then((response) => {
+        setData(response.data);
+        console.log(response.data);
+      });
+    }
+  }, [isShowAll]);
 
-  // const data = [
-  //   {title:"Przeglad na temat tematow", author:"nieznany"},
-  //   {title:"Przeglad na temat braku tematow", author:"znany"}
-  // ];
-
-  const listItems = data.map((d) => 
-    <tbody key={d.title}>
+  const listItems = data.map((item, id) => 
+    <tbody key={id}>
       <tr>
-        <td>1</td>
-        <td>{d.title}</td>
+        <td>{id+1}</td>
+        <td>{item.title}</td>
+        <td>{item.user.firstName} {item.user.lastName}</td>
       </tr>
     </tbody>
   );
@@ -38,18 +43,19 @@ const Reviews = () => {
     <div className='slrspot__reviews'>
       <div className='slrspot__reviews-header'>
         <h1>Reviews</h1>
+        <button onClick={onClick}>New review</button>
       </div>
       <div className='slrspot__reviews-container'>
-        <button onClick={onClick}>New review</button>
         <div className='slrspot__reviews-select'>
-          <h2>Your reviews</h2>
-          <h2>All reviews</h2>
+          <a onClick={() => setIsShowAll(false)}>Your reviews</a>
+          <a onClick={() => setIsShowAll(true)}>All reviews</a>
         </div>
         <Table striped bordered hover>
           <thead>
             <tr>
               <th>#</th>
               <th>Title</th>
+              <th>Owner</th>
             </tr>
           </thead>
           {listItems}
