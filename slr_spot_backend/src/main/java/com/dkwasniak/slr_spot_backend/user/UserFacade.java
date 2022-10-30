@@ -102,8 +102,8 @@ public class UserFacade {
         user.getRoles().add(role);
     }
 
-    public void updatePassword(String username, String oldPassword, String newPassword) {
-        userService.updatePassword(username, oldPassword, newPassword);
+    public void updatePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
+        userService.updatePassword(username, oldPassword, newPassword, confirmPassword);
     }
 
 

@@ -92,7 +92,7 @@ public class DefaultUserService implements UserService, UserDetailsService {
     }
 
     @Override
-    public void updatePassword(String username, String oldPassword, String newPassword) {
+    public void updatePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
         User user = getUser(username);
         if (!checkIfCorrectPassword(user, oldPassword)) {
             throw new IllegalStateException("Invalid old password");

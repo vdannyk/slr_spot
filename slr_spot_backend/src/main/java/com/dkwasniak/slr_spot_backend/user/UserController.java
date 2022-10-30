@@ -136,8 +136,9 @@ public class UserController {
 
     @PostMapping("/users/updatePassword")
     public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRq) throws Exception {
-        userFacade.updatePassword(updatePasswordRq.getUsername(), updatePasswordRq.getOldPassword(),
-                updatePasswordRq.getNewPassword());
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        userFacade.updatePassword(username, updatePasswordRq.getOldPassword(), updatePasswordRq.getNewPassword(),
+                updatePasswordRq.getConfirmPassword());
         return ResponseEntity.ok().build();
     }
 
