@@ -15,10 +15,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "project")
+@Table(name = "review")
 @NoArgsConstructor
 @Getter
-public class Project {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class Project {
     )
     private User user;
 
-    public Project(String title, User user) {
+    public Review(String title, User user) {
         this.title = title;
         this.user = user;
     }

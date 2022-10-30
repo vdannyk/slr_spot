@@ -1,8 +1,6 @@
 package com.dkwasniak.slr_spot_backend.project;
 
-import com.dkwasniak.slr_spot_backend.project.dto.ProjectDto;
-import com.dkwasniak.slr_spot_backend.role.RoleToUserRequest;
-import com.dkwasniak.slr_spot_backend.user.User;
+import com.dkwasniak.slr_spot_backend.project.dto.ReviewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,26 +15,26 @@ import java.util.List;
 @Controller
 @RequestMapping(path = "api/reviews")
 @RequiredArgsConstructor
-public class ProjectController {
+public class ReviewController {
 
-    private final ProjectFacade projectFacade;
-    private final ProjectService projectService;
+    private final ReviewFacade reviewFacade;
+    private final ReviewService reviewService;
 
     @GetMapping
-    public ResponseEntity<List<Project>> getAllProjects() {
-        return ResponseEntity.ok().body(projectService.getReviews());
+    public ResponseEntity<List<Review>> getAllProjects() {
+        return ResponseEntity.ok().body(reviewService.getReviews());
     }
 
     @GetMapping("/yours")
-    public ResponseEntity<List<Project>> getUserProjects() {
+    public ResponseEntity<List<Review>> getUserProjects() {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        return ResponseEntity.ok().body(projectService.getReviewsByUser(username));
+        return ResponseEntity.ok().body(reviewService.getReviewsByUser(username));
     }
 
     @PostMapping("/save")
-    public ResponseEntity<List<Project>> saveProject(@RequestBody ProjectDto projectDto) {
+    public ResponseEntity<List<Review>> saveProject(@RequestBody ReviewDto reviewDto) {
         var user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        projectFacade.createProject(projectDto, user);
+        reviewFacade.createProject(reviewDto, user);
         return ResponseEntity.ok().build();
     }
 }

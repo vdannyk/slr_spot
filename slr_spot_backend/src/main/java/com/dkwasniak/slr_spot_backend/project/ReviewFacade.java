@@ -1,6 +1,6 @@
 package com.dkwasniak.slr_spot_backend.project;
 
-import com.dkwasniak.slr_spot_backend.project.dto.ProjectDto;
+import com.dkwasniak.slr_spot_backend.project.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -11,13 +11,13 @@ import javax.transaction.Transactional;
 @Component
 @Transactional
 @RequiredArgsConstructor
-public class ProjectFacade {
+public class ReviewFacade {
 
-    private final ProjectService projectService;
+    private final ReviewService reviewService;
     private final UserService userService;
 
-    public void createProject(ProjectDto projectDto, String username) {
+    public void createProject(ReviewDto reviewDto, String username) {
         User user = userService.getUser(username);
-        Project project = projectService.saveProject(new Project(projectDto.getTitle(), user));
+        Review review = reviewService.saveProject(new Review(reviewDto.getTitle(), user));
     }
 }

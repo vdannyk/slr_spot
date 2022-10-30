@@ -1,6 +1,6 @@
 package com.dkwasniak.slr_spot_backend.user;
 
-import com.dkwasniak.slr_spot_backend.project.Project;
+import com.dkwasniak.slr_spot_backend.project.Review;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +42,7 @@ public class User {
     private Collection<Role> roles;
 
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<Project> projects;
+    private Set<Review> reviews;
 
     public User(String firstName, String lastName, String email, String password, Collection<Role> roles) {
         this.firstName = firstName;
@@ -51,6 +50,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.roles = roles;
-        this.projects = new HashSet<>();
+        this.reviews = new HashSet<>();
     }
 }

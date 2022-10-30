@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 
 @Data
-public class ProjectDto {
+public class ReviewDto {
 
     private String title;
 }

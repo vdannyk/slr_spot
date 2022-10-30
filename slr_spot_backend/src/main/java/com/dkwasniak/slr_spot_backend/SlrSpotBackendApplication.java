@@ -1,7 +1,7 @@
 package com.dkwasniak.slr_spot_backend;
 
-import com.dkwasniak.slr_spot_backend.project.Project;
-import com.dkwasniak.slr_spot_backend.project.ProjectService;
+import com.dkwasniak.slr_spot_backend.project.Review;
+import com.dkwasniak.slr_spot_backend.project.ReviewService;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserFacade;
@@ -25,7 +25,7 @@ public class SlrSpotBackendApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(UserService userService, UserFacade userFacade, ProjectService projectService) {
+	CommandLineRunner run(UserService userService, UserFacade userFacade, ReviewService reviewService) {
 		return args -> {
 			userService.saveRole(new Role("ROLE_USER"));
 			userService.saveRole(new Role("ROLE_ADMIN"));
@@ -40,16 +40,16 @@ public class SlrSpotBackendApplication {
 			userFacade.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
 			userFacade.addRoleToUser("tobi@gmail.com", "ROLE_USER");
 
-			var proj1 = new Project("testowy projekt", danny);
-			var proj2 = new Project("testowy projekt1", danny);
-			var proj3 = new Project("testowy projekt2", danny);
-			var proj4 = new Project("testowy projekt3", tobi);
-			var proj5 = new Project("testowy projekt4", tobi);
-			projectService.saveProject(proj1);
-			projectService.saveProject(proj2);
-			projectService.saveProject(proj3);
-			projectService.saveProject(proj4);
-			projectService.saveProject(proj5);
+			var proj1 = new Review("testowy projekt", danny);
+			var proj2 = new Review("testowy projekt1", danny);
+			var proj3 = new Review("testowy projekt2", danny);
+			var proj4 = new Review("testowy projekt3", tobi);
+			var proj5 = new Review("testowy projekt4", tobi);
+			reviewService.saveProject(proj1);
+			reviewService.saveProject(proj2);
+			reviewService.saveProject(proj3);
+			reviewService.saveProject(proj4);
+			reviewService.saveProject(proj5);
 		};
 	}
 
