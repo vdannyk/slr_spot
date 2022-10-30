@@ -49,8 +49,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String jwtToken = generateJwt(user, request);
         String refreshToken = generateRefreshToken(user, request);
         JwtResponse jwtResponse = new JwtResponse(
-                jwtToken,
-                refreshToken
+            user.getId(),
+            user.getEmail(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getRoles(),
+            jwtToken,
+            refreshToken
         );
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), jwtResponse);

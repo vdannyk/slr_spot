@@ -81,8 +81,13 @@ public class UserController {
                 String jwtToken = generateJwt(user, request);
 
                 JwtResponse jwtResponse = new JwtResponse(
-                        jwtToken,
-                        refreshToken
+                    user.getId(),
+                    user.getEmail(),
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getRoles(),
+                    jwtToken,
+                    refreshToken
                 );
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), jwtResponse);
