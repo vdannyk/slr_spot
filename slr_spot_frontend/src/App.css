@@ -29,27 +29,28 @@ button {
 .slrspot__app {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 .gradient__bg {
 
     /* ff 3.6+ */
-    background:-moz-linear-gradient(90deg, rgba(32, 84, 255, 0.6) 0%, rgba(34, 214, 255, 0.43) 50%, rgba(32, 84, 255, 0.6) 100%); 
+    background:-moz-linear-gradient(90deg, rgba(126, 155, 255, 1) 0%, rgba(176,236,255,255) 50%, rgba(126, 155, 255, 1) 100%); 
 
     /* safari 5.1+,chrome 10+ */
-    background:-webkit-linear-gradient(90deg, rgba(32, 84, 255, 0.6) 0%, rgba(34, 214, 255, 0.43) 50%, rgba(32, 84, 255, 0.6) 100%);
+    background:-webkit-linear-gradient(90deg, rgba(126, 155, 255, 1) 0%, rgba(176,236,255,255) 50%, rgba(126, 155, 255, 1) 100%);
 
     /* opera 11.10+ */
-    background:-o-linear-gradient(90deg, rgba(32, 84, 255, 0.6) 0%, rgba(34, 214, 255, 0.43) 50%, rgba(32, 84, 255, 0.6) 100%);
+    background:-o-linear-gradient(90deg, rgba(126, 155, 255, 1) 0%, rgba(176,236,255,255) 50%, rgba(126, 155, 255, 1) 100%);
 
     /* ie 6-9 */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2054FF', endColorstr='#2054FF', GradientType=0 );
 
     /* ie 10+ */
-    background:-ms-linear-gradient(90deg, rgba(32, 84, 255, 0.6) 0%, rgba(34, 214, 255, 0.43) 50%, rgba(32, 84, 255, 0.6) 100%);
+    background:-ms-linear-gradient(90deg, rgba(126, 155, 255, 1) 0%, rgba(176,236,255,255) 50%, rgba(126, 155, 255, 1) 100%);
 
     /* global 94%+ browsers support */
-    background:linear-gradient(90deg, rgba(32, 84, 255, 0.6) 0%, rgba(34, 214, 255, 0.43) 50%, rgba(32, 84, 255, 0.6) 100%);
+    background:linear-gradient(90deg, rgba(126, 155, 255, 1) 0%, rgba(176,236,255,255) 50%, rgba(126, 155, 255, 1) 100%);
 
 }
 
