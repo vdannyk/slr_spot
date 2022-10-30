@@ -24,10 +24,12 @@ const Profile = () => {
             <input/>
             <label>Last name</label>
             <input/>
+            <button>Update</button>
           </div>
           <div className='slrspot__profile-email'>
             <label>Change your email</label>
             <input/>
+            <button>Update</button>
           </div>
           <div className='slrspot__profile-password'>
             <label>Old password</label>
@@ -36,6 +38,7 @@ const Profile = () => {
             <input/>
             <label>Confirm New Password</label>
             <input/>
+            <button>Update</button>
           </div>
         </div>
       </div>
