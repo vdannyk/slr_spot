@@ -31,10 +31,10 @@ public class SlrSpotBackendApplication {
 			userService.saveRole(new Role("ROLE_ADMIN"));
 
 			var danny = new User("Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>());
-			userFacade.saveUser(danny);
+			userFacade.createUser(danny);
 			userService.activateUser("danny@gmail.com");
 			var tobi = new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>());
-			userFacade.saveUser(tobi);
+			userFacade.createUser(tobi);
 			userService.activateUser("tobi@gmail.com");
 
 			userFacade.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");

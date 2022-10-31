@@ -45,16 +45,12 @@ public class UserController {
     private final UserService userService;
     private final UserFacade userFacade;
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
-    }
-
     @PostMapping("/user/save")
-    public ResponseEntity<String> saveUser(@RequestBody User user) {
+    public ResponseEntity<String> createUser(@RequestBody User user) {
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/api/user/save").toUriString());
-        return ResponseEntity.created(uri).body(userFacade.saveUser(user));
+        userFacade.createUser(user);
+        return ResponseEntity.created(uri).build();
     }
 
     @GetMapping("/user/confirm")
