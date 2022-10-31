@@ -45,16 +45,16 @@ public class UserController {
     private final UserService userService;
     private final UserFacade userFacade;
 
-    @PostMapping("/user/save")
-    public ResponseEntity<String> createUser(@RequestBody User user) {
+    @PostMapping("/users/save")
+    public ResponseEntity<Void> createUser(@RequestBody User user) {
+        long id = userFacade.createUser(user);
         URI uri = URI.create(ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/api/user/save").toUriString());
-        userFacade.createUser(user);
+                .fromCurrentContextPath().path("/api/users/{id}").buildAndExpand(id).toUriString());
         return ResponseEntity.created(uri).build();
     }
 
     @GetMapping("/users/confirm")
-    public ResponseEntity<String> confirmAccount(@RequestParam String confirmationToken) {
+    public ResponseEntity<Void> confirmAccount(@RequestParam String confirmationToken) {
         userFacade.confirmAccount(confirmationToken);
         return ResponseEntity.ok().build();
     }

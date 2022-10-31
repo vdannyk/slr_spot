@@ -31,7 +31,7 @@ public class UserFacade {
     private final EmailService emailService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
 
-    public void createUser(User user) {
+    public long createUser(User user) {
         User savedUser = userService.saveUser(user);
 
         // confirmation token
@@ -46,6 +46,7 @@ public class UserFacade {
 
         String activationLink = String.format("http://localhost:3000/activate/%s", token);
         emailService.sendVerificationEmail(user.getEmail(), activationLink);
+        return savedUser.getId();
     }
 
     @Transactional
