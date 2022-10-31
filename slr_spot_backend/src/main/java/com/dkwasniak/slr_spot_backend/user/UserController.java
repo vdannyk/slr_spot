@@ -59,12 +59,6 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/role/addtouser")
-    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserRequest roleToUserRq) {
-        userFacade.addRoleToUser(roleToUserRq.getUsername(), roleToUserRq.getRoleName());
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("/user/refreshtoken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
