@@ -1,6 +1,8 @@
 package com.dkwasniak.slr_spot_backend.user;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.dkwasniak.slr_spot_backend.exception.ErrorResponse;
+import com.dkwasniak.slr_spot_backend.jwt.AuthorizationHeaderException;
 import com.dkwasniak.slr_spot_backend.jwt.JwtResponse;
 import com.dkwasniak.slr_spot_backend.jwt.RefreshTokenRequest;
 import com.dkwasniak.slr_spot_backend.role.RoleToUserRequest;
@@ -8,6 +10,7 @@ import com.dkwasniak.slr_spot_backend.user.dto.EmailUpdateDto;
 import com.dkwasniak.slr_spot_backend.user.dto.PasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +27,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.generateJwt;
+import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getUsername;
+import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateHeader;
+import static java.time.Instant.now;
 import static java.util.Objects.isNull;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -44,6 +52,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserFacade userFacade;
+    private final ObjectMapper objectMapper;
 
     @PostMapping("/users/save")
     public ResponseEntity<Void> createUser(@RequestBody User user) {
@@ -64,14 +73,12 @@ public class UserController {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         RefreshTokenRequest refreshTokenRequest =
                 new ObjectMapper().readValue(request.getInputStream(), RefreshTokenRequest.class);
-        if (!StringUtils.isEmpty(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
+        if (validateHeader(authorizationHeader)) {
             try {
                 String refreshToken = refreshTokenRequest.getRefreshToken();
                 DecodedJWT decodedJWT = validateJwt(refreshToken);
-                String username = decodedJWT.getSubject();
-                User user = userService.getUser(username);
+                User user = userService.getUser(getUsername(decodedJWT));
                 String jwtToken = generateJwt(user, request);
-
                 JwtResponse jwtResponse = new JwtResponse(
                     user.getId(),
                     user.getEmail(),
@@ -82,19 +89,15 @@ public class UserController {
                     refreshToken
                 );
                 response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), jwtResponse);
+                objectMapper.writeValue(response.getOutputStream(), jwtResponse);
             } catch (Exception exception) {
                 response.setContentType(APPLICATION_JSON_VALUE);
                 response.setStatus(FORBIDDEN.value());
-                Map<String, Object> error = new HashMap<>();
-                error.put("status", FORBIDDEN.value());
-                error.put("message", exception.getMessage());
-//                error.put("timestamp", LocalDateTime.ofInstant(now(), ZoneId.systemDefault()));
-                error.put("path", request.getServletPath());
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
+                ErrorResponse error = new ErrorResponse(FORBIDDEN, exception.getMessage(), request.getServletPath());
+                objectMapper.writeValue(response.getOutputStream(), error);
             }
         } else {
-            throw new RuntimeException("Refreshing token error");
+            throw new AuthorizationHeaderException("Refresh token error");
         }
     }
 

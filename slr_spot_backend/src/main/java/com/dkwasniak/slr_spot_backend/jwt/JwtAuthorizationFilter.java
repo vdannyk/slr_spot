@@ -1,7 +1,9 @@
 package com.dkwasniak.slr_spot_backend.jwt;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.dkwasniak.slr_spot_backend.exception.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,10 +22,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.extractJwtFromHeader;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getAuthorities;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getUsername;
+import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateHeader;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateJwt;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -32,7 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private static final String SIGN_IN_PATH = "/api/auth/signin";
     private static final String REFRESH_JWT_TOKEN_PATH = "/api/users/refreshtoken";
-    private static final String AUTHORIZATION_PREFIX = "Bearer ";
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -41,9 +46,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if (!StringUtils.isEmpty(authorizationHeader) && authorizationHeader.startsWith(AUTHORIZATION_PREFIX)) {
+            if (validateHeader(authorizationHeader)) {
                 try {
-                    String jwtToken = authorizationHeader.substring(AUTHORIZATION_PREFIX.length());
+                    String jwtToken = extractJwtFromHeader(authorizationHeader);
                     DecodedJWT decodedJWT = validateJwt(jwtToken);
 
                     String username = getUsername(decodedJWT);
@@ -54,15 +59,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
                 } catch (Exception exception) {
-                    log.error("Error while logging: {}", exception.getMessage());
+                    log.error("Error in JwtAuthorizationFilter: {}", exception.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);
                     response.setStatus(UNAUTHORIZED.value());
-                    Map<String, Object> error = new HashMap<>();
-                    error.put("status", UNAUTHORIZED.value());
-                    error.put("message", exception.getMessage());
-//                    error.put("timestamp", LocalDateTime.ofInstant(now(), ZoneId.systemDefault()));
-                    error.put("path", request.getServletPath());
-                    new ObjectMapper().writeValue(response.getOutputStream(), error);
+                    ErrorResponse error = new ErrorResponse(UNAUTHORIZED, exception.getMessage(), request.getServletPath());
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.registerModule(new JavaTimeModule());
+                    objectMapper.writeValue(response.getOutputStream(), error);
                 }
             } else {
                 filterChain.doFilter(request, response);
@@ -72,6 +75,5 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private boolean isPathWithoutAuthorization(String path) {
         return path.equals(SIGN_IN_PATH) || path.equals(REFRESH_JWT_TOKEN_PATH);
-
     }
 }
