@@ -55,7 +55,7 @@ public class WebSecurityConfig {
                 "/api/auth/signin/**",
                 "/api/user/refreshtoken/**",
                 "/api/user/save/**",
-                "/api/user/confirm/**",
+                "/api/users/confirm/**",
                 "/api/user/resetpassword/**",
                 "/api/user/changepassword/**",
                 "/api/user/savePassword/**"

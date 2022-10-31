@@ -9,7 +9,7 @@ import './accountActivation.css';
 
 
 const AccountActivation = () => {
-  const { activationToken } = useParams();
+  const { confirmationToken } = useParams();
   const [isLoading, setLoading] = useState(true);
   const [successful, setSuccessful] = useState(false);
   const navigate = useNavigate();
@@ -23,8 +23,8 @@ const AccountActivation = () => {
   };
 
   useEffect(() => {
-    axiosInstance.get("/user/confirm", { params: {
-      activationToken
+    axiosInstance.get("/users/confirm", { params: {
+      confirmationToken
     }})
     .then(() => {
       setLoading(false);

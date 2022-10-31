@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 @Service
 @RequiredArgsConstructor
 public class ConfirmationTokenService {
@@ -16,11 +19,27 @@ public class ConfirmationTokenService {
         confirmationTokenRepository.save(token);
     }
 
-    public Optional<ConfirmationToken> getConfirmationToken(String token) {
-        return confirmationTokenRepository.findByToken(token);
+    public ConfirmationToken getConfirmationToken(String token) {
+        return confirmationTokenRepository.findByToken(token)
+                .orElseThrow(() -> new IllegalStateException("Token not found"));
     }
 
-    public int setConfirmedAt(String token) {
-        return confirmationTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
+    public int confirmToken(ConfirmationToken token) {
+        if (checkIfTokenConfirmed(token)) {
+            throw new IllegalStateException("Email already confirmed");
+        }
+
+        if (checkIfTokenExpired(token)) {
+            throw new IllegalStateException("Token expired");
+        }
+        return confirmationTokenRepository.updateConfirmedAt(token.getToken(), LocalDateTime.now());
+    }
+
+    private boolean checkIfTokenConfirmed(ConfirmationToken token) {
+        return nonNull(token.getConfirmedAt());
+    }
+
+    private boolean checkIfTokenExpired(ConfirmationToken token) {
+        return token.getExpiresAt().isBefore(LocalDateTime.now());
     }
 }

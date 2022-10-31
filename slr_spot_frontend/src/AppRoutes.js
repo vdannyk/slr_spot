@@ -14,7 +14,7 @@ const AppRoutes = () => {
       <Route path="signin" element={<SignInPage />} />
       <Route path="profile" element={isLoggedIn ? <Profile /> : <Navigate to='/' />} />
       <Route path="password-recovery/:resetToken" element={<PasswordRecovery />} />
-      <Route path="activate/:activationToken" element={<AccountActivation />} />
+      <Route path="activate/:confirmationToken" element={<AccountActivation />} />
       <Route path="reviews" element={isLoggedIn ? <Reviews /> : <Navigate to='/' />} />
       <Route path="reviews/new" element={isLoggedIn ? <NewReview />: <Navigate to='/' />} />
     </Routes>

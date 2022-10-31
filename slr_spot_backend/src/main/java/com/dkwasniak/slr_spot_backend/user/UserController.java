@@ -53,9 +53,9 @@ public class UserController {
         return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping("/user/confirm")
-    public ResponseEntity<String> confirmToken(@RequestParam String activationToken) {
-        userFacade.confirmToken(activationToken);
+    @GetMapping("/users/confirm")
+    public ResponseEntity<String> confirmAccount(@RequestParam String confirmationToken) {
+        userFacade.confirmAccount(confirmationToken);
         return ResponseEntity.ok().build();
     }
 

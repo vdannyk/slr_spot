@@ -35,7 +35,7 @@ public class SlrSpotBackendApplication {
 			userService.activateUser("danny@gmail.com");
 			var tobi = new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>());
 			userFacade.createUser(tobi);
-			userService.activateUser("tobi@gmail.com");
+//			userService.activateUser("tobi@gmail.com");
 
 			userFacade.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
 			userFacade.addRoleToUser("tobi@gmail.com", "ROLE_USER");
