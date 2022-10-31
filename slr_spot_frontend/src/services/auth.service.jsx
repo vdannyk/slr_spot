@@ -2,7 +2,7 @@ import TokenService from "./token.service";
 import axiosInstance from "./api";
 
 const register = (firstName, lastName, username, password) => {
-  return axiosInstance.post("/user/save", {
+  return axiosInstance.post("/users/save", {
     firstName: firstName,
     lastName: lastName,
     email: username,

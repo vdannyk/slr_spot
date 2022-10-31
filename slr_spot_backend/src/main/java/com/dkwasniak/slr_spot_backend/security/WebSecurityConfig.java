@@ -52,13 +52,13 @@ public class WebSecurityConfig {
 
         // Set endpoints to authorize
         http.authorizeRequests().antMatchers(
-                "/api/auth/signin/**",
-                "/api/user/refreshtoken/**",
-                "/api/user/save/**",
-                "/api/user/confirm/**",
-                "/api/user/resetpassword/**",
-                "/api/user/changepassword/**",
-                "/api/user/savePassword/**"
+                "/api/auth/signin",
+                "/api/users/refreshtoken",
+                "/api/users/save",
+                "/api/users/confirm",
+                "/api/users/resetPassword",
+                "/api/users/verifyResetPassword",
+                "/api/users/savePassword"
                 ).permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().antMatchers(POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");

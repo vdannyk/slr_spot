@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
 import axiosInstance from "../../services/api";
 import { BeatLoader } from "react-spinners";
+import Check from 'react-bootstrap/FormCheck';
 import './newReview.css'
 
 
@@ -16,9 +17,13 @@ const NewReview = () => {
   const onSubmit = (formData) => {
     setLoading(true);
     const title = formData.title;
-
+    const researchArea = formData.researchArea;
+    const description = formData.description;
+    const isPublic = formData.isPublic;
+    const screeningReviewers = formData.screeningReviewers;
+    console.log(formData);
     axiosInstance.post("/reviews/save", {
-      title
+      title, researchArea, description, isPublic, screeningReviewers
     })
     .then(() => {
       setLoading(false);
@@ -47,7 +52,7 @@ const NewReview = () => {
     if (isReviewSettings) {
       return (
         <div className='slrspot__newReview-reviewSettings'>
-          <label>Title</label>
+          <label>Review name</label>
           <input  
             {...register("title", { 
               required: true,
@@ -57,6 +62,31 @@ const NewReview = () => {
           {errors.title && errors.title.type=== "required" && 
             <p className="slrspot__newReview-error">This field is required</p>
           }
+          <label>Area of research</label>
+          <input  
+            {...register("researchArea", { 
+              required: true,
+            })}
+            name='researchArea' 
+          />
+          {errors.researchArea && errors.researchArea.type=== "required" && 
+            <p className="slrspot__newReview-error">This field is required</p>
+          }
+          <label>Description</label>
+          <input  
+            {...register("description")}
+            name='description' 
+          />
+          <label>Public review</label>
+          <Check {...register("isPublic")}/>
+          <label>Reviewers required for screening</label>
+          <input  
+            {...register("screeningReviewers")}
+            name='screeningReviewers'
+            type='number'
+            min={1}
+            max={10}
+          />
           <button type="submit" className='slrspot__newReview-submitBtn'>
             Create review
           </button>

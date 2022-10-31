@@ -31,7 +31,7 @@ public class UserFacade {
     private final EmailService emailService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
 
-    public String saveUser(User user) {
+    public long createUser(User user) {
         User savedUser = userService.saveUser(user);
 
         // confirmation token
@@ -46,24 +46,22 @@ public class UserFacade {
 
         String activationLink = String.format("http://localhost:3000/activate/%s", token);
         emailService.sendVerificationEmail(user.getEmail(), activationLink);
-        return token;
+        return savedUser.getId();
     }
 
     @Transactional
-    public void confirmToken(String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService
-                .getConfirmationToken(token)
-                .orElseThrow(() -> new IllegalStateException("Token not found"));
-
-        if (!isNull(confirmationToken.getConfirmedAt())) {
-            throw new IllegalStateException("Email already confirmed");
-        }
-
-        if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Token expired");
-        }
-        confirmationTokenService.setConfirmedAt(token);
+    public void confirmAccount(String token) {
+        ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationToken(token);
+        confirmationTokenService.confirmToken(confirmationToken);
         userService.activateUser(confirmationToken.getUser().getEmail());
+    }
+
+    public void resetPassword(String email) {
+        User user = userService.getUser(email);
+
+        String token = UUID.randomUUID().toString();
+        createPasswordResetToken(user, token);
+        constructResetTokenEmail(token, user);
     }
 
     public void createPasswordResetToken(User user, String token) {

@@ -1,11 +1,13 @@
 package com.dkwasniak.slr_spot_backend;
 
-import com.dkwasniak.slr_spot_backend.project.Review;
-import com.dkwasniak.slr_spot_backend.project.ReviewService;
+import com.dkwasniak.slr_spot_backend.review.Review;
+import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserFacade;
 import com.dkwasniak.slr_spot_backend.user.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,11 +33,11 @@ public class SlrSpotBackendApplication {
 			userService.saveRole(new Role("ROLE_ADMIN"));
 
 			var danny = new User("Daniel", "Danielewicz", "danny@gmail.com", "1234", new ArrayList<>());
-			userFacade.saveUser(danny);
+			userFacade.createUser(danny);
 			userService.activateUser("danny@gmail.com");
 			var tobi = new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234", new ArrayList<>());
-			userFacade.saveUser(tobi);
-			userService.activateUser("tobi@gmail.com");
+			userFacade.createUser(tobi);
+//			userService.activateUser("tobi@gmail.com");
 
 			userFacade.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
 			userFacade.addRoleToUser("tobi@gmail.com", "ROLE_USER");
@@ -56,5 +58,12 @@ public class SlrSpotBackendApplication {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public ObjectMapper defaultMapper() {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		return objectMapper;
 	}
 }

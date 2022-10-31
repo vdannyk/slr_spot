@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { RiCloseLine, RiMenu3Line } from 'react-icons/ri';
 import slrspot_logo from '../../assets/slrspot_logo.png';
 import { AccessPopup } from '../../containers'
@@ -9,6 +9,8 @@ import { CgProfile } from "react-icons/cg";
 import { AiFillCaretDown } from "react-icons/ai"
 import { useNavigate } from "react-router-dom";
 import './navbar.css'
+import { clearMessage } from "../../actions/message";
+
 
 
 const useScrollLock = () => {
@@ -34,6 +36,10 @@ const Navbar = () => {
   const { lockScroll, unlockScroll } = useScrollLock();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(clearMessage()); // clear message when changing location
+  }, [dispatch, isSignInPopup, isSignUpPopup]);
 
   const { user: currentUser } = useSelector((state) => state.auth);
 

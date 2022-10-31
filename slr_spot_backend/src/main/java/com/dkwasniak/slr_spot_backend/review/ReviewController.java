@@ -1,6 +1,6 @@
-package com.dkwasniak.slr_spot_backend.project;
+package com.dkwasniak.slr_spot_backend.review;
 
-import com.dkwasniak.slr_spot_backend.project.dto.ReviewDto;
+import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;

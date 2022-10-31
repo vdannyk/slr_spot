@@ -4,6 +4,7 @@ import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
 import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
+import com.dkwasniak.slr_spot_backend.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,12 +33,12 @@ public class DefaultUserService implements UserService, UserDetailsService {
     private final RoleRepository roleRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
         Optional<User> optUser = userRepository.findByEmail(username);
 
         if (optUser.isEmpty()) {
             log.error("User not found in the database");
-            throw new UsernameNotFoundException("User " + username + " not found");
+            throw new UserNotFoundException("User " + username + " not found");
         }
         if (!optUser.get().getIsActivated()) {
             log.error("User account is not activated");
@@ -78,7 +79,8 @@ public class DefaultUserService implements UserService, UserDetailsService {
 
     @Override
     public User getUser(String username) {
-        return userRepository.findByEmail(username).orElseThrow();
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new UserNotFoundException("User " + username + " not found"));
     }
 
     @Override
