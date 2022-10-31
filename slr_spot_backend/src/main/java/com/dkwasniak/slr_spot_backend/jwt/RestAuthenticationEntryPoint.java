@@ -30,7 +30,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
             throws IOException, ServletException {
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        String msg = "Authentication failed";
+        String msg = "Invalid username or password";
         String errorBody = String.format("{\n" +
                 "   \"status\": \"%s\",\n" +
                 "   \"message\": \"%s\",\n" +
