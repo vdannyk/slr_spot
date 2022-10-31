@@ -31,7 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private static final String SIGN_IN_PATH = "/api/auth/signin";
-    private static final String REFRESH_JWT_TOKEN_PATH = "/api/user/refreshtoken";
+    private static final String REFRESH_JWT_TOKEN_PATH = "/api/users/refreshtoken";
     private static final String AUTHORIZATION_PREFIX = "Bearer ";
 
     @Override

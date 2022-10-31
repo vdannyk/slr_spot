@@ -59,7 +59,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/user/refreshtoken")
+    @PostMapping("/users/refreshtoken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         RefreshTokenRequest refreshTokenRequest =

@@ -20,8 +20,8 @@ public class JwtUtils {
 
     private final static String SECRET = "secret";
     private final static String ROLES_CLAIM = "roles";
-    private final static long JWT_EXPIRATION= 10 * 60 * 1000;
-    private final static long REFRESH_TOKEN_EXPIRATION = 30 * 60 * 1000;
+    private final static long JWT_EXPIRATION= 1 * 60 * 1000;
+    private final static long REFRESH_TOKEN_EXPIRATION = 2 * 60 * 1000;
 
     public static DecodedJWT validateJwt(String jwt) {
         Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes());
