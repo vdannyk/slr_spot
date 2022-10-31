@@ -16,8 +16,9 @@ public class ReviewFacade {
     private final ReviewService reviewService;
     private final UserService userService;
 
-    public void createProject(ReviewDto reviewDto, String username) {
+    public long createProject(ReviewDto reviewDto, String username) {
         User user = userService.getUser(username);
         Review review = reviewService.saveProject(new Review(reviewDto.getTitle(), user));
+        return review.getId();
     }
 }

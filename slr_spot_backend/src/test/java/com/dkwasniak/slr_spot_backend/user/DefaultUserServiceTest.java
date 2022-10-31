@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend.user;
 
 
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
+import com.dkwasniak.slr_spot_backend.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,7 +51,7 @@ public class DefaultUserServiceTest {
     public void saveUser_shouldThrowUserNotFoundException_whenUserNotExistsInDatabase() {
         when(userRepository.findByEmail("test@gmail.com")).thenReturn(Optional.empty());
 
-        assertThrows(UsernameNotFoundException.class,
+        assertThrows(UserNotFoundException.class,
                 () -> defaultUserService.loadUserByUsername("test@gmail.com"));
     }
 
