@@ -1,4 +1,4 @@
-package com.dkwasniak.slr_spot_backend.project;
+package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;

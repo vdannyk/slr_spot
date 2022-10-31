@@ -1,7 +1,7 @@
 package com.dkwasniak.slr_spot_backend;
 
-import com.dkwasniak.slr_spot_backend.project.Review;
-import com.dkwasniak.slr_spot_backend.project.ReviewService;
+import com.dkwasniak.slr_spot_backend.review.Review;
+import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserFacade;

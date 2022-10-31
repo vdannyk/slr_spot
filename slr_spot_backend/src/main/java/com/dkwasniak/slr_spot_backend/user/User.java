@@ -1,6 +1,6 @@
 package com.dkwasniak.slr_spot_backend.user;
 
-import com.dkwasniak.slr_spot_backend.project.Review;
+import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
