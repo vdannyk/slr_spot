@@ -56,6 +56,14 @@ public class UserFacade {
         userService.activateUser(confirmationToken.getUser().getEmail());
     }
 
+    public void resetPassword(String email) {
+        User user = userService.getUser(email);
+
+        String token = UUID.randomUUID().toString();
+        createPasswordResetToken(user, token);
+        constructResetTokenEmail(token, user);
+    }
+
     public void createPasswordResetToken(User user, String token) {
         PasswordResetToken resetToken = new PasswordResetToken(token, user);
         passwordResetTokenRepository.save(resetToken);

@@ -101,28 +101,19 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/resetpassword")
-    public ResponseEntity<String> resetPassword(@RequestParam String email) throws Exception {
-        User user = userService.getUser(email);
-        if (isNull(user)) {
-            throw new Exception("User not found exception");
-        }
-
-        String token = UUID.randomUUID().toString();
-        userFacade.createPasswordResetToken(user, token);
-        userFacade.constructResetTokenEmail(token, user);
-
+    @PostMapping("/users/resetPassword")
+    public ResponseEntity<Void> resetPassword(@RequestParam String email) {
+        userFacade.resetPassword(email);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/user/changepassword")
-    public ResponseEntity<String> changePassword(@RequestParam String resetToken) throws Exception {
+    @GetMapping("/users/verifyResetPassword")
+    public ResponseEntity<String> verifyResetPassword(@RequestParam String resetToken) throws Exception {
         userFacade.validateResetPasswordToken(resetToken);
-
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/user/savePassword")
+    @PostMapping("/users/savePassword")
     public ResponseEntity<String> resetPassword(@RequestBody PasswordDto passwordDto) throws Exception {
         User user = userFacade.getUserByPasswordResetToken(passwordDto.getToken());
         userService.changePassword(user, passwordDto.getNewPassword());
