@@ -30,7 +30,6 @@ import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateJwt;
 import static com.dkwasniak.slr_spot_backend.util.EndpointConstants.API_PATH;
 import static com.dkwasniak.slr_spot_backend.util.EndpointConstants.AUTH_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
