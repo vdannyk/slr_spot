@@ -53,12 +53,11 @@ public class WebSecurityConfig {
         // Set endpoints to authorize
         http.authorizeRequests().antMatchers(
                 AUTH_PATH,
-                API_PATH + "/users/refreshtoken",
+                API_PATH + "/auth/refresh",
                 API_PATH + "/users/save",
                 API_PATH + "/users/confirm",
                 API_PATH + "/password/reset",
-                API_PATH + "/password/forgot",
-                API_PATH + "/users/savePassword"
+                API_PATH + "/password/forgot"
                 ).permitAll();
         http.authorizeRequests().anyRequest().authenticated();
 

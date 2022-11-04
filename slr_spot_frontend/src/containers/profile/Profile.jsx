@@ -28,7 +28,7 @@ const Profile = () => {
 
   const onEmailSubmit = (formData) => {
     console.log(formData);
-    axiosInstance.post("/users/changeEmail", {
+    axiosInstance.post("/users/email/update", {
       newEmail: formData.email
     })
     .then(() => {
@@ -40,7 +40,7 @@ const Profile = () => {
   };
 
   const onNameSubmit = (formData) => {
-    axiosInstance.post("/users/updatePersonal", {
+    axiosInstance.post("/users/name/update", {
       firstName: formData.firstName,
       lastName: formData.lastName
     })

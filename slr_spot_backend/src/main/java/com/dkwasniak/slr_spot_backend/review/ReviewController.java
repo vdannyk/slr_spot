@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
+import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "api/reviews")
+@RequestMapping(EndpointConstants.API_PATH + "/reviews")
 @RequiredArgsConstructor
 public class ReviewController {
 
