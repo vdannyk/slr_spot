@@ -53,7 +53,7 @@ const Profile = () => {
   };
 
   const onPasswordSubmit = (formData) => {
-    axiosInstance.post("/users/updatePassword", {
+    axiosInstance.post("/users/password/update", {
       oldPassword: formData.oldPassword,
       newPassword: formData.newPassword,
       confirmPassword: formData.confirmPassword

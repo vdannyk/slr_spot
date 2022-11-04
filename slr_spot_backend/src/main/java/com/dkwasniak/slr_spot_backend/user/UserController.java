@@ -7,6 +7,7 @@ import com.dkwasniak.slr_spot_backend.jwt.JwtResponse;
 import com.dkwasniak.slr_spot_backend.jwt.RefreshTokenRequest;
 import com.dkwasniak.slr_spot_backend.user.dto.EmailUpdateDto;
 import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
+import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +36,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateJwt;
 
 
-@Controller
+@RestController
 @RequestMapping(EndpointConstants.API_PATH + "/users")
 @RequiredArgsConstructor
 public class UserController {
@@ -90,11 +92,10 @@ public class UserController {
         }
     }
 
-    @PostMapping("/updatePassword")
-    public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRq) throws Exception {
-//        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-//        forgotPasswordFacade.updatePassword(username, updatePasswordRq.getOldPassword(), updatePasswordRq.getNewPassword(),
-//                updatePasswordRq.getConfirmPassword());
+    @PostMapping("/password/update")
+    public ResponseEntity<Void> updatePassword(@RequestBody UpdatePasswordDto updatePasswordDto) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        userFacade.updatePassword(username, updatePasswordDto);
         return ResponseEntity.ok().build();
     }
 

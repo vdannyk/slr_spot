@@ -6,6 +6,7 @@ import com.dkwasniak.slr_spot_backend.email.EmailService;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
 import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
+import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -60,6 +61,13 @@ public class UserFacade {
     public void changeEmail(String newEmail) {
         String activationLink = "http://localhost:3000/users/confirmEmail";
         emailService.sendVerificationEmail(newEmail, activationLink);
+    }
+
+    public void updatePassword(String username, UpdatePasswordDto updatePasswordDto) {
+        userService.updatePassword(username,
+                updatePasswordDto.getOldPassword(),
+                updatePasswordDto.getNewPassword(),
+                updatePasswordDto.getConfirmPassword());
     }
 
     public void updateEmail(String username, String newEmail) {
