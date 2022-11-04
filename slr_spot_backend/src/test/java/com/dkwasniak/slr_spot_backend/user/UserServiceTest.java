@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
@@ -21,13 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultUserServiceTest {
+public class UserServiceTest {
 
     @Mock private UserRepository userRepository;
     @Mock private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private DefaultUserService defaultUserService;
+    private UserService userService;
 
     @Test
     @DisplayName("Load user when exists in database")
@@ -42,7 +41,7 @@ public class DefaultUserServiceTest {
 
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
-        var loadedUser = defaultUserService.loadUserByUsername("test@gmail.com");
+        var loadedUser = userService.loadUserByUsername("test@gmail.com");
         assertEquals(securityUser, loadedUser);
     }
 
@@ -52,7 +51,7 @@ public class DefaultUserServiceTest {
         when(userRepository.findByEmail("test@gmail.com")).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class,
-                () -> defaultUserService.loadUserByUsername("test@gmail.com"));
+                () -> userService.loadUserByUsername("test@gmail.com"));
     }
 
     @Test
@@ -62,7 +61,7 @@ public class DefaultUserServiceTest {
         when(userRepository.findByEmail("test@gmail.com")).thenReturn(Optional.of(user));
 
         assertThrows(IllegalStateException.class,
-                () -> defaultUserService.loadUserByUsername("test@gmail.com"));
+                () -> userService.loadUserByUsername("test@gmail.com"));
     }
 
     @Test
@@ -74,7 +73,7 @@ public class DefaultUserServiceTest {
         when(passwordEncoder.encode(user.getPassword())).thenReturn(user.getPassword());
         when(userRepository.save(user)).thenReturn(user);
         
-        var savedUser = defaultUserService.saveUser(user);
+        var savedUser = userService.saveUser(user);
         assertEquals(user, savedUser);
     }
 
@@ -85,6 +84,6 @@ public class DefaultUserServiceTest {
         when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
 
         assertThrows(UserAlreadyExistException.class,
-                () -> defaultUserService.saveUser(user));
+                () -> userService.saveUser(user));
     }
 }

@@ -6,8 +6,8 @@ import com.dkwasniak.slr_spot_backend.jwt.AuthorizationHeaderException;
 import com.dkwasniak.slr_spot_backend.jwt.JwtResponse;
 import com.dkwasniak.slr_spot_backend.jwt.RefreshTokenRequest;
 import com.dkwasniak.slr_spot_backend.user.dto.EmailUpdateDto;
-import com.dkwasniak.slr_spot_backend.user.dto.PasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
+import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +35,7 @@ import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateJwt;
 
 
 @Controller
-@RequestMapping(path = "api/users")
+@RequestMapping(EndpointConstants.API_PATH + "/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -90,30 +90,11 @@ public class UserController {
         }
     }
 
-    @PostMapping("/resetPassword")
-    public ResponseEntity<Void> resetPassword(@RequestParam String email) {
-        userFacade.resetPassword(email);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/verifyResetPassword")
-    public ResponseEntity<String> verifyResetPassword(@RequestParam String resetToken) throws Exception {
-        userFacade.validateResetPasswordToken(resetToken);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/savePassword")
-    public ResponseEntity<String> resetPassword(@RequestBody PasswordDto passwordDto) throws Exception {
-        User user = userFacade.getUserByPasswordResetToken(passwordDto.getToken());
-        userService.changePassword(user, passwordDto.getNewPassword());
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("/updatePassword")
     public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRq) throws Exception {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        userFacade.updatePassword(username, updatePasswordRq.getOldPassword(), updatePasswordRq.getNewPassword(),
-                updatePasswordRq.getConfirmPassword());
+//        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+//        forgotPasswordFacade.updatePassword(username, updatePasswordRq.getOldPassword(), updatePasswordRq.getNewPassword(),
+//                updatePasswordRq.getConfirmPassword());
         return ResponseEntity.ok().build();
     }
 

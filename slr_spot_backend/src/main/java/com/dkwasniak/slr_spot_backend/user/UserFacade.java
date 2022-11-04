@@ -3,8 +3,6 @@ package com.dkwasniak.slr_spot_backend.user;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationToken;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
 import com.dkwasniak.slr_spot_backend.email.EmailService;
-import com.dkwasniak.slr_spot_backend.passwordResetToken.PasswordResetToken;
-import com.dkwasniak.slr_spot_backend.passwordResetToken.PasswordResetTokenRepository;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
 import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
@@ -14,10 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
-
-import static java.util.Objects.isNull;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +24,6 @@ public class UserFacade {
     private final RoleRepository roleRepository;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
-    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     public long createUser(User user) {
         User savedUser = userService.saveUser(user);
@@ -56,55 +50,12 @@ public class UserFacade {
         userService.activateUser(confirmationToken.getUser().getEmail());
     }
 
-    public void resetPassword(String email) {
-        User user = userService.getUser(email);
-
-        String token = UUID.randomUUID().toString();
-        createPasswordResetToken(user, token);
-        constructResetTokenEmail(token, user);
-    }
-
-    public void createPasswordResetToken(User user, String token) {
-        PasswordResetToken resetToken = new PasswordResetToken(token, user);
-        passwordResetTokenRepository.save(resetToken);
-    }
-
-    public void constructResetTokenEmail(String token, User user) {
-        String resetPasswordLink =  String.format("http://localhost:3000/password-recovery/%s", token);
-        emailService.sendResetPasswordEmail(user.getEmail(), resetPasswordLink);
-    }
-
-    public void validateResetPasswordToken(String token) throws Exception {
-        Optional<PasswordResetToken> passwordResetToken = passwordResetTokenRepository.findByToken(token);
-
-        if (passwordResetToken.isEmpty())
-            throw new Exception("Reset token not found");
-        if (isResetPasswordTokenExpired(passwordResetToken.get()))
-            throw new Exception("Reset token expired");
-    }
-
-    private boolean isResetPasswordTokenExpired(PasswordResetToken token) {
-        return token.getExpiresAt().isBefore(LocalDateTime.now());
-    }
-
-    public User getUserByPasswordResetToken(String token) {
-        Optional<PasswordResetToken> resetToken = passwordResetTokenRepository.findByToken(token);
-        if (resetToken.isEmpty())
-            return null;
-        return resetToken.get().getUser();
-    }
-
     public void addRoleToUser(String username, String roleName) {
         log.info("Role {} added to user {}", roleName, username);
         User user = userService.getUser(username);
         Role role = roleRepository.findByName(roleName).orElseThrow();
         user.getRoles().add(role);
     }
-
-    public void updatePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
-        userService.updatePassword(username, oldPassword, newPassword, confirmPassword);
-    }
-
 
     public void changeEmail(String newEmail) {
         String activationLink = "http://localhost:3000/users/confirmEmail";

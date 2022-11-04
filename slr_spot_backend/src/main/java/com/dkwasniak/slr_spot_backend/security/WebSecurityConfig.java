@@ -24,8 +24,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static com.dkwasniak.slr_spot_backend.util.EndpointConstants.API_PATH;
+import static com.dkwasniak.slr_spot_backend.util.EndpointConstants.AUTH_PATH;
 
 
 @Configuration
@@ -52,16 +52,14 @@ public class WebSecurityConfig {
 
         // Set endpoints to authorize
         http.authorizeRequests().antMatchers(
-                "/api/auth/signin",
-                "/api/users/refreshtoken",
-                "/api/users/save",
-                "/api/users/confirm",
-                "/api/users/resetPassword",
-                "/api/users/verifyResetPassword",
-                "/api/users/savePassword"
+                AUTH_PATH,
+                API_PATH + "/users/refreshtoken",
+                API_PATH + "/users/save",
+                API_PATH + "/users/confirm",
+                API_PATH + "/password/reset",
+                API_PATH + "/password/forgot",
+                API_PATH + "/users/savePassword"
                 ).permitAll();
-        http.authorizeRequests().antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
-        http.authorizeRequests().antMatchers(POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
 
         // Add authentication filter
@@ -69,7 +67,7 @@ public class WebSecurityConfig {
             authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)),
             userService
         );
-        customAuthFilter.setFilterProcessesUrl("/api/auth/signin");
+        customAuthFilter.setFilterProcessesUrl(AUTH_PATH);
         http.addFilter(customAuthFilter);
         http.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 

@@ -24,7 +24,7 @@ const PasswordRecovery = () => {
   };
 
   useEffect(() => {
-    axiosInstance.get("/users/verifyResetPassword", { params: {
+    axiosInstance.get("/password/forgot", { params: {
       resetToken
     }})
     .then(() => {
@@ -38,7 +38,7 @@ const PasswordRecovery = () => {
   }, []);
 
   const onSubmit = (formData) => {
-    axiosInstance.post("/users/savePassword", {
+    axiosInstance.post("/password/reset", {
       token: resetToken,
       newPassword: formData.password
     })

@@ -27,6 +27,8 @@ import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getAuthorities;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getUsername;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateHeader;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateJwt;
+import static com.dkwasniak.slr_spot_backend.util.EndpointConstants.API_PATH;
+import static com.dkwasniak.slr_spot_backend.util.EndpointConstants.AUTH_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -35,8 +37,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    private static final String SIGN_IN_PATH = "/api/auth/signin";
-    private static final String REFRESH_JWT_TOKEN_PATH = "/api/users/refreshtoken";
+    private static final String SIGN_IN_PATH = API_PATH + AUTH_PATH;
+    private static final String REFRESH_JWT_TOKEN_PATH = API_PATH + "/users/refreshtoken";
 
 
     @Override
