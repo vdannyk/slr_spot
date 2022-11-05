@@ -2,7 +2,6 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
-import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
 import com.dkwasniak.slr_spot_backend.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -103,13 +102,13 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void updatePersonalInformation(String username, PersonalInformationDto personalInformationDto) {
+    public void updateName(String username, String firstName, String lastName) {
         User user = getUser(username);
-        if (personalInformationDto.getFirstName() != null && !personalInformationDto.getFirstName().isEmpty()) {
-            user.setFirstName(personalInformationDto.getFirstName());
+        if (firstName != null && !firstName.isEmpty()) {
+            user.setFirstName(firstName);
         }
-        if (personalInformationDto.getLastName() != null && !personalInformationDto.getLastName().isEmpty()) {
-            user.setLastName(personalInformationDto.getLastName());
+        if (lastName != null && !lastName.isEmpty()) {
+            user.setLastName(lastName);
         }
         userRepository.save(user);
     }

@@ -7,7 +7,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.user.User;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -21,8 +20,8 @@ public class JwtUtils {
 
     private final static String SECRET = "secret";
     private final static String ROLES_CLAIM = "roles";
-    private final static long JWT_EXPIRATION= 1 * 60 * 1000;
-    private final static long REFRESH_TOKEN_EXPIRATION = 2 * 60 * 1000;
+    private final static long JWT_EXPIRATION= 10 * 60 * 1000;
+    private final static long REFRESH_TOKEN_EXPIRATION = 20 * 60 * 1000;
     private static final String AUTHORIZATION_PREFIX = "Bearer ";
 
     public static DecodedJWT validateJwt(String jwt) {

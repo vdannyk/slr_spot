@@ -29,7 +29,7 @@ const Profile = () => {
   const onEmailSubmit = (formData) => {
     console.log(formData);
     axiosInstance.post("/users/email/update", {
-      newEmail: formData.email
+      email: formData.email
     })
     .then(() => {
       setIsEmailChangeSuccessful(true);

@@ -1,8 +1,7 @@
 package com.dkwasniak.slr_spot_backend.user;
 
-import com.dkwasniak.slr_spot_backend.user.dto.EmailUpdateDto;
-import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
+import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -47,8 +46,8 @@ public class UserController {
     }
 
     @PostMapping("/email/update")
-    public ResponseEntity<String> changeEmail(@RequestBody EmailUpdateDto emailUpdateDto) {
-        userFacade.changeEmail(emailUpdateDto.getNewEmail());
+    public ResponseEntity<String> changeEmail(@RequestBody UserDto userDto) {
+        userFacade.changeEmail(userDto.getEmail());
         return ResponseEntity.ok().build();
     }
 
@@ -60,9 +59,9 @@ public class UserController {
 //    }
 
     @PostMapping("/name/update")
-    public ResponseEntity<String> updateEmail(@RequestBody PersonalInformationDto personalInfoDto) {
+    public ResponseEntity<String> updateEmail(@RequestBody UserDto userDto) {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        userFacade.updatePersonalInformation(username, personalInfoDto);
+        userFacade.updateName(username, userDto);
         return ResponseEntity.ok().build();
     }
 }

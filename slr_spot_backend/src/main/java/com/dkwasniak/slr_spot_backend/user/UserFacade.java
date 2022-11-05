@@ -5,8 +5,8 @@ import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService
 import com.dkwasniak.slr_spot_backend.email.EmailService;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
-import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
+import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -74,7 +74,7 @@ public class UserFacade {
         userService.updateEmail(username, newEmail);
     }
 
-    public void updatePersonalInformation(String username, PersonalInformationDto personalInformationDto) {
-        userService.updatePersonalInformation(username, personalInformationDto);
+    public void updateName(String username, UserDto userDto) {
+        userService.updateName(username, userDto.getFirstName(), userDto.getLastName());
     }
 }
