@@ -31,7 +31,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("Load user when exists in database")
     public void loadUserByUsername_shouldReturnUser_whenUserExistsInDatabaseAndIsActive() {
-        var user = new User("test", "test", "test@gmail.com", "123", new ArrayList<>());
+        var user = new User("test", "test", "test@gmail.com", "123");
         user.setIsActivated(true);
         var securityUser = org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
@@ -57,7 +57,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("Throw exception when loading not confirmed user")
     public void saveUser_shouldThrowUserNotConfirmedException_whenUserExistsInDatabaseButIsNotConfirmed() {
-        var user = new User("test", "test", "test@gmail.com", "123", new ArrayList<>());
+        var user = new User("test", "test", "test@gmail.com", "123");
         when(userRepository.findByEmail("test@gmail.com")).thenReturn(Optional.of(user));
 
         assertThrows(IllegalStateException.class,
@@ -67,7 +67,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("Should save user")
     public void saveUser_shouldSaveUser_whenNotExistInDatabase() {
-        var user = new User("test", "test", "test@gmail.com", "123", new ArrayList<>());
+        var user = new User("test", "test", "test@gmail.com", "123");
         
         when(userRepository.existsByEmail(user.getEmail())).thenReturn(false);
         when(passwordEncoder.encode(user.getPassword())).thenReturn(user.getPassword());
@@ -80,7 +80,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("Throw exception when saving already existing user")
     public void saveUser_shouldThrowUserAlreadyExistException_whenUserExistsInDatabase() {
-        var user = new User("test", "test", "test@gmail.com", "123", new ArrayList<>());
+        var user = new User("test", "test", "test@gmail.com", "123");
         when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
 
         assertThrows(UserAlreadyExistException.class,

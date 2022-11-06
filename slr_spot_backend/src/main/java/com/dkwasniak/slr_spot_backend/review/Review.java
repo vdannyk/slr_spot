@@ -3,19 +3,22 @@ package com.dkwasniak.slr_spot_backend.review;
 import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "review")
+@Table(name = "reviews")
 @NoArgsConstructor
 @Getter
+@Setter
 public class Review {
 
     @Id
@@ -26,15 +29,11 @@ public class Review {
     private String description;
     private Boolean isPublic;
     private Integer screeningReviewers;
-    @ManyToOne
-    @JoinColumn(
-            nullable = false,
-            name = "user_id"
-    )
-    private User user;
 
-    public Review(String title, User user) {
+    @ManyToMany(mappedBy = "reviews")
+    private Set<User> users = new HashSet<>();
+
+    public Review(String title) {
         this.title = title;
-        this.user = user;
     }
 }

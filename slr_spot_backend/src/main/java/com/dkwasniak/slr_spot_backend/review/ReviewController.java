@@ -35,7 +35,7 @@ public class ReviewController {
     @PostMapping("/save")
     public ResponseEntity<List<Review>> saveProject(@RequestBody ReviewDto reviewDto) {
         var user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        reviewFacade.createProject(reviewDto, user);
+        reviewFacade.createReview(reviewDto, user);
         return ResponseEntity.ok().build();
     }
 }

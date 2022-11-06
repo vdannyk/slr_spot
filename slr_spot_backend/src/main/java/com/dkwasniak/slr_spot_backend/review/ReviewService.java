@@ -1,5 +1,8 @@
 package com.dkwasniak.slr_spot_backend.review;
 
+import com.dkwasniak.slr_spot_backend.review.exception.ReviewNotFoundException;
+import com.dkwasniak.slr_spot_backend.role.Role;
+import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +30,17 @@ public class ReviewService {
     }
 
     public List<Review> getReviewsByUser(String username) {
-        return reviewRepository.findByUser(userService.getUser(username));
+        return reviewRepository.findByUsers_Email(username);
     }
 
-    public Optional<Review> getReviewByTitle(String title) {
-        return reviewRepository.findByTitle(title);
+    public Review getReviewByTitle(String title) {
+        return reviewRepository.findByTitle(title)
+                .orElseThrow(() -> new ReviewNotFoundException("Review with given title not found"));
     }
+
+    public Review getReviewById(long id) {
+        return reviewRepository.findById(id)
+                .orElseThrow(() -> new ReviewNotFoundException("Review with given id not found"));
+    }
+
 }

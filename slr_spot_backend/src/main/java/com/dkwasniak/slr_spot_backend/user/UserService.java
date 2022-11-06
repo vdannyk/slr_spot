@@ -1,5 +1,7 @@
 package com.dkwasniak.slr_spot_backend.user;
 
+import com.dkwasniak.slr_spot_backend.review.Review;
+import com.dkwasniak.slr_spot_backend.review.ReviewRepository;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
@@ -28,6 +30,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ReviewRepository reviewRepository;
 
     public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
         Optional<User> optUser = userRepository.findByEmail(username);
@@ -59,11 +62,6 @@ public class UserService implements UserDetailsService {
         log.info("Saving new user: {}", user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
-    }
-
-    public Role saveRole(Role role) {
-        log.info("Saving new role: {}", role.getName());
-        return roleRepository.save(role);
     }
 
     public void activateUser(String email) {
@@ -108,5 +106,17 @@ public class UserService implements UserDetailsService {
 
     private boolean checkIfCorrectPassword(User user, String password) {
         return passwordEncoder.matches(password, user.getPassword());
+    }
+
+    public void addRoleToUser(User user, Role role) {
+        log.info("Role \"{}\" added to user \"{}\"", role.getName(), user.getEmail());
+        user.addRole(role);
+        userRepository.save(user);
+    }
+
+    public void addReviewToUser(User user, Review review) {
+        user.addReview(review);
+        userRepository.save(user);
+        log.info("User \"{}\" added to review \"{}\"", user.getEmail(), review.getTitle());
     }
 }

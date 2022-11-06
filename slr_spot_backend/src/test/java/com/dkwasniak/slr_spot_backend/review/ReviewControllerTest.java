@@ -63,7 +63,7 @@ public class ReviewControllerTest {
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
-        when(reviewFacade.createProject(any(), anyString())).thenReturn(1L);
+        when(reviewFacade.createReview(any(), anyString())).thenReturn(1L);
 
         this.mockMvc.perform(post("/api/reviews/save")
                         .contentType(APPLICATION_JSON)

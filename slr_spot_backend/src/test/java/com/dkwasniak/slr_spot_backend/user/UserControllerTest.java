@@ -39,7 +39,7 @@ public class UserControllerTest {
 
     @Test
     void createUser_shouldReturnCreatedHttpStatus_whenUserCreated() throws Exception {
-        var user = new User("test", "test", "test@gmail.com", "123", new ArrayList<>());
+        var user = new User("test", "test", "test@gmail.com", "123");
 
         when(userFacade.createUser(any())).thenReturn(1L);
 

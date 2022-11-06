@@ -2,30 +2,32 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.role.Role;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-// user is reserved word in postgress so name must be in qoutes
-@Table(name="\"user\"",
+@Table(name="users",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "email")
         })
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -38,18 +40,46 @@ public class User {
     private String password;
     private Boolean isActivated = false;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Role> roles;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+    )
+    private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Review> reviews;
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "users_reviews",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "review_id") }
+    )
+    private Set<Review> reviews = new HashSet<>();
 
-    public User(String firstName, String lastName, String email, String password, Collection<Role> roles) {
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.roles = roles;
-        this.reviews = new HashSet<>();
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    public void removeRole(Role role) {
+        this.reviews.remove(role);
+        role.getUsers().remove(this);
+    }
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
+        review.getUsers().add(this);
+    }
+
+    public void removeReview(Review review) {
+        this.reviews.remove(review);
+        review.getUsers().remove(this);
     }
 }
