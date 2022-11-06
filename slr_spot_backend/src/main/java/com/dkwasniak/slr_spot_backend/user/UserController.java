@@ -46,20 +46,21 @@ public class UserController {
     }
 
     @PostMapping("/email/update")
-    public ResponseEntity<String> changeEmail(@RequestBody UserDto userDto) {
-        userFacade.changeEmail(userDto.getEmail());
+    public ResponseEntity<String> updateEmail(@RequestBody UserDto userDto) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        userFacade.updateEmail(username, userDto.getEmail());
         return ResponseEntity.ok().build();
     }
 
-//    @PostMapping("/email/update")
-//    public ResponseEntity<String> updateEmail(@RequestBody EmailUpdateDto emailUpdateDto) {
+//    @PostMapping("/email/update/confirm")
+//    public ResponseEntity<String> updateEmail(@RequestParam String confirmationToken) {
 //        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 //        userFacade.updateEmail(username, emailUpdateDto.getNewEmail());
 //        return ResponseEntity.ok().build();
 //    }
 
     @PostMapping("/name/update")
-    public ResponseEntity<String> updateEmail(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> updateName(@RequestBody UserDto userDto) {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         userFacade.updateName(username, userDto);
         return ResponseEntity.ok().build();

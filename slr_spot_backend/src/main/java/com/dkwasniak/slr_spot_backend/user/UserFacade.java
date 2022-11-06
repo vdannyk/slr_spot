@@ -29,17 +29,10 @@ public class UserFacade {
     public long createUser(User user) {
         User savedUser = userService.saveUser(user);
 
-        // confirmation token
-        String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
-                savedUser
-        );
+        ConfirmationToken confirmationToken = confirmationTokenService.createConfirmationToken(savedUser);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String activationLink = String.format("http://localhost:3000/activate/%s", token);
+        String activationLink = String.format("http://localhost:3000/activate/%s", confirmationToken.getToken());
         emailService.sendVerificationEmail(user.getEmail(), activationLink);
         return savedUser.getId();
     }
@@ -48,6 +41,7 @@ public class UserFacade {
     public void confirmAccount(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationToken(token);
         confirmationTokenService.confirmToken(confirmationToken);
+//        User user = confirmationToken.getUser();
         userService.activateUser(confirmationToken.getUser().getEmail());
     }
 
@@ -58,8 +52,12 @@ public class UserFacade {
         user.getRoles().add(role);
     }
 
-    public void changeEmail(String newEmail) {
-        String activationLink = "http://localhost:3000/users/confirmEmail";
+    public void updateEmail(String oldEmail, String newEmail) {
+        User user = userService.getUser(oldEmail);
+        ConfirmationToken confirmationToken = confirmationTokenService.createConfirmationToken(user);
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        String activationLink = String.format("http://localhost:3000/activate/%s", confirmationToken.getToken());
         emailService.sendVerificationEmail(newEmail, activationLink);
     }
 
@@ -70,9 +68,9 @@ public class UserFacade {
                 updatePasswordDto.getConfirmPassword());
     }
 
-    public void updateEmail(String username, String newEmail) {
-        userService.updateEmail(username, newEmail);
-    }
+//    public void updateEmail(String username, String newEmail) {
+//        userService.updateEmail(username, newEmail);
+//    }
 
     public void updateName(String username, UserDto userDto) {
         userService.updateName(username, userDto.getFirstName(), userDto.getLastName());

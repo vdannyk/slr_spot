@@ -89,13 +89,6 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void changeEmail(String username, String oldPassword, String newPassword) {
-        User user = getUser(username);
-        if (!checkIfCorrectPassword(user, oldPassword)) {
-            throw new IllegalStateException("Invalid old password");
-        }
-    }
-
     public void updateEmail(String username, String newEmail) {
         User user = getUser(username);
         user.setEmail(newEmail);
