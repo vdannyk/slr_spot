@@ -3,21 +3,17 @@ package com.dkwasniak.slr_spot_backend.user;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationToken;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
 import com.dkwasniak.slr_spot_backend.email.EmailService;
-import com.dkwasniak.slr_spot_backend.passwordResetToken.PasswordResetToken;
-import com.dkwasniak.slr_spot_backend.passwordResetToken.PasswordResetTokenRepository;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
-import com.dkwasniak.slr_spot_backend.user.dto.PersonalInformationDto;
+import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
+import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
-
-import static java.util.Objects.isNull;
 
 @Component
 @RequiredArgsConstructor
@@ -29,22 +25,14 @@ public class UserFacade {
     private final RoleRepository roleRepository;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
-    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     public long createUser(User user) {
         User savedUser = userService.saveUser(user);
 
-        // confirmation token
-        String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
-                savedUser
-        );
+        ConfirmationToken confirmationToken = confirmationTokenService.createConfirmationToken(savedUser);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String activationLink = String.format("http://localhost:3000/activate/%s", token);
+        String activationLink = String.format("http://localhost:3000/activate/%s", confirmationToken.getToken());
         emailService.sendVerificationEmail(user.getEmail(), activationLink);
         return savedUser.getId();
     }
@@ -53,45 +41,8 @@ public class UserFacade {
     public void confirmAccount(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationToken(token);
         confirmationTokenService.confirmToken(confirmationToken);
+//        User user = confirmationToken.getUser();
         userService.activateUser(confirmationToken.getUser().getEmail());
-    }
-
-    public void resetPassword(String email) {
-        User user = userService.getUser(email);
-
-        String token = UUID.randomUUID().toString();
-        createPasswordResetToken(user, token);
-        constructResetTokenEmail(token, user);
-    }
-
-    public void createPasswordResetToken(User user, String token) {
-        PasswordResetToken resetToken = new PasswordResetToken(token, user);
-        passwordResetTokenRepository.save(resetToken);
-    }
-
-    public void constructResetTokenEmail(String token, User user) {
-        String resetPasswordLink =  String.format("http://localhost:3000/password-recovery/%s", token);
-        emailService.sendResetPasswordEmail(user.getEmail(), resetPasswordLink);
-    }
-
-    public void validateResetPasswordToken(String token) throws Exception {
-        Optional<PasswordResetToken> passwordResetToken = passwordResetTokenRepository.findByToken(token);
-
-        if (passwordResetToken.isEmpty())
-            throw new Exception("Reset token not found");
-        if (isResetPasswordTokenExpired(passwordResetToken.get()))
-            throw new Exception("Reset token expired");
-    }
-
-    private boolean isResetPasswordTokenExpired(PasswordResetToken token) {
-        return token.getExpiresAt().isBefore(LocalDateTime.now());
-    }
-
-    public User getUserByPasswordResetToken(String token) {
-        Optional<PasswordResetToken> resetToken = passwordResetTokenRepository.findByToken(token);
-        if (resetToken.isEmpty())
-            return null;
-        return resetToken.get().getUser();
     }
 
     public void addRoleToUser(String username, String roleName) {
@@ -101,21 +52,27 @@ public class UserFacade {
         user.getRoles().add(role);
     }
 
-    public void updatePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
-        userService.updatePassword(username, oldPassword, newPassword, confirmPassword);
-    }
+    public void updateEmail(String oldEmail, String newEmail) {
+        User user = userService.getUser(oldEmail);
+        ConfirmationToken confirmationToken = confirmationTokenService.createConfirmationToken(user);
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-
-    public void changeEmail(String newEmail) {
-        String activationLink = "http://localhost:3000/users/confirmEmail";
+        String activationLink = String.format("http://localhost:3000/activate/%s", confirmationToken.getToken());
         emailService.sendVerificationEmail(newEmail, activationLink);
     }
 
-    public void updateEmail(String username, String newEmail) {
-        userService.updateEmail(username, newEmail);
+    public void updatePassword(String username, UpdatePasswordDto updatePasswordDto) {
+        userService.updatePassword(username,
+                updatePasswordDto.getOldPassword(),
+                updatePasswordDto.getNewPassword(),
+                updatePasswordDto.getConfirmPassword());
     }
 
-    public void updatePersonalInformation(String username, PersonalInformationDto personalInformationDto) {
-        userService.updatePersonalInformation(username, personalInformationDto);
+//    public void updateEmail(String username, String newEmail) {
+//        userService.updateEmail(username, newEmail);
+//    }
+
+    public void updateName(String username, UserDto userDto) {
+        userService.updateName(username, userDto.getFirstName(), userDto.getLastName());
     }
 }

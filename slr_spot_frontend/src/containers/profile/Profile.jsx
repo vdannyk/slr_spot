@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { CgProfile } from "react-icons/cg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import axiosInstance from "../../services/api";
+import { refreshToken } from "../../actions/auth";
+import TokenService from "../../services/token.service";
 import './profile.css'
 
 
@@ -10,6 +12,7 @@ const Profile = () => {
   const [isNameChangeSuccessful, setIsNameChangeSuccessful] = useState(false);
   const [isEmailChangeSuccessful, setIsEmailChangeSuccessful] = useState(false);
   const [isPasswordChangeSuccessful, setIsPasswordChangeSuccessful] = useState(false);
+  const dispatch = useDispatch();
   const { user: currentUser } = useSelector((state) => state.auth);
   const {register, handleSubmit, watch, formState: { errors }} = useForm();
   const {
@@ -28,8 +31,8 @@ const Profile = () => {
 
   const onEmailSubmit = (formData) => {
     console.log(formData);
-    axiosInstance.post("/users/changeEmail", {
-      newEmail: formData.email
+    axiosInstance.post("/users/email/update", {
+      email: formData.email
     })
     .then(() => {
       setIsEmailChangeSuccessful(true);
@@ -40,12 +43,14 @@ const Profile = () => {
   };
 
   const onNameSubmit = (formData) => {
-    axiosInstance.post("/users/updatePersonal", {
+    axiosInstance.post("/users/name/update", {
       firstName: formData.firstName,
       lastName: formData.lastName
     })
     .then(() => {
       setIsNameChangeSuccessful(true);
+      TokenService.updateUser(formData);
+      window.location.reload();
     })
     .catch((response) => {
       console.log(response);
@@ -53,7 +58,7 @@ const Profile = () => {
   };
 
   const onPasswordSubmit = (formData) => {
-    axiosInstance.post("/users/updatePassword", {
+    axiosInstance.post("/users/password/update", {
       oldPassword: formData.oldPassword,
       newPassword: formData.newPassword,
       confirmPassword: formData.confirmPassword
@@ -63,6 +68,17 @@ const Profile = () => {
     })
     .catch((response) => {
       console.log(response);
+    });
+  };
+
+  const refreshAccessToken = () => {
+    axiosInstance.post("/auth/refresh", {
+      refreshToken: TokenService.getLocalRefreshToken(),
+    })
+    .then((response) => {
+      const { accessToken } = response.data;
+      dispatch(refreshToken(accessToken));
+      TokenService.updateLocalAccessToken(accessToken);
     });
   };
 

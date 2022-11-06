@@ -9,9 +9,9 @@ const ForgotPassword = (props) => {
 
   const onSubmit = (formData) => {
     const email = formData.email;
-    return axiosInstance.post(`/users/resetPassword`, null, { params: {
-      email
-    }})
+    return axiosInstance.post(`/password/forgot`, {
+      email: email
+    })
     .then(function (response) {
       // handle success
       setIsSuccessful(true);

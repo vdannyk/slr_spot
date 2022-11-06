@@ -1,4 +1,4 @@
-package com.dkwasniak.slr_spot_backend.passwordResetToken;
+package com.dkwasniak.slr_spot_backend.forgotPassword;
 
 import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.Data;
@@ -15,10 +15,10 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "password_reset_token")
+@Table(name = "forgot_password_tokens")
 @NoArgsConstructor
 @Data
-public class PasswordResetToken {
+public class ForgotPasswordToken {
 
     private static final int EXPIRATION_IN_SECONDS = 30 * 60;
 
@@ -36,7 +36,7 @@ public class PasswordResetToken {
 
     private LocalDateTime expiresAt;
 
-    public PasswordResetToken(String token, User user) {
+    public ForgotPasswordToken(String token, User user) {
         this.token = token;
         this.user = user;
         this.expiresAt = LocalDateTime.now().plusSeconds(EXPIRATION_IN_SECONDS);

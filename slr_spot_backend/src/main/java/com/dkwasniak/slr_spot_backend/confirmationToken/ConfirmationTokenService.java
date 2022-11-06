@@ -1,10 +1,12 @@
 package com.dkwasniak.slr_spot_backend.confirmationToken;
 
+import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -14,6 +16,16 @@ import static java.util.Objects.nonNull;
 public class ConfirmationTokenService {
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
+
+    public ConfirmationToken createConfirmationToken(User user) {
+        String token = UUID.randomUUID().toString();
+        return new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                user
+        );
+    }
 
     public void saveConfirmationToken(ConfirmationToken token) {
         confirmationTokenRepository.save(token);
