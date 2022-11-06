@@ -22,14 +22,8 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping
-    public ResponseEntity<List<Review>> getAllProjects() {
+    public ResponseEntity<List<Review>> getReviews() {
         return ResponseEntity.ok().body(reviewService.getReviews());
-    }
-
-    @GetMapping("/yours")
-    public ResponseEntity<List<Review>> getUserProjects() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        return ResponseEntity.ok().body(reviewService.getReviewsByUser(username));
     }
 
     @PostMapping("/save")

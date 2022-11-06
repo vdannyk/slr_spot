@@ -21,8 +21,8 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserService userService;
 
-    public Review saveProject(Review review) {
-        return reviewRepository.save(review);
+    public Long saveReview(Review review) {
+        return reviewRepository.save(review).getId();
     }
 
     public List<Review> getReviews() {

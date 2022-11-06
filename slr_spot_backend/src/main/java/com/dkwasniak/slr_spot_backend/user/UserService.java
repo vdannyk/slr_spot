@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -65,12 +66,18 @@ public class UserService implements UserDetailsService {
     }
 
     public void activateUser(String email) {
+        log.info("Activating user: {}", email);
         userRepository.enableUser(email);
     }
 
-    public User getUser(String username) {
+    public User getUserByEmail(String username) {
         return userRepository.findByEmail(username)
                 .orElseThrow(() -> new UserNotFoundException("User " + username + " not found"));
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User " + id + " not found"));
     }
 
     public void updatePassword(User user, String password) {
@@ -79,7 +86,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void updatePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
-        User user = getUser(username);
+        User user = getUserByEmail(username);
         if (!checkIfCorrectPassword(user, oldPassword)) {
             throw new IllegalStateException("Invalid old password");
         }
@@ -88,13 +95,13 @@ public class UserService implements UserDetailsService {
     }
 
     public void updateEmail(String username, String newEmail) {
-        User user = getUser(username);
+        User user = getUserByEmail(username);
         user.setEmail(newEmail);
         userRepository.save(user);
     }
 
     public void updateName(String username, String firstName, String lastName) {
-        User user = getUser(username);
+        User user = getUserByEmail(username);
         if (firstName != null && !firstName.isEmpty()) {
             user.setFirstName(firstName);
         }
@@ -118,5 +125,10 @@ public class UserService implements UserDetailsService {
         user.addReview(review);
         userRepository.save(user);
         log.info("User \"{}\" added to review \"{}\"", user.getEmail(), review.getTitle());
+    }
+
+    public Set<Review> getReviewsByUser(long id) {
+        User user = getUserById(id);
+        return user.getReviews();
     }
 }

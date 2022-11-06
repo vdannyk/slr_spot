@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.user;
 
+import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Set;
 
 
 @RestController
@@ -64,5 +67,10 @@ public class UserController {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         userFacade.updateName(username, userDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<Set<Review>> getReviewsByUser(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userFacade.getReviewsByUser(id));
     }
 }

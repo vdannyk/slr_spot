@@ -43,14 +43,16 @@ public class SlrSpotBackendApplication {
 			tobi.addReview(proj4);
 			tobi.addReview(proj5);
 			userService.saveUser(danny);
-			userService.saveUser(tobi);
 			var proj6 = new Review("addReviewToUser");
-//			reviewRepository.save(proj6);
 			userService.addReviewToUser(danny, proj6);
+			userService.activateUser("danny@gmail.com");
+			userService.saveUser(tobi);
+//			reviewRepository.save(proj6);
+
 
 //			userFacade.createUser(danny);
 //			userService.addRoleToUser("danny@gmail.com", "ROLE_ADMIN");
-//			userService.activateUser("danny@gmail.com");
+
 //			userFacade.createUser(tobi);
 //			userService.activateUser("tobi@gmail.com");
 

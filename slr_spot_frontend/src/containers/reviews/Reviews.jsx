@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Table } from "react-bootstrap";
 import axiosInstance from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import './reviews.css'
 
 const Reviews = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const [isShowAll, setIsShowAll] = useState(false);
+  const { user: currentUser } = useSelector((state) => state.auth);
 
   const onClick = () => {
     navigate('/reviews/new');
@@ -21,7 +23,7 @@ const Reviews = () => {
         console.log(response.data);
       });
     } else {
-      axiosInstance.get("/reviews/yours")
+      axiosInstance.get("/users/" + currentUser.id + "/reviews")
       .then((response) => {
         setData(response.data);
         console.log(response.data);
@@ -34,7 +36,7 @@ const Reviews = () => {
       <tr>
         <td>{id+1}</td>
         <td>{item.title}</td>
-        <td>{item.user.firstName} {item.user.lastName}</td>
+        {/* <td>{item.user.firstName} {item.user.lastName}</td> */}
       </tr>
     </tbody>
   );

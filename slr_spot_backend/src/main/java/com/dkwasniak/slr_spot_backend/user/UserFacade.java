@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.Set;
 
 
 @Component
@@ -48,7 +49,7 @@ public class UserFacade {
     }
 
     public void updateEmail(String oldEmail, String newEmail) {
-        User user = userService.getUser(oldEmail);
+        User user = userService.getUserByEmail(oldEmail);
         ConfirmationToken confirmationToken = confirmationTokenService.createConfirmationToken(user);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
@@ -72,14 +73,18 @@ public class UserFacade {
     }
 
     public void addRoleToUser(String username, String roleName) {
-        User user = userService.getUser(username);
+        User user = userService.getUserByEmail(username);
         Role role = roleService.getRoleByName(roleName);
         userService.addRoleToUser(user, role);
     }
 
     public void addReviewToUser(String username, long reviewId) {
-        User user = userService.getUser(username);
+        User user = userService.getUserByEmail(username);
         Review review = reviewService.getReviewById(reviewId);
         userService.addReviewToUser(user, review);
+    }
+
+    public Set<Review> getReviewsByUser(long id) {
+        return userService.getReviewsByUser(id);
     }
 }

@@ -1,6 +1,5 @@
 package com.dkwasniak.slr_spot_backend.review;
 
-import com.dkwasniak.slr_spot_backend.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

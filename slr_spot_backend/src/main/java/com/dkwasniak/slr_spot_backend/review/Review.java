@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class Review {
     private Integer screeningReviewers;
 
     @ManyToMany(mappedBy = "reviews")
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
     public Review(String title) {
