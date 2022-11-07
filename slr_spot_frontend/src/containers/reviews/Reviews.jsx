@@ -15,6 +15,10 @@ const Reviews = () => {
     navigate('/reviews/new');
   };
 
+  const onReviewClick = (id) => {
+    navigate('/reviews/' + id);
+  };
+
   useEffect(() => {
     if (isShowAll) {
       axiosInstance.get("/reviews")
@@ -35,7 +39,7 @@ const Reviews = () => {
     <tbody key={id}>
       <tr>
         <td>{id+1}</td>
-        <td>{item.title}</td>
+        <td onClick={ () => onReviewClick(item.id) }>{item.title}</td>
         {/* <td>{item.user.firstName} {item.user.lastName}</td> */}
       </tr>
     </tbody>

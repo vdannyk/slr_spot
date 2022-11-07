@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +20,16 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewFacade reviewFacade;
-    private final ReviewService reviewService;
 
     @GetMapping
-    public ResponseEntity<List<Review>> getReviews() {
-        return ResponseEntity.ok().body(reviewService.getReviews());
+    public ResponseEntity<List<Review>> getAllReviews() {
+        return ResponseEntity.ok().body(reviewFacade.getAllReviews());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
+        // TODO Add validation if user can access this review
+        return ResponseEntity.ok().body(reviewFacade.getReviewById(id));
     }
 
     @PostMapping("/save")

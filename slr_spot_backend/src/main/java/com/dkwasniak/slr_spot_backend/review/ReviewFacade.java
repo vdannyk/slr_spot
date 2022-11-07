@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Component
 @Transactional
@@ -24,6 +25,14 @@ public class ReviewFacade {
             userService.addReviewToUser(user, review);
         }
         return id;
+    }
+
+    public List<Review> getAllReviews() {
+        return reviewService.getAllReviews();
+    }
+
+    public Review getReviewById(long id) {
+        return reviewService.getReviewById(id);
     }
 
 }
