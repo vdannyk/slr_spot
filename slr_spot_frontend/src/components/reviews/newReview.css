@@ -55,6 +55,7 @@
 
 .slrspot__newReview-settings-container {
   display: flex;
+  margin: 10px 40px;
   flex: 1;
 }
 
@@ -88,8 +89,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  flex: 1;
-  margin: 10px 40px;
 }
 
 .slrspot__newReview-settings button {
@@ -102,4 +101,26 @@
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	cursor: pointer;
+}
+
+.slrspot__newReview-members {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: flex-start;
+}
+
+.slrspot__newReview-members-add {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border-bottom: 1px solid #eee;
+}
+
+.slrspot__newReview-members-add button {
+  margin-left: 30px;
+}
+
+.slrspot__newReview-members-list {
+  display: flex;
 }

@@ -24,6 +24,8 @@ const NewReview = () => {
 
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
+  const [contributors, setContributors] = useState([]);
+  const [contributor, setContributor] = useState('');
   const handleChange = event => {
      setSearchTerm(event.target.value);
    };
@@ -68,6 +70,16 @@ const NewReview = () => {
     setIsMembersSettings(false);
     setIsProtocolSettings(true);
   };
+
+  const onAddContributor = (newContributor) => {
+    setContributors(oldArray => [...oldArray, newContributor]);
+    console.log(contributors);
+  }
+
+  const handleContributorChange = (event) => {
+    setContributor(event.target.value);
+    console.log(event.target.value);
+  }
 
   const showSelectedPage = () => {
     if (isReviewSettings) {
@@ -114,9 +126,8 @@ const NewReview = () => {
 
     if (isMembersSettings) {
       return (
-        <div>
-          Members
-          <input
+        <div className='slrspot__newReview-members'>
+          {/* <input
             type="text"
             placeholder="Search"
             value={searchTerm}
@@ -126,7 +137,23 @@ const NewReview = () => {
             {searchResults.map(item => (
               <li>{item}</li>
             ))}
-          </ul>
+          </ul> */}
+          <div className='slrspot__newReview-members-add'>
+            <input
+              type="text"
+              placeholder="Email"
+              onChange={handleContributorChange}
+            />
+            <button type="button" onClick={() => onAddContributor(contributor)}>add</button>
+          </div>
+          <div className='slrspot__newReview-members-list'>
+            <ul>
+              {contributors.map(item => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+          
         </div>
       )
     }
