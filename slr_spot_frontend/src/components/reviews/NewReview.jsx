@@ -37,14 +37,14 @@ const NewReview = () => {
 
   const onSubmit = (formData) => {
     setLoading(true);
-    const title = formData.title;
+    const name = formData.name;
     const researchArea = formData.researchArea;
     const description = formData.description;
     const isPublic = formData.isPublic;
     const screeningReviewers = formData.screeningReviewers;
     console.log(formData);
     axiosInstance.post("/reviews/save", {
-      title, researchArea, description, isPublic, screeningReviewers
+      name, researchArea, description, isPublic, screeningReviewers
     })
     .then(() => {
       setLoading(false);
@@ -69,18 +69,18 @@ const NewReview = () => {
     setIsProtocolSettings(true);
   };
 
-  const selectPage = () => {
+  const showSelectedPage = () => {
     if (isReviewSettings) {
       return (
         <div className='slrspot__newReview-reviewSettings'>
           <label>Review name</label>
           <input  
-            {...register("title", { 
+            {...register("name", { 
               required: true,
             })}
-            name='title' 
+            name='name' 
           />
-          {errors.title && errors.title.type=== "required" && 
+          {errors.name && errors.name.type=== "required" && 
             <p className="slrspot__newReview-error">This field is required</p>
           }
           <label>Area of research</label>
@@ -108,10 +108,6 @@ const NewReview = () => {
             min={1}
             max={10}
           />
-          <button type="submit" className='slrspot__newReview-submitBtn'>
-            Create review
-          </button>
-          { loading && (<BeatLoader color="#AE67FA" />)}
         </div>
       )
     }
@@ -149,8 +145,7 @@ const NewReview = () => {
       <div className="slrspot__newReview-header">
         <h1>Create a new review</h1>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='slrspot__newReview-container'>
+      <form className='slrspot__newReview-container' onSubmit={handleSubmit(onSubmit)}>
           <div className='slrspot__newReview-menu'>
             { isReviewSettings 
               ? <p className='slrspot__newReview-menu-selected'>Review</p> 
@@ -164,9 +159,32 @@ const NewReview = () => {
           </div>
 
           <div className='slrspot__newReview-settings'>
-            {selectPage()}
+            <div className='slrspot__newReview-settings-header'>
+              { isReviewSettings && <h2>review information</h2>}
+              { isMembersSettings && <h2>add members</h2>}
+              { isProtocolSettings && <h2>prepare protocol</h2>}
+            </div>
+            <div className='slrspot__newReview-settings-container'>
+              { showSelectedPage() }
+            </div>
+            { isReviewSettings && 
+              <div className='slrspot__newReview-settings-buttons'>
+                <button onClick={onMembersClick}>next</button>
+              </div>
+            }
+            { isMembersSettings && 
+              <div className='slrspot__newReview-settings-buttons'>
+                <button onClick={onReviewsClick}>previous</button>
+                <button onClick={onProtocolClick}>next</button>
+              </div>
+            }
+            { isProtocolSettings && 
+              <div className='slrspot__newReview-settings-buttons'>
+                <button onClick={onMembersClick}>previous</button>
+                <button type="submit">create review</button>
+              </div>
+            }
           </div>
-        </div>
       </form>
     </div>
   )

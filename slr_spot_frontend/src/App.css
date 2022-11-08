@@ -30,8 +30,9 @@ input {
 	background-color: white;
 	padding: 8px 15px;
 	font-size: 16px;
-  border-width: 1px 1px 1px 10px;
-  border-color: #AE67FA;
+  border-width: 1px 1px 1px 5px;
+  border-color: black;
+  border-left-color: #AE67FA;
 }
 
 .slrspot__app {
