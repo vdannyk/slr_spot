@@ -5,6 +5,15 @@ import { BeatLoader } from "react-spinners";
 import Check from 'react-bootstrap/FormCheck';
 import './newReview.css'
 
+const people = [
+  "Danny",
+  "Daniel",
+  "Dawid",
+  "Dominik",
+  "Krzysztof",
+  "Stefan",
+  "Szymon"
+];
 
 const NewReview = () => {
   const [loading, setLoading] = useState(false);
@@ -12,6 +21,18 @@ const NewReview = () => {
   const [isReviewSettings, setIsReviewSettings] = useState(true);
   const [isMembersSettings, setIsMembersSettings] = useState(false);
   const [isProtocolSettings, setIsProtocolSettings] = useState(false);
+
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchResults, setSearchResults] = React.useState([]);
+  const handleChange = event => {
+     setSearchTerm(event.target.value);
+   };
+  React.useEffect(() => {
+     const results = people.filter(person =>
+       person.toLowerCase().includes(searchTerm)
+     );
+     setSearchResults(results);
+   }, [searchTerm]);
   
 
   const onSubmit = (formData) => {
@@ -99,6 +120,17 @@ const NewReview = () => {
       return (
         <div>
           Members
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={handleChange}
+          />
+          <ul>
+            {searchResults.map(item => (
+              <li>{item}</li>
+            ))}
+          </ul>
         </div>
       )
     }
