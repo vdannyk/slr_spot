@@ -1,6 +1,7 @@
 import axiosInstance from "./api";
 import { refreshToken } from "../actions/auth";
 import TokenService from "./token.service";
+import { logout } from "../actions/auth";
 
 const setupInterceptors = (store) => {
   axiosInstance.interceptors.request.use(
