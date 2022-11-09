@@ -35,15 +35,54 @@ const Reviews = () => {
     }
   }, [isShowAll]);
 
-  const listItems = data.map((item, id) => 
+  const listAllReviews = data.map((item, id) => 
     <tbody key={id}>
       <tr>
         <td>{id+1}</td>
         <td onClick={ () => onReviewClick(item.id) }>{item.title}</td>
         {/* <td>{item.user.firstName} {item.user.lastName}</td> */}
+        <td>Mock</td>
       </tr>
     </tbody>
   );
+
+  const listUserReviews = data.map((item, id) => 
+    <tbody key={id}>
+      <tr>
+        <td>{id+1}</td>
+        <td onClick={ () => onReviewClick(item.id) }>{item.title}</td>
+      </tr>
+    </tbody>
+  );
+
+  const ReviewsTable = () => {
+    if (isShowAll) {
+      return (
+        <Table striped hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Owner</th>
+            </tr>
+          </thead>
+          {listAllReviews}
+        </Table>
+      )
+    } else {
+      return (
+        <Table striped hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+            </tr>
+          </thead>
+          {listUserReviews}
+        </Table>
+      )
+    }
+  }
 
   return (
     <div className='slrspot__reviews'>
@@ -56,16 +95,7 @@ const Reviews = () => {
           <a onClick={() => setIsShowAll(false)}>Your reviews</a>
           <a onClick={() => setIsShowAll(true)}>All reviews</a>
         </div>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Title</th>
-              <th>Owner</th>
-            </tr>
-          </thead>
-          {listItems}
-        </Table>
+        <ReviewsTable />
       </div>
     </div>
   )
