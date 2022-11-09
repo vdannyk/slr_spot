@@ -8,7 +8,7 @@
 }
 
 .slrspot__newReview input {
-	padding: 8px 15px;
+	padding: 9px 15px;
 	font-size: 16px;
   margin-bottom: 5px;
 }
@@ -55,7 +55,6 @@
 
 .slrspot__newReview-settings-container {
   display: flex;
-  margin: 10px 40px;
   flex: 1;
 }
 
@@ -113,14 +112,38 @@
 .slrspot__newReview-members-add {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   width: 100%;
   border-bottom: 1px solid #eee;
 }
 
-.slrspot__newReview-members-add button {
-  margin-left: 30px;
+.slrspot__newReview-members-add-field {
+  margin: 40px;
+}
+
+.slrspot__newReview-members-add-field button {
+	font-size: 16px;
+  margin-bottom: 0;
+  margin-left: 0;
+  border-radius: 0px;
+}
+
+.slrspot__newReview-members-add input {
+  border-radius: 0px;
 }
 
 .slrspot__newReview-members-list {
   display: flex;
+  flex-direction: column;
+  margin: 40px;
+}
+
+.slrspot__teamMemberField {
+  background-color: #00FF0C8F;
+  margin-bottom: 5px;
+}
+
+.slrspot__teamMemberField-remove {
+  color: red;
+  size: 100;
 }

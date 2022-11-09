@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import axiosInstance from "../../services/api";
 import { BeatLoader } from "react-spinners";
 import Check from 'react-bootstrap/FormCheck';
+import TeamMemberField from './TeamMemberField';
 import './newReview.css'
 
 const people = [
@@ -44,9 +45,10 @@ const NewReview = () => {
     const description = formData.description;
     const isPublic = formData.isPublic;
     const screeningReviewers = formData.screeningReviewers;
+    const reviewers = contributors;
     console.log(formData);
     axiosInstance.post("/reviews/save", {
-      name, researchArea, description, isPublic, screeningReviewers
+      name, researchArea, description, isPublic, screeningReviewers, reviewers
     })
     .then(() => {
       setLoading(false);
@@ -75,6 +77,11 @@ const NewReview = () => {
     setContributors(oldArray => [...oldArray, newContributor]);
     console.log(contributors);
   }
+
+  const handleRemoveMember = (member) => {
+    console.log(member);
+    setContributors(contributors.filter(item => item !== member))
+}
 
   const handleContributorChange = (event) => {
     setContributor(event.target.value);
@@ -139,21 +146,20 @@ const NewReview = () => {
             ))}
           </ul> */}
           <div className='slrspot__newReview-members-add'>
-            <input
-              type="text"
-              placeholder="Email"
-              onChange={handleContributorChange}
-            />
-            <button type="button" onClick={() => onAddContributor(contributor)}>add</button>
+            <div className='slrspot__newReview-members-add-field'>
+              <input
+                type="text"
+                placeholder="Search by email"
+                onChange={handleContributorChange}
+              />
+              <button type="button" onClick={() => onAddContributor(contributor)}>add</button>
+            </div>
           </div>
           <div className='slrspot__newReview-members-list'>
-            <ul>
-              {contributors.map(item => (
-                <li>{item}</li>
-              ))}
-            </ul>
+            {contributors.map(item => (
+              <TeamMemberField username={item} triggerRemove={handleRemoveMember}/>
+            ))}
           </div>
-          
         </div>
       )
     }
