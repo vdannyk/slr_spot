@@ -7,3 +7,4 @@ export { default as SignInPage } from './signIn/SignInPage';
 export { default as AccountActivation } from './accountActivation/AccountActivation';
 export { default as PasswordRecovery } from './passwordRecovery/PasswordRecovery';
 export { default as ExpirationLogout } from './expirationLogout/ExpirationLogout';
+export { default as UpdateEmail } from './updateEmail/UpdateEmail';

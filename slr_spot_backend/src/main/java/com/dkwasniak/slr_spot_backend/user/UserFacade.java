@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.util.Set;
 
+import static java.util.Objects.isNull;
+
 
 @Component
 @RequiredArgsConstructor
@@ -44,17 +46,26 @@ public class UserFacade {
     public void confirmAccount(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationToken(token);
         confirmationTokenService.confirmToken(confirmationToken);
-//        User user = confirmationToken.getUser();
         userService.activateUser(confirmationToken.getUser().getEmail());
     }
 
     public void updateEmail(String oldEmail, String newEmail) {
         User user = userService.getUserByEmail(oldEmail);
         ConfirmationToken confirmationToken = confirmationTokenService.createConfirmationToken(user);
+        confirmationToken.setNewEmail(newEmail);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String activationLink = String.format("http://localhost:3000/activate/%s", confirmationToken.getToken());
+        String activationLink = String.format("http://localhost:3000/email/confirm/%s", confirmationToken.getToken());
         emailService.sendVerificationEmail(newEmail, activationLink);
+    }
+
+    public void saveEmail(String token) {
+        ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationToken(token);
+        if (isNull(confirmationToken.getNewEmail())) {
+            throw new IllegalStateException("Cant confirm new email");
+        }
+        confirmationTokenService.confirmToken(confirmationToken);
+        userService.updateEmail(confirmationToken.getUser(), confirmationToken.getNewEmail());
     }
 
     public void updatePassword(String username, UpdatePasswordDto updatePasswordDto) {
@@ -63,10 +74,6 @@ public class UserFacade {
                 updatePasswordDto.getNewPassword(),
                 updatePasswordDto.getConfirmPassword());
     }
-
-//    public void updateEmail(String username, String newEmail) {
-//        userService.updateEmail(username, newEmail);
-//    }
 
     public void updateName(String username, UserDto userDto) {
         userService.updateName(username, userDto.getFirstName(), userDto.getLastName());

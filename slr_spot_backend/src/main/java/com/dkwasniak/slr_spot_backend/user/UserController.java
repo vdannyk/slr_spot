@@ -55,12 +55,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-//    @PostMapping("/email/update/confirm")
-//    public ResponseEntity<String> updateEmail(@RequestParam String confirmationToken) {
-//        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-//        userFacade.updateEmail(username, emailUpdateDto.getNewEmail());
-//        return ResponseEntity.ok().build();
-//    }
+    @GetMapping("/{id}/email/update/confirm")
+    public ResponseEntity<String> saveEmail(@RequestParam String confirmationToken, @PathVariable String id) {
+        userFacade.saveEmail(confirmationToken);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/name/update")
     public ResponseEntity<String> updateName(@RequestBody UserDto userDto) {

@@ -94,8 +94,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void updateEmail(String username, String newEmail) {
-        User user = getUserByEmail(username);
+    public void updateEmail(User user, String newEmail) {
         user.setEmail(newEmail);
         userRepository.save(user);
     }
