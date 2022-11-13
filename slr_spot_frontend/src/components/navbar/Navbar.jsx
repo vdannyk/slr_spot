@@ -1,15 +1,15 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { RiCloseLine, RiMenu3Line } from 'react-icons/ri';
 import slrspot_logo from '../../assets/slrspot_logo.png';
 import { AccessPopup } from '../../containers'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { logout } from "../../actions/auth";
 import { CgProfile } from "react-icons/cg";
 import { AiFillCaretDown } from "react-icons/ai"
 import { useNavigate } from "react-router-dom";
 import './navbar.css'
 import { clearMessage } from "../../actions/message";
+import EventBus from "../../common/EventBus";
 
 
 
@@ -49,12 +49,9 @@ const Navbar = () => {
     navigate('/');
   };
 
-  const logOut = useCallback(() => {
-    dispatch(logout())
-    .then(() => {
-      navigate('/');
-    });
-  }, [dispatch]);
+  const logOut = () => {
+    EventBus.dispatch('logout');
+  }
 
   isAccessPopup ? lockScroll() : unlockScroll();
 

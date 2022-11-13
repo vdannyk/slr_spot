@@ -1,23 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { logout } from "../../actions/auth";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
-
 import './expirationLogout.css'
 
-const ExpirationLogout = () => {
-  const [logoutNow, setLogoutNow] = useState(false);
+
+const ExpirationLogout = (props) => {
   const [counter, setCounter] = useState(5);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const logOut = useCallback(() => {
-    dispatch(logout())
-    .then(() => {
-      navigate('/');
-    });
-  }, [dispatch]);
 
   React.useEffect(() => {
     const timer =
@@ -26,7 +14,8 @@ const ExpirationLogout = () => {
   }, [counter]);
 
   if (counter <= 0) {
-    logOut()
+    navigate('/');
+    props.trigger(false);
   }
 
   return (

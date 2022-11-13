@@ -4,14 +4,13 @@ import axiosInstance from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import './reviews.css'
-import { ExpirationLogout } from '../../components';
+import EventBus from '../../common/EventBus';
 
 const Reviews = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const [isShowAll, setIsShowAll] = useState(false);
   const { user: currentUser } = useSelector((state) => state.auth);
-  const [isSessionExpired, setIsSessionExpired] = useState(false); 
 
   const onClick = () => {
     navigate('/reviews/new');
@@ -23,14 +22,14 @@ const Reviews = () => {
 
   useEffect(() => {
     if (isShowAll) {
-      axiosInstance.get("/reviews")
+      axiosInstance.get("/reviews/public")
       .then((response) => {
         setData(response.data);
         console.log(response.data);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          setIsSessionExpired(true);
+        if (error.response && error.response.status === 403) {
+          EventBus.dispatch('expirationLogout');
         }
       });
     } else {
@@ -40,8 +39,8 @@ const Reviews = () => {
         console.log(response.data);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          setIsSessionExpired(true);
+        if (error.response && error.response.status === 403) {
+          EventBus.dispatch('expirationLogout');
         }
       });
     }
@@ -98,7 +97,6 @@ const Reviews = () => {
 
   return (
     <div className='slrspot__reviews'>
-      { isSessionExpired && <ExpirationLogout /> }
       <div className='slrspot__reviews-header'>
         <h1>Reviews</h1>
         <button onClick={onClick}>New review</button>
