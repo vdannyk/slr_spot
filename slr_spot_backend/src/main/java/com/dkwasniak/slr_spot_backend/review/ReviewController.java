@@ -26,6 +26,11 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewFacade.getAllReviews());
     }
 
+    @GetMapping("/public")
+    public ResponseEntity<List<Review>> getPublicReviews() {
+        return ResponseEntity.ok().body(reviewFacade.getPublicReviews());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
         // TODO Add validation if user can access this review

@@ -31,7 +31,9 @@ public class SlrSpotBackendApplication {
 			var userRole = new Role("ROLE_USER");
 			var adminRole = new Role("ROLE_ADMIN");
 			var proj1 = new Review("testowy projekt");
+			proj1.setIsPublic(true);
 			var proj2 = new Review("testowy projekt1");
+			proj2.setIsPublic(true);
 			var proj3 = new Review("testowy projekt2");
 			var proj4 = new Review("testowy projekt3");
 			var proj5 = new Review("testowy projekt4");

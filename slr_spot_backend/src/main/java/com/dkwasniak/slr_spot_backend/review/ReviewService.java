@@ -29,6 +29,10 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
+    public List<Review> getPublicReviews() {
+        return reviewRepository.findAllPublic();
+    }
+
     public List<Review> getReviewsByUser(String username) {
         return reviewRepository.findByUsers_Email(username);
     }

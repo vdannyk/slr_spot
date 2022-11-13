@@ -31,6 +31,10 @@ public class ReviewFacade {
         return reviewService.getAllReviews();
     }
 
+    public List<Review> getPublicReviews() {
+        return reviewService.getPublicReviews();
+    }
+
     public Review getReviewById(long id) {
         return reviewService.getReviewById(id);
     }
