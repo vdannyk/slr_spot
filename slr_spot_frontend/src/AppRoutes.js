@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSelector } from "react-redux";
-import { HomePage, Profile, Review, Reviews } from './containers';
+import { Home, HomePage, Profile, Review, Reviews } from './containers';
 import { NewReview, SignInPage, AccountActivation, PasswordRecovery, UpdateEmail } from './components';
 
 
@@ -18,7 +18,7 @@ const AppRoutes = () => {
       <Route path="email/confirm/:confirmationToken" element={isLoggedIn ? <UpdateEmail /> : <Navigate to='/' />} />
       <Route path="reviews" element={isLoggedIn ? <Reviews /> : <Navigate to='/' />} />
       <Route path="reviews/new" element={isLoggedIn ? <NewReview />: <Navigate to='/' />} />
-      <Route path="reviews/:reviewId" element={isLoggedIn ? <Review /> : <Navigate to='/' />} />
+      <Route path="reviews/:reviewId" element={isLoggedIn ? <Review page={<Home />} /> : <Navigate to='/' />} />
     </Routes>
   )
 }

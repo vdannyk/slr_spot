@@ -6,7 +6,7 @@
 
     padding: 0.1rem 6rem;
     height: 10vh;
-    border-bottom: thin dotted #000000;
+    border-bottom: thin solid #000000;
 }
 
 .slrspot__navbar-links {

@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import axiosInstance from "../../services/api";
 import { AiFillCaretRight,  AiFillCaretLeft, AiFillCaretDown } from "react-icons/ai";
 import './review.css'
 
 
-const Review = () => {
+const Review = (props) => {
   const { reviewId } = useParams();
   const navigate = useNavigate();
-  const [reviewData, setReviewData] = useState([]);
   const [showMenu, setShowMenu] = useState(true);
   const [showReviewMenu, setShowReviewMenu] = useState(false);
   const [showScreeningMenu, setShowScreeningMenu] = useState(false);
 
-  useEffect(() => {
-    console.log(reviewId);
-    axiosInstance.get("/reviews/" + reviewId)
-    .then((response) => {
-      setReviewData(response.data);
-      console.log(response.data);
-    });
-  }, []);
+  const onMenuItemClick = (props) => {
+    if (props.setShowTrigger) {
+      props.setShowTrigger(!props.showTrigger);
+    }
+    if (props.redirect) {
+      navigate("/reviews/" + reviewId + props.redirect);
+    }
+  }
 
   const MenuItem = (props) => {
     return (
-      <div className='slrspot__review-menu-item' onClick={() => props.setShowTrigger(!props.showTrigger)}>
+      <div className='slrspot__review-menu-item' onClick={() => onMenuItemClick(props)}>
         <p>{props.name}</p>
         <span><AiFillCaretDown /></span>
       </div>
@@ -34,7 +32,7 @@ const Review = () => {
   const Menu = () => (
     <div className='slrspot__review-menu'>
       <div className='slrspot__review-menu-options'>
-        <MenuItem name='Home'/>
+        <MenuItem name='Home' redirect=''/>
         <MenuItem name='Review' setShowTrigger={setShowReviewMenu} showTrigger={showReviewMenu} />
         { showReviewMenu && (
           <div className='slrspot__review-submenu-options'>
@@ -61,7 +59,7 @@ const Review = () => {
         { showMenu ? <AiFillCaretLeft /> : <AiFillCaretRight />}
       </div>
       <div className='slrspot__review-content'>
-        <h1>{reviewData.title}</h1>
+        {props.page}
       </div>
     </div>
   )
