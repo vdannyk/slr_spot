@@ -72,4 +72,10 @@ public class UserController {
     public ResponseEntity<Set<Review>> getReviewsByUser(@PathVariable Long id) {
         return ResponseEntity.ok().body(userFacade.getReviewsByUser(id));
     }
+
+    @GetMapping("/emails")
+    public ResponseEntity<Set<String>> getUsersEmails() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return ResponseEntity.ok().body(userFacade.getEmails(username));
+    }
 }

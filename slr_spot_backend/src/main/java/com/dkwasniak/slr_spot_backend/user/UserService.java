@@ -130,4 +130,8 @@ public class UserService implements UserDetailsService {
         User user = getUserById(id);
         return user.getReviews();
     }
+
+    public Set<String> getEmails(String currentUserEmail) {
+        return userRepository.getEmails(currentUserEmail);
+    }
 }

@@ -136,10 +136,12 @@
   align-items: flex-start;
   width: 100%;
   border-bottom: 1px solid #eee;
+  margin: 40px;
+
 }
 
 .slrspot__newReview-members-add-field {
-  margin: 40px;
+  flex-direction: column;
 }
 
 .slrspot__newReview-members-add-field button {

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import axiosInstance from "../../services/api";
 import { BeatLoader } from "react-spinners";
 import Check from 'react-bootstrap/FormCheck';
 import TeamMemberField from './TeamMemberField';
+import EventBus from '../../common/EventBus';
 import './newReview.css'
 
 const people = [
@@ -22,20 +23,37 @@ const NewReview = () => {
   const [isReviewSettings, setIsReviewSettings] = useState(true);
   const [isMembersSettings, setIsMembersSettings] = useState(false);
   const [isProtocolSettings, setIsProtocolSettings] = useState(false);
+  const [isAddMemberEmpty, setIsAddMemberEmpty] = useState(false);
+  const [users, setUsers] = useState([]);
 
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
   const [contributors, setContributors] = useState([]);
   const [contributor, setContributor] = useState('');
-  const handleChange = event => {
-     setSearchTerm(event.target.value);
-   };
-  React.useEffect(() => {
-     const results = people.filter(person =>
+  
+  // const handleChange = event => {
+  //    setSearchTerm(event.target.value);
+  //  };
+
+  useEffect(() => {
+    axiosInstance.get("/users/emails")
+    .then((response) => {
+      console.log(response.data);
+      setUsers(response.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+     const results = users.filter(person =>
        person.toLowerCase().includes(searchTerm)
      );
      setSearchResults(results);
-   }, [searchTerm]);
+   }, [searchTerm, users]);
   
 
   const onSubmit = (formData) => {
@@ -74,18 +92,30 @@ const NewReview = () => {
   };
 
   const onAddContributor = (newContributor) => {
+    if (newContributor.trim().length === 0) {
+      setIsAddMemberEmpty(true);
+      return;
+    }
     setContributors(oldArray => [...oldArray, newContributor]);
     console.log(contributors);
   }
 
   const handleRemoveMember = (member) => {
-    console.log(member);
     setContributors(contributors.filter(item => item !== member))
+    setUsers(oldArray => [...oldArray, member]);
 }
 
   const handleContributorChange = (event) => {
+    if (event.target.value.trim().length !== 0) {
+      setIsAddMemberEmpty(false);
+    }
+    setSearchTerm(event.target.value);
     setContributor(event.target.value);
-    console.log(event.target.value);
+  }
+
+  const handleUsernameClick = (username) => {
+    setContributors(oldArray => [...oldArray, username]);
+    setUsers(users.filter(item => item !== username))
   }
 
   const showSelectedPage = () => {
@@ -133,26 +163,24 @@ const NewReview = () => {
     if (isMembersSettings) {
       return (
         <div className='slrspot__newReview-members'>
-          {/* <input
-            type="text"
-            placeholder="Search"
-            value={searchTerm}
-            onChange={handleChange}
-          />
-          <ul>
-            {searchResults.map(item => (
-              <li>{item}</li>
-            ))}
-          </ul> */}
           <div className='slrspot__newReview-members-add'>
-            <div className='slrspot__newReview-members-add-field'>
-              <input
-                type="text"
-                placeholder="Search by email"
-                onChange={handleContributorChange}
-              />
+              <div className='slrspot__newReview-members-add-field'>
+                <input
+                  type="text"
+                  placeholder="Search by email"
+                  value={searchTerm}
+                  onChange={handleContributorChange}
+                />
+                <ul>
+                  {searchResults.map(item => (
+                    <li onClick={ () => handleUsernameClick(item) }>{ item }</li>
+                  ))}
+                </ul>
+              </div>
               <button type="button" onClick={() => onAddContributor(contributor)}>add</button>
-            </div>
+              {isAddMemberEmpty && 
+                <p className="slrspot__input-error">Invalid username</p>
+              }
           </div>
           <div className='slrspot__newReview-members-list'>
             {contributors.map(item => (

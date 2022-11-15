@@ -28,6 +28,14 @@ public class SlrSpotBackendApplication {
 		return args -> {
 			var danny = new User("Daniel", "Danielewicz", "danny@gmail.com", "1234");
 			var tobi = new User("Tobiasz", "Tobik", "tobi@gmail.com", "1234");
+			var u1 = new User("Krzysiek", "Krzys", "krzys@gmail.com", "1234");
+			var u2 = new User("Maciej", "Maciek", "macias@gmail.com", "1234");
+			var u3 = new User("Waldemar", "Wad", "waldus@gmail.com", "1234");
+			var u4 = new User("Milosz", "Milo", "milo@gmail.com", "1234");
+			var u5 = new User("Krzysztof", "Krzysz", "krzysz@gmail.com", "1234");
+			var u6 = new User("Maja", "Majec", "majec@gmail.com", "1234");
+			userService.saveUser(u1); userService.saveUser(u2); userService.saveUser(u3); userService.saveUser(u4);
+			userService.saveUser(u5); userService.saveUser(u6);
 			var userRole = new Role("ROLE_USER");
 			var adminRole = new Role("ROLE_ADMIN");
 			var proj1 = new Review("testowy projekt");

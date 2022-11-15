@@ -94,4 +94,8 @@ public class UserFacade {
     public Set<Review> getReviewsByUser(long id) {
         return userService.getReviewsByUser(id);
     }
+
+    public Set<String> getEmails(String currentUserEmail) {
+        return userService.getEmails(currentUserEmail);
+    }
 }
