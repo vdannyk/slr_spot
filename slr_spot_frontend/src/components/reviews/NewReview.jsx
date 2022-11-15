@@ -113,7 +113,7 @@ const NewReview = () => {
             <p className="slrspot__newReview-error">This field is required</p>
           }
           <label>Description</label>
-          <input  
+          <textarea  
             {...register("description")}
             name='description' 
           />
@@ -125,7 +125,6 @@ const NewReview = () => {
             name='screeningReviewers'
             type='number'
             min={1}
-            max={10}
           />
         </div>
       )
@@ -202,7 +201,7 @@ const NewReview = () => {
             </div>
             { isReviewSettings && 
               <div className='slrspot__newReview-settings-buttons'>
-                <button onClick={onMembersClick}>next</button>
+                <button className='slrspot__newReview-settings-nextButton' onClick={onMembersClick}>next</button>
               </div>
             }
             {/* { isMembersSettings && 

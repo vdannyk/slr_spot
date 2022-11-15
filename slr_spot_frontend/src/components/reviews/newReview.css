@@ -8,9 +8,16 @@
 }
 
 .slrspot__newReview input {
-	padding: 9px 15px;
+	padding: 10px 20px;
 	font-size: 16px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.slrspot__newReview textarea {
+	width: 50%;
+  margin-bottom: 10px;
+  height: 10vh;
+	resize: none;
 }
 
 .slrspot__newReview-header {
@@ -58,6 +65,11 @@
   flex: 1;
 }
 
+.slrspot__newReview-settings-nextButton {
+  align-self: flex-end;
+  justify-self: right;
+}
+
 .slrspot__newReview-settings-buttons {
   display: flex;
   justify-content: space-between;
@@ -87,7 +99,13 @@
 .slrspot__newReview-reviewSettings {
   display: flex;
   flex-direction: column;
+  flex: 1;
   align-items: flex-start;
+  margin: 20px 40px;
+}
+
+.slrspot__newReview-reviewSettings label {
+  font-weight: bold;
 }
 
 .slrspot__newReview-settings button {
