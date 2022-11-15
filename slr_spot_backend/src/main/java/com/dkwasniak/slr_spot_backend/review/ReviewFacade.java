@@ -18,8 +18,11 @@ public class ReviewFacade {
     private final UserService userService;
 
     public long createReview(ReviewDto reviewDto, String username) {
-        Review review = new Review(reviewDto.getName());
+        Review review = new Review(reviewDto.getName(), reviewDto.getResearchArea(), reviewDto.getDescription(),
+                reviewDto.getIsPublic(), reviewDto.getScreeningReviewers(), username);
         long id = reviewService.saveReview(review);
+        User owner = userService.getUserByEmail(username);
+        userService.addReviewToUser(owner, review);
         for (String email : reviewDto.getReviewers()) {
             User user = userService.getUserByEmail(email);
             userService.addReviewToUser(user, review);

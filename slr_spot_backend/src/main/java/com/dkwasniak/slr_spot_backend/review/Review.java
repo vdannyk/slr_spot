@@ -30,6 +30,7 @@ public class Review {
     private String description;
     private Boolean isPublic;
     private Integer screeningReviewers;
+    private String owner;
 
     @ManyToMany(mappedBy = "reviews")
     @JsonIgnore
@@ -37,5 +38,14 @@ public class Review {
 
     public Review(String title) {
         this.title = title;
+    }
+
+    public Review(String title, String researchArea, String description, Boolean isPublic, Integer screeningReviewers, String owner) {
+        this.title = title;
+        this.researchArea = researchArea;
+        this.description = description;
+        this.isPublic = isPublic;
+        this.screeningReviewers = screeningReviewers;
+        this.owner = owner;
     }
 }

@@ -51,8 +51,7 @@ const Reviews = () => {
       <tr>
         <td>{id+1}</td>
         <td onClick={ () => onReviewClick(item.id) }>{item.title}</td>
-        {/* <td>{item.user.firstName} {item.user.lastName}</td> */}
-        <td>Mock</td>
+        <td>{item.owner}</td>
       </tr>
     </tbody>
   );
@@ -104,7 +103,7 @@ const Reviews = () => {
       <div className='slrspot__reviews-container'>
         <div className='slrspot__reviews-select'>
           <a onClick={() => setIsShowAll(false)}>Your reviews</a>
-          <a onClick={() => setIsShowAll(true)}>All reviews</a>
+          <a onClick={() => setIsShowAll(true)}>Public reviews</a>
         </div>
         <ReviewsTable />
       </div>

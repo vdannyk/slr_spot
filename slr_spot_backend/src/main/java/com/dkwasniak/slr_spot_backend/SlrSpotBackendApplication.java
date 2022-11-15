@@ -38,13 +38,13 @@ public class SlrSpotBackendApplication {
 			userService.saveUser(u5); userService.saveUser(u6);
 			var userRole = new Role("ROLE_USER");
 			var adminRole = new Role("ROLE_ADMIN");
-			var proj1 = new Review("testowy projekt");
+			var proj1 = new Review("testowy projekt", "testowy projekt", "testowy projekt", false, 2, danny.getEmail());
 			proj1.setIsPublic(true);
-			var proj2 = new Review("testowy projekt1");
+			var proj2 = new Review("testowy projekt2", "testowy projekt2", "testowy projekt2", false, 2, danny.getEmail());
 			proj2.setIsPublic(true);
-			var proj3 = new Review("testowy projekt2");
-			var proj4 = new Review("testowy projekt3");
-			var proj5 = new Review("testowy projekt4");
+			var proj3 = new Review("testowy projekt3", "testowy projekt3", "testowy projekt3", true, 2, danny.getEmail());
+			var proj4 = new Review("testowy projekt3", "testowy projekt3", "testowy projekt3", false, 1, tobi.getEmail());
+			var proj5 = new Review("testowy projekt4", "testowy projekt4", "testowy projekt4", true, 1, tobi.getEmail());
 			danny.addRole(adminRole);
 			tobi.addRole(userRole);
 			danny.addReview(proj1);

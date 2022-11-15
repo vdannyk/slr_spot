@@ -5,6 +5,7 @@ import { BeatLoader } from "react-spinners";
 import Check from 'react-bootstrap/FormCheck';
 import TeamMemberField from './TeamMemberField';
 import EventBus from '../../common/EventBus';
+import { useNavigate } from "react-router-dom";
 import './newReview.css'
 
 const people = [
@@ -25,6 +26,7 @@ const NewReview = () => {
   const [isProtocolSettings, setIsProtocolSettings] = useState(false);
   const [isAddMemberEmpty, setIsAddMemberEmpty] = useState(false);
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
@@ -68,8 +70,10 @@ const NewReview = () => {
     axiosInstance.post("/reviews/save", {
       name, researchArea, description, isPublic, screeningReviewers, reviewers
     })
-    .then(() => {
+    .then((response) => {
       setLoading(false);
+      console.log(response.data)
+      navigate("/reviews/" + response.data);
     });
   };
 
