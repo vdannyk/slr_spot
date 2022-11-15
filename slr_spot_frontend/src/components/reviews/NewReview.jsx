@@ -186,9 +186,9 @@ const NewReview = () => {
             { isMembersSettings 
               ? <p className='slrspot__newReview-menu-selected'>Members</p> 
               : <p onClick={onMembersClick}>Members</p>}
-            { isProtocolSettings 
+            {/* { isProtocolSettings 
               ? <p className='slrspot__newReview-menu-selected'>Protocol</p> 
-              : <p onClick={onProtocolClick}>Protocol</p>}
+              : <p onClick={onProtocolClick}>Protocol</p>} */}
           </div>
 
           <div className='slrspot__newReview-settings'>
@@ -205,13 +205,13 @@ const NewReview = () => {
                 <button onClick={onMembersClick}>next</button>
               </div>
             }
-            { isMembersSettings && 
+            {/* { isMembersSettings && 
               <div className='slrspot__newReview-settings-buttons'>
                 <button onClick={onReviewsClick}>previous</button>
                 <button onClick={onProtocolClick}>next</button>
               </div>
-            }
-            { isProtocolSettings && 
+            } */}
+            { isMembersSettings && 
               <div className='slrspot__newReview-settings-buttons'>
                 <button onClick={onMembersClick}>previous</button>
                 <button type="submit">create review</button>
