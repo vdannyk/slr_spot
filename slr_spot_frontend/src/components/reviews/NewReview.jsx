@@ -212,7 +212,7 @@ const NewReview = () => {
             } */}
             { isMembersSettings && 
               <div className='slrspot__newReview-settings-buttons'>
-                <button onClick={onMembersClick}>previous</button>
+                <button onClick={onReviewsClick}>previous</button>
                 <button type="submit">create review</button>
               </div>
             }
