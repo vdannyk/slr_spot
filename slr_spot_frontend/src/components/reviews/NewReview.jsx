@@ -177,10 +177,10 @@ const NewReview = () => {
                   ))}
                 </ul>
               </div>
-              <button type="button" onClick={() => onAddContributor(contributor)}>add</button>
-              {isAddMemberEmpty && 
+              {/* <button type="button" onClick={() => onAddContributor(contributor)}>add</button> */}
+              {/* {isAddMemberEmpty && 
                 <p className="slrspot__input-error">Invalid username</p>
-              }
+              } */}
           </div>
           <div className='slrspot__newReview-members-list'>
             {contributors.map(item => (
