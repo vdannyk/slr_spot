@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @Transactional
@@ -42,4 +44,7 @@ public class ReviewFacade {
         return reviewService.getReviewById(id);
     }
 
+    public Set<String> getMembers(long id) {
+        return reviewService.getReviewById(id).getUsers().stream().map(User::getEmail).collect(Collectors.toSet());
+    }
 }

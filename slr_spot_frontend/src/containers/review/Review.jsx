@@ -15,9 +15,7 @@ const Review = (props) => {
     if (props.setShowTrigger) {
       props.setShowTrigger(!props.showTrigger);
     }
-    if (props.redirect) {
-      navigate("/reviews/" + reviewId + props.redirect);
-    }
+    navigate("/reviews/" + reviewId + props.redirect);
   }
 
   const MenuItem = (props) => {
@@ -33,15 +31,15 @@ const Review = (props) => {
     <div className='slrspot__review-menu'>
       <div className='slrspot__review-menu-options'>
         <MenuItem name='Home' redirect=''/>
-        <MenuItem name='Review' setShowTrigger={setShowReviewMenu} showTrigger={showReviewMenu} />
+        <MenuItem name='Review' setShowTrigger={setShowReviewMenu} showTrigger={showReviewMenu} redirect='' />
         { showReviewMenu && (
           <div className='slrspot__review-submenu-options'>
-            <li>Settings</li>
-            <li>Team</li>
+            <li onClick={ () => navigate("/reviews/" + reviewId + "/settings") }>Settings</li>
+            <li onClick={ () => navigate("/reviews/" + reviewId + "/team") }>Team</li>
           </div>
         )}
-        <MenuItem name='Literature search' />
-        <MenuItem name='Screening' setShowTrigger={setShowScreeningMenu} showTrigger={showScreeningMenu} />
+        <MenuItem name='Literature search' redirect='' />
+        <MenuItem name='Screening' setShowTrigger={setShowScreeningMenu} showTrigger={showScreeningMenu} redirect='' />
         { showScreeningMenu && (
           <div className='slrspot__review-submenu-options'>
             <li>Title & Abstract</li>

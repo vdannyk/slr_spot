@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping(EndpointConstants.API_PATH + "/reviews")
@@ -41,5 +42,10 @@ public class ReviewController {
     public ResponseEntity<Long> saveProject(@RequestBody ReviewDto reviewDto) {
         var user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         return ResponseEntity.ok().body(reviewFacade.createReview(reviewDto, user));
+    }
+
+    @GetMapping("/{id}/members")
+    public ResponseEntity<Set<String>> getMembers(@PathVariable Long id) {
+        return ResponseEntity.ok().body(reviewFacade.getMembers(id));
     }
 }
