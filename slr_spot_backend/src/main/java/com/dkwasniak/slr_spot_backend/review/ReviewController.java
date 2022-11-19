@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
+import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Set;
@@ -22,14 +24,21 @@ public class ReviewController {
 
     private final ReviewFacade reviewFacade;
 
-    @GetMapping
-    public ResponseEntity<List<Review>> getAllReviews() {
-        return ResponseEntity.ok().body(reviewFacade.getAllReviews());
+    @GetMapping("/public")
+    public ResponseEntity<ReviewsPageDto> getPublicReviews(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok().body(reviewFacade.getPublicReviews(page, size));
     }
 
-    @GetMapping("/public")
-    public ResponseEntity<List<Review>> getPublicReviews() {
-        return ResponseEntity.ok().body(reviewFacade.getPublicReviews());
+    @GetMapping("/users/{id}")
+    public ResponseEntity<ReviewsPageDto> getReviewsByUser(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok().body(reviewFacade.getReviewsByUser(id, page, size));
     }
 
     @GetMapping("/{id}")

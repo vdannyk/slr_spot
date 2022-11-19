@@ -24,7 +24,7 @@ const Reviews = () => {
     if (isShowAll) {
       axiosInstance.get("/reviews/public")
       .then((response) => {
-        setData(response.data);
+        setData(response.data.reviews);
         console.log(response.data);
       })
       .catch((error) => {
@@ -33,9 +33,9 @@ const Reviews = () => {
         }
       });
     } else {
-      axiosInstance.get("/users/" + currentUser.id + "/reviews")
+      axiosInstance.get("/reviews/users/" + currentUser.id)
       .then((response) => {
-        setData(response.data);
+        setData(response.data.reviews);
         console.log(response.data);
       })
       .catch((error) => {
@@ -106,6 +106,7 @@ const Reviews = () => {
           <a onClick={() => setIsShowAll(true)}>Public reviews</a>
         </div>
         <ReviewsTable />
+        
       </div>
     </div>
   )

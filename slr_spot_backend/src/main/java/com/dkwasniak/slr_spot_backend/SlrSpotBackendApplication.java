@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -55,10 +56,19 @@ public class SlrSpotBackendApplication {
 			userService.saveUser(danny);
 			var proj6 = new Review("addReviewToUser");
 			userService.addReviewToUser(danny, proj6);
+			userService.addReviewToUser(danny, new Review("a"));
+			userService.addReviewToUser(danny, new Review("bc"));
+			userService.addReviewToUser(danny, new Review("da"));
+			userService.addReviewToUser(danny, new Review("ef"));
+			userService.addReviewToUser(danny, new Review("gh"));
+			userService.addReviewToUser(danny, new Review("sialal"));
+			userService.addReviewToUser(danny, new Review("wuwuniu"));
+			userService.addReviewToUser(danny, new Review("bajo"));
 			userService.activateUser("danny@gmail.com");
 			userService.saveUser(tobi);
-			danny.removeReview(proj6);
 //			reviewRepository.save(proj6);
+			// PAGINATION TEST
+//			var test = reviewRepository.findByUsers_User_Id(danny.getId(), PageRequest.of(1, 5));
 
 
 //			userFacade.createUser(danny);
