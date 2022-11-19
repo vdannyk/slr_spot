@@ -57,6 +57,7 @@ public class SlrSpotBackendApplication {
 			userService.addReviewToUser(danny, proj6);
 			userService.activateUser("danny@gmail.com");
 			userService.saveUser(tobi);
+			danny.removeReview(proj6);
 //			reviewRepository.save(proj6);
 
 

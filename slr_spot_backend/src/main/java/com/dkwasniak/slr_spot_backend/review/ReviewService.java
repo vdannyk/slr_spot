@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -35,7 +36,7 @@ public class ReviewService {
     }
 
     public List<Review> getReviewsByUser(String username) {
-        return reviewRepository.findByUsers_Email(username);
+        return new ArrayList<>();
     }
 
     public Review getReviewByTitle(String title) {

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Navbar, ExpirationLogout } from './components';
+import { Navbar, ExpirationLogout, TimeoutLogout } from './components';
 import AppRoutes from './AppRoutes';
 import { BrowserRouter as Router } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -45,7 +45,7 @@ function App() {
         <Navbar />
         <AppRoutes />
         <Footer />
-        { isExpirationLogout && <ExpirationLogout trigger={setIsExpirationLogout}/> }
+        { isExpirationLogout && <TimeoutLogout trigger={setIsExpirationLogout}/> }
       </Router>
     </div>
   );

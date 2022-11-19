@@ -1,16 +1,19 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.user.User;
+import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,9 +35,9 @@ public class Review {
     private Integer screeningReviewers;
     private String owner;
 
-    @ManyToMany(mappedBy = "reviews")
+    @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JsonIgnore
-    private Set<User> users = new HashSet<>();
+    private Set<UserReview> users = new HashSet<>();
 
     public Review(String title) {
         this.title = title;

@@ -6,6 +6,7 @@ import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
 import com.dkwasniak.slr_spot_backend.user.exception.UserNotFoundException;
+import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -128,7 +130,7 @@ public class UserService implements UserDetailsService {
 
     public Set<Review> getReviewsByUser(long id) {
         User user = getUserById(id);
-        return user.getReviews();
+        return user.getReviews().stream().map(UserReview::getReview).collect(Collectors.toSet());
     }
 
     public Set<String> getEmails(String currentUserEmail) {

@@ -2,6 +2,8 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.role.Role;
+import com.dkwasniak.slr_spot_backend.userReview.UserReview;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,9 +17,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -48,13 +52,14 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(
-            name = "users_reviews",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "review_id") }
-    )
-    private Set<Review> reviews = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+//    @JoinTable(
+//            name = "users_reviews",
+//            joinColumns = { @JoinColumn(name = "user_id") },
+//            inverseJoinColumns = { @JoinColumn(name = "review_id") }
+//    )
+    @JsonIgnore
+    private Set<UserReview> reviews = new HashSet<>();
 
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
@@ -74,12 +79,22 @@ public class User {
     }
 
     public void addReview(Review review) {
-        this.reviews.add(review);
-        review.getUsers().add(this);
+        UserReview userReview = new UserReview(this, review);
+        this.reviews.add(userReview);
+//        review.getUsers().add(this);
     }
 
     public void removeReview(Review review) {
-        this.reviews.remove(review);
-        review.getUsers().remove(this);
+        for (Iterator<UserReview> it = reviews.iterator(); it.hasNext();) {
+            UserReview userReview = it.next();
+
+            if (userReview.getUser().equals(this) && userReview.getReview().equals(review)) {
+                it.remove();
+                this.reviews.remove(userReview);
+            }
+        }
+//        this.reviews.remove(review);
+//        review.getUsers().remove(this);
+//
     }
 }

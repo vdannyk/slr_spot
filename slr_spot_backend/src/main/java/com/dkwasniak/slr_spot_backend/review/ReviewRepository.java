@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findByTitle(String title);
-    List<Review> findByUsers_Email(String email);
+//    List<Review> findByUsers_Email(String email);
     @Query("SELECT r " +
             "FROM Review r " +
             "WHERE r.isPublic = true")

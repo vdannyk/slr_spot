@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,6 +46,7 @@ public class ReviewFacade {
     }
 
     public Set<String> getMembers(long id) {
-        return reviewService.getReviewById(id).getUsers().stream().map(User::getEmail).collect(Collectors.toSet());
+//        return reviewService.getReviewById(id).getUsers().stream().map(User::getEmail).collect(Collectors.toSet());
+        return new HashSet<>();
     }
 }
