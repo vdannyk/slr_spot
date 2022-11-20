@@ -107,7 +107,7 @@ const NewReview = () => {
   const handleRemoveMember = (member) => {
     setContributors(contributors.filter(item => item !== member))
     setUsers(oldArray => [...oldArray, member]);
-}
+  }
 
   const handleContributorChange = (event) => {
     if (event.target.value.trim().length !== 0) {

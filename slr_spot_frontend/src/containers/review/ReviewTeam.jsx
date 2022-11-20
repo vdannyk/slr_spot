@@ -5,11 +5,44 @@ import axiosInstance from "../../services/api";
 import { AiOutlineClose } from "react-icons/ai";
 import './home.css';
 import './reviewTeam.css';
+import TeamMemberField from '../../components/reviews/TeamMemberField';
+import EventBus from '../../common/EventBus';
 
 
 const ReviewTeam = () => {
   const [members, setMembers] = useState([]);
   const { reviewId } = useParams();
+  const [possibleNewMembers, setPossibleNewMembers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = React.useState([]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    axiosInstance.get("/users/emails")
+    .then((response) => {
+      console.log(response.data);
+      setUsers(response.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+  }, []);
+
+  const handleContributorChange = (event) => {
+    setSearchTerm(event.target.value);
+  }
+
+  const handleUsernameClick = (username) => {
+    setPossibleNewMembers(oldArray => [...oldArray, username]);
+    setUsers(users.filter(item => item !== username))
+  }
+
+  const handleRemoveMember = (member) => {
+    setPossibleNewMembers(possibleNewMembers.filter(item => item !== member))
+    setUsers(oldArray => [...oldArray, member]);
+  }
 
   useEffect(() => {
     axiosInstance.get("/reviews/" + reviewId + "/members")
@@ -52,6 +85,32 @@ const ReviewTeam = () => {
       <div className='slrspot__review-team-newMember'>
         <div className='slrspot__review-team-header'>
           <h1>Add new member</h1>
+        </div>
+        <div className='slrspot__newReview-members'>
+          <div className='slrspot__newReview-members-add'>
+              <div className='slrspot__newReview-members-add-field'>
+                <input
+                  type="text"
+                  placeholder="Search by email"
+                  value={searchTerm}
+                  onChange={handleContributorChange}
+                />
+                <ul>
+                  {searchResults.map(item => (
+                    <li onClick={ () => handleUsernameClick(item) }>{ item }</li>
+                  ))}
+                </ul>
+              </div>
+              {/* <button type="button" onClick={() => onAddContributor(contributor)}>add</button> */}
+              {/* {isAddMemberEmpty && 
+                <p className="slrspot__input-error">Invalid username</p>
+              } */}
+          </div>
+          <div className='slrspot__newReview-members-list'>
+            {possibleNewMembers.map(item => (
+              <TeamMemberField username={item} triggerRemove={handleRemoveMember}/>
+            ))}
+          </div>
         </div>
       </div>
     </div>
