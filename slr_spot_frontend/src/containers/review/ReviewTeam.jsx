@@ -51,7 +51,7 @@ const ReviewTeam = () => {
       </div>
       <div className='slrspot__review-team-newMember'>
         <div className='slrspot__review-team-header'>
-          <h1>Add new teammate</h1>
+          <h1>Add new member</h1>
         </div>
       </div>
     </div>
