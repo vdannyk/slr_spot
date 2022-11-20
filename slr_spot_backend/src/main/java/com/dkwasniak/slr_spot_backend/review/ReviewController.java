@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
+import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,7 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}/members")
-    public ResponseEntity<Set<String>> getMembers(@PathVariable Long id) {
+    public ResponseEntity<Set<ReviewMemberDto>> getMembers(@PathVariable Long id) {
         return ResponseEntity.ok().body(reviewFacade.getMembers(id));
     }
 }

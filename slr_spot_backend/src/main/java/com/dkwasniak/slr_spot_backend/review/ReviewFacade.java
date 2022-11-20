@@ -1,9 +1,11 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
+import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
+import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -45,9 +47,8 @@ public class ReviewFacade {
         return reviewService.getReviewById(id);
     }
 
-    public Set<String> getMembers(long id) {
-//        return reviewService.getReviewById(id).getUsers().stream().map(User::getEmail).collect(Collectors.toSet());
-        return new HashSet<>();
+    public Set<ReviewMemberDto> getMembers(long id) {
+        return reviewService.getMembers(id);
     }
 
     public ReviewsPageDto getReviewsByUser(long userId, int page, int size) {

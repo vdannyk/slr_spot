@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.review;
 
+import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.review.exception.ReviewNotFoundException;
 import com.dkwasniak.slr_spot_backend.role.Role;
@@ -52,6 +53,22 @@ public class ReviewService {
                 .totalPagesNum(reviewsPage.getTotalPages())
                 .build();
 
+    }
+
+    public Set<ReviewMemberDto> getMembers(long id) {
+        Set<UserReview> userReviews = getReviewById(id).getUsers();
+        return userReviews.stream()
+                .map((userReview) -> toReviewMemberDto(userReview.getUser(), userReview.getRole()))
+                .collect(Collectors.toSet());
+    }
+
+    public ReviewMemberDto toReviewMemberDto(User user, String role) {
+        return ReviewMemberDto.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .role(role)
+                .build();
     }
 
     public Review getReviewByTitle(String title) {
