@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewRepository;
+import com.dkwasniak.slr_spot_backend.role.ReviewRole;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.role.RoleRepository;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
@@ -122,8 +123,14 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    public void addReviewToUser(User user, Review review, ReviewRole role) {
+        user.addReview(review, role);
+        userRepository.save(user);
+        log.info("User \"{}\" added to review \"{}\"", user.getEmail(), review.getTitle());
+    }
+
     public void addReviewToUser(User user, Review review) {
-        user.addReview(review);
+        user.addReview(review, ReviewRole.MEMBER);
         userRepository.save(user);
         log.info("User \"{}\" added to review \"{}\"", user.getEmail(), review.getTitle());
     }

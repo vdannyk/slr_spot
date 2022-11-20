@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.review.Review;
+import com.dkwasniak.slr_spot_backend.role.ReviewRole;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -78,8 +79,8 @@ public class User {
         role.getUsers().remove(this);
     }
 
-    public void addReview(Review review) {
-        UserReview userReview = new UserReview(this, review);
+    public void addReview(Review review, ReviewRole role) {
+        UserReview userReview = new UserReview(this, review, role);
         this.reviews.add(userReview);
 //        review.getUsers().add(this);
     }

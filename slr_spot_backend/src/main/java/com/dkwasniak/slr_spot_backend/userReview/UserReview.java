@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.userReview;
 
 import com.dkwasniak.slr_spot_backend.review.Review;
+import com.dkwasniak.slr_spot_backend.role.ReviewRole;
 import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,11 +35,12 @@ public class UserReview implements Serializable {
     @MapsId("reviewId")
     private Review review;
 
-    private String role;
+    private ReviewRole role;
 
-    public UserReview(User user, Review review) {
+    public UserReview(User user, Review review, ReviewRole reviewRole) {
         this.id = new UserReviewId(user.getId(), review.getId());
         this.user = user;
         this.review = review;
+        this.role = reviewRole;
     }
 }

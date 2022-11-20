@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../services/api";
 import { Table } from "react-bootstrap";
 import './home.css'
+import { CgPen } from "react-icons/cg";
 
 
 const Home = () => {
@@ -22,7 +23,7 @@ const Home = () => {
   return (
     <div className='slrspot__review-home'>
       <div className='slrspot__review-home-title'>
-        <h1>{reviewData.title}</h1>
+        <h1>{reviewData.title} <CgPen size={25}/></h1>
       </div>
       <Table>
         <tbody>

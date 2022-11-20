@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend;
 
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewRepository;
+import com.dkwasniak.slr_spot_backend.role.ReviewRole;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
@@ -48,11 +49,11 @@ public class SlrSpotBackendApplication {
 			var proj5 = new Review("testowy projekt4", "testowy projekt4", "testowy projekt4", true, 1, tobi.getEmail());
 			danny.addRole(adminRole);
 			tobi.addRole(userRole);
-			danny.addReview(proj1);
-			danny.addReview(proj2);
-			danny.addReview(proj3);
-			tobi.addReview(proj4);
-			tobi.addReview(proj5);
+			danny.addReview(proj1, ReviewRole.OWNER);
+			danny.addReview(proj2, ReviewRole.OWNER);
+			danny.addReview(proj3, ReviewRole.OWNER);
+			tobi.addReview(proj4, ReviewRole.OWNER);
+			tobi.addReview(proj5, ReviewRole.OWNER);
 			userService.saveUser(danny);
 			var proj6 = new Review("addReviewToUser");
 			userService.addReviewToUser(danny, proj6);

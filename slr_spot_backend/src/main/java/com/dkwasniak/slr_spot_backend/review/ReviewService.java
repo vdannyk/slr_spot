@@ -3,6 +3,7 @@ package com.dkwasniak.slr_spot_backend.review;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.review.exception.ReviewNotFoundException;
+import com.dkwasniak.slr_spot_backend.role.ReviewRole;
 import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
@@ -62,7 +63,7 @@ public class ReviewService {
                 .collect(Collectors.toSet());
     }
 
-    public ReviewMemberDto toReviewMemberDto(User user, String role) {
+    public ReviewMemberDto toReviewMemberDto(User user, ReviewRole role) {
         return ReviewMemberDto.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())

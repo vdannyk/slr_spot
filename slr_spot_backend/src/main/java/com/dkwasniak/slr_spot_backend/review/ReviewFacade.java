@@ -3,6 +3,7 @@ package com.dkwasniak.slr_spot_backend.review;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
+import com.dkwasniak.slr_spot_backend.role.ReviewRole;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
@@ -29,7 +30,7 @@ public class ReviewFacade {
                 reviewDto.getIsPublic(), reviewDto.getScreeningReviewers(), username);
         long id = reviewService.saveReview(review);
         User owner = userService.getUserByEmail(username);
-        userService.addReviewToUser(owner, review);
+        userService.addReviewToUser(owner, review, ReviewRole.OWNER);
         for (String email : reviewDto.getReviewers()) {
             User user = userService.getUserByEmail(email);
             userService.addReviewToUser(user, review);
