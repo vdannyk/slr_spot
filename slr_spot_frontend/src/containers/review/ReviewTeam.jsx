@@ -5,8 +5,8 @@ import axiosInstance from "../../services/api";
 import { AiOutlineClose } from "react-icons/ai";
 import './home.css';
 import './reviewTeam.css';
-import TeamMemberField from '../../components/reviews/TeamMemberField';
 import EventBus from '../../common/EventBus';
+import TeamMemberField from '../../components/newReview/TeamMemberField';
 
 
 const ReviewTeam = () => {
