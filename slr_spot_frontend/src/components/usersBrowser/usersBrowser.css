@@ -1,0 +1,23 @@
+.slrspot__usersBrowser {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: flex-start;
+}
+
+.slrspot__usersBrowser-search {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  border-bottom: 1px solid #eee;
+}
+
+.slrspot__usersBrowser-search-field {
+  flex-direction: column;
+  margin: 40px;
+}
+
+.slrspot__usersBrowser-search-field input {
+  border-radius: 0px;
+}

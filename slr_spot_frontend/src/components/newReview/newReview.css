@@ -145,13 +145,6 @@
   flex-direction: column;
 }
 
-.slrspot__newReview-members-add-field button {
-	font-size: 16px;
-  margin-bottom: 0;
-  margin-left: 0;
-  border-radius: 0px;
-}
-
 .slrspot__newReview-members-add input {
   border-radius: 0px;
 }

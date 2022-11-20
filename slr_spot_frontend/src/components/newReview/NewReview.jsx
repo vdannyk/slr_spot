@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
 import axiosInstance from "../../services/api";
-import { BeatLoader } from "react-spinners";
 import Check from 'react-bootstrap/FormCheck';
-import TeamMemberField from './TeamMemberField';
-import EventBus from '../../common/EventBus';
 import { useNavigate } from "react-router-dom";
 import './newReview.css'
+import UsersBrowser from '../usersBrowser/UsersBrowser';
 
-const people = [
-  "Danny",
-  "Daniel",
-  "Dawid",
-  "Dominik",
-  "Krzysztof",
-  "Stefan",
-  "Szymon"
-];
 
 const NewReview = () => {
   const [loading, setLoading] = useState(false);
@@ -24,39 +13,8 @@ const NewReview = () => {
   const [isReviewSettings, setIsReviewSettings] = useState(true);
   const [isMembersSettings, setIsMembersSettings] = useState(false);
   const [isProtocolSettings, setIsProtocolSettings] = useState(false);
-  const [isAddMemberEmpty, setIsAddMemberEmpty] = useState(false);
-  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
-
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [searchResults, setSearchResults] = React.useState([]);
-  const [contributors, setContributors] = useState([]);
-  const [contributor, setContributor] = useState('');
-  
-  // const handleChange = event => {
-  //    setSearchTerm(event.target.value);
-  //  };
-
-  useEffect(() => {
-    axiosInstance.get("/users/emails")
-    .then((response) => {
-      console.log(response.data);
-      setUsers(response.data);
-    })
-    .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-     const results = users.filter(person =>
-       person.toLowerCase().includes(searchTerm)
-     );
-     setSearchResults(results);
-   }, [searchTerm, users]);
-  
+  const [selectedMembers, setSelectedMembers] = useState([]);
 
   const onSubmit = (formData) => {
     setLoading(true);
@@ -65,7 +23,7 @@ const NewReview = () => {
     const description = formData.description;
     const isPublic = formData.isPublic;
     const screeningReviewers = formData.screeningReviewers;
-    const reviewers = contributors;
+    const reviewers = selectedMembers;
     console.log(formData);
     axiosInstance.post("/reviews/save", {
       name, researchArea, description, isPublic, screeningReviewers, reviewers
@@ -94,33 +52,6 @@ const NewReview = () => {
     setIsMembersSettings(false);
     setIsProtocolSettings(true);
   };
-
-  const onAddContributor = (newContributor) => {
-    if (newContributor.trim().length === 0) {
-      setIsAddMemberEmpty(true);
-      return;
-    }
-    setContributors(oldArray => [...oldArray, newContributor]);
-    console.log(contributors);
-  }
-
-  const handleRemoveMember = (member) => {
-    setContributors(contributors.filter(item => item !== member))
-    setUsers(oldArray => [...oldArray, member]);
-  }
-
-  const handleContributorChange = (event) => {
-    if (event.target.value.trim().length !== 0) {
-      setIsAddMemberEmpty(false);
-    }
-    setSearchTerm(event.target.value);
-    setContributor(event.target.value);
-  }
-
-  const handleUsernameClick = (username) => {
-    setContributors(oldArray => [...oldArray, username]);
-    setUsers(users.filter(item => item !== username))
-  }
 
   const showSelectedPage = () => {
     if (isReviewSettings) {
@@ -166,32 +97,7 @@ const NewReview = () => {
 
     if (isMembersSettings) {
       return (
-        <div className='slrspot__newReview-members'>
-          <div className='slrspot__newReview-members-add'>
-              <div className='slrspot__newReview-members-add-field'>
-                <input
-                  type="text"
-                  placeholder="Search by email"
-                  value={searchTerm}
-                  onChange={handleContributorChange}
-                />
-                <ul>
-                  {searchResults.map(item => (
-                    <li onClick={ () => handleUsernameClick(item) }>{ item }</li>
-                  ))}
-                </ul>
-              </div>
-              {/* <button type="button" onClick={() => onAddContributor(contributor)}>add</button> */}
-              {/* {isAddMemberEmpty && 
-                <p className="slrspot__input-error">Invalid username</p>
-              } */}
-          </div>
-          <div className='slrspot__newReview-members-list'>
-            {contributors.map(item => (
-              <TeamMemberField username={item} triggerRemove={handleRemoveMember}/>
-            ))}
-          </div>
-        </div>
+        <UsersBrowser setMembersList={setSelectedMembers} />
       )
     }
 
