@@ -24,7 +24,7 @@ const ReviewTeam = () => {
         <td>{id+1}</td>
         <td>{item.firstName} {item.lastName}</td>
         <td>{item.role}</td>
-        <td><AiOutlineClose style={{color: 'red'}} /></td>
+        <td>{item.role !== 'OWNER' && <AiOutlineClose style={{color: 'red'}} />}</td>
       </tr>
     </tbody>
   );

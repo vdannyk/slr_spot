@@ -21,7 +21,9 @@ const ExpirationLogout = (props) => {
   return (
     <div className='slrspot__expirationLogout'>
       <div className='slrspot__expirationLogout-container'>
-        ExpirationLogout {counter}
+        <p>You have to sign in again after access token expiration.</p>
+        <p>You will be redirected to the home page automatically in: {counter}</p>
+        <button>Redirect now</button>
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.review;
 
+import com.dkwasniak.slr_spot_backend.review.dto.NewReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -43,15 +43,15 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
+    public ResponseEntity<ReviewDto> getReviewById(@PathVariable Long id) {
         // TODO Add validation if user can access this review
         return ResponseEntity.ok().body(reviewFacade.getReviewById(id));
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Long> saveProject(@RequestBody ReviewDto reviewDto) {
+    public ResponseEntity<Long> saveProject(@RequestBody NewReviewDto newReviewDto) {
         var user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        return ResponseEntity.ok().body(reviewFacade.createReview(reviewDto, user));
+        return ResponseEntity.ok().body(reviewFacade.createReview(newReviewDto, user));
     }
 
     @GetMapping("/{id}/members")

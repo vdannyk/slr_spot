@@ -50,17 +50,17 @@ const Reviews = () => {
     <tbody key={id}>
       <tr>
         <td>{id+1}</td>
-        <td onClick={ () => onReviewClick(item.id) }>{item.title}</td>
-        <td>{item.owner}</td>
+        <td onClick={ () => onReviewClick(item.review.id) }>{item.review.title}</td>
+        <td>{item.firstName} {item.lastName}</td>
       </tr>
     </tbody>
   );
 
   const listUserReviews = data.map((item, id) => 
     <tbody key={id}>
-      <tr onClick={ () => onReviewClick(item.id) }>
+      <tr onClick={ () => onReviewClick(item.review.id) }>
         <td>{id+1}</td>
-        <td>{item.title}</td>
+        <td>{item.review.title}</td>
       </tr>
     </tbody>
   );

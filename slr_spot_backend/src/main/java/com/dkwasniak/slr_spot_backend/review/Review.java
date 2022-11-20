@@ -33,7 +33,6 @@ public class Review {
     private String description;
     private Boolean isPublic;
     private Integer screeningReviewers;
-    private String owner;
 
     @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JsonIgnore
@@ -43,12 +42,11 @@ public class Review {
         this.title = title;
     }
 
-    public Review(String title, String researchArea, String description, Boolean isPublic, Integer screeningReviewers, String owner) {
+    public Review(String title, String researchArea, String description, Boolean isPublic, Integer screeningReviewers) {
         this.title = title;
         this.researchArea = researchArea;
         this.description = description;
         this.isPublic = isPublic;
         this.screeningReviewers = screeningReviewers;
-        this.owner = owner;
     }
 }

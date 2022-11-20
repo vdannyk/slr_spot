@@ -8,6 +8,7 @@ import { CgPen } from "react-icons/cg";
 
 const Home = () => {
   const [reviewData, setReviewData] = useState([]);
+  const [owner, setOwner] = useState();
   const { reviewId } = useParams();
   const navigate = useNavigate();
 
@@ -15,8 +16,9 @@ const Home = () => {
     console.log(reviewId);
     axiosInstance.get("/reviews/" + reviewId)
     .then((response) => {
-      setReviewData(response.data);
-      console.log(response.data);
+      setReviewData(response.data.review);
+      setOwner(response.data.firstName + ' ' + response.data.lastName);
+      console.log(response.data.review);
     });
   }, []);
 
@@ -37,7 +39,7 @@ const Home = () => {
           </tr>
           <tr>
             <th>Owner</th>
-            <td>{reviewData.owner}</td>
+            <td>{owner}</td>
           </tr>
           <tr>
             <th>Team members</th>

@@ -1,10 +1,10 @@
 package com.dkwasniak.slr_spot_backend.review;
 
+import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.review.exception.ReviewNotFoundException;
 import com.dkwasniak.slr_spot_backend.role.ReviewRole;
-import com.dkwasniak.slr_spot_backend.role.Role;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
@@ -16,10 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,12 +44,17 @@ public class ReviewService {
 
     public ReviewsPageDto toReviewsPageDto(Page<Review> reviewsPage) {
         return ReviewsPageDto.builder()
-                .reviews(new HashSet<>(reviewsPage.getContent()))
+                .reviews(reviewsPage.getContent().stream().map(this::boundWithOwner).collect(Collectors.toSet()))
                 .currentPage(reviewsPage.getNumber())
                 .totalReviewsNum(reviewsPage.getTotalElements())
                 .totalPagesNum(reviewsPage.getTotalPages())
                 .build();
+    }
 
+    protected ReviewDto boundWithOwner(Review review) {
+        User owner = review.getUsers().stream()
+                .filter(user -> ReviewRole.OWNER.equals(user.getRole())).findFirst().get().getUser();
+        return ReviewDto.of(owner.getFirstName(), owner.getLastName(), review);
     }
 
     public Set<ReviewMemberDto> getMembers(long id) {
