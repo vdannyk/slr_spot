@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import axiosInstance from "../../services/api";
+import axiosInstance from "../../../services/api";
 import { Table } from "react-bootstrap";
-import './home.css'
 import { CgPen } from "react-icons/cg";
+import './reviewHome.css'
 
 
-const Home = () => {
+const ReviewHome = () => {
   const [reviewData, setReviewData] = useState([]);
   const [owner, setOwner] = useState();
   const { reviewId } = useParams();
@@ -51,4 +51,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default ReviewHome

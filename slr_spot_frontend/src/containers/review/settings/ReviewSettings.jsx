@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
-import axiosInstance from "../../services/api";
 import { BeatLoader } from "react-spinners";
 import Check from 'react-bootstrap/FormCheck';
 import { useNavigate } from "react-router-dom";
-import './home.css';
+import './reviewSettings.css';
 
 
 const ReviewSettings = () => {

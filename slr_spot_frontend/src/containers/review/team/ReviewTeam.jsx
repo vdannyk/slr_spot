@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import axiosInstance from "../../services/api";
+import axiosInstance from "../../../services/api";
 import { AiOutlineClose } from "react-icons/ai";
-import './home.css';
 import './reviewTeam.css';
-import EventBus from '../../common/EventBus';
-import TeamMemberField from '../../components/newReview/TeamMemberField';
+import EventBus from '../../../common/EventBus';
+// import TeamMemberField from '../../components/newReview/TeamMemberField';
 
 
 const ReviewTeam = () => {
@@ -107,9 +106,9 @@ const ReviewTeam = () => {
               } */}
           </div>
           <div className='slrspot__newReview-members-list'>
-            {possibleNewMembers.map(item => (
+            {/* {possibleNewMembers.map(item => (
               <TeamMemberField username={item} triggerRemove={handleRemoveMember}/>
-            ))}
+            ))} */}
           </div>
         </div>
       </div>
