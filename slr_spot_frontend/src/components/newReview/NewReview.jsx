@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import axiosInstance from "../../services/api";
 import Check from 'react-bootstrap/FormCheck';
 import { useNavigate } from "react-router-dom";
 import './newReview.css'
 import UsersBrowser from '../usersBrowser/UsersBrowser';
+import EventBus from '../../common/EventBus';
 
 
 const NewReview = () => {
@@ -15,6 +16,20 @@ const NewReview = () => {
   const [isProtocolSettings, setIsProtocolSettings] = useState(false);
   const navigate = useNavigate();
   const [selectedMembers, setSelectedMembers] = useState([]);
+  const [searchedUsers, setSearchedUsers] = useState([]);
+
+  useEffect(() => {
+    axiosInstance.get("/users/emails")
+    .then((response) => {
+      console.log(response.data);
+      setSearchedUsers(response.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+  }, []);
 
   const onSubmit = (formData) => {
     setLoading(true);
@@ -97,7 +112,12 @@ const NewReview = () => {
 
     if (isMembersSettings) {
       return (
-        <UsersBrowser setMembersList={setSelectedMembers} />
+        <UsersBrowser
+          searchedUsers={searchedUsers}
+          setSearchedUsers={setSearchedUsers} 
+          selectedMembers={selectedMembers} 
+          setMembersList={setSelectedMembers} 
+        />
       )
     }
 

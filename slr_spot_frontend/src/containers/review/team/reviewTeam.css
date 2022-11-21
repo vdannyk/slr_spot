@@ -39,3 +39,8 @@
 .slrspot__review-team-content td {
   font-size: 18px;
 }
+
+.slrspot__review-team-newMember-search {
+  display: flex;
+  flex: 1;
+}

@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import axiosInstance from "../../services/api";
-import EventBus from '../../common/EventBus';
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiFillPlusCircle } from "react-icons/ai";
 import './usersBrowser.css';
 
 const TeamMemberField = ({username, triggerRemove}) => {
   return (
-    <div className='slrspot__teamMemberField' onClick={() => triggerRemove(username)}>
+    <div className='slrspot__usersBrowser-userSelected' onClick={() => triggerRemove(username)}>
       {username}
-      <AiOutlineClose className='slrspot__teamMemberField-remove' />
+      <AiOutlineClose className='slrspot__usersBrowser-userSelected-remove' />
+    </div>
+  )
+}
+
+const UserItem = ({username, triggerAdd}) => {
+  return (
+    <div className='slrspot__usersBrowser-userItem' onClick={() => triggerAdd(username)}>
+      {username}
+      <AiFillPlusCircle className='slrspot__usersBrowser-userItem-add' />
     </div>
   )
 }
@@ -16,44 +23,31 @@ const TeamMemberField = ({username, triggerRemove}) => {
 const UsersBrowser = (props) => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [members, setMembers] = useState([]);
-  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axiosInstance.get("/users/emails")
-    .then((response) => {
-      console.log(response.data);
-      setUsers(response.data);
-    })
-    .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    const results = users.filter(person =>
+    const results = props.searchedUsers.filter(person =>
       person.toLowerCase().includes(searchTerm)
     );
     setSearchResults(results);
-  }, [searchTerm, users]);
+  }, [searchTerm, props.searchedUsers]);
 
   const handleRemoveMember = (member) => {
-    setMembers(members.filter(item => item !== member))
-    props.setMembersList(members);
-    setUsers(oldArray => [...oldArray, member]);
+    props.setMembersList(props.selectedMembers.filter(item => item !== member));
+    props.setSearchedUsers(oldArray => [...oldArray, member]);
   }
 
-  const handleContributorChange = (event) => {
+  const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   }
 
-  const handleUsernameClick = (username) => {
-    setMembers(oldArray => [...oldArray, username]);
-    props.setMembersList(members);
-    setUsers(users.filter(item => item !== username))
+  const handleAddMember = (username) => {
+    props.setMembersList(oldArray => [...oldArray, username]);
+    props.setSearchedUsers(props.searchedUsers.filter(item => item !== username))
   }
+
+  const listMembers = props.selectedMembers.map(item => 
+    <TeamMemberField username={item} triggerRemove={handleRemoveMember}/>
+  );
 
   return (
     <div className='slrspot__usersBrowser'>
@@ -63,19 +57,17 @@ const UsersBrowser = (props) => {
             type="text"
             placeholder="Search by email"
             value={searchTerm}
-            onChange={handleContributorChange}
+            onChange={handleSearch}
           />
-          <ul>
-            {searchResults.map(item => (
-              <li onClick={ () => handleUsernameClick(item) }>{ item }</li>
-            ))}
-          </ul>
+          {searchResults.map(item => (
+            <UserItem username={item} triggerAdd={handleAddMember}/>
+          ))}
         </div>
-      </div>
-      <div className='slrspot__usersBrowser-selected-list'>
-        {members.map(item => (
-          <TeamMemberField username={item} triggerRemove={handleRemoveMember}/>
-        ))}
+        {props.selectedMembers.length !== 0 && (
+          <div className='slrspot__usersBrowser-search-selected'>
+            {listMembers}
+          </div>
+        )}
       </div>
     </div>
   )
