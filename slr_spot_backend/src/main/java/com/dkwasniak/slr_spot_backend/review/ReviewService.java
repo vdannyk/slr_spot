@@ -66,6 +66,7 @@ public class ReviewService {
 
     public ReviewMemberDto toReviewMemberDto(User user, ReviewRole role) {
         return ReviewMemberDto.builder()
+                .memberId(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
@@ -83,4 +84,9 @@ public class ReviewService {
                 .orElseThrow(() -> new ReviewNotFoundException("Review with given id not found"));
     }
 
+    public void removeMember(long reviewId, long userId) {
+        User user = userService.getUserById(userId);
+        Review review = getReviewById(reviewId);
+        user.removeReview(review);
+    }
 }

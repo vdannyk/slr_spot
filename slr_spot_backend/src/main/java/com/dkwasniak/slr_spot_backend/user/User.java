@@ -54,11 +54,6 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//    @JoinTable(
-//            name = "users_reviews",
-//            joinColumns = { @JoinColumn(name = "user_id") },
-//            inverseJoinColumns = { @JoinColumn(name = "review_id") }
-//    )
     @JsonIgnore
     private Set<UserReview> reviews = new HashSet<>();
 
@@ -82,20 +77,15 @@ public class User {
     public void addReview(Review review, ReviewRole role) {
         UserReview userReview = new UserReview(this, review, role);
         this.reviews.add(userReview);
-//        review.getUsers().add(this);
     }
 
     public void removeReview(Review review) {
         for (Iterator<UserReview> it = reviews.iterator(); it.hasNext();) {
             UserReview userReview = it.next();
-
             if (userReview.getUser().equals(this) && userReview.getReview().equals(review)) {
                 it.remove();
                 this.reviews.remove(userReview);
             }
         }
-//        this.reviews.remove(review);
-//        review.getUsers().remove(this);
-//
     }
 }

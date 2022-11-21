@@ -8,6 +8,7 @@ import lombok.Getter;
 @Builder
 public class ReviewMemberDto {
 
+    private long memberId;
     private String firstName;
     private String lastName;
     private String email;

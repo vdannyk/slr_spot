@@ -5,8 +5,7 @@ import axiosInstance from "../../../services/api";
 import { AiOutlineClose } from "react-icons/ai";
 import './reviewTeam.css';
 import EventBus from '../../../common/EventBus';
-import { UsersBrowser } from '../../../components';
-// import TeamMemberField from '../../components/newReview/TeamMemberField';
+import { UsersBrowser, ConfirmationPopup } from '../../../components';
 
 
 const ReviewTeam = () => {
@@ -14,6 +13,10 @@ const ReviewTeam = () => {
   const { reviewId } = useParams();
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
+  const [isRemoveMemberConfirmation, setIsRemoveMemberConfirmation] = useState(false);
+  const [memberNameToRemove, setMemberNameToRemove] = useState('');
+  const [memberId, setMemberId] = useState();
+  
 
   useEffect(() => {
     axiosInstance.get("/users/emails")
@@ -35,13 +38,40 @@ const ReviewTeam = () => {
     });
   }, []);
 
+  const confirmRemoveMember = () => {
+    console.log(memberId);
+    axiosInstance.post("/reviews/" + reviewId + "/members/" + memberId + "/remove")
+    .then(() => {
+      setIsRemoveMemberConfirmation(false);
+    });
+  }
+
+  const onRemoveMemberClick = (triggerPopup, item) => {
+    setIsRemoveMemberConfirmation(triggerPopup);
+    setMemberNameToRemove(item.firstName + ' ' + item.lastName);
+    setMemberId(item.memberId);
+  }
+
+  const onCancelRemoveMember = () => {
+    setIsRemoveMemberConfirmation(false);
+    setMemberNameToRemove('');
+    setMemberId();
+  }
+
   const listMembers = members.map((item, id) => 
     <tbody key={id}>
       <tr>
         <td>{id+1}</td>
         <td>{item.firstName} {item.lastName}</td>
         <td>{item.role}</td>
-        <td>{item.role !== 'OWNER' && <AiOutlineClose style={{color: 'red'}} />}</td>
+        <td>
+          {item.role !== 'OWNER' && 
+            <AiOutlineClose 
+              onClick={() => onRemoveMemberClick(true, item)} 
+              style={{color: 'red', cursor: 'pointer'}}
+            />
+          }
+        </td>
       </tr>
     </tbody>
   );
@@ -65,6 +95,14 @@ const ReviewTeam = () => {
             { listMembers }
           </Table>
         </div>
+        { isRemoveMemberConfirmation && 
+        <ConfirmationPopup 
+          title="remove member"
+          message={'Do you want to remove ' + memberNameToRemove + ' from your team?'}
+          triggerConfirm={confirmRemoveMember}
+          triggerCancel={onCancelRemoveMember}
+        /> 
+        }
       </div>
       <div className='slrspot__review-team-newMember'>
         <div className='slrspot__review-team-header'>

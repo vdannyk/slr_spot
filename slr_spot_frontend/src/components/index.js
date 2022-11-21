@@ -10,3 +10,4 @@ export { default as TimeoutLogout } from './expirationLogout/ExpirationLogout';
 export { default as UpdateEmail } from './updateEmail/UpdateEmail';
 export { default as ReviewMenu } from './review/reviewMenu/ReviewMenu';
 export { default as UsersBrowser } from './usersBrowser/UsersBrowser';
+export { default as ConfirmationPopup } from './popups/confirmationPopup/ConfirmationPopup';

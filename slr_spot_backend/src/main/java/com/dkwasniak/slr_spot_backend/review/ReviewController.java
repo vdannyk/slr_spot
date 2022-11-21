@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,5 +58,11 @@ public class ReviewController {
     @GetMapping("/{id}/members")
     public ResponseEntity<Set<ReviewMemberDto>> getMembers(@PathVariable Long id) {
         return ResponseEntity.ok().body(reviewFacade.getMembers(id));
+    }
+
+    @PostMapping("/{id}/members/{userId}/remove")
+    public ResponseEntity<Void> removeMember(@PathVariable Long id, @PathVariable Long userId) {
+        reviewFacade.removeMember(id, userId);
+        return ResponseEntity.ok().build();
     }
 }

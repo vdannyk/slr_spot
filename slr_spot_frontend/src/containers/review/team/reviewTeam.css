@@ -43,4 +43,5 @@
 .slrspot__review-team-newMember-search {
   display: flex;
   flex: 1;
+  margin: 0 40px 20px;
 }

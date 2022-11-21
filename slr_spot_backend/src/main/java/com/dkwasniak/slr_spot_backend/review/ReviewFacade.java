@@ -53,4 +53,8 @@ public class ReviewFacade {
                 reviewService.getReviewsByUser(userId, page, size)
         );
     }
+
+    public void removeMember(long reviewId, long userId) {
+        reviewService.removeMember(reviewId, userId);
+    }
 }
