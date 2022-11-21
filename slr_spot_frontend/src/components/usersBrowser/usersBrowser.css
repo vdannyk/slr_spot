@@ -10,7 +10,6 @@
   flex-direction: row;
   align-items: flex-start;
   width: 100%;
-  border-bottom: 1px solid #eee;
 }
 
 .slrspot__usersBrowser-search-field {
@@ -26,7 +25,6 @@
 .slrspot__usersBrowser-search-selected {
   overflow-y: scroll;
   height: 100px;
-  width: 30%;
   margin-left: 20px;
 }
 

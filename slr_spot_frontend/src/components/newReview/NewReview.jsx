@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import axiosInstance from "../../services/api";
-import Check from 'react-bootstrap/FormCheck';
 import { useNavigate } from "react-router-dom";
-import './newReview.css'
 import UsersBrowser from '../usersBrowser/UsersBrowser';
 import EventBus from '../../common/EventBus';
+import ReviewInfo from './reviewInfo/ReviewInfo';
+import './newReview.css'
 
 
 const NewReview = () => {
   const [loading, setLoading] = useState(false);
   const {register, handleSubmit, formState: { errors }} = useForm();
-  const [isReviewSettings, setIsReviewSettings] = useState(true);
+  const [isReviewInfo, setIsReviewInfo] = useState(true);
   const [isMembersSettings, setIsMembersSettings] = useState(false);
   const [isProtocolSettings, setIsProtocolSettings] = useState(false);
   const navigate = useNavigate();
@@ -51,65 +51,32 @@ const NewReview = () => {
   };
 
   const onReviewsClick = () => {
-    setIsReviewSettings(true);
+    setIsReviewInfo(true);
     setIsMembersSettings(false);
     setIsProtocolSettings(false);
   };
 
   const onMembersClick = () => {
-    setIsReviewSettings(false);
+    setIsReviewInfo(false);
     setIsMembersSettings(true);
     setIsProtocolSettings(false);
   };
 
   const onProtocolClick = () => {
-    setIsReviewSettings(false);
+    setIsReviewInfo(false);
     setIsMembersSettings(false);
     setIsProtocolSettings(true);
   };
 
   const showSelectedPage = () => {
-    if (isReviewSettings) {
+    if (isReviewInfo) {
       return (
-        <div className='slrspot__newReview-reviewSettings'>
-          <label>Review name</label>
-          <input  
-            {...register("name", { 
-              required: true,
-            })}
-            name='name' 
-          />
-          {errors.name && errors.name.type=== "required" && 
-            <p className="slrspot__newReview-error">This field is required</p>
-          }
-          <label>Area of research</label>
-          <input  
-            {...register("researchArea", { 
-              required: true,
-            })}
-            name='researchArea' 
-          />
-          {errors.researchArea && errors.researchArea.type=== "required" && 
-            <p className="slrspot__newReview-error">This field is required</p>
-          }
-          <label>Description</label>
-          <textarea  
-            {...register("description")}
-            name='description' 
-          />
-          <label>Public review</label>
-          <Check {...register("isPublic")}/>
-          <label>Reviewers required for screening</label>
-          <input  
-            {...register("screeningReviewers")}
-            name='screeningReviewers'
-            type='number'
-            min={1}
-          />
-        </div>
-      )
+        <ReviewInfo 
+          register={register}
+          errors={errors}
+        />
+      ) 
     }
-
     if (isMembersSettings) {
       return (
         <UsersBrowser
@@ -120,12 +87,23 @@ const NewReview = () => {
         />
       )
     }
-
     if (isProtocolSettings) {
       return (
         <div>
           Protocol
         </div>
+      )
+    }
+  }
+
+  const OptionItem = ({trigger, name, handleClick}) => {
+    if (trigger) {
+      return (
+        <p className='slrspot__newReview-menu-selected'>{name}</p> 
+      )
+    } else {
+      return (
+        <p onClick={handleClick}>{name}</p>
       )
     }
   }
@@ -137,27 +115,21 @@ const NewReview = () => {
       </div>
       <form className='slrspot__newReview-container' onSubmit={handleSubmit(onSubmit)}>
           <div className='slrspot__newReview-menu'>
-            { isReviewSettings 
-              ? <p className='slrspot__newReview-menu-selected'>Review</p> 
-              : <p onClick={onReviewsClick}>Review</p>}
-            { isMembersSettings 
-              ? <p className='slrspot__newReview-menu-selected'>Members</p> 
-              : <p onClick={onMembersClick}>Members</p>}
-            {/* { isProtocolSettings 
-              ? <p className='slrspot__newReview-menu-selected'>Protocol</p> 
-              : <p onClick={onProtocolClick}>Protocol</p>} */}
+            <OptionItem trigger={isReviewInfo} name='Review' handleClick={onReviewsClick} />
+            <OptionItem trigger={isMembersSettings} name='Members' handleClick={onMembersClick} />
+            {/* <OptionItem trigger={isProtocolSettings} name='Protocol' handleClick={onProtocolClick} /> */}
           </div>
 
           <div className='slrspot__newReview-settings'>
             <div className='slrspot__newReview-settings-header'>
-              { isReviewSettings && <h2>review information</h2>}
+              { isReviewInfo && <h2>review information</h2>}
               { isMembersSettings && <h2>add members</h2>}
               { isProtocolSettings && <h2>prepare protocol</h2>}
             </div>
             <div className='slrspot__newReview-settings-container'>
               { showSelectedPage() }
             </div>
-            { isReviewSettings && 
+            { isReviewInfo && 
               <div className='slrspot__newReview-settings-buttons'>
                 <button className='slrspot__newReview-settings-nextButton' onClick={onMembersClick}>next</button>
               </div>

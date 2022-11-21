@@ -64,6 +64,7 @@
 .slrspot__newReview-settings-container {
   display: flex;
   flex: 1;
+  margin: 20px 40px;
 }
 
 .slrspot__newReview-settings-buttons {
@@ -98,18 +99,6 @@
 .slrspot__newReview-menu-selected {
   background-color: #967aff;
   color: white;
-}
-
-.slrspot__newReview-reviewSettings {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  align-items: flex-start;
-  margin: 20px 40px;
-}
-
-.slrspot__newReview-reviewSettings label {
-  font-weight: bold;
 }
 
 .slrspot__newReview-settings button {
