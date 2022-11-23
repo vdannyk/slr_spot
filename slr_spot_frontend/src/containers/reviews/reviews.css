@@ -19,14 +19,8 @@
 
 .slrspot__reviews button {
 	border-radius: 5px;
-	background: #967aff;
-	color: white;
   font-size: 14px;
-	font-weight: bold;
 	padding: 5px 10px;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	cursor: pointer;
   margin-bottom: 5px;
 }
 

@@ -18,12 +18,14 @@ a {
 button {
 	border-radius: 20px;
 	border: 0;
-	background: linear-gradient(89.97deg, #AE67FA 1.84%, #F49867 102.67%);
-	color: #FFFFFF;
-	font-size: 14px;
+	background: #AE67FA;
+	color: white;
+	font-size: 16px;
 	font-weight: bold;
+	padding: 10px 50px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
+  cursor: pointer;
 }
 
 input {
