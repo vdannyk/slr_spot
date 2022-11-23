@@ -43,6 +43,7 @@ const ReviewTeam = () => {
     axiosInstance.post("/reviews/" + reviewId + "/members/" + memberId + "/remove")
     .then(() => {
       setIsRemoveMemberConfirmation(false);
+      window.location.reload();
     });
   }
 

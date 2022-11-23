@@ -53,7 +53,7 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
     private Set<UserReview> reviews = new HashSet<>();
 
@@ -67,11 +67,6 @@ public class User {
     public void addRole(Role role) {
         this.roles.add(role);
         role.getUsers().add(this);
-    }
-
-    public void removeRole(Role role) {
-        this.reviews.remove(role);
-        role.getUsers().remove(this);
     }
 
     public void addReview(Review review, ReviewRole role) {

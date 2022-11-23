@@ -34,7 +34,7 @@ public class Review {
     private Boolean isPublic;
     private Integer screeningReviewers;
 
-    @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
     private Set<UserReview> users = new HashSet<>();
 
