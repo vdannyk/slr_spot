@@ -19,7 +19,7 @@ const ReviewTeam = () => {
   
 
   useEffect(() => {
-    axiosInstance.get("/users/emails/allowed")
+    axiosInstance.get("/reviews/" + reviewId + "/members/search")
     .then((response) => {
       console.log(response.data);
       setSearchedUsers(response.data);

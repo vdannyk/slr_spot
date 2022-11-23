@@ -96,10 +96,9 @@ public class UserFacade {
     }
 
     public Set<String> getEmails(String currentUserEmail) {
-        return userService.getEmails(currentUserEmail);
+        Set<String> allUsersEmails = userService.getAllEmails();
+        allUsersEmails.remove(currentUserEmail);
+        return allUsersEmails;
     }
 
-    public Set<String> getAllowedEmails(String currentUserEmail, long reviewId) {
-        return userService.getAllowedEmails(currentUserEmail, reviewId);
-    }
 }

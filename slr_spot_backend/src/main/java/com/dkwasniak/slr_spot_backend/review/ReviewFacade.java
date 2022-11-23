@@ -57,4 +57,11 @@ public class ReviewFacade {
     public void removeMember(long reviewId, long userId) {
         reviewService.removeMember(reviewId, userId);
     }
+
+    public Set<String> getUsersAvailableToAdd(long reviewId) {
+        Set<String> allAvailableEmails = userService.getAllEmails();
+        Set<String> currentMembers = reviewService.getMembersEmails(reviewId);
+        allAvailableEmails.removeAll(currentMembers);
+        return allAvailableEmails;
+    }
 }

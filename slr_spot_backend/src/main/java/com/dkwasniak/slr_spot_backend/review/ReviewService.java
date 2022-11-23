@@ -64,6 +64,13 @@ public class ReviewService {
                 .collect(Collectors.toSet());
     }
 
+    public Set<String> getMembersEmails(long id) {
+        Set<UserReview> userReviews = getReviewById(id).getUsers();
+        return userReviews.stream()
+                .map((userReview) -> userReview.getUser().getEmail())
+                .collect(Collectors.toSet());
+    }
+
     public ReviewMemberDto toReviewMemberDto(User user, ReviewRole role) {
         return ReviewMemberDto.builder()
                 .memberId(user.getId())

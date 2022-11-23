@@ -65,4 +65,9 @@ public class ReviewController {
         reviewFacade.removeMember(id, userId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{id}/members/search")
+    public ResponseEntity<Set<String>> getUsersAvailableToAdd(@PathVariable Long id) {
+        return ResponseEntity.ok().body(reviewFacade.getUsersAvailableToAdd(id));
+    }
 }

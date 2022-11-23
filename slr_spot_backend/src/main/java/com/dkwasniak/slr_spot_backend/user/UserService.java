@@ -140,11 +140,8 @@ public class UserService implements UserDetailsService {
         return user.getReviews().stream().map(UserReview::getReview).collect(Collectors.toSet());
     }
 
-    public Set<String> getEmails(String currentUserEmail) {
-        return userRepository.getEmails(currentUserEmail);
+    public Set<String> getAllEmails() {
+        return userRepository.getEmails();
     }
 
-    public Set<String> getAllowedEmails(String currentUserEmail, long reviewId) {
-        return userRepository.getAllowedEmails(currentUserEmail, reviewId);
-    }
 }

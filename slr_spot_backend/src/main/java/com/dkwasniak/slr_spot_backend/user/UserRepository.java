@@ -19,9 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void enableUser(String email);
     Boolean existsByEmail(String email);
     @Query("SELECT u.email " +
-            "FROM User u " +
-            "WHERE u.email <> :currentEmail")
-    Set<String> getEmails(@Param("currentEmail") String currentUserEmail);
+            "FROM User u ")
+    Set<String> getEmails();
     @Query("SELECT u.email " +
             "FROM User u " +
             "WHERE u.email <> :currentEmail " +
