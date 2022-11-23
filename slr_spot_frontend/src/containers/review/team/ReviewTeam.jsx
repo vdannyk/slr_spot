@@ -58,6 +58,17 @@ const ReviewTeam = () => {
     setMemberId();
   }
 
+  const onAddMembers = () => {
+    const membersToAdd = selectedMembers;
+    axiosInstance.post("/reviews/" + reviewId + "/members/add", {
+      membersToAdd
+    })
+    .then(() => {
+      console.log('Adding succesfull');
+      window.location.reload();
+    });
+  }
+
   const listMembers = members.map((item, id) => 
     <tbody key={id}>
       <tr>
@@ -115,6 +126,7 @@ const ReviewTeam = () => {
             selectedMembers={selectedMembers} 
             setMembersList={setSelectedMembers} 
           />
+          <button onClick={onAddMembers}>Add</button>
         </div>
       </div>
     </div>

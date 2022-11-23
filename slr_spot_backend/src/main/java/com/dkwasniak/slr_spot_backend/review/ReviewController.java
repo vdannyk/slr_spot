@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.review;
 
+import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.NewReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -69,5 +72,11 @@ public class ReviewController {
     @GetMapping("/{id}/members/search")
     public ResponseEntity<Set<String>> getUsersAvailableToAdd(@PathVariable Long id) {
         return ResponseEntity.ok().body(reviewFacade.getUsersAvailableToAdd(id));
+    }
+
+    @PostMapping("/{id}/members/add")
+    public ResponseEntity<Void> addMembers(@PathVariable Long id, @RequestBody AddMembersDto membersToAdd) {
+        reviewFacade.addMembers(id, membersToAdd);
+        return ResponseEntity.ok().build();
     }
 }

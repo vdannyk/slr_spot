@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.review;
 
+import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.NewReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
@@ -63,5 +64,13 @@ public class ReviewFacade {
         Set<String> currentMembers = reviewService.getMembersEmails(reviewId);
         allAvailableEmails.removeAll(currentMembers);
         return allAvailableEmails;
+    }
+
+    public void addMembers(long reviewId, AddMembersDto addMembersDto) {
+        Review review = reviewService.getReviewById(reviewId);
+        for (String email : addMembersDto.getMembersToAdd()) {
+            User user = userService.getUserByEmail(email);
+            userService.addReviewToUser(user, review);
+        }
     }
 }
