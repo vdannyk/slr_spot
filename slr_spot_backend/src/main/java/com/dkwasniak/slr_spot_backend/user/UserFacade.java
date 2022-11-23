@@ -5,8 +5,6 @@ import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService
 import com.dkwasniak.slr_spot_backend.email.EmailService;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
-import com.dkwasniak.slr_spot_backend.role.Role;
-import com.dkwasniak.slr_spot_backend.role.RoleService;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +27,6 @@ public class UserFacade {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
     private final ReviewService reviewService;
-    private final RoleService roleService;
 
     public long createUser(User user) {
         User savedUser = userService.saveUser(user);
@@ -77,12 +74,6 @@ public class UserFacade {
 
     public void updateName(String username, UserDto userDto) {
         userService.updateName(username, userDto.getFirstName(), userDto.getLastName());
-    }
-
-    public void addRoleToUser(String username, String roleName) {
-        User user = userService.getUserByEmail(username);
-        Role role = roleService.getRoleByName(roleName);
-        userService.addRoleToUser(user, role);
     }
 
     public void addReviewToUser(String username, long reviewId) {

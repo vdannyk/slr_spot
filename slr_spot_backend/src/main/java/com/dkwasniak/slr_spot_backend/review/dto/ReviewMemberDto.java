@@ -1,6 +1,6 @@
 package com.dkwasniak.slr_spot_backend.review.dto;
 
-import com.dkwasniak.slr_spot_backend.role.ReviewRole;
+import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -53,7 +53,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             user.getEmail(),
             user.getFirstName(),
             user.getLastName(),
-            user.getRoles(),
             jwtToken,
             refreshToken
         );

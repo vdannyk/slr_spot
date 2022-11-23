@@ -5,7 +5,6 @@ import com.dkwasniak.slr_spot_backend.exception.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,14 +15,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.extractJwtFromHeader;
-import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getAuthorities;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.getUsername;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateHeader;
 import static com.dkwasniak.slr_spot_backend.jwt.JwtUtils.validateJwt;
@@ -53,10 +48,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     DecodedJWT decodedJWT = validateJwt(jwtToken);
 
                     String username = getUsername(decodedJWT);
-                    Collection<SimpleGrantedAuthority> authorities = getAuthorities(decodedJWT);
 
                     UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(username, null, authorities);
+                            new UsernamePasswordAuthenticationToken(username, null, new HashSet<>());
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
                 } catch (Exception exception) {

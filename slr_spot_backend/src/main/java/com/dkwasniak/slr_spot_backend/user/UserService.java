@@ -2,16 +2,13 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewRepository;
-import com.dkwasniak.slr_spot_backend.role.ReviewRole;
-import com.dkwasniak.slr_spot_backend.role.Role;
-import com.dkwasniak.slr_spot_backend.role.RoleRepository;
+import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
 import com.dkwasniak.slr_spot_backend.user.exception.UserNotFoundException;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,7 +30,6 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
     private final ReviewRepository reviewRepository;
 
     public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
@@ -48,14 +44,10 @@ public class UserService implements UserDetailsService {
             throw new IllegalStateException("User " + username + " not activated");
         }
         User user = optUser.get();
-        Collection<GrantedAuthority> authorities = new HashSet<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName())) ;
-        });
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .authorities(authorities)
+                .authorities(new HashSet<>())
                 .build();
     }
 
@@ -115,12 +107,6 @@ public class UserService implements UserDetailsService {
 
     private boolean checkIfCorrectPassword(User user, String password) {
         return passwordEncoder.matches(password, user.getPassword());
-    }
-
-    public void addRoleToUser(User user, Role role) {
-        log.info("Role \"{}\" added to user \"{}\"", role.getName(), user.getEmail());
-        user.addRole(role);
-        userRepository.save(user);
     }
 
     public void addReviewToUser(User user, Review review, ReviewRole role) {

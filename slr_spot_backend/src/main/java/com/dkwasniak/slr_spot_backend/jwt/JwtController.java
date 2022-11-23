@@ -47,7 +47,6 @@ public class JwtController {
                         user.getEmail(),
                         user.getFirstName(),
                         user.getLastName(),
-                        user.getRoles(),
                         jwtToken,
                         refreshToken
                 );
