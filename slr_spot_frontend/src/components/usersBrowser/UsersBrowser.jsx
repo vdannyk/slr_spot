@@ -22,13 +22,17 @@ const UserItem = ({username, triggerAdd}) => {
 
 const UsersBrowser = (props) => {
   const [searchResults, setSearchResults] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const results = props.searchedUsers.filter(person =>
-      person.toLowerCase().includes(searchTerm)
-    );
-    setSearchResults(results);
+    if (searchTerm) {
+      const results = props.searchedUsers.filter(person =>
+        person.toLowerCase().includes(searchTerm)
+      );
+      setSearchResults(results);
+    } else {
+      setSearchResults([]);
+    }
   }, [searchTerm, props.searchedUsers]);
 
   const handleRemoveMember = (member) => {
@@ -59,8 +63,8 @@ const UsersBrowser = (props) => {
             value={searchTerm}
             onChange={handleSearch}
           />
-          {searchResults.map(item => (
-            <UserItem username={item} triggerAdd={handleAddMember}/>
+          {searchResults.map((item, id) => (
+            id < 5 && <UserItem username={item} triggerAdd={handleAddMember}/>
           ))}
         </div>
         {props.selectedMembers.length !== 0 && (

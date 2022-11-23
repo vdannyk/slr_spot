@@ -67,6 +67,7 @@ public class SlrSpotBackendApplication {
 			userService.activateUser("danny@gmail.com");
 			userService.saveUser(tobi);
 //			reviewRepository.save(proj6);
+			userService.addReviewToUser(tobi, proj3);
 			// PAGINATION TEST
 //			var test = reviewRepository.findByUsers_User_Id(danny.getId(), PageRequest.of(1, 5));
 

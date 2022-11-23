@@ -98,4 +98,8 @@ public class UserFacade {
     public Set<String> getEmails(String currentUserEmail) {
         return userService.getEmails(currentUserEmail);
     }
+
+    public Set<String> getAllowedEmails(String currentUserEmail, long reviewId) {
+        return userService.getAllowedEmails(currentUserEmail, reviewId);
+    }
 }

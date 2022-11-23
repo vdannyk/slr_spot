@@ -78,4 +78,10 @@ public class UserController {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         return ResponseEntity.ok().body(userFacade.getEmails(username));
     }
+
+    @GetMapping("/emails/allowed")
+    public ResponseEntity<Set<String>> getAllowedUsersEmails() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return ResponseEntity.ok().body(userFacade.getAllowedEmails(username, 2L));
+    }
 }

@@ -143,4 +143,8 @@ public class UserService implements UserDetailsService {
     public Set<String> getEmails(String currentUserEmail) {
         return userRepository.getEmails(currentUserEmail);
     }
+
+    public Set<String> getAllowedEmails(String currentUserEmail, long reviewId) {
+        return userRepository.getAllowedEmails(currentUserEmail, reviewId);
+    }
 }

@@ -22,4 +22,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "FROM User u " +
             "WHERE u.email <> :currentEmail")
     Set<String> getEmails(@Param("currentEmail") String currentUserEmail);
+    @Query("SELECT u.email " +
+            "FROM User u " +
+            "WHERE u.email <> :currentEmail " +
+            "and not exists (" +
+            "    SELECT u.email " +
+            "    FROM User u" +
+            "             LEFT JOIN UserReview ur " +
+            "                       ON u.id = ur.user.id " +
+            "    WHERE ur.review.id = :currentReview" +
+            ")")
+    Set<String> getAllowedEmails(@Param("currentEmail") String currentUserEmail,
+                                 @Param("currentReview") long currentReviewId);
 }
