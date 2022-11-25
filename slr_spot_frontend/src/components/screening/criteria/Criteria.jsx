@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import OptionHeader from '../optionHeader/OptionHeader';
-import { Table } from "react-bootstrap";
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
 import './criteria.css';
 

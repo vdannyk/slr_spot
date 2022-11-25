@@ -18,6 +18,7 @@
 
 .slrspot__review-screening-menu-options li {
   font-size: 24px;
+  cursor: pointer;
 }
 
 .slrspot__review-screening-menu-options li:hover {
