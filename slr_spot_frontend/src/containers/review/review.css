@@ -10,3 +10,9 @@
   display: flex;
   flex: 1;
 }
+
+.slrspot__review-header {
+  display: flex;
+  padding: 30px 40px 10px;
+  text-transform: uppercase;
+}

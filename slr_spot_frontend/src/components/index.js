@@ -11,3 +11,4 @@ export { default as UpdateEmail } from './updateEmail/UpdateEmail';
 export { default as ReviewMenu } from './review/reviewMenu/ReviewMenu';
 export { default as UsersBrowser } from './usersBrowser/UsersBrowser';
 export { default as ConfirmationPopup } from './popups/confirmationPopup/ConfirmationPopup';
+export { default as Criteria } from './screening/criteria/Criteria';

@@ -68,8 +68,9 @@ const ReviewMenu = () => {
           <MenuItem name='Screening' setShowTrigger={setShowScreeningMenu} showTrigger={showScreeningMenu}/>
           { showScreeningMenu && (
             <div className='slrspot__review-submenu-options'>
-              <SubMenuItem name='Title & Abstract'/>
-              <SubMenuItem name='Full text'/>
+              <SubMenuItem name='Settings' redirect='/screening'/>
+              <SubMenuItem name='Title & Abstract' redirect='/sreening/title_abstract'/>
+              <SubMenuItem name='Full text' redirect='/screening/fulltext'/>
             </div>
           )}
         </div>

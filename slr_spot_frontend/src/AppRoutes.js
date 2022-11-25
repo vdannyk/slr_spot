@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSelector } from "react-redux";
-import { ReviewHome, ReviewTeam, ReviewSettings, HomePage, Profile, Review, Reviews } from './containers';
-import { NewReview, SignInPage, AccountActivation, PasswordRecovery, UpdateEmail } from './components';
+import { ReviewHome, ReviewTeam, ReviewSettings, HomePage, Profile, Review, Reviews, ScreeningSettings } from './containers';
+import { NewReview, SignInPage, AccountActivation, PasswordRecovery, UpdateEmail, Criteria } from './components';
 
 
 const AppRoutes = () => {
@@ -21,6 +21,10 @@ const AppRoutes = () => {
       <Route path="reviews/:reviewId" element={isLoggedIn ? <Review page={<ReviewHome />} /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/settings" element={isLoggedIn ? <Review page={<ReviewSettings />} /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/team" element={isLoggedIn ? <Review page={<ReviewTeam />} /> : <Navigate to='/' />} />
+      <Route path="reviews/:reviewId/screening" element={isLoggedIn ? <Review page={<ScreeningSettings />} /> : <Navigate to='/' />} />
+      <Route path="reviews/:reviewId/screening/criteria" element={isLoggedIn ? <Review page={<Criteria />} /> : <Navigate to='/' />} />
+      <Route path="reviews/:reviewId/screening/tags" element={isLoggedIn ? <Review page={<ScreeningSettings />} /> : <Navigate to='/' />} />
+      <Route path="reviews/:reviewId/screening/highlights" element={isLoggedIn ? <Review page={<ScreeningSettings />} /> : <Navigate to='/' />} />
     </Routes>
   )
 }

@@ -1,0 +1,40 @@
+.slrspot__screening-criteria {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.slrspot__screening-criteria-container {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 40px;
+}
+
+.slrspot__screening-criteria-table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 49%;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+}
+
+.slrspot__screening-criteria-table th {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-bottom: thin solid #c0c0c0;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.slrspot__screening-criteria-table td {
+  width: 100%;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.slrspot__screening-criteria-table-delimiter {
+  width: 2%;
+}
