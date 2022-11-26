@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.review;
 
+import com.dkwasniak.slr_spot_backend.criteria.Criterion;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.NewReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
@@ -84,5 +85,10 @@ public class ReviewController {
     @GetMapping("/{id}/tags")
     public ResponseEntity<Set<Tag>> getTags(@PathVariable Long id) {
         return ResponseEntity.ok().body(reviewFacade.getTags(id));
+    }
+
+    @GetMapping("/{id}/criteria")
+    public ResponseEntity<Set<Criterion>> getCriteria(@PathVariable Long id) {
+        return ResponseEntity.ok().body(reviewFacade.getCriteria(id));
     }
 }

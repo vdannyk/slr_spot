@@ -27,4 +27,8 @@ public class Criterion {
     private String name;
     private String type; // exclusion, inclusion
 
+    public Criterion(String name, String type) {
+        this.name = name;
+        this.type = type;
+    }
 }
