@@ -5,6 +5,7 @@ import com.dkwasniak.slr_spot_backend.review.dto.NewReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
+import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -78,5 +79,10 @@ public class ReviewController {
     public ResponseEntity<Void> addMembers(@PathVariable Long id, @RequestBody AddMembersDto membersToAdd) {
         reviewFacade.addMembers(id, membersToAdd);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/tags")
+    public ResponseEntity<Set<Tag>> getTags(@PathVariable Long id) {
+        return ResponseEntity.ok().body(reviewFacade.getTags(id));
     }
 }

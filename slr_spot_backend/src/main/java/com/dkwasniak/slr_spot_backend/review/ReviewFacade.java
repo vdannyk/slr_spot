@@ -6,6 +6,7 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
+import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -72,5 +73,10 @@ public class ReviewFacade {
             User user = userService.getUserByEmail(email);
             userService.addReviewToUser(user, review);
         }
+    }
+
+    public Set<Tag> getTags(long id) {
+        Review review = reviewService.getReviewById(id);
+        return review.getTags();
     }
 }

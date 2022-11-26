@@ -26,4 +26,7 @@ public class Tag {
     private long id;
     private String name;
 
+    public Tag(String name) {
+        this.name = name;
+    }
 }
