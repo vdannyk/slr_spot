@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.user;
 
+import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
@@ -13,6 +14,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -43,6 +47,14 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
     private Set<UserReview> reviews = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "users_keywords",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "keyword_id") }
+    )
+    private Set<KeyWord> keywords = new HashSet<>();
 
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;

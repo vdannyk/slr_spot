@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.criteria.Criterion;
+import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
@@ -57,6 +58,14 @@ public class Review {
             inverseJoinColumns = { @JoinColumn(name = "criterion_id") }
     )
     private Set<Criterion> criteria = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "reviews_keywords",
+            joinColumns = { @JoinColumn(name = "review_id") },
+            inverseJoinColumns = { @JoinColumn(name = "keyword_id") }
+    )
+    private Set<KeyWord> keywords = new HashSet<>();
 
     public Review(String title) {
         this.title = title;
