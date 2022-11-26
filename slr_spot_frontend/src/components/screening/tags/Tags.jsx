@@ -5,16 +5,15 @@ import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
 import EventBus from '../../../common/EventBus';
 import axiosInstance from '../../../services/api';
 import './tags.css';
+import ConfirmationPopup from '../../popups/confirmationPopup/ConfirmationPopup';
 
 const Tags = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { reviewId } = useParams();
+  const [showTagRemoveConfirmation, setShowTagRemoveConfirmation] = useState(false);
+  const [tagToRemove, setTagToRemove] = useState('');
   const [tags, setTags] = useState([]);
-  
-  const listTags = tags.map((tag) => 
-    <td key={tag.name}><AiFillMinusCircle color='red' />{tag.name}</td>
-  );
 
   useEffect(() => {
     axiosInstance.get("/reviews/" + reviewId + "/tags")
@@ -28,6 +27,42 @@ const Tags = () => {
     });
   }, []);
 
+  const handleRemoveTag = (tag) => {
+    setShowTagRemoveConfirmation(true);
+    setTagToRemove(tag);
+  }
+
+  const onCancelRemoveTag = () => {
+    setShowTagRemoveConfirmation(false);
+    setTagToRemove('');
+  }
+
+  const confirmRemoveTag = () => {
+    axiosInstance.post("/reviews/" + reviewId + "/tags/" + tagToRemove.id + "/remove")
+    .then(() => {
+      setShowTagRemoveConfirmation(false);
+      window.location.reload();
+    });
+  }
+
+  const listTags = tags.map((tag) => 
+    <p key={tag.name}>
+      <AiFillMinusCircle 
+        className='slrspot__screening-tags-table-removeIcon'
+        onClick={ () => handleRemoveTag(tag)}
+        />
+      {tag.name}
+    </p>
+  );
+
+  const isTagsEmpty = () => {
+    if (tags.length === 0) {
+      return (
+        <h1 className='slrspot__screening-tags-empty'>empty</h1>
+      )
+    }
+  }
+
   return (
     <div className='slrspot__screening-tags'>
       <OptionHeader 
@@ -35,10 +70,24 @@ const Tags = () => {
         backward={ () => navigate(location.pathname.replace('/tags', '')) }/>
       <div className='slrspot__screening-tags-container'>
         <div className='slrspot__screening-tags-table'>
-          <th>Tags<AiFillPlusCircle color='green'/></th>
-          { listTags }
+          <div className='slrspot__screening-tags-table-header'>
+            <h2>Tags</h2>
+            <AiFillPlusCircle className='slrspot__screening-tags-table-addIcon'/>
+          </div>
+          <div className='slrspot__screening-tags-table-items'>
+            { isTagsEmpty() }
+            { listTags }
+          </div>
         </div>
       </div>
+      { showTagRemoveConfirmation && 
+        <ConfirmationPopup 
+          title="remove tag"
+          message={'Do you want to remove ' + tagToRemove.name + ' from your review?'}
+          triggerConfirm={confirmRemoveTag}
+          triggerCancel={onCancelRemoveTag}
+        /> 
+        }
     </div>
   )
 }

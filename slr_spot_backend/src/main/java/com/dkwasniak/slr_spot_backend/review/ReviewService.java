@@ -5,6 +5,7 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.review.exception.ReviewNotFoundException;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
+import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
@@ -95,5 +96,9 @@ public class ReviewService {
         User user = userService.getUserById(userId);
         Review review = getReviewById(reviewId);
         user.removeReview(review);
+    }
+
+    public void removeTag(Review review, Tag tag) {
+        review.getTags().remove(tag);
     }
 }

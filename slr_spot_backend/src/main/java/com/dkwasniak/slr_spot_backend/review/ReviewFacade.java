@@ -9,6 +9,7 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
+import com.dkwasniak.slr_spot_backend.tag.TagService;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class ReviewFacade {
 
     private final ReviewService reviewService;
     private final UserService userService;
+    private final TagService tagService;
 
     public long createReview(NewReviewDto newReviewDto, String username) {
         Review review = new Review(newReviewDto.getName(), newReviewDto.getResearchArea(), newReviewDto.getDescription(),
@@ -90,5 +92,11 @@ public class ReviewFacade {
     public Set<KeyWord> getKeywords(long id) {
         Review review = reviewService.getReviewById(id);
         return review.getKeywords();
+    }
+
+    public void removeTag(long reviewId, long tagId) {
+        Tag tag = tagService.getTagById(tagId);
+        Review review = reviewService.getReviewById(reviewId);
+        reviewService.removeTag(review, tag);
     }
 }

@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -96,5 +93,11 @@ public class ReviewController {
     @GetMapping("/{id}/keywords")
     public ResponseEntity<Set<KeyWord>> getKeywords(@PathVariable Long id) {
         return ResponseEntity.ok().body(reviewFacade.getKeywords(id));
+    }
+
+    @PostMapping("/{id}/tags/{tagId}/remove")
+    public ResponseEntity<Void> removeTag(@PathVariable Long id, @PathVariable Long tagId) {
+        reviewFacade.removeTag(id, tagId);
+        return ResponseEntity.ok().build();
     }
 }
