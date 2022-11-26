@@ -1,12 +1,51 @@
-import React from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import OptionHeader from '../optionHeader/OptionHeader';
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
+import EventBus from '../../../common/EventBus';
+import axiosInstance from '../../../services/api';
 import './highlights.css';
 
 const Highlights = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { reviewId } = useParams();
+  const [reviewKeywords, setReviewKeywords] = useState([]);
+  const [userKeywords, setUserKeywords] = useState([]);
+  const { user: currentUser } = useSelector((state) => state.auth);
+  
+  const listReviewKeywords = reviewKeywords.map((keyword) => 
+    <td key={keyword.name}><AiFillMinusCircle color='red' />{keyword.name}</td>
+  );
+
+  const listUserKeywords = userKeywords.map((keyword) => 
+  <td key={keyword.name}><AiFillMinusCircle color='red' />{keyword.name}</td>
+);
+
+  useEffect(() => {
+    axiosInstance.get("/reviews/" + reviewId + "/keywords")
+    .then((response) => {
+      setReviewKeywords(response.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    axiosInstance.get("/users/" + currentUser.id + "/keywords")
+    .then((response) => {
+      setUserKeywords(response.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+  }, []);
 
   return (
     <div className='slrspot__screening-highlights'>
@@ -18,18 +57,13 @@ const Highlights = () => {
         <div className='slrspot__screening-highlights-container'>
           <div className='slrspot__screening-highlights-table'>
             <th>Inclusion<AiFillPlusCircle color='green'/></th>
-            <td><AiFillMinusCircle color='red' />test</td>
-            <td><AiFillMinusCircle color='red' />test</td>
+            { listReviewKeywords }
           </div>
           <div className='slrspot__screening-highlights-table-delimiter'>
           </div>
           <div className='slrspot__screening-highlights-table'>
             <th>Exclusion<AiFillPlusCircle color='green'/></th>
-            <td>testtesttesttesttesttesttesttesttesttesttesttesttesttestasdasdasdasdasdasdasdasdasdasdasdasdtesttesttesttesttesttesttesttesttessialalalalalaialalalt</td>
-            <td>test</td>
-            <td>test</td>
-            <td>test</td>
-            <td>test</td>
+            { listReviewKeywords }
           </div>
         </div>
       </div>
@@ -38,18 +72,13 @@ const Highlights = () => {
         <div className='slrspot__screening-highlights-container'>
           <div className='slrspot__screening-highlights-table'>
             <th>Inclusion<AiFillPlusCircle color='green'/></th>
-            <td><AiFillMinusCircle color='red' />test</td>
-            <td><AiFillMinusCircle color='red' />test</td>
+            { listUserKeywords }
           </div>
           <div className='slrspot__screening-highlights-table-delimiter'>
           </div>
           <div className='slrspot__screening-highlights-table'>
             <th>Exclusion<AiFillPlusCircle color='green'/></th>
-            <td>testtesttesttesttesttesttesttesttesttesttesttesttesttestasdasdasdasdasdasdasdasdasdasdasdasdtesttesttesttesttesttesttesttesttessialalalalalaialalalt</td>
-            <td>test</td>
-            <td>test</td>
-            <td>test</td>
-            <td>test</td>
+            { listUserKeywords }
           </div>
         </div>
       </div>

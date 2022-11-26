@@ -170,3 +170,25 @@ INSERT INTO reviews_criteria(REVIEW_ID, CRITERION_ID) VALUES (1, 7);
 INSERT INTO reviews_criteria(REVIEW_ID, CRITERION_ID) VALUES (1, 8);
 INSERT INTO reviews_criteria(REVIEW_ID, CRITERION_ID) VALUES (1, 9);
 INSERT INTO reviews_criteria(REVIEW_ID, CRITERION_ID) VALUES (1, 10);
+
+INSERT INTO keywords(NAME, TYPE) VALUES ('keyword1', 'pos');
+INSERT INTO keywords(NAME, TYPE) VALUES ('keyword2', 'pos');
+INSERT INTO keywords(NAME, TYPE) VALUES ('keyword3', 'pos');
+INSERT INTO keywords(NAME, TYPE) VALUES ('keyword4', 'neg');
+INSERT INTO keywords(NAME, TYPE) VALUES ('keyword5', 'neg');
+INSERT INTO keywords(NAME, TYPE) VALUES ('keyword6', 'pos');
+INSERT INTO keywords(NAME, TYPE) VALUES ('keyword7', 'pos');
+INSERT INTO keywords(NAME, TYPE) VALUES ('keyword8', 'pos');
+INSERT INTO keywords(NAME, TYPE) VALUES ('keyword9', 'neg');
+INSERT INTO keywords(NAME, TYPE) VALUES ('keyword10', 'neg');
+
+INSERT INTO reviews_keywords(REVIEW_ID, KEYWORD_ID) VALUES (1, 1);
+INSERT INTO reviews_keywords(REVIEW_ID, KEYWORD_ID) VALUES (1, 2);
+INSERT INTO reviews_keywords(REVIEW_ID, KEYWORD_ID) VALUES (1, 3);
+INSERT INTO reviews_keywords(REVIEW_ID, KEYWORD_ID) VALUES (1, 4);
+INSERT INTO reviews_keywords(REVIEW_ID, KEYWORD_ID) VALUES (1, 5);
+INSERT INTO users_keywords(USER_ID, KEYWORD_ID) VALUES (1, 6);
+INSERT INTO users_keywords(USER_ID, KEYWORD_ID) VALUES (1, 7);
+INSERT INTO users_keywords(USER_ID, KEYWORD_ID) VALUES (1, 8);
+INSERT INTO users_keywords(USER_ID, KEYWORD_ID) VALUES (1, 9);
+INSERT INTO users_keywords(USER_ID, KEYWORD_ID) VALUES (1, 10);

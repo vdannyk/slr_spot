@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.criteria.Criterion;
+import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.NewReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
@@ -84,5 +85,10 @@ public class ReviewFacade {
     public Set<Criterion> getCriteria(long id) {
         Review review = reviewService.getReviewById(id);
         return review.getCriteria();
+    }
+
+    public Set<KeyWord> getKeywords(long id) {
+        Review review = reviewService.getReviewById(id);
+        return review.getKeywords();
     }
 }

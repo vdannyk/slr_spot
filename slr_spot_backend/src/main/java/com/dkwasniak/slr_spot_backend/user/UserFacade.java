@@ -3,6 +3,7 @@ package com.dkwasniak.slr_spot_backend.user;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationToken;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
 import com.dkwasniak.slr_spot_backend.email.EmailService;
+import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
@@ -92,4 +93,8 @@ public class UserFacade {
         return allUsersEmails;
     }
 
+    public Set<KeyWord> getKeywords(long id) {
+        User user = userService.getUserById(id);
+        return user.getKeywords();
+    }
 }

@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.user;
 
+import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
@@ -79,4 +80,8 @@ public class UserController {
         return ResponseEntity.ok().body(userFacade.getEmails(username));
     }
 
+    @GetMapping("/{id}/keywords")
+    public ResponseEntity<Set<KeyWord>> getKeywords(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userFacade.getKeywords(id));
+    }
 }
