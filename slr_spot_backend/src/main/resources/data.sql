@@ -149,16 +149,19 @@ INSERT INTO reviews_tags(REVIEW_ID, TAG_ID) VALUES (1, 8);
 INSERT INTO reviews_tags(REVIEW_ID, TAG_ID) VALUES (1, 9);
 INSERT INTO reviews_tags(REVIEW_ID, TAG_ID) VALUES (1, 10);
 
-INSERT INTO criteria(NAME, TYPE) VALUES ('criteria1', 'inc');
-INSERT INTO criteria(NAME, TYPE) VALUES ('criteria2', 'inc');
-INSERT INTO criteria(NAME, TYPE) VALUES ('criteria3', 'inc');
-INSERT INTO criteria(NAME, TYPE) VALUES ('criteria4', 'inc');
-INSERT INTO criteria(NAME, TYPE) VALUES ('criteria5', 'inc');
-INSERT INTO criteria(NAME, TYPE) VALUES ('criteria6', 'ecx');
-INSERT INTO criteria(NAME, TYPE) VALUES ('criteria7', 'ecx');
-INSERT INTO criteria(NAME, TYPE) VALUES ('criteria8', 'ecx');
-INSERT INTO criteria(NAME, TYPE) VALUES ('criteria9', 'ecx');
-INSERT INTO criteria(NAME, TYPE) VALUES ('criteria10', 'ecx');
+INSERT INTO criteria_types(NAME) VALUES ('INCLUSION');
+INSERT INTO criteria_types(NAME) VALUES ('EXCLUSION');
+
+INSERT INTO criteria(NAME, CRITERION_TYPE_ID) VALUES ('criteria1', 1);
+INSERT INTO criteria(NAME, CRITERION_TYPE_ID) VALUES ('criteria2', 1);
+INSERT INTO criteria(NAME, CRITERION_TYPE_ID) VALUES ('criteria3', 1);
+INSERT INTO criteria(NAME, CRITERION_TYPE_ID) VALUES ('criteria4', 1);
+INSERT INTO criteria(NAME, CRITERION_TYPE_ID) VALUES ('criteria5', 1);
+INSERT INTO criteria(NAME, CRITERION_TYPE_ID) VALUES ('criteria6', 2);
+INSERT INTO criteria(NAME, CRITERION_TYPE_ID) VALUES ('criteria7', 2);
+INSERT INTO criteria(NAME, CRITERION_TYPE_ID) VALUES ('criteria8', 2);
+INSERT INTO criteria(NAME, CRITERION_TYPE_ID) VALUES ('criteria9', 2);
+INSERT INTO criteria(NAME, CRITERION_TYPE_ID) VALUES ('criteria10', 2);
 
 INSERT INTO reviews_criteria(REVIEW_ID, CRITERION_ID) VALUES (1, 1);
 INSERT INTO reviews_criteria(REVIEW_ID, CRITERION_ID) VALUES (1, 2);
