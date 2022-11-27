@@ -118,6 +118,13 @@ public class ReviewFacade {
         } else {
             reviewService.addCriterion(reviewId, criterionService.getByNameAndType(criterionName, criterionType));
         }
-
     }
+
+    public void removeCriterion(long reviewId, long criterionId, long criterionTypeId) {
+        CriterionType criterionType = criterionService.getTypeById(criterionTypeId);
+        Criterion criterion = criterionService.getByIdAndType(criterionId, criterionType);
+        Review review = reviewService.getReviewById(reviewId);
+        reviewService.removeCriterion(review, criterion);
+    }
+
 }

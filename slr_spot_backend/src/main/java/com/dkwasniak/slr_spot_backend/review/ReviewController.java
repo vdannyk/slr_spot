@@ -110,11 +110,13 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-//    @PostMapping("/{id}/criteria/{tagId}/remove")
-//    public ResponseEntity<Void> removeTag(@PathVariable Long id, @PathVariable Long tagId) {
-//        reviewFacade.removeTag(id, tagId);
-//        return ResponseEntity.ok().build();
-//    }
+    @PostMapping("/{reviewId}/criteria/{criterionId}/{criterionTypeId}/remove")
+    public ResponseEntity<Void> removeTag(@PathVariable Long reviewId,
+                                          @PathVariable Long criterionId,
+                                          @PathVariable Long criterionTypeId) {
+        reviewFacade.removeCriterion(reviewId, criterionId, criterionTypeId);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/{id}/keywords")
     public ResponseEntity<Set<KeyWord>> getKeywords(@PathVariable Long id) {

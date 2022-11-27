@@ -124,6 +124,10 @@ public class ReviewService {
         review.getCriteria().add(criterion);
     }
 
+    public void removeCriterion(Review review, Criterion criterion) {
+        review.getCriteria().remove(criterion);
+    }
+
     public boolean checkIfContainsCriterion(Review review, Criterion criterion) {
         return review.getCriteria().contains(criterion);
     }

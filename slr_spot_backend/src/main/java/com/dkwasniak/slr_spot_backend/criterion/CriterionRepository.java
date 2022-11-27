@@ -10,4 +10,6 @@ public interface CriterionRepository extends JpaRepository<Criterion, Long> {
 
     boolean existsByNameAndType_Name(String name, String type);
     Optional<Criterion> findByNameAndType(String name, CriterionType type);
+    Optional<Criterion> findByIdAndType(long id, CriterionType type);
+
 }
