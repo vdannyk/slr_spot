@@ -1,0 +1,27 @@
+.slrspot__review-settings {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.slrspot__review-settings-container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 40px 40px;
+}
+
+.slrspot__review-settings-container input {
+	font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.slrspot__review-settings-container textarea {
+  margin-bottom: 10px;
+  height: 10vh;
+	resize: none;
+}
+
+.slrspot__review-settings-container button {
+  width: 20%;
+}

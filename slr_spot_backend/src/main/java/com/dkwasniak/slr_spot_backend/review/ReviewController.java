@@ -58,6 +58,11 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewFacade.createReview(newReviewDto, user));
     }
 
+    @PostMapping("/{id}/update")
+    public ResponseEntity<Void> updateReview(@RequestBody NewReviewDto newReviewDto) {
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{id}/members")
     public ResponseEntity<Set<ReviewMemberDto>> getMembers(@PathVariable Long id) {
         return ResponseEntity.ok().body(reviewFacade.getMembers(id));

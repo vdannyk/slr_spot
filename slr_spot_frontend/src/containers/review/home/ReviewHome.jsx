@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axiosInstance from "../../../services/api";
 import { Table } from "react-bootstrap";
 import { CgPen } from "react-icons/cg";
@@ -11,6 +11,7 @@ const ReviewHome = () => {
   const [owner, setOwner] = useState();
   const { reviewId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     console.log(reviewId);
@@ -25,7 +26,10 @@ const ReviewHome = () => {
   return (
     <div className='slrspot__review-home'>
       <div className='slrspot__review-home-title'>
-        <h1>{reviewData.title} <CgPen size={25}/></h1>
+        <h1>
+          {reviewData.title}
+          <CgPen size={25} onClick={ () => navigate(location.pathname + "/settings") } cursor='pointer' />
+        </h1>
       </div>
       <Table>
         <tbody>
