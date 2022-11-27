@@ -16,7 +16,7 @@ const ScreeningSettings = () => {
         <div className='slrspot__review-screening-menu-options'>
           <h2 onClick={() => navigate(location.pathname + '/criteria')}><li>Inclusion and exclusion criteria</li></h2>
           <h2 onClick={() => navigate(location.pathname + '/tags')}><li>Tags</li></h2>
-          <h2 onClick={() => navigate(location.pathname + '/highlights')}><li>Highlights</li></h2>
+          <h2 onClick={() => navigate(location.pathname + '/keywords')}><li>Keywords</li></h2>
         </div>
       </div>
     </div>

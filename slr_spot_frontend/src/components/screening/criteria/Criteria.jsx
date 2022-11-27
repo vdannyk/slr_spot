@@ -68,12 +68,12 @@ const Criteria = () => {
     setCriterionToRemove(criterion);
   }
 
-  const onCancelRemoveTag = () => {
+  const onCancelRemoveCriterion = () => {
     setShowCriterionRemoveConfirmation(false);
     setCriterionToRemove();
   }
 
-  const confirmRemoveTag = () => {
+  const confirmRemoveCriterion = () => {
     console.log(criterionToRemove);
     axiosInstance.post("/reviews/" + reviewId + "/criteria/" + criterionToRemove.id + 
       "/" + criterionToRemove.type.id + "/remove")
@@ -152,8 +152,8 @@ const Criteria = () => {
         <ConfirmationPopup 
           title="remove criterion"
           message={'Do you want to remove ' + criterionToRemove.name + ' from your review?'}
-          triggerConfirm={confirmRemoveTag}
-          triggerCancel={onCancelRemoveTag}
+          triggerConfirm={confirmRemoveCriterion}
+          triggerCancel={onCancelRemoveCriterion}
         /> 
         }
       </div>

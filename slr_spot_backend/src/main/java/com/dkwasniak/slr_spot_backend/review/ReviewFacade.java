@@ -4,6 +4,7 @@ import com.dkwasniak.slr_spot_backend.criterion.Criterion;
 import com.dkwasniak.slr_spot_backend.criterion.CriterionService;
 import com.dkwasniak.slr_spot_backend.criterion.CriterionType;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
+import com.dkwasniak.slr_spot_backend.keyWord.KeywordService;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.NewReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
@@ -29,6 +30,7 @@ public class ReviewFacade {
     private final UserService userService;
     private final TagService tagService;
     private final CriterionService criterionService;
+    private final KeywordService keywordService;
 
     public long createReview(NewReviewDto newReviewDto, String username) {
         Review review = new Review(newReviewDto.getName(), newReviewDto.getResearchArea(), newReviewDto.getDescription(),
@@ -125,6 +127,22 @@ public class ReviewFacade {
         Criterion criterion = criterionService.getByIdAndType(criterionId, criterionType);
         Review review = reviewService.getReviewById(reviewId);
         reviewService.removeCriterion(review, criterion);
+    }
+
+    public void addKeyword(long reviewId, String keywordName, String type) {
+        CriterionType criterionType = criterionService.getTypeByName(type);
+        if (!keywordService.checkIfExistByNameAndTypeName(keywordName, type)) {
+            reviewService.addKeyword(reviewId, new KeyWord(keywordName, criterionType));
+        } else {
+            reviewService.addKeyword(reviewId, keywordService.getByNameAndType(keywordName, criterionType));
+        }
+    }
+
+    public void removeKeyword(long reviewId, long keywordId, long keywordTypeId) {
+        CriterionType criterionType = criterionService.getTypeById(keywordTypeId);
+        KeyWord keyWord = keywordService.getByIdAndType(keywordId, criterionType);
+        Review review = reviewService.getReviewById(reviewId);
+        reviewService.removeKeyword(review, keyWord);
     }
 
 }

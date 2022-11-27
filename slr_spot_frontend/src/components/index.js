@@ -13,4 +13,4 @@ export { default as UsersBrowser } from './usersBrowser/UsersBrowser';
 export { default as ConfirmationPopup } from './popups/confirmationPopup/ConfirmationPopup';
 export { default as Criteria } from './screening/criteria/Criteria';
 export { default as Tags } from './screening/tags/Tags';
-export { default as Highlights } from './screening/highlights/Highlights';
+export { default as Keywords } from './screening/keywords/Keywords';
