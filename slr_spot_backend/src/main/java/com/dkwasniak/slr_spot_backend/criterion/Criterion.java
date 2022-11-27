@@ -1,4 +1,4 @@
-package com.dkwasniak.slr_spot_backend.criteria;
+package com.dkwasniak.slr_spot_backend.criterion;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,4 +33,8 @@ public class Criterion {
     @JoinColumn(name = "criterion_type_id")
     private CriterionType type;
 
+    public Criterion(String name, CriterionType type) {
+        this.name = name;
+        this.type = type;
+    }
 }

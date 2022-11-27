@@ -1,4 +1,4 @@
-package com.dkwasniak.slr_spot_backend.criteria;
+package com.dkwasniak.slr_spot_backend.criterion;
 
 
 import lombok.Getter;

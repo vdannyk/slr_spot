@@ -1,13 +1,14 @@
 package com.dkwasniak.slr_spot_backend.review;
 
-import com.dkwasniak.slr_spot_backend.criteria.Criterion;
+import com.dkwasniak.slr_spot_backend.criterion.Criterion;
+import com.dkwasniak.slr_spot_backend.criterion.CriterionService;
+import com.dkwasniak.slr_spot_backend.criterion.CriterionType;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.NewReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
-import com.dkwasniak.slr_spot_backend.review.exception.TagExistsInReviewException;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.tag.TagService;
@@ -27,6 +28,7 @@ public class ReviewFacade {
     private final ReviewService reviewService;
     private final UserService userService;
     private final TagService tagService;
+    private final CriterionService criterionService;
 
     public long createReview(NewReviewDto newReviewDto, String username) {
         Review review = new Review(newReviewDto.getName(), newReviewDto.getResearchArea(), newReviewDto.getDescription(),
@@ -107,5 +109,15 @@ public class ReviewFacade {
         } else {
             reviewService.addTag(reviewId, tagService.getByName(tagName));
         }
+    }
+
+    public void addCriterion(long reviewId, String criterionName, String type) {
+        CriterionType criterionType = criterionService.getTypeByName(type);
+        if (!criterionService.checkIfExistByNameAndTypeName(criterionName, type)) {
+            reviewService.addCriterion(reviewId, new Criterion(criterionName, criterionType));
+        } else {
+            reviewService.addCriterion(reviewId, criterionService.getByNameAndType(criterionName, criterionType));
+        }
+
     }
 }

@@ -14,7 +14,7 @@ const Tags = () => {
   const location = useLocation();
   const { reviewId } = useParams();
   const [showTagRemoveConfirmation, setShowTagRemoveConfirmation] = useState(false);
-  const [tagToRemove, setTagToRemove] = useState('');
+  const [tagToRemove, setTagToRemove] = useState();
   const [showAddTag, setShowAddTag] = useState(false);
   const [tags, setTags] = useState([]);
   const {register, handleSubmit, formState: { errors }} = useForm();

@@ -1,9 +1,8 @@
 package com.dkwasniak.slr_spot_backend.review;
 
-import com.dkwasniak.slr_spot_backend.criteria.Criterion;
+import com.dkwasniak.slr_spot_backend.criterion.Criterion;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
-import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
