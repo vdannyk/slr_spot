@@ -85,6 +85,18 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewFacade.getTags(id));
     }
 
+    @GetMapping("/{reviewId}/tags/add")
+    public ResponseEntity<Void> addTag(@PathVariable Long reviewId, @RequestParam String name) {
+        reviewFacade.addTag(reviewId, name);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/tags/{tagId}/remove")
+    public ResponseEntity<Void> removeTag(@PathVariable Long id, @PathVariable Long tagId) {
+        reviewFacade.removeTag(id, tagId);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{id}/criteria")
     public ResponseEntity<Set<Criterion>> getCriteria(@PathVariable Long id) {
         return ResponseEntity.ok().body(reviewFacade.getCriteria(id));
@@ -95,9 +107,5 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewFacade.getKeywords(id));
     }
 
-    @PostMapping("/{id}/tags/{tagId}/remove")
-    public ResponseEntity<Void> removeTag(@PathVariable Long id, @PathVariable Long tagId) {
-        reviewFacade.removeTag(id, tagId);
-        return ResponseEntity.ok().build();
-    }
+
 }

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import OptionHeader from '../optionHeader/OptionHeader';
-import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
+import { AiFillMinusCircle, AiFillPlusCircle, AiFillCheckSquare, AiFillCloseSquare } from "react-icons/ai";
 import EventBus from '../../../common/EventBus';
 import axiosInstance from '../../../services/api';
-import './tags.css';
+import { useForm } from "react-hook-form";
 import ConfirmationPopup from '../../popups/confirmationPopup/ConfirmationPopup';
+import './tags.css';
+
 
 const Tags = () => {
   const navigate = useNavigate();
@@ -13,7 +15,11 @@ const Tags = () => {
   const { reviewId } = useParams();
   const [showTagRemoveConfirmation, setShowTagRemoveConfirmation] = useState(false);
   const [tagToRemove, setTagToRemove] = useState('');
+  const [showAddTag, setShowAddTag] = useState(false);
   const [tags, setTags] = useState([]);
+  const {register, handleSubmit, formState: { errors }} = useForm();
+  const [errorMessage, setErrorMessage] = useState();
+
 
   useEffect(() => {
     axiosInstance.get("/reviews/" + reviewId + "/tags")
@@ -43,6 +49,20 @@ const Tags = () => {
       setShowTagRemoveConfirmation(false);
       window.location.reload();
     });
+    // .catch((error) => {
+    //   console.log(error.response);
+    //   setErrorMessage(error.response);
+    // });
+  }
+
+  const onSubmitNewTag = (formData) => {
+    const name = formData.tagName;
+    axiosInstance.get("/reviews/" + reviewId + "/tags/add", { params: {
+      name
+    }})
+    .then(() => {
+      window.location.reload();
+    });
   }
 
   const listTags = tags.map((tag) => 
@@ -63,6 +83,31 @@ const Tags = () => {
     }
   }
 
+  const NewTagInput = () => {
+    return (
+      <div className='slrspot__screening-tags-new'>
+        <input  
+          {...register("tagName", { 
+            required: true,
+          })}
+          name='tagName' 
+        />
+        <AiFillCheckSquare 
+          className='slrspot__screening-tags-new-button' 
+          color='green'
+          onClick={ handleSubmit(onSubmitNewTag) }/>
+        <AiFillCloseSquare 
+          className='slrspot__screening-tags-new-button'
+          color='red' 
+          onClick={ () => setShowAddTag(false) }/>
+        { errors.tagName && errors.tagName.type=== "required" && 
+          <p className="slrspot__screening-tags-new-error">This field is required</p> }
+        { errorMessage && 
+        <p className="slrspot__screening-tags-new-error">This field is required</p> }
+      </div>
+    )
+  }
+
   return (
     <div className='slrspot__screening-tags'>
       <OptionHeader 
@@ -72,7 +117,11 @@ const Tags = () => {
         <div className='slrspot__screening-tags-table'>
           <div className='slrspot__screening-tags-table-header'>
             <h2>Tags</h2>
-            <AiFillPlusCircle className='slrspot__screening-tags-table-addIcon'/>
+            { showAddTag 
+              ? <NewTagInput /> 
+              : <AiFillPlusCircle 
+                  className='slrspot__screening-tags-table-addIcon'
+                  onClick={ () => setShowAddTag(true) }/> }
           </div>
           <div className='slrspot__screening-tags-table-items'>
             { isTagsEmpty() }

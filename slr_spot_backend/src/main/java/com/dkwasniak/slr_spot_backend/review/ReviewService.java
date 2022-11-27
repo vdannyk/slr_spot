@@ -4,6 +4,7 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.review.exception.ReviewNotFoundException;
+import com.dkwasniak.slr_spot_backend.review.exception.TagExistsInReviewException;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.user.User;
@@ -100,5 +101,17 @@ public class ReviewService {
 
     public void removeTag(Review review, Tag tag) {
         review.getTags().remove(tag);
+    }
+
+    public void addTag(long reviewId, Tag tag) {
+        Review review = getReviewById(reviewId);
+        if (checkIfContainsTag(review, tag.getName())) {
+            throw new TagExistsInReviewException("Given tag already exists in this review");
+        }
+        review.getTags().add(tag);
+    }
+
+    public boolean checkIfContainsTag(Review review, String name) {
+        return review.getTags().stream().map(Tag::getName).collect(Collectors.toSet()).contains(name);
     }
 }

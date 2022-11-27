@@ -69,4 +69,29 @@
   color: grey;
 }
 
+.slrspot__screening-tags-new {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  flex-wrap: wrap;
+}
+
+.slrspot__screening-tags-new-button {
+  font-size: 35px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.slrspot__screening-tags-new input {
+	padding: 4px 15px;
+	font-size: 16px;
+}
+
+.slrspot__screening-tags-new-error {
+  margin: 0;
+  margin-left: 10px;
+  font-size: 20px;
+  color: red;
+}
+
 
