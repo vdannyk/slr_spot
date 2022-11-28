@@ -49,7 +49,7 @@ const ReviewSettings = () => {
             required: true,
           })}
           name='name'
-          value={reviewData.title}
+          defaultValue={reviewData.title}
         />
         {/* {errors.name && errors.name.type=== "required" && 
           <p className="slrspot__newReview-error">This field is required</p>
@@ -60,7 +60,7 @@ const ReviewSettings = () => {
             required: true,
           })}
           name='researchArea'
-          value={reviewData.researchArea}
+          defaultValue={reviewData.researchArea}
         />
         {/* {errors.researchArea && errors.researchArea.type=== "required" && 
           <p className="slrspot__newReview-error">This field is required</p>
@@ -69,7 +69,7 @@ const ReviewSettings = () => {
         <textarea  
           {...register("description")}
           name='description'
-          value={reviewData.description}
+          defaultValue={reviewData.description}
         />
         <label>Public review</label>
         <Check {...register("isPublic")} defaultChecked={reviewData.isPublic}/>
@@ -79,7 +79,7 @@ const ReviewSettings = () => {
           name='screeningReviewers'
           type='number'
           min={1}
-          value={reviewData.screeningReviewers}
+          defaultValue={reviewData.screeningReviewers}
         />
         <button type='submit'>save</button>
       </form>

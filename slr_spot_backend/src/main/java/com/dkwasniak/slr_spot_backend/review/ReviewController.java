@@ -3,8 +3,8 @@ package com.dkwasniak.slr_spot_backend.review;
 import com.dkwasniak.slr_spot_backend.criterion.Criterion;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
-import com.dkwasniak.slr_spot_backend.review.dto.NewReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
+import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
@@ -47,19 +47,20 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReviewDto> getReviewById(@PathVariable Long id) {
+    public ResponseEntity<ReviewWithOwnerDto> getReviewById(@PathVariable Long id) {
         // TODO Add validation if user can access this review
         return ResponseEntity.ok().body(reviewFacade.getReviewById(id));
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Long> saveProject(@RequestBody NewReviewDto newReviewDto) {
+    public ResponseEntity<Long> saveProject(@RequestBody ReviewDto reviewDto) {
         var user = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        return ResponseEntity.ok().body(reviewFacade.createReview(newReviewDto, user));
+        return ResponseEntity.ok().body(reviewFacade.createReview(reviewDto, user));
     }
 
     @PostMapping("/{id}/update")
-    public ResponseEntity<Void> updateReview(@RequestBody NewReviewDto newReviewDto) {
+    public ResponseEntity<Void> updateReview(@PathVariable Long id, @RequestBody ReviewDto reviewDto) {
+        reviewFacade.updateReview(id, reviewDto);
         return ResponseEntity.ok().build();
     }
 

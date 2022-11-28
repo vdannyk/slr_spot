@@ -1,14 +1,21 @@
 package com.dkwasniak.slr_spot_backend.review.dto;
 
-import com.dkwasniak.slr_spot_backend.review.Review;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@AllArgsConstructor(staticName = "of")
+import java.util.Set;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReviewDto {
 
-    private String firstName;
-    private String lastName;
-    private Review review;
+    private String name;
+    private String researchArea;
+    private String description;
+    private Boolean isPublic;
+    private Integer screeningReviewers;
+    private Set<String> reviewers;
+    private String protocol;
 }

@@ -3,6 +3,7 @@ package com.dkwasniak.slr_spot_backend.review;
 import com.dkwasniak.slr_spot_backend.criterion.Criterion;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
+import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.review.exception.ReviewNotFoundException;
@@ -36,6 +37,10 @@ public class ReviewService {
         return reviewRepository.save(review).getId();
     }
 
+    public void deleteById(long id) {
+        reviewRepository.deleteById(id);
+    }
+
     public Page<Review> getPublicReviews(int page, int size) {
         PageRequest pageRq = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "title"));
         return reviewRepository.findAllPublic(pageRq);
@@ -55,10 +60,10 @@ public class ReviewService {
                 .build();
     }
 
-    protected ReviewDto boundWithOwner(Review review) {
+    protected ReviewWithOwnerDto boundWithOwner(Review review) {
         User owner = review.getUsers().stream()
                 .filter(user -> ReviewRole.OWNER.equals(user.getRole())).findFirst().get().getUser();
-        return ReviewDto.of(owner.getFirstName(), owner.getLastName(), review);
+        return ReviewWithOwnerDto.of(owner.getFirstName(), owner.getLastName(), review);
     }
 
     public Set<ReviewMemberDto> getMembers(long id) {
@@ -143,5 +148,21 @@ public class ReviewService {
 
     public void removeKeyword(Review review, KeyWord keyWord) {
         review.getKeywords().remove(keyWord);
+    }
+
+    public void updateReview(long id, ReviewDto reviewDto) {
+        Review currentReview = getReviewById(id);
+        currentReview.setTitle(reviewDto.getName() == null
+                ? currentReview.getTitle() : reviewDto.getName());
+        currentReview.setResearchArea(reviewDto.getResearchArea() == null
+                ? currentReview.getResearchArea() : reviewDto.getResearchArea());
+        currentReview.setDescription(reviewDto.getDescription() == null
+                ? currentReview.getDescription() : reviewDto.getDescription());
+        currentReview.setIsPublic(reviewDto.getIsPublic() == null
+                ? currentReview.getIsPublic() : reviewDto.getIsPublic());
+        currentReview.setScreeningReviewers(reviewDto.getScreeningReviewers() == null
+                ? currentReview.getScreeningReviewers() : reviewDto.getScreeningReviewers());
+        reviewRepository.save(currentReview);
+
     }
 }

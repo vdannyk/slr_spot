@@ -9,7 +9,7 @@ import java.util.Set;
 @Builder
 public class ReviewsPageDto {
 
-    private Set<ReviewDto> reviews;
+    private Set<ReviewWithOwnerDto> reviews;
     private int currentPage;
     private long totalReviewsNum;
     private int totalPagesNum;

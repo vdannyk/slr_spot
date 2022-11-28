@@ -6,8 +6,8 @@ import com.dkwasniak.slr_spot_backend.criterion.CriterionType;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.keyWord.KeywordService;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
-import com.dkwasniak.slr_spot_backend.review.dto.NewReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
+import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
@@ -32,13 +32,13 @@ public class ReviewFacade {
     private final CriterionService criterionService;
     private final KeywordService keywordService;
 
-    public long createReview(NewReviewDto newReviewDto, String username) {
-        Review review = new Review(newReviewDto.getName(), newReviewDto.getResearchArea(), newReviewDto.getDescription(),
-                newReviewDto.getIsPublic(), newReviewDto.getScreeningReviewers());
+    public long createReview(ReviewDto reviewDto, String username) {
+        Review review = new Review(reviewDto.getName(), reviewDto.getResearchArea(), reviewDto.getDescription(),
+                reviewDto.getIsPublic(), reviewDto.getScreeningReviewers());
         long id = reviewService.saveReview(review);
         User owner = userService.getUserByEmail(username);
         userService.addReviewToUser(owner, review, ReviewRole.OWNER);
-        for (String email : newReviewDto.getReviewers()) {
+        for (String email : reviewDto.getReviewers()) {
             User user = userService.getUserByEmail(email);
             userService.addReviewToUser(user, review);
         }
@@ -51,7 +51,7 @@ public class ReviewFacade {
         );
     }
 
-    public ReviewDto getReviewById(long id) {
+    public ReviewWithOwnerDto getReviewById(long id) {
         return reviewService.boundWithOwner(reviewService.getReviewById(id));
     }
 
@@ -143,6 +143,10 @@ public class ReviewFacade {
         KeyWord keyWord = keywordService.getByIdAndType(keywordId, criterionType);
         Review review = reviewService.getReviewById(reviewId);
         reviewService.removeKeyword(review, keyWord);
+    }
+
+    public void updateReview(long id, ReviewDto reviewDto) {
+        reviewService.updateReview(id, reviewDto);
     }
 
 }
