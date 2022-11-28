@@ -64,7 +64,7 @@ const ReviewMenu = () => {
               <SubMenuItem name='Team' redirect='/team'/>
             </div>
           )}
-          <MenuItem name='Literature search'/>
+          <MenuItem name='Literature search' redirect='/literature'/>
           <MenuItem name='Screening' setShowTrigger={setShowScreeningMenu} showTrigger={showScreeningMenu}/>
           { showScreeningMenu && (
             <div className='slrspot__review-submenu-options'>

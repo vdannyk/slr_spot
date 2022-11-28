@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSelector } from "react-redux";
 import { ReviewHome, ReviewTeam, ReviewSettings, HomePage, Profile, Review, Reviews, ScreeningSettings } from './containers';
 import { NewReview, SignInPage, AccountActivation, PasswordRecovery, UpdateEmail, Criteria, Tags, Keywords } from './components';
+import LiteratureSearch from './containers/review/literatureSearch/LiteratureSearch';
 
 
 const AppRoutes = () => {
@@ -25,6 +26,7 @@ const AppRoutes = () => {
       <Route path="reviews/:reviewId/screening/criteria" element={isLoggedIn ? <Review page={<Criteria />} /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/screening/tags" element={isLoggedIn ? <Review page={<Tags />} /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/screening/keywords" element={isLoggedIn ? <Review page={<Keywords />} /> : <Navigate to='/' />} />
+      <Route path="reviews/:reviewId/literature" element={isLoggedIn ? <Review page={<LiteratureSearch />} /> : <Navigate to='/' />} />
     </Routes>
   )
 }
