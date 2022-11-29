@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axiosInstance from '../../../services/api';
+import axiosInstance from '../../../../services/api';
 
-const LiteratureSearch = () => {
+const StudiesSearch = () => {
   const [selectedFiles, setSelectedFiles] = useState(undefined);
   const [currentFile, setCurrentFile] = useState(undefined);
 
@@ -21,11 +21,13 @@ const LiteratureSearch = () => {
   }
 
   return (
-    <div>
-      LiteratureSearch
+    <div className='slrspot__review-studiesSearch'>
+      <div className='slrspot__review-header'>
+        <h1>Studies search</h1>
+      </div >
       <input type='file' onChange={uploadFile}></input>
     </div>
   )
 }
 
-export default LiteratureSearch
+export default StudiesSearch

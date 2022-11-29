@@ -8,6 +8,7 @@ const ReviewMenu = () => {
   const [isHidden, setIsHidden] = useState(false);
   const [showReviewMenu, setShowReviewMenu] = useState(false);
   const [showScreeningMenu, setShowScreeningMenu] = useState(false);
+  const [showStudiesMenu, setShowStudiesMenu] = useState(false);
   const { reviewId } = useParams();
   const navigate = useNavigate();
 
@@ -64,7 +65,13 @@ const ReviewMenu = () => {
               <SubMenuItem name='Team' redirect='/team'/>
             </div>
           )}
-          <MenuItem name='Literature search' redirect='/literature'/>
+          <MenuItem name='Studies' setShowTrigger={setShowStudiesMenu} showTrigger={showStudiesMenu}/>
+          { showStudiesMenu && (
+            <div className='slrspot__review-submenu-options'>
+              <SubMenuItem name='Search' redirect='/studies/search'/>
+              <SubMenuItem name='Display' redirect='/studies/display'/>
+            </div>
+          )}
           <MenuItem name='Screening' setShowTrigger={setShowScreeningMenu} showTrigger={showScreeningMenu}/>
           { showScreeningMenu && (
             <div className='slrspot__review-submenu-options'>

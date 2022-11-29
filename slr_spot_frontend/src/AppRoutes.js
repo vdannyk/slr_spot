@@ -1,9 +1,8 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSelector } from "react-redux";
-import { ReviewHome, ReviewTeam, ReviewSettings, HomePage, Profile, Review, Reviews, ScreeningSettings } from './containers';
-import { NewReview, SignInPage, AccountActivation, PasswordRecovery, UpdateEmail, Criteria, Tags, Keywords, UserKeywords } from './components';
-import LiteratureSearch from './containers/review/literatureSearch/LiteratureSearch';
+import { ReviewHome, ReviewTeam, ReviewSettings, HomePage, Profile, Review, Reviews, ScreeningSettings, StudiesSearch, StudiesDisplay } from './containers';
+import { NewReview, SignInPage, AccountActivation, PasswordRecovery, UpdateEmail, Criteria, Tags, Keywords } from './components';
 
 
 const AppRoutes = () => {
@@ -27,7 +26,8 @@ const AppRoutes = () => {
       <Route path="reviews/:reviewId/screening/tags" element={isLoggedIn ? <Review page={<Tags />} /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/screening/keywords" element={isLoggedIn ? <Review page={<Keywords showAll={true} />} /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/screening/keywords/personal" element={isLoggedIn ? <Review page={<Keywords showAll={false} />} /> : <Navigate to='/' />} />
-      <Route path="reviews/:reviewId/literature" element={isLoggedIn ? <Review page={<LiteratureSearch />} /> : <Navigate to='/' />} />
+      <Route path="reviews/:reviewId/studies/search" element={isLoggedIn ? <Review page={<StudiesSearch />} /> : <Navigate to='/' />} />
+      <Route path="reviews/:reviewId/studies/display" element={isLoggedIn ? <Review page={<StudiesDisplay />} /> : <Navigate to='/' />} />
     </Routes>
   )
 }

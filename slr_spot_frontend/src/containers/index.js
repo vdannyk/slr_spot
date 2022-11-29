@@ -8,3 +8,5 @@ export { default as ReviewHome } from './review/home/ReviewHome';
 export { default as ReviewTeam } from './review/team/ReviewTeam';
 export { default as ReviewSettings } from './review/settings/ReviewSettings';
 export { default as ScreeningSettings } from './review/screening/settings/ScreeningSettings';
+export { default as StudiesSearch } from './review/studies/studiesSearch/StudiesSearch';
+export { default as StudiesDisplay } from './review/studies/studiesDisplay/StudiesDisplay';
