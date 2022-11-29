@@ -140,13 +140,12 @@ public class ReviewService {
 
     public void addKeyword(long reviewId, KeyWord keyWord) {
         Review review = getReviewById(reviewId);
-//        if (checkIfContainsCriterion(review, criterion)) {
-//            throw new TagExistsInReviewException("Given tag already exists in this review");
-//        }
+        keyWord.setReview(review);
         review.getKeywords().add(keyWord);
     }
 
-    public void removeKeyword(Review review, KeyWord keyWord) {
+    public void removeKeyword(long reviewId, KeyWord keyWord) {
+        Review review = getReviewById(reviewId);
         review.getKeywords().remove(keyWord);
     }
 
@@ -165,4 +164,5 @@ public class ReviewService {
         reviewRepository.save(currentReview);
 
     }
+
 }

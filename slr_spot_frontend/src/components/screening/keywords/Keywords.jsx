@@ -12,7 +12,7 @@ import ConfirmationPopup from '../../popups/confirmationPopup/ConfirmationPopup'
 import NewElementField from '../newElementField/NewElementField';
 
 
-const Keywords = () => {
+const Keywords = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { reviewId } = useParams();
@@ -22,7 +22,6 @@ const Keywords = () => {
   const [showKeywordRemoveConfirmation, setShowKeywordRemoveConfirmation] = useState(false);
   const [keywordToRemove, setKeywordToRemove] = useState();
   const {register, handleSubmit, formState: { errors }} = useForm();
-  const [showTeamKeywords, setShowTeamKeywords] = useState(true);
   const { user: currentUser } = useSelector((state) => state.auth);
 
   const inclusionKeywords = keywords.filter((keyword) => keyword.type.name === INCLUSION_TYPE)
@@ -46,7 +45,7 @@ const Keywords = () => {
   );
 
   useEffect(() => {
-    if (showTeamKeywords) {
+    if (props.showAll) {
       axiosInstance.get("/reviews/" + reviewId + "/keywords")
       .then((response) => {
         setKeywords(response.data);
@@ -57,7 +56,7 @@ const Keywords = () => {
         }
       });
     } else {
-      axiosInstance.get("/users/" + currentUser.id + "/keywords")
+      axiosInstance.get("/reviews/" + reviewId + "/" + currentUser.id + "/keywords")
       .then((response) => {
         setKeywords(response.data);
       })
@@ -67,7 +66,7 @@ const Keywords = () => {
         }
       });
     }
-  }, [showTeamKeywords]);
+  }, [props.showAll]);
 
   const handleRemoveKeyword = (keyword) => {
     setShowKeywordRemoveConfirmation(true);
@@ -80,9 +79,7 @@ const Keywords = () => {
   }
 
   const confirmRemoveKeyword= () => {
-    console.log(keywordToRemove);
-    axiosInstance.post("/reviews/" + reviewId + "/keywords/" + keywordToRemove.id + 
-      "/" + keywordToRemove.type.id + "/remove")
+    axiosInstance.post("/reviews/" + reviewId + "/keywords/" + keywordToRemove.id + "/remove")
     .then(() => {
       setShowKeywordRemoveConfirmation(false);
       window.location.reload();
@@ -90,23 +87,29 @@ const Keywords = () => {
   }
 
   const onSubmitNewInclusionKeyword = (formData) => {
-    console.log(formData);
-    onSubmitNewCriterion(formData.inclusionKeyword, INCLUSION_TYPE);
+    onSubmitNewKeyword(formData.inclusionKeyword, INCLUSION_TYPE);
   }
 
   const onSubmitNewExclusionKeyword = (formData) => {
-    onSubmitNewCriterion(formData.exclusionKeyWord, EXCLUSION_TYPE);
+    onSubmitNewKeyword(formData.exclusionKeyword, EXCLUSION_TYPE);
   }
 
-  const onSubmitNewCriterion = (name, type) => {
-    console.log(name);
-    axiosInstance.get("/reviews/" + reviewId + "/keywords/add", { params: {
-      name, type
-    }})
-    .then(() => {
-      window.location.reload();
-    });
-    console.log(name);
+  const onSubmitNewKeyword = (name, type) => {
+    if (props.showAll) {
+      axiosInstance.get("/reviews/" + reviewId + "/keywords/add", { params: {
+        name, type
+      }})
+      .then(() => {
+        window.location.reload();
+      });
+    } else {
+      axiosInstance.get("users/" + currentUser.id + "/reviews/" + reviewId + "/keywords/add", { params: {
+        name, type
+      }})
+      .then(() => {
+        window.location.reload();
+      });
+    }
   }
 
   const isKeywordsEmpty = (keywordsList) => {
@@ -123,8 +126,8 @@ const Keywords = () => {
         content='Manage keywords'
         backward={ () => navigate(location.pathname.replace('/keywords', '')) }/>
       <div className='slrspot__screening-keywords-assignment-container'>
-        <h2 onClick={ () => setShowTeamKeywords(true) }>Shared with team</h2>
-        <h2 onClick={ () => setShowTeamKeywords(false) }>Your keywords</h2>
+        <h2 onClick={ () => navigate("/reviews/" + reviewId + "/screening/keywords") }>Shared with team</h2>
+        <h2 onClick={ () => navigate("/reviews/" + reviewId + "/screening/keywords/personal") }>Personal keywords</h2>
         <div className='slrspot__screening-keywords-container'>
           <div className='slrspot__screening-keywords-table'>
             <div className='slrspot__screening-keywords-table-header'>

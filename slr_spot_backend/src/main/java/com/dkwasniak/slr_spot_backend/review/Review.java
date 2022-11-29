@@ -59,12 +59,7 @@ public class Review {
     )
     private Set<Criterion> criteria = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(
-            name = "reviews_keywords",
-            joinColumns = { @JoinColumn(name = "review_id") },
-            inverseJoinColumns = { @JoinColumn(name = "keyword_id") }
-    )
+    @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     private Set<KeyWord> keywords = new HashSet<>();
 
     public Review(String title) {

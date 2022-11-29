@@ -95,8 +95,11 @@ public class ReviewFacade {
     }
 
     public Set<KeyWord> getKeywords(long id) {
-        Review review = reviewService.getReviewById(id);
-        return review.getKeywords();
+        return keywordService.getByReviewId(id);
+    }
+
+    public Set<KeyWord> getKeywords(long reviewId, long userId) {
+        return keywordService.getByReviewIdAndUserId(reviewId, userId);
     }
 
     public void removeTag(long reviewId, long tagId) {
@@ -131,18 +134,12 @@ public class ReviewFacade {
 
     public void addKeyword(long reviewId, String keywordName, String type) {
         CriterionType criterionType = criterionService.getTypeByName(type);
-        if (!keywordService.checkIfExistByNameAndTypeName(keywordName, type)) {
-            reviewService.addKeyword(reviewId, new KeyWord(keywordName, criterionType));
-        } else {
-            reviewService.addKeyword(reviewId, keywordService.getByNameAndType(keywordName, criterionType));
-        }
+        reviewService.addKeyword(reviewId, new KeyWord(keywordName, criterionType));
     }
 
-    public void removeKeyword(long reviewId, long keywordId, long keywordTypeId) {
-        CriterionType criterionType = criterionService.getTypeById(keywordTypeId);
-        KeyWord keyWord = keywordService.getByIdAndType(keywordId, criterionType);
-        Review review = reviewService.getReviewById(reviewId);
-        reviewService.removeKeyword(review, keyWord);
+    public void removeKeyword(long reviewId, long keywordId) {
+        KeyWord keyWord = keywordService.getById(keywordId);
+        reviewService.removeKeyword(reviewId, keyWord);
     }
 
     public void updateReview(long id, ReviewDto reviewDto) {

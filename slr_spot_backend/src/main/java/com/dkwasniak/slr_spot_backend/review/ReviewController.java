@@ -129,6 +129,11 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewFacade.getKeywords(id));
     }
 
+    @GetMapping("/{reviewId}/{userId}/keywords")
+    public ResponseEntity<Set<KeyWord>> getKeywords(@PathVariable Long reviewId, @PathVariable Long userId) {
+        return ResponseEntity.ok().body(reviewFacade.getKeywords(reviewId, userId));
+    }
+
     @GetMapping("/{reviewId}/keywords/add")
     public ResponseEntity<Void> addKeyword(@PathVariable Long reviewId,
                                        @RequestParam String name,
@@ -137,11 +142,10 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{reviewId}/keywords/{keywordId}/{keywordTypeId}/remove")
+    @PostMapping("/{reviewId}/keywords/{keywordId}/remove")
     public ResponseEntity<Void> removeKeyword(@PathVariable Long reviewId,
-                                          @PathVariable Long keywordId,
-                                          @PathVariable Long keywordTypeId) {
-        reviewFacade.removeKeyword(reviewId, keywordId, keywordTypeId);
+                                          @PathVariable Long keywordId) {
+        reviewFacade.removeKeyword(reviewId, keywordId);
         return ResponseEntity.ok().build();
     }
 

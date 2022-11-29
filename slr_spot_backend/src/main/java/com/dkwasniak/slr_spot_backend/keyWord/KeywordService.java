@@ -4,6 +4,8 @@ import com.dkwasniak.slr_spot_backend.criterion.CriterionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class KeywordService {
@@ -18,7 +20,23 @@ public class KeywordService {
         return keywordRepository.findByNameAndType(keywordName, type).orElseThrow();
     }
 
+    public KeyWord getById(long id) {
+        return keywordRepository.findById(id).orElseThrow();
+    }
+
     public KeyWord getByIdAndType(long keywordId, CriterionType type) {
         return keywordRepository.findByIdAndType(keywordId, type).orElseThrow();
+    }
+
+    public Set<KeyWord> getByReviewId(long reviewId) {
+        return keywordRepository.findByReview_IdAndUserNull(reviewId);
+    }
+
+    public Set<KeyWord> getByReviewIdAndUserId(long reviewId, long userId) {
+        return keywordRepository.findByReview_IdAndUser_Id(reviewId, userId);
+    }
+
+    public void deleteById(long id) {
+        keywordRepository.deleteById(id);
     }
 }

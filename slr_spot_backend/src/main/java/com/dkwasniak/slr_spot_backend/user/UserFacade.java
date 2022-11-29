@@ -2,8 +2,11 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationToken;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
+import com.dkwasniak.slr_spot_backend.criterion.CriterionService;
+import com.dkwasniak.slr_spot_backend.criterion.CriterionType;
 import com.dkwasniak.slr_spot_backend.email.EmailService;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
+import com.dkwasniak.slr_spot_backend.keyWord.KeywordService;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
@@ -28,6 +31,8 @@ public class UserFacade {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
     private final ReviewService reviewService;
+    private final KeywordService keywordService;
+    private final CriterionService criterionService;
 
     public long createUser(User user) {
         User savedUser = userService.saveUser(user);
@@ -93,8 +98,12 @@ public class UserFacade {
         return allUsersEmails;
     }
 
-    public Set<KeyWord> getKeywords(long id) {
-        User user = userService.getUserById(id);
-        return user.getKeywords();
+    public void addKeyword(long userId, long reviewId, String keywordName, String type) {
+        CriterionType criterionType = criterionService.getTypeByName(type);
+        Review review = reviewService.getReviewById(reviewId);
+        KeyWord keyWord = new KeyWord(keywordName, criterionType, review);
+        review.getKeywords().add(keyWord);
+        userService.addKeyword(userId, keyWord);
     }
+
 }

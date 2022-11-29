@@ -48,12 +48,7 @@ public class User {
     @JsonIgnore
     private Set<UserReview> reviews = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(
-            name = "users_keywords",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "keyword_id") }
-    )
+    @OneToMany(mappedBy = "user")
     private Set<KeyWord> keywords = new HashSet<>();
 
     public User(String firstName, String lastName, String email, String password) {

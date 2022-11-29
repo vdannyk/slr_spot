@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.user;
 
+import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewRepository;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
@@ -30,7 +31,6 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ReviewRepository reviewRepository;
 
     public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
         Optional<User> optUser = userRepository.findByEmail(username);
@@ -130,4 +130,9 @@ public class UserService implements UserDetailsService {
         return userRepository.getEmails();
     }
 
+    public void addKeyword(long userId, KeyWord keyWord) {
+        User user = getUserById(userId);
+        keyWord.setUser(user);
+        user.getKeywords().add(keyWord);
+    }
 }

@@ -11,7 +11,8 @@ import './../keywords.css';
 import ConfirmationPopup from '../../../popups/confirmationPopup/ConfirmationPopup';
 import NewElementField from '../../newElementField/NewElementField';
 
-const UserKeywords = () => {
+
+const ReviewKeywords = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { reviewId } = useParams();
@@ -181,4 +182,4 @@ const UserKeywords = () => {
   )
 }
 
-export default UserKeywords
+export default ReviewKeywords

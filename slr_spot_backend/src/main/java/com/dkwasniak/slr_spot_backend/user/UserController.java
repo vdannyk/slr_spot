@@ -80,8 +80,12 @@ public class UserController {
         return ResponseEntity.ok().body(userFacade.getEmails(username));
     }
 
-    @GetMapping("/{id}/keywords")
-    public ResponseEntity<Set<KeyWord>> getKeywords(@PathVariable Long id) {
-        return ResponseEntity.ok().body(userFacade.getKeywords(id));
+    @GetMapping("/{userId}/reviews/{reviewId}/keywords/add")
+    public ResponseEntity<Void> addKeyword(@PathVariable Long userId,
+                                           @PathVariable Long reviewId,
+                                           @RequestParam String name,
+                                           @RequestParam String type) {
+        userFacade.addKeyword(userId, reviewId, name, type);
+        return ResponseEntity.ok().build();
     }
 }
