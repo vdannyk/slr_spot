@@ -15,3 +15,5 @@ export { default as Criteria } from './screening/criteria/Criteria';
 export { default as Tags } from './screening/tags/Tags';
 export { default as Keywords } from './screening/keywords/Keywords';
 export { default as UserKeywords } from './screening/keywords/userKeywords/UserKeywords';
+export { default as Helper } from './helper/Helper';
+

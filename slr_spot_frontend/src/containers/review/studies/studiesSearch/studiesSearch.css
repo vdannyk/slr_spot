@@ -1,0 +1,18 @@
+.slrspot__review-studiesSearch {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.slrspot__review-studiesSearch-import {
+  margin: 20px 40px;
+}
+
+.slrspot__review-studiesSearch h3 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.slrspot__review-studiesSearch-imports-list {
+  margin: 20px 40px;
+}

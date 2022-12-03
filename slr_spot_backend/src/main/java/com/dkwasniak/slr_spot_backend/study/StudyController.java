@@ -18,9 +18,11 @@ import java.util.List;
 @RequestMapping(EndpointConstants.API_PATH + "/studies")
 public class StudyController {
 
+    private final StudyFacade studyFacade;
+
     @PostMapping("/save-from-csv")
     public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        List<Study> studies = CsvToStudyMapper.csvToStudies(file.getInputStream());
+        List<Study> studies = studyFacade.parseStudies(file);
         return ResponseEntity.ok().build();
     }
 }
