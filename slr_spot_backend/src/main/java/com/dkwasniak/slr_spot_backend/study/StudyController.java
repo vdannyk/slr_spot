@@ -20,9 +20,11 @@ public class StudyController {
 
     private final StudyFacade studyFacade;
 
-    @PostMapping("/save-from-csv")
-    public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        List<Study> studies = studyFacade.parseStudies(file);
+    @PostMapping("/load-from-file")
+    public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file,
+                                           @RequestParam("source") String source,
+                                           @RequestParam("searchValue") String searchValue) {
+        studyFacade.loadStudiesFromFile(file, source, searchValue);
         return ResponseEntity.ok().build();
     }
 }

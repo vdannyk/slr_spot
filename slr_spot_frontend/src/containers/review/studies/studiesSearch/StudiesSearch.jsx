@@ -80,8 +80,10 @@ const StudiesSearch = () => {
     console.log(currentFile[0]);
     let data = new FormData();
     data.append("file", currentFile[0]);
+    data.append("searchValue", "test");
+    data.append("source", "SCOPUS");
 
-    return axiosInstance.post("/studies/save-from-csv", data)
+    return axiosInstance.post("/studies/load-from-file", data)
     .then(function (response) {
       console.log(response);
     })
