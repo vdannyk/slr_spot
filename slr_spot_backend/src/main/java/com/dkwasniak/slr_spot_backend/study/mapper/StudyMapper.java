@@ -33,4 +33,24 @@ public class CsvToStudyMapper {
         }
         return studies;
     }
+
+    public static List<Study> bibToStudies(List<CSVRecord> csvRecords, String source) {
+        List<Study> studies = new ArrayList<>();
+        String[] headers = HEADERS.get(source);
+
+        for (CSVRecord csvRecord : csvRecords) {
+            Study study = Study.builder()
+                    .authors(csvRecord.get("\uFEFFAuthors"))
+                    .documentTitle(csvRecord.get(headers[1]))
+                    .publicationYear(Integer.valueOf(csvRecord.get(headers[2])))
+                    .publicationTitle(csvRecord.get(headers[3]))
+                    .volume(csvRecord.get(headers[4]))
+                    .documentAbstract(csvRecord.get(headers[5]))
+                    .issn(csvRecord.get(headers[6]))
+                    .url(csvRecord.get(headers[7]))
+                    .build();
+            studies.add(study);
+        }
+        return studies;
+    }
 }
