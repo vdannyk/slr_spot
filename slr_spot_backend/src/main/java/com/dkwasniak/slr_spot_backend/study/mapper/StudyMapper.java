@@ -7,11 +7,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CsvToStudyMapper {
+public class StudyMapper {
 
-    private static Map<String, String[]> HEADERS = new HashMap<>() {{
+    private static final Map<String, String[]> HEADERS = new HashMap<>() {{
+        put("Default", new String[]{"Authors", "Title", "Year", "Source title", "Volume", "Abstract",
+                "ISSN", "Link"});
         put("SCOPUS", new String[]{"Authors", "Title", "Year", "Source title", "Volume", "Abstract",
         "ISSN", "Link"});
+        put("IEEE", new String[]{"Authors", "Document Title", "Publication Year", "Publication title", "Volume", "Abstract",
+                "ISSN"});
     }};
 
     public static List<Study> csvToStudies(List<CSVRecord> csvRecords, String source) {
@@ -20,7 +24,7 @@ public class CsvToStudyMapper {
 
         for (CSVRecord csvRecord : csvRecords) {
             Study study = Study.builder()
-                    .authors(csvRecord.get("\uFEFFAuthors"))
+                    .authors(csvRecord.get(headers[0]))
                     .documentTitle(csvRecord.get(headers[1]))
                     .publicationYear(Integer.valueOf(csvRecord.get(headers[2])))
                     .publicationTitle(csvRecord.get(headers[3]))

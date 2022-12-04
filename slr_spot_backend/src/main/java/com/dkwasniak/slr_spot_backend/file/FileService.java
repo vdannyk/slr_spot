@@ -4,6 +4,9 @@ import com.dkwasniak.slr_spot_backend.study.Study;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.jbibtex.BibTeXDatabase;
+import org.jbibtex.BibTeXParser;
+import org.jbibtex.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,23 +27,6 @@ public class FileService {
         return !ALLOWED_CONTENT.contains(contentType);
     }
 
-//    public List<CSVRecord> loadFromFile(MultipartFile multipartFile) {
-//        if (isNotAllowedContentType(multipartFile.getContentType())) {
-//            throw new IllegalStateException("Not allowed file");
-//        }
-//
-//        List<CSVRecord> records = loadFromCsv(multipartFile);;
-////        switch (multipartFile.getContentType()) {
-////            case "text/bib":
-////                records = loadFromBibtex(multipartFile);
-////            case "text/ris":
-////                records = loadFromRis(multipartFile);
-////            default:
-////                records =
-////        }
-//        return records;
-//    }
-
      public List<CSVRecord> loadFromCsv(MultipartFile multipartFile) {
         try (
             BufferedReader bufferedReader = new BufferedReader(
@@ -50,20 +36,22 @@ public class FileService {
                 CSVFormat.Builder.create().setHeader().setSkipHeaderRecord(true).setTrim(true).build())
         ) {
             return csvParser.getRecords();
-//            List<Study> studies = new ArrayList<>();
-//
-//            for (CSVRecord csvRecord : csvParser.getRecords()) {
-//                Study study = new Study(csvRecord.get("Document Title"));
-//                studies.add(study);
-//            }
-//            return studies;
         } catch (IOException e) {
             throw new IllegalStateException("fail to parse csv");
         }
     }
 
-    private List<CSVRecord> loadFromBibtex(MultipartFile multipartFile) {
-        return null;
+    public BibTeXDatabase loadFromBibtex(MultipartFile multipartFile) {
+        try (
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(multipartFile.getInputStream(), StandardCharsets.UTF_8)
+            )
+        ) {
+            BibTeXParser bibTeXParser = new BibTeXParser();
+            return bibTeXParser.parse(bufferedReader);
+        } catch (IOException | ParseException e) {
+            throw new IllegalStateException("fail to parse bib");
+        }
     }
 
     private List<CSVRecord> loadFromRis(MultipartFile multipartFile) {

@@ -2,13 +2,13 @@ package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.file.FileService;
 import com.dkwasniak.slr_spot_backend.imports.ImportService;
-import com.dkwasniak.slr_spot_backend.imports.dto.ImportRequest;
-import com.dkwasniak.slr_spot_backend.study.mapper.CsvToStudyMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
+import org.jbibtex.BibTeXDatabase;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,13 +22,26 @@ public class StudyFacade {
 
     public void loadStudiesFromFile(MultipartFile file, String source, String searchValue) {
         String contentType = file.getContentType();
-        loadStudiesFromCsv(file, source);
+        List<Study> studies;
+        if ("text/csv".equals(contentType)) {
+            studies = loadStudiesFromCsv(file, source);
+        } else if ("bib".equals(contentType)) {
+            studies = loadStudiesFromBib(file);
+        } else {
+            studies = new ArrayList<>();
+        }
     }
 
-    public void loadStudiesFromCsv(MultipartFile file, String source) {
+    public List<Study> loadStudiesFromCsv(MultipartFile file, String source) {
         List<CSVRecord> records = fileService.loadFromCsv(file);
-        List<Study> studies = CsvToStudyMapper.csvToStudies(records, source);
-        studyService.saveAll(studies);
+        return studyService.saveStudiesFromCsv(records, source);
+    }
+
+    public List<Study> loadStudiesFromBib(MultipartFile file) {
+        BibTeXDatabase records = fileService.loadFromBibtex(file);
+//        List<Study> studies = CsvToStudyMapper.csvToStudies(records, source);
+//        studyService.saveAll(studies);
+        return new ArrayList<>();
     }
 
 }

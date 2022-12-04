@@ -81,7 +81,7 @@ const StudiesSearch = () => {
     let data = new FormData();
     data.append("file", currentFile[0]);
     data.append("searchValue", "test");
-    data.append("source", "SCOPUS");
+    data.append("source", "IEEE");
 
     return axiosInstance.post("/studies/load-from-file", data)
     .then(function (response) {

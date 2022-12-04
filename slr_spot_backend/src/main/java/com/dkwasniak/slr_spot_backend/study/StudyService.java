@@ -1,6 +1,8 @@
 package com.dkwasniak.slr_spot_backend.study;
 
+import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,5 +15,11 @@ public class StudyService {
 
     public void saveAll(List<Study> studies) {
         studyRepository.saveAll(studies);
+    }
+
+    public List<Study> saveStudiesFromCsv(List<CSVRecord> records, String source) {
+        List<Study> studies = StudyMapper.csvToStudies(records, source);
+        saveAll(studies);
+        return studies;
     }
 }
