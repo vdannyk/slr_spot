@@ -32,11 +32,12 @@ const StudiesSearch = () => {
   const helperContent = () => {
     return (
       <>
-      <p>Studies can be imported using one of given formats</p>
+      <p>Studies can be imported using files with given formats:</p>
         <ul>
-          <li>csv - specific for chosen database or default</li>
+          <li>CSV</li>
           <li>RIS</li>
           <li>BibTeX</li>
+          <li>XLS</li>
         </ul>
       </>
     )
@@ -102,21 +103,24 @@ const StudiesSearch = () => {
 
       <div className='slrspot__review-studiesSearch-imports-list'>
         <h3>Import history</h3>
-        <Table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Imported at</th>
-              <th>Performed by</th>
-              <th>Search value</th>
-              <th>Source</th>
-              <th>Studies added</th>
-              <th>Duplicates removed</th>
-              <th>Remove</th>
-            </tr>
-          </thead>
-          { listTestData }
-        </Table>
+        { imports.length == 0 
+          ? <p className='slrspot__imports-empty'>NO IMPORTS AVAILABLE</p> 
+          : <Table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Imported at</th>
+                  <th>Performed by</th>
+                  <th>Search value</th>
+                  <th>Source</th>
+                  <th>Studies added</th>
+                  <th>Duplicates removed</th>
+                  <th>Remove</th>
+                </tr>
+              </thead>
+              { listTestData }
+            </Table>}
+
         <button onClick={ () => navigate("/reviews/" + reviewId + "/studies/display") }>Show all studies</button>
       </div>
       { showImportRemoveConfirmation && 

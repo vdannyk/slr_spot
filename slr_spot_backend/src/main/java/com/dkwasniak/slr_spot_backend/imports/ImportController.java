@@ -1,6 +1,5 @@
 package com.dkwasniak.slr_spot_backend.imports;
 
-import com.dkwasniak.slr_spot_backend.study.StudyFacade;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

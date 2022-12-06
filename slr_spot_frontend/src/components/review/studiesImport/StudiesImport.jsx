@@ -13,25 +13,36 @@ const StudiesImport = (props) => {
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [source, setSource] = useState('');
   const [otherSource, setOtherSource] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const { reviewId } = useParams();
 
   const uploadFile = () => {
     let data = new FormData();
+    if (!currentFile) {
+      setErrorMsg("File not selected");
+      return;
+    }
     data.append("file", currentFile[0]);
     data.append("reviewId", reviewId);
     data.append("searchValue", searchValue);
+    console.log(source);
     if (source === "OTHER") {
       data.append("source", otherSource);
+    } else if (source.length === 0) {
+      console.log(source);
+      setErrorMsg("Source not selected");
+      return;
     } else {
       data.append("source", source)
     }
     data.append("additionalInformations", additionalInfo);
 
     axiosInstance.post("/imports", data)
-    .then(function (response) {
-      console.log(response);
+    .then(() => {
+      window.location.reload()
     })
     .catch((error) => {
+      console.log(error);
     });
   }
 
@@ -61,7 +72,7 @@ const StudiesImport = (props) => {
       <div className='slrspot__studiesImport-container'>
         <div className='slrspot__studiesImport-container-fields'>
           <h1>IMPORT STUDIES</h1>
-          <p className='slrspot__input-error'>test error</p>
+          { errorMsg && <p className='slrspot__input-error'>{ errorMsg }</p> }
           <input 
             onChange={ handleSearchValueChange }
             placeholder='Search value' 
