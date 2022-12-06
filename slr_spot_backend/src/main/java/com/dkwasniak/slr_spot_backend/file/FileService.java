@@ -1,13 +1,14 @@
 package com.dkwasniak.slr_spot_backend.file;
 
-import com.dkwasniak.slr_spot_backend.study.Study;
+import com.dkwasniak.slr_spot_backend.file.exception.FileLoadingException;
+import com.dkwasniak.slr_spot_backend.file.exception.NotAllowedFileContentTypeException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXParser;
 import org.jbibtex.ParseException;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,11 +19,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
+@Slf4j
 public class FileService {
 
     private final static String CSV_MEDIA_TYPE = "text/csv";
     private final static String BIB_MEDIA_TYPE = "application/octet-stream";
-    private final static String RIS_MEDIA_TYPE = "ris";
+    private final static String RIS_MEDIA_TYPE = "application/x-research-info-systems";
     private final static String XLS_MEDIA_TYPE = "xls";
     private final static List<String> ALLOWED_CONTENT = List.of(
             CSV_MEDIA_TYPE, BIB_MEDIA_TYPE, RIS_MEDIA_TYPE, XLS_MEDIA_TYPE
@@ -30,7 +32,8 @@ public class FileService {
 
     public void checkIfAllowedFileContentType(String contentType) {
         if  (!ALLOWED_CONTENT.contains(contentType)) {
-            throw new IllegalStateException();
+            log.error(String.format("File with content-type %s not allowed", contentType));
+            throw new NotAllowedFileContentTypeException(contentType);
         }
     }
 
@@ -59,7 +62,8 @@ public class FileService {
 
             return csvParser.getRecords();
         } catch (IOException e) {
-            throw new IllegalStateException("fail to parse csv");
+            log.error("Error while parsing csv file", e);
+            throw new FileLoadingException(multipartFile.getName());
         }
     }
 
@@ -71,7 +75,8 @@ public class FileService {
 
             return bibTeXParser.parse(bufferedReader);
         } catch (IOException | ParseException e) {
-            throw new IllegalStateException("fail to parse bib");
+            log.error("Error while parsing bib file", e);
+            throw new FileLoadingException(multipartFile.getName());
         }
     }
 

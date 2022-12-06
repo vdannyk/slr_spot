@@ -42,7 +42,11 @@ const StudiesImport = (props) => {
       window.location.reload()
     })
     .catch((error) => {
-      console.log(error);
+      const message =
+        (error.response &&
+        error.response.data &&
+        error.response.data.message);
+      setErrorMsg(message);
     });
   }
 

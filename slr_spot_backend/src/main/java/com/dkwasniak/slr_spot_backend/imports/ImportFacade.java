@@ -5,8 +5,11 @@ import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.study.Study;
 import com.dkwasniak.slr_spot_backend.study.StudyService;
+import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingException;
+import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingInvalidHeadersException;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ImportFacade {
 
     private final StudyService studyService;
@@ -37,7 +41,6 @@ public class ImportFacade {
             study.setStudyImport(studyImport);
         }
         importRepository.save(studyImport);
-//        reviewService.addImport(reviewId, studyImport);
     }
 
     private List<Study> loadFromFile(MultipartFile file, String source) {
@@ -59,13 +62,25 @@ public class ImportFacade {
     }
 
     private List<Study> loadStudiesFromCsv(MultipartFile file, String source) {
-        List<CSVRecord> records = fileService.loadFromCsv(file);
-        return StudyMapper.csvToStudies(records, source);
+        try {
+            List<CSVRecord> records = fileService.loadFromCsv(file);
+            return StudyMapper.csvToStudies(records, source);
+        } catch (IllegalArgumentException e) {
+            log.error("Exception while mapping studies", e);
+            throw new StudyMappingInvalidHeadersException(file.getName(), e);
+        } catch (Exception e) {
+            throw new StudyMappingException(file.getName(), e);
+        }
     }
 
     private List<Study> loadStudiesFromBib(MultipartFile file) {
-        BibTeXDatabase records = fileService.loadFromBibtex(file);
-        return StudyMapper.bibToStudies(records);
+        try {
+            BibTeXDatabase records = fileService.loadFromBibtex(file);
+            return StudyMapper.bibToStudies(records);
+        } catch (Exception e) {
+            log.error("Exception while mapping studies", e);
+            throw new StudyMappingException(file.getName(), e);
+        }
     }
 
     public void removeImportById(Long importId) {
