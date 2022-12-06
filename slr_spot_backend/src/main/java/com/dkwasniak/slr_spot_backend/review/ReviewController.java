@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.criterion.Criterion;
+import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
@@ -149,4 +150,8 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{id}/imports")
+    public ResponseEntity<Set<Import>> getImports(@PathVariable Long id) {
+        return ResponseEntity.ok().body(reviewFacade.getImports(id));
+    }
 }

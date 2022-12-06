@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../../services/api';
 import { useNavigate, useParams } from "react-router-dom";
 import { Table } from "react-bootstrap";
@@ -6,6 +6,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import Helper from '../../../../components/helper/Helper';
 import './studiesSearch.css';
 import { StudiesImport } from '../../../../components';
+import EventBus from '../../../../common/EventBus';
 
 const testImprots = [
   {
@@ -52,21 +53,33 @@ const testImprots = [
 
 
 const StudiesSearch = () => {
-  const [showHelper, setShowHelper] = useState(true);
+  const [imports, setImports] = useState([]);
   const [showNewImport, setShowNewImport] = useState(false);
   const { reviewId } = useParams();
   const navigate = useNavigate();
 
-  const listTestData = testImprots.map((item, id) => 
+  useEffect(() => {
+    axiosInstance.get("/reviews/" + reviewId + "/imports")
+    .then((response) => {
+      setImports(response.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+  }, []);
+
+  const listTestData = imports.map((item, id) => 
     <tbody key={id}>
       <tr>
         <td>{id + 1}</td>
-        <td>{item.importedAt}</td>
+        <td>{item.date}</td>
         <td>{item.performedBy}</td>
         <td>{item.searchValue}</td>
         <td>{item.source}</td>
-        <td>{item.studiesAdded}</td>
-        <td>{item.duplicatesRemoved}</td>
+        <td>xx</td>
+        <td>xx</td>
         <td><AiOutlineClose /></td>
       </tr>
     </tbody>

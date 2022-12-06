@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.criterion.Criterion;
+import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
@@ -163,6 +164,12 @@ public class ReviewService {
                 ? currentReview.getScreeningReviewers() : reviewDto.getScreeningReviewers());
         reviewRepository.save(currentReview);
 
+    }
+
+    public void addImport(long reviewId, Import studyImport) {
+        Review review = getReviewById(reviewId);
+        studyImport.setReview(review);
+        review.getImports().add(studyImport);
     }
 
 }

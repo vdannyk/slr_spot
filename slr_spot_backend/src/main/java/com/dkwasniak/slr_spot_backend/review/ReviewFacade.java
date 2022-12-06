@@ -3,6 +3,8 @@ package com.dkwasniak.slr_spot_backend.review;
 import com.dkwasniak.slr_spot_backend.criterion.Criterion;
 import com.dkwasniak.slr_spot_backend.criterion.CriterionService;
 import com.dkwasniak.slr_spot_backend.criterion.CriterionType;
+import com.dkwasniak.slr_spot_backend.imports.Import;
+import com.dkwasniak.slr_spot_backend.imports.ImportService;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.keyWord.KeywordService;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
@@ -31,6 +33,7 @@ public class ReviewFacade {
     private final TagService tagService;
     private final CriterionService criterionService;
     private final KeywordService keywordService;
+    private final ImportService importService;
 
     public long createReview(ReviewDto reviewDto, String username) {
         Review review = new Review(reviewDto.getName(), reviewDto.getResearchArea(), reviewDto.getDescription(),
@@ -146,4 +149,7 @@ public class ReviewFacade {
         reviewService.updateReview(id, reviewDto);
     }
 
+    public Set<Import> getImports(long reviewId) {
+        return importService.getImportsByReviewId(reviewId);
+    }
 }

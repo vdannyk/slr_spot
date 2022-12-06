@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axiosInstance from '../../../services/api';
 import DropdownSelect from '../../dropdownSelect/DropdownSelect';
+import { useNavigate, useParams } from "react-router-dom";
 import './studiesImport.css';
 
 
@@ -12,10 +13,12 @@ const StudiesImport = (props) => {
   const [additionalInfo, setAdditionalInfo] = useState();
   const [source, setSource] = useState();
   const [otherSource, setOtherSource] = useState();
+  const { reviewId } = useParams();
 
   const uploadFile = () => {
     let data = new FormData();
     data.append("file", currentFile[0]);
+    data.append("reviewId", reviewId);
     data.append("searchValue", searchValue);
     if (source === "OTHER") {
       data.append("source", otherSource);
@@ -24,7 +27,7 @@ const StudiesImport = (props) => {
     }
     data.append("additionalInformations", additionalInfo);
 
-    axiosInstance.post("/studies/load-from-file", data)
+    axiosInstance.post("/imports", data)
     .then(function (response) {
       console.log(response);
     })
