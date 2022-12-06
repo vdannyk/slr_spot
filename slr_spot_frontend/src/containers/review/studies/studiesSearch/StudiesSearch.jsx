@@ -5,6 +5,7 @@ import { Table } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
 import Helper from '../../../../components/helper/Helper';
 import './studiesSearch.css';
+import { StudiesImport } from '../../../../components';
 
 const testImprots = [
   {
@@ -52,8 +53,7 @@ const testImprots = [
 
 const StudiesSearch = () => {
   const [showHelper, setShowHelper] = useState(true);
-  const [selectedFiles, setSelectedFiles] = useState(undefined);
-  const [currentFile, setCurrentFile] = useState(undefined);
+  const [showNewImport, setShowNewImport] = useState(false);
   const { reviewId } = useParams();
   const navigate = useNavigate();
 
@@ -71,27 +71,6 @@ const StudiesSearch = () => {
       </tr>
     </tbody>
   );
-
-  const selectFile = (event) => {
-    setSelectedFiles(event.target.files);
-  };
-
-  const uploadFile = () => {
-    console.log(currentFile[0]);
-    let data = new FormData();
-    data.append("file", currentFile[0]);
-    data.append("searchValue", "test");
-    data.append("source", "IEEE");
-
-    return axiosInstance.post("/studies/load-from-file", data)
-    .then(function (response) {
-      console.log(response);
-    })
-  }
-
-  const handleOnFileChange = (event) => {
-    setCurrentFile(event.target.files);
-  }
 
   const helperContent = () => {
     return (
@@ -116,8 +95,10 @@ const StudiesSearch = () => {
       
       <div className='slrspot__review-studiesSearch-import'>
         <h3>Import references</h3>
-        <input type='file' onChange={ handleOnFileChange }></input>
-        <button onClick={ uploadFile }>Import</button>
+
+        { showNewImport && <StudiesImport triggerCancel={ setShowNewImport } /> }
+
+        <button onClick={ () => setShowNewImport(true) }>New import</button>
       </div>
 
       <div className='slrspot__review-studiesSearch-imports-list'>

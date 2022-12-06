@@ -16,4 +16,6 @@ export { default as Tags } from './screening/tags/Tags';
 export { default as Keywords } from './screening/keywords/Keywords';
 export { default as UserKeywords } from './screening/keywords/userKeywords/UserKeywords';
 export { default as Helper } from './helper/Helper';
+export { default as StudiesImport } from './review/studiesImport/StudiesImport';
+export { default as DropdownSelect } from './dropdownSelect/DropdownSelect';
 
