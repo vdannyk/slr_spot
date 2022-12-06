@@ -65,7 +65,7 @@ public class ImportFacade {
 
     private List<Study> loadStudiesFromBib(MultipartFile file) {
         BibTeXDatabase records = fileService.loadFromBibtex(file);
-        return studyService.saveStudiesFromBib(records);
+        return StudyMapper.bibToStudies(records);
     }
 
     public void removeImportById(Long importId) {

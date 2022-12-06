@@ -6,7 +6,7 @@ import './studiesImport.css';
 
 
 const StudiesImport = (props) => {
-  var options = ["OTHER", "SCOPUS", "IEEE", "WEB OF SCIENCE"]
+  var options = ["OTHER", "SCOPUS", "IEEE", "WEB OF SCIENCE", "SPRINGERLINK", "ACM", "SCIENCE DIRECT"]
   const [currentFile, setCurrentFile] = useState();
   const [selectedFile, setSelectedFile] = useState('No file selected')
   const [searchValue, setSearchValue] = useState('');

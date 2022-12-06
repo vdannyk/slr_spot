@@ -55,7 +55,7 @@ public class FileService {
                 new InputStreamReader(multipartFile.getInputStream(), StandardCharsets.UTF_8))) {
 
             CSVParser csvParser = new CSVParser(bufferedReader,
-                    CSVFormat.Builder.create().setHeader().setSkipHeaderRecord(true).setTrim(true).build());
+                    CSVFormat.Builder.create().setHeader().setSkipHeaderRecord(true).setTrim(true).setIgnoreHeaderCase(true).build());
 
             return csvParser.getRecords();
         } catch (IOException e) {
