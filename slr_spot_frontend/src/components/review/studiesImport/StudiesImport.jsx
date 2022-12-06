@@ -7,12 +7,12 @@ import './studiesImport.css';
 
 const StudiesImport = (props) => {
   var options = ["OTHER", "SCOPUS", "IEEE", "WEB OF SCIENCE"]
-  const [currentFile, setCurrentFile] = useState(undefined);
+  const [currentFile, setCurrentFile] = useState();
   const [selectedFile, setSelectedFile] = useState('No file selected')
-  const [searchValue, setSearchValue] = useState();
-  const [additionalInfo, setAdditionalInfo] = useState();
-  const [source, setSource] = useState();
-  const [otherSource, setOtherSource] = useState();
+  const [searchValue, setSearchValue] = useState('');
+  const [additionalInfo, setAdditionalInfo] = useState('');
+  const [source, setSource] = useState('');
+  const [otherSource, setOtherSource] = useState('');
   const { reviewId } = useParams();
 
   const uploadFile = () => {

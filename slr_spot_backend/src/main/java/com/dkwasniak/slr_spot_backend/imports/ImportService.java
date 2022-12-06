@@ -21,4 +21,8 @@ public class ImportService {
         return importRepository.findByReview_Id(reviewId);
     }
 
+    public void deleteImportById(Long id) {
+        importRepository.deleteById(id);
+    }
+
 }

@@ -5,51 +5,8 @@ import { Table } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
 import Helper from '../../../../components/helper/Helper';
 import './studiesSearch.css';
-import { StudiesImport } from '../../../../components';
+import { ConfirmationPopup, StudiesImport } from '../../../../components';
 import EventBus from '../../../../common/EventBus';
-
-const testImprots = [
-  {
-    "importedAt": "xx/xx/xxxx",
-    "performedBy": "tester",
-    "searchValue": "bobry",
-    "source": "Web of science",
-    "studiesAdded": 0,
-    "duplicatesRemoved": "Not found",
-  },
-  {
-    "importedAt": "xx/xx/xxxx",
-    "performedBy": "tester",
-    "searchValue": "bobry",
-    "source": "Web of science",
-    "studiesAdded": 0,
-    "duplicatesRemoved": "Not found",
-  },
-  {
-    "importedAt": "xx/xx/xxxx",
-    "performedBy": "tester",
-    "searchValue": "bobry",
-    "source": "Web of science",
-    "studiesAdded": 0,
-    "duplicatesRemoved": "Not found",
-  },
-  {
-    "importedAt": "xx/xx/xxxx",
-    "performedBy": "tester",
-    "searchValue": "bobry",
-    "source": "Web of science",
-    "studiesAdded": 0,
-    "duplicatesRemoved": "Not found",
-  },
-  {
-    "importedAt": "xx/xx/xxxx",
-    "performedBy": "tester",
-    "searchValue": "bobry",
-    "source": "Web of science",
-    "studiesAdded": 0,
-    "duplicatesRemoved": "Not found",
-  }
-]
 
 
 const StudiesSearch = () => {
@@ -57,6 +14,8 @@ const StudiesSearch = () => {
   const [showNewImport, setShowNewImport] = useState(false);
   const { reviewId } = useParams();
   const navigate = useNavigate();
+  const [showImportRemoveConfirmation, setShowImportRemoveConfirmation] = useState(false);
+  const [importToRemove, setImportToRemove] = useState();
 
   useEffect(() => {
     axiosInstance.get("/reviews/" + reviewId + "/imports")
@@ -70,21 +29,6 @@ const StudiesSearch = () => {
     });
   }, []);
 
-  const listTestData = imports.map((item, id) => 
-    <tbody key={id}>
-      <tr>
-        <td>{id + 1}</td>
-        <td>{item.date}</td>
-        <td>{item.performedBy}</td>
-        <td>{item.searchValue}</td>
-        <td>{item.source}</td>
-        <td>xx</td>
-        <td>xx</td>
-        <td><AiOutlineClose /></td>
-      </tr>
-    </tbody>
-  );
-
   const helperContent = () => {
     return (
       <>
@@ -97,6 +41,48 @@ const StudiesSearch = () => {
       </>
     )
   }
+
+  const handleRemoveImport = (studyImport) => {
+    setShowImportRemoveConfirmation(true);
+    setImportToRemove(studyImport);
+  }
+
+  const onCancelRemoveImport = () => {
+    setShowImportRemoveConfirmation(false);
+    setImportToRemove();
+  }
+
+  const confirmRemoveImport = () => {
+    axiosInstance.delete("/imports/" + importToRemove.id)
+    .then(() => {
+      setShowImportRemoveConfirmation(false);
+      window.location.reload();
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+  }
+
+  const listTestData = imports.map((item, id) => 
+    <tbody key={id}>
+      <tr>
+        <td>{id + 1}</td>
+        <td>{item.date}</td>
+        <td>{item.performedBy}</td>
+        <td>{item.searchValue}</td>
+        <td>{item.source}</td>
+        <td>xx</td>
+        <td>xx</td>
+        <td>
+          <AiOutlineClose 
+            onClick={ () => handleRemoveImport(item) } 
+            style={ {color: 'red', cursor: 'pointer'} } />
+        </td>
+      </tr>
+    </tbody>
+  );
 
   return (
     <div className='slrspot__review-studiesSearch'>
@@ -133,6 +119,14 @@ const StudiesSearch = () => {
         </Table>
         <button onClick={ () => navigate("/reviews/" + reviewId + "/studies/display") }>Show all studies</button>
       </div>
+      { showImportRemoveConfirmation && 
+        <ConfirmationPopup 
+          title="remove import"
+          message={'Do you want to remove this import? This action will remove all connected studies.'}
+          triggerConfirm={ confirmRemoveImport }
+          triggerCancel={ onCancelRemoveImport }
+        /> 
+      }
     </div>
   )
 }

@@ -67,4 +67,8 @@ public class ImportFacade {
         BibTeXDatabase records = fileService.loadFromBibtex(file);
         return studyService.saveStudiesFromBib(records);
     }
+
+    public void removeImportById(Long importId) {
+        importService.deleteImportById(importId);
+    }
 }

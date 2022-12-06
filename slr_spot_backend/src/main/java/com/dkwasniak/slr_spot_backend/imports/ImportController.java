@@ -4,6 +4,8 @@ import com.dkwasniak.slr_spot_backend.study.StudyFacade;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +26,12 @@ public class ImportController {
                                            @RequestParam("searchValue") String searchValue,
                                            @RequestParam("additionalInformations") String additionalInfo) {
         importFacade.importStudies(file, reviewId, source, searchValue, additionalInfo);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{importId}")
+    public ResponseEntity<Void> deleteImport(@PathVariable Long importId) {
+        importFacade.removeImportById(importId);
         return ResponseEntity.ok().build();
     }
 }
