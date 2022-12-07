@@ -4,7 +4,7 @@ import { AiFillCaretRight,  AiFillCaretLeft, AiFillCaretDown } from "react-icons
 import './reviewMenu.css';
 
 
-const ReviewMenu = () => {
+const ReviewMenu = ({isPreview}) => {
   const [isHidden, setIsHidden] = useState(false);
   const [showReviewMenu, setShowReviewMenu] = useState(false);
   const [showScreeningMenu, setShowScreeningMenu] = useState(false);
@@ -61,7 +61,7 @@ const ReviewMenu = () => {
           <MenuItem name='Review' setShowTrigger={setShowReviewMenu} showTrigger={showReviewMenu}/>
           { showReviewMenu && (
             <div className='slrspot__review-submenu-options'>
-              <SubMenuItem name='Settings' redirect='/settings'/>
+              { !isPreview && <SubMenuItem name='Settings' redirect='/settings'/> }
               <SubMenuItem name='Team' redirect='/team'/>
             </div>
           )}

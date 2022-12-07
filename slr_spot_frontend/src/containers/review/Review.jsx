@@ -7,7 +7,7 @@ const Review = (props) => {
 
   return (
     <div className='slrspot__review'>
-      <ReviewMenu />
+      <ReviewMenu isPreview={ props.isPreview }/>
       <div className='slrspot__review-content'>
         {props.page}
       </div>
