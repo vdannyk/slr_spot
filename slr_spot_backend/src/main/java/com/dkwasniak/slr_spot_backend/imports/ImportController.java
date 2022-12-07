@@ -4,6 +4,7 @@ import com.dkwasniak.slr_spot_backend.imports.dto.ImportDto;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +30,8 @@ public class ImportController {
                                            @RequestParam("source") String source,
                                            @RequestParam("searchValue") String searchValue,
                                            @RequestParam("additionalInformations") String additionalInfo) {
-        importFacade.importStudies(file, reviewId, source, searchValue, additionalInfo);
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        importFacade.importStudies(file, reviewId, source, searchValue, additionalInfo, username);
         return ResponseEntity.ok().build();
     }
 

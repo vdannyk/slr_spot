@@ -32,11 +32,12 @@ public class ImportFacade {
     private final ReviewService reviewService;
     private final ImportRepository importRepository;
 
-    public void importStudies(MultipartFile file, Long reviewId, String source, String searchValue, String additionalInfo) {
+    public void importStudies(MultipartFile file, Long reviewId, String source, String searchValue,
+                              String additionalInfo, String username) {
         List<Study> studies = loadFromFile(file, source);
         Review review = reviewService.getReviewById(reviewId);
         Import studyImport = new Import(
-                searchValue, source, additionalInfo, "testPerformer"
+                searchValue, source, additionalInfo, username
         );
         studyImport.setReview(review);
         studyImport.setStudies(studies);
