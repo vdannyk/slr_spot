@@ -12,3 +12,8 @@
 .slrspot__review-home-title h1 {
   text-transform: uppercase;
 }
+
+.slrspot__review-home-clickToShow {
+  color: blue;
+  cursor: pointer;
+}

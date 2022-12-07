@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.imports;
 
 import com.dkwasniak.slr_spot_backend.file.FileService;
+import com.dkwasniak.slr_spot_backend.imports.dto.ImportDto;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.study.Study;
@@ -17,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -85,5 +88,12 @@ public class ImportFacade {
 
     public void removeImportById(Long importId) {
         importService.deleteImportById(importId);
+    }
+
+    public Set<ImportDto> getImportsByReviewId(Long reviewId) {
+        Set<Import> imports = reviewService.getReviewById(reviewId).getImports();
+        return imports.stream()
+                .map((i) -> new ImportDto(i, i.getStudies().size(), 0))
+                .collect(Collectors.toSet());
     }
 }

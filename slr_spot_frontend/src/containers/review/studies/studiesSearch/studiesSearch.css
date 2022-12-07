@@ -24,3 +24,8 @@
   border-radius: 4px;
   background-color: rgb(217, 217, 217);
 }
+
+.slrspot__review-studiesSearch-imports-showMore {
+  color: blue;
+  cursor: pointer;
+}

@@ -5,7 +5,7 @@ import { Table } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
 import Helper from '../../../../components/helper/Helper';
 import './studiesSearch.css';
-import { ConfirmationPopup, StudiesImport } from '../../../../components';
+import { ConfirmationPopup, ImportDetails, StudiesImport } from '../../../../components';
 import EventBus from '../../../../common/EventBus';
 
 
@@ -16,9 +16,13 @@ const StudiesSearch = () => {
   const navigate = useNavigate();
   const [showImportRemoveConfirmation, setShowImportRemoveConfirmation] = useState(false);
   const [importToRemove, setImportToRemove] = useState();
+  const [showImportDetails, setShowImportDetails] = useState(false);
+  const [importDetails, setImportDetails] = useState();
 
   useEffect(() => {
-    axiosInstance.get("/reviews/" + reviewId + "/imports")
+    axiosInstance.get("/imports", { params: {
+      reviewId
+    }})
     .then((response) => {
       setImports(response.data);
     })
@@ -66,19 +70,36 @@ const StudiesSearch = () => {
     });
   }
 
+  const handleShowImportDetails = (importDetails) => {
+    setShowImportDetails(true);
+    setImportDetails(importDetails)
+  }
+
+  const handleExitImportDetails = () => {
+    setShowImportDetails(false);
+    setImportDetails()
+  }
+
   const listTestData = imports.map((item, id) => 
     <tbody key={id}>
       <tr>
         <td>{id + 1}</td>
-        <td>{item.date}</td>
-        <td>{item.performedBy}</td>
-        <td>{item.searchValue}</td>
-        <td>{item.source}</td>
-        <td>xx</td>
-        <td>xx</td>
+        <td>{item.studyImport.date}</td>
+        {/* <td>{item.studyImport.performedBy}</td> */}
+        {/* <td>{item.studyImport.searchValue}</td> */}
+        {/* <td>{item.studyImport.source}</td> */}
+        <td>{item.studiesAdded}</td>
+        <td>{item.duplicatesRemoved}</td>
+        <td>
+          <a 
+            className='slrspot__review-studiesSearch-imports-showMore'
+            onClick={() => handleShowImportDetails(item)}>
+            SHOW
+          </a>
+        </td>
         <td>
           <AiOutlineClose 
-            onClick={ () => handleRemoveImport(item) } 
+            onClick={ () => handleRemoveImport(item.studyImport) } 
             style={ {color: 'red', cursor: 'pointer'} } />
         </td>
       </tr>
@@ -110,11 +131,12 @@ const StudiesSearch = () => {
                 <tr>
                   <th>#</th>
                   <th>Imported at</th>
-                  <th>Performed by</th>
-                  <th>Search value</th>
-                  <th>Source</th>
+                  {/* <th>Performed by</th> */}
+                  {/* <th>Search value</th> */}
+                  {/* <th>Source</th> */}
                   <th>Studies added</th>
                   <th>Duplicates removed</th>
+                  <th>Details</th>
                   <th>Remove</th>
                 </tr>
               </thead>
@@ -130,6 +152,12 @@ const StudiesSearch = () => {
           triggerConfirm={ confirmRemoveImport }
           triggerCancel={ onCancelRemoveImport }
         /> 
+      }
+      { showImportDetails && 
+        <ImportDetails 
+          importDetails={ importDetails }
+          triggerCancel={ handleExitImportDetails}
+        />
       }
     </div>
   )

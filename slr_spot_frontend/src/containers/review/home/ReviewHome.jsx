@@ -47,7 +47,11 @@ const ReviewHome = () => {
           </tr>
           <tr>
             <th>Team members</th>
-            <td><a onClick={ () => navigate("/reviews/" + reviewId + "/team") }>CLICK TO SHOW</a></td>
+            <td>
+              <a onClick={ () => navigate("/reviews/" + reviewId + "/team") } className='slrspot__review-home-clickToShow'>
+                CLICK TO SHOW
+              </a>
+            </td>
           </tr>
         </tbody>
       </Table>

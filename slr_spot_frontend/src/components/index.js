@@ -18,4 +18,5 @@ export { default as UserKeywords } from './screening/keywords/userKeywords/UserK
 export { default as Helper } from './helper/Helper';
 export { default as StudiesImport } from './review/studiesImport/StudiesImport';
 export { default as DropdownSelect } from './dropdownSelect/DropdownSelect';
+export { default as ImportDetails } from './review/importDetails/ImportDetails';
 
