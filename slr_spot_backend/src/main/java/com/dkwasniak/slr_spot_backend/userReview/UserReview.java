@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
@@ -32,6 +33,8 @@ public class UserReview implements Serializable {
     @MapsId("reviewId")
     private Review review;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id")
     private ReviewRole role;
 
     public UserReview(User user, Review review, ReviewRole reviewRole) {

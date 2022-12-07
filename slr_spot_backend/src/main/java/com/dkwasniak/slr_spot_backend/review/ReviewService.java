@@ -63,7 +63,7 @@ public class ReviewService {
 
     protected ReviewWithOwnerDto boundWithOwner(Review review) {
         User owner = review.getUsers().stream()
-                .filter(user -> ReviewRole.OWNER.equals(user.getRole())).findFirst().get().getUser();
+                .filter(user -> "OWNER".equals(user.getRole().getName())).findFirst().get().getUser();
         return ReviewWithOwnerDto.of(owner.getFirstName(), owner.getLastName(), review);
     }
 
@@ -87,7 +87,7 @@ public class ReviewService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
-                .role(role)
+                .role(role.getName())
                 .build();
     }
 

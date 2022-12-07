@@ -82,11 +82,12 @@ public class UserFacade {
         userService.updateName(username, userDto.getFirstName(), userDto.getLastName());
     }
 
-    public void addReviewToUser(String username, long reviewId) {
-        User user = userService.getUserByEmail(username);
-        Review review = reviewService.getReviewById(reviewId);
-        userService.addReviewToUser(user, review);
-    }
+    // TODO remove it
+//    public void addReviewToUser(String username, long reviewId) {
+//        User user = userService.getUserByEmail(username);
+//        Review review = reviewService.getReviewById(reviewId);
+//        userService.addReviewToUser(user, review);
+//    }
 
     public Set<Review> getReviewsByUser(long id) {
         return userService.getReviewsByUser(id);

@@ -13,6 +13,7 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
+import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleService;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.tag.TagService;
 import com.dkwasniak.slr_spot_backend.user.User;
@@ -34,16 +35,19 @@ public class ReviewFacade {
     private final CriterionService criterionService;
     private final KeywordService keywordService;
     private final ImportService importService;
+    private final ReviewRoleService roleService;
 
     public long createReview(ReviewDto reviewDto, String username) {
         Review review = new Review(reviewDto.getName(), reviewDto.getResearchArea(), reviewDto.getDescription(),
                 reviewDto.getIsPublic(), reviewDto.getScreeningReviewers());
         long id = reviewService.saveReview(review);
         User owner = userService.getUserByEmail(username);
-        userService.addReviewToUser(owner, review, ReviewRole.OWNER);
+        ReviewRole ownerRole = roleService.getRoleByName("OWNER");
+        ReviewRole memberRole = roleService.getRoleByName("MEMBER");
+        userService.addReviewToUser(owner, review, ownerRole);
         for (String email : reviewDto.getReviewers()) {
             User user = userService.getUserByEmail(email);
-            userService.addReviewToUser(user, review);
+            userService.addReviewToUser(user, review, memberRole);
         }
         return id;
     }
@@ -81,9 +85,10 @@ public class ReviewFacade {
 
     public void addMembers(long reviewId, AddMembersDto addMembersDto) {
         Review review = reviewService.getReviewById(reviewId);
+        ReviewRole memberRole = roleService.getRoleByName("MEMBER");
         for (String email : addMembersDto.getMembersToAdd()) {
             User user = userService.getUserByEmail(email);
-            userService.addReviewToUser(user, review);
+            userService.addReviewToUser(user, review, memberRole);
         }
     }
 

@@ -115,11 +115,12 @@ public class UserService implements UserDetailsService {
         log.info("User \"{}\" added to review \"{}\"", user.getEmail(), review.getTitle());
     }
 
-    public void addReviewToUser(User user, Review review) {
-        user.addReview(review, ReviewRole.MEMBER);
-        userRepository.save(user);
-        log.info("User \"{}\" added to review \"{}\"", user.getEmail(), review.getTitle());
-    }
+    // TODO remove it probably
+//    public void addReviewToUser(User user, Review review) {
+//        user.addReview(review, ReviewRole.MEMBER);
+//        userRepository.save(user);
+//        log.info("User \"{}\" added to review \"{}\"", user.getEmail(), review.getTitle());
+//    }
 
     public Set<Review> getReviewsByUser(long id) {
         User user = getUserById(id);
