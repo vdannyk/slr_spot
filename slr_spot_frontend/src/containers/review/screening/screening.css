@@ -1,0 +1,39 @@
+.slrspot__screening {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.slrspot__screening-showOptions {
+  display: flex;
+  margin: 5px 40px 0;
+  text-transform: uppercase;
+  align-items: center;
+}
+
+.slrspot__screening-options {
+  background-color: #f8f8f8;
+  border: thin solid #c0c0c0;
+  margin: 10px 40px 5px;
+  border-radius: 2px;
+}
+
+.slrspot__screening-options-container {
+  margin: 10px;
+}
+
+.slrspot__screening-options-container-checks {
+  display: flex;
+  align-items: center;
+}
+
+.slrspot__screening-options-check {
+  display: flex;
+  margin-left: 20px;
+}
+
+.slrspot__screening-studies {
+  display: flex;
+  flex-direction: column;
+  margin: 0 40px;
+}

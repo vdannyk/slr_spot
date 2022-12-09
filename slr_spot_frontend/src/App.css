@@ -28,6 +28,10 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background-color: #a653fe;;
+}
+
 input {
 	background-color: white;
 	padding: 8px 15px;

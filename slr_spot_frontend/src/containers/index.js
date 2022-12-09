@@ -10,3 +10,4 @@ export { default as ReviewSettings } from './review/settings/ReviewSettings';
 export { default as ScreeningSettings } from './review/screening/settings/ScreeningSettings';
 export { default as StudiesSearch } from './review/studies/studiesSearch/StudiesSearch';
 export { default as StudiesDisplay } from './review/studies/studiesDisplay/StudiesDisplay';
+export { default as Screening } from './review/screening/Screening';

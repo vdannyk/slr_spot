@@ -76,8 +76,8 @@ const ReviewMenu = ({isPreview}) => {
           { showScreeningMenu && (
             <div className='slrspot__review-submenu-options'>
               <SubMenuItem name='Settings' redirect='/screening'/>
-              <SubMenuItem name='Title & Abstract' redirect='/sreening/title_abstract'/>
-              <SubMenuItem name='Full text' redirect='/screening/fulltext'/>
+              <SubMenuItem name='Title & Abstract' redirect='/screening/title_abstract'/>
+              <SubMenuItem name='Full text' redirect='/screening/full-text'/>
             </div>
           )}
         </div>

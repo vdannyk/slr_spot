@@ -19,4 +19,7 @@ export { default as Helper } from './helper/Helper';
 export { default as StudiesImport } from './review/studiesImport/StudiesImport';
 export { default as DropdownSelect } from './dropdownSelect/DropdownSelect';
 export { default as ImportDetails } from './review/importDetails/ImportDetails';
+export { default as ScreeningMenu } from './screening/screeningMenu/ScreeningMenu';
+export { default as ScreeningCriteria } from './screening/screeningCriteria/ScreeningCriteria';
+export { default as ScreeningStudy } from './screening/screeningStudy/ScreeningStudy';
 
