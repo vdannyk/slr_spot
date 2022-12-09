@@ -50,7 +50,7 @@ const Screening = (props) => {
               <label>show abstracts</label>
             </div>
           </div>
-          <div>
+          <div className='slrspot__screening-options-search'>
             <label>Search</label>
             <input></input>
           </div>
