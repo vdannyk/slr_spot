@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './screeningStudy.css';
+import StudyTags from './studyTags/StudyTags';
 
 
 const ScreeningStudy = ({study, isShowAbstracts}) => {
@@ -26,6 +27,7 @@ const ScreeningStudy = ({study, isShowAbstracts}) => {
       <p><label>doi:</label> { study.doi }</p>
       <p><label>URL:</label> { study.url }</p>
       <p><label>language:</label> { study.language }</p>
+      <StudyTags />
       <div className='slrspot__screeningStudy-options'>
         <button>discussion</button>
         <button>history</button>

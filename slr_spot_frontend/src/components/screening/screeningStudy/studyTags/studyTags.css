@@ -1,0 +1,32 @@
+.slrspot__study-tags {
+  display: flex;
+}
+
+.slrspot__study-tags-container {
+  display: flex;
+}
+
+.slrspot__study-tags-container p {
+  margin: 5px;
+}
+
+
+.slrspot__study-tags-tag {
+  background-color: #f8f8f8;
+  border: thin solid #c0c0c0;
+  border-radius: 10px;
+  padding: 2px 5px;
+}
+
+.slrspot__study-tags-addIcon {
+  color: green;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.slrspot__study-tags-removeIcon {
+  color: red;
+  margin-left: 5px;
+  cursor: pointer;
+}
+

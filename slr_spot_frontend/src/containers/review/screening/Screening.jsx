@@ -42,7 +42,7 @@ const Screening = (props) => {
           <div className='slrspot__screening-options-container-checks'>
             <div className='slrspot__screening-options-check'>
               <Check />
-              <label>Show highlighst</label>
+              <label>show highlighst</label>
             </div>
             {/* <a>switch to review mode</a> */}
             <div className='slrspot__screening-options-check'>
