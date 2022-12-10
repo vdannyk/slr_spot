@@ -1,95 +1,27 @@
-import React from 'react';
-import { Table } from "react-bootstrap";
-import { AiOutlineClose } from "react-icons/ai";
+import React, { useState } from 'react';
 import Helper from '../../../../components/helper/Helper';
 import Check from 'react-bootstrap/FormCheck';
-import FolderTree, { testData } from 'react-folder-tree';
-import 'react-folder-tree/dist/style.css';
 import './studiesDisplay.css';
+import StudiesView from './studiesView/StudiesView';
+import FoldersView from './foldersView/FoldersView';
 
 
-const testImprots = [
-  {
-    "importedAt": "xx/xx/xxxx",
-    "performedBy": "tester",
-    "searchValue": "bobry",
-    "source": "Web of science",
-    "studiesAdded": 0,
-    "duplicatesRemoved": "Not found",
-  },
-  {
-    "importedAt": "xx/xx/xxxx",
-    "performedBy": "tester",
-    "searchValue": "bobry",
-    "source": "Web of science",
-    "studiesAdded": 0,
-    "duplicatesRemoved": "Not found",
-  },
-  {
-    "importedAt": "xx/xx/xxxx",
-    "performedBy": "tester",
-    "searchValue": "bobry",
-    "source": "Web of science",
-    "studiesAdded": 0,
-    "duplicatesRemoved": "Not found",
-  },
-  {
-    "importedAt": "xx/xx/xxxx",
-    "performedBy": "tester",
-    "searchValue": "bobry",
-    "source": "Web of science",
-    "studiesAdded": 0,
-    "duplicatesRemoved": "Not found",
-  },
-  {
-    "importedAt": "xx/xx/xxxx",
-    "performedBy": "tester",
-    "searchValue": "bobry",
-    "source": "Web of science",
-    "studiesAdded": 0,
-    "duplicatesRemoved": "Not found",
-  }
-]
+
 
 const StudiesDisplay = () => {
-  const onTreeStateChange = (state, event) => console.log(state, event);
-
-  const listTestData = testImprots.map((item, id) => 
-    <tbody key={id}>
-      <tr>
-        <td>{id + 1}</td>
-        <td>{item.importedAt}</td>
-        <td>{item.performedBy}</td>
-        <td>{item.searchValue}</td>
-        <td>{item.source}</td>
-        <td>{item.studiesAdded}</td>
-        <td>{item.duplicatesRemoved}</td>
-        <td><AiOutlineClose /></td>
-      </tr>
-    </tbody>
-  );
+  const [isStudiesView, setIsStudiesView] = useState(true);
 
   return (
     <div className='slrspot__review-studiesDisplay'>
-      <div className='slrspot__review-header'>
+      <div className='slrspot__review-studiesDisplay-header'>
         <h1>Imported studies</h1>
-      </div >
-      <span>Show folders</span>
-      <Check />
-      <FolderTree
-        data={ testData }
-        onChange={ onTreeStateChange }
-        showCheckbox={ false }
-      />
-      <Table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Title</th>
-            </tr>
-          </thead>
-          { listTestData }
-        </Table>
+        { isStudiesView 
+          ? <span onClick={ () => setIsStudiesView(false) }>Switch to folders view</span> 
+          : <span onClick={ () => setIsStudiesView(true) }>Switch to studies view</span> }
+      </div>
+      <div className='slrspot__review-studiesDisplay-container'>
+          { isStudiesView ? <StudiesView /> : <FoldersView />}
+      </div>
     </div>
   )
 }

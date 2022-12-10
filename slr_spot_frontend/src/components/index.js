@@ -22,4 +22,4 @@ export { default as ImportDetails } from './review/importDetails/ImportDetails';
 export { default as ScreeningMenu } from './screening/screeningMenu/ScreeningMenu';
 export { default as ScreeningCriteria } from './screening/screeningCriteria/ScreeningCriteria';
 export { default as ScreeningStudy } from './screening/screeningStudy/ScreeningStudy';
-
+export { default as FolderTree } from './folder/FolderTree';

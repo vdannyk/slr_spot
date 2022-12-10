@@ -3,3 +3,27 @@
   flex-direction: column;
   flex: 1;
 }
+
+.slrspot__review-studiesDisplay-container {
+  margin: 0 40px;
+}
+
+.slrspot__review-studiesDisplay-header {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 40px 10px;
+  text-transform: uppercase;
+}
+
+.slrspot__review-studiesDisplay-header h1 {
+  margin-bottom: 0;
+}
+
+.slrspot__review-studiesDisplay-header span {
+  color: #9029ff;
+  cursor: pointer;
+}
+
+.slrspot__review-studiesDisplay-header span:hover {
+  color: #7b00ff;
+}

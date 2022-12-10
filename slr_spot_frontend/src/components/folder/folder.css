@@ -1,0 +1,36 @@
+.slrspot__folderTree-newFolder {
+  display: flex;
+  font-size: 20px;
+}
+
+.slrspot__folderTree-newFolder button {
+  border-radius: 4px;
+	padding: 9px 50px;
+}
+
+.slrspot__folderTree-newFolder-buttons {
+ background-color: #7344a6;
+ padding: 0 5px;
+}
+
+.slrspot__folderTree-newFolder span {
+  color: white;
+  font-size: 24px;
+  margin-left: 5px;
+}
+
+.slrspot__folder-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+}
+
+.slrspot__folder-item p { 
+  margin: 0;
+  font-size: 20px;
+}
+
+.slrspot__folder-option {
+  margin-left: 10px;
+}
