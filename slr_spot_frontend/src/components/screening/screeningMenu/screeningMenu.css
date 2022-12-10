@@ -27,6 +27,11 @@
   color: white;
 }
 
+#selected {
+  background-color: #AE67FA;
+  color: white;
+}
+
 
 .slrspot__screening-menu-option p {
   margin: 0;

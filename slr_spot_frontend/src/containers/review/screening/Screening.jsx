@@ -20,6 +20,13 @@ const Screening = (props) => {
   const [showAbstracts, setShowAbstracts] = useState(true);
   const [folders, setFolders] = useState([]);
 
+  const [isToBeReviewed, setIsToBeReviewed] = useState(true);
+  const [isReviewed, setIsReviewed] = useState(false);
+  const [isConflicts, setIsConflicts] = useState(false);
+  const [isAwaiting, setIsAwaiting] = useState(false);
+  const [isExcluded, setIsExcluded] = useState(false);
+
+
   useEffect(() => {
     axiosInstance.get("/folders")
     .then((response) => {
@@ -51,7 +58,17 @@ const Screening = (props) => {
           : <span onClick={ () => setIsStudiesView(true) }>Switch to studies view</span> }
       </div>
 
-      <ScreeningMenu />
+      <ScreeningMenu 
+        isToBeReviewed={isToBeReviewed}
+        setIsToBeReviewed={setIsToBeReviewed}
+        isReviewed={isReviewed}
+        setIsReviewed={setIsReviewed}
+        isConflicts={isConflicts}
+        setIsConflicts={setIsConflicts}
+        isAwaiting={isAwaiting}
+        setIsAwaiting={setIsAwaiting}
+        isExcluded={isExcluded}
+        setIsExcluded={setIsExcluded}/>
 
       { isStudiesView && (
         <>
