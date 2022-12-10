@@ -47,7 +47,7 @@ const FolderTree = (props) => {
 
   return (
     <div>
-      <NewFolder />
+      { !props.isScreening && <NewFolder /> }
       <Table>
         <tbody>
           { props.folders.map((folder) => (
@@ -59,7 +59,8 @@ const FolderTree = (props) => {
                   parentFolders={props.folders}
                   children={folder.children} 
                   childrenStudies={folder.childrenStudies} 
-                  triggerRemove={props.foldersChange}/>
+                  triggerRemove={props.foldersChange}
+                  isScreening={props.isScreening}/>
               </td>
             </tr>
           ))}

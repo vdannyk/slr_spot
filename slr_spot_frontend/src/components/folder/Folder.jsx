@@ -74,14 +74,16 @@ const Folder = (props) => {
           <AiFillFolder style={{ "margin-right": '5px'}}/>
           {name}
         </p>
-        <p>
-          <AiFillPlusSquare 
-            className='slrspot__folder-option' 
-            onClick={ () => { setShowInput(true); setIsExpanded(true); } } />
-          <AiOutlineClose 
-            className='slrspot__folder-option' 
-            onClick={ () => handleRemoveFolder(id) } />
-        </p>
+        { !props.isScreening && (
+          <p>
+            <AiFillPlusSquare 
+              className='slrspot__folder-option' 
+              onClick={ () => { setShowInput(true); setIsExpanded(true); } } />
+            <AiOutlineClose 
+              className='slrspot__folder-option' 
+              onClick={ () => handleRemoveFolder(id) } />
+          </p>   
+        )}
       </div>
 
       {isExpanded && (
@@ -105,7 +107,8 @@ const Folder = (props) => {
                     parentFolders={children}
                     triggerRemove={setChildren}
                     children={folder.children} 
-                    childrenStudies={folder.childrenStudies} />
+                    childrenStudies={folder.childrenStudies} 
+                    isScreening={props.isScreening}/>
                 </td>
               </tr>
             )) }

@@ -58,3 +58,9 @@
   flex-direction: column;
   margin: 0 40px;
 }
+
+.slrspot__screening-studies-folders {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 40px;
+}
