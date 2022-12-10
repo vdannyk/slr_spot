@@ -4,10 +4,10 @@ import StudyTags from './studyTags/StudyTags';
 
 
 const ScreeningStudy = ({study, isShowAbstracts}) => {
-  const [showAbstract, setShowAbstract] = useState(true);
+  const [showAbstract, setShowAbstract] = useState(isShowAbstracts);
 
   useEffect(() => {
-    if (showAbstract === isShowAbstracts) {
+    if (showAbstract !== isShowAbstracts) {
       setShowAbstract(!showAbstract)
     }
   }, [isShowAbstracts]);
@@ -19,7 +19,9 @@ const ScreeningStudy = ({study, isShowAbstracts}) => {
   return (
     <div className='slrspot__screeningStudy'>
       <h3>{ study.title }</h3>
-      <button onClick={handleShowAbstract} className='slrspot__screeningStudy-showAbstract-button'>show abstract</button>
+      <button onClick={handleShowAbstract} className='slrspot__screeningStudy-showAbstract-button'>
+        { showAbstract ? 'hide abstract' : 'show abstract'}
+      </button>
       { showAbstract && <p><label>abstract:</label> { study.abstract }</p> }
       <p><label>authors:</label> { study.authors }</p>
       <p><label>journal:</label> { study.journal }</p>
