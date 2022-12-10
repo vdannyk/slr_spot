@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Check from 'react-bootstrap/FormCheck';
 import { Table } from "react-bootstrap";
-
+import { DropdownButton, Dropdown } from 'react-bootstrap';
 import './studiesView.css';
-import { useState } from 'react';
+
 
 const testImprots = [
   {
@@ -40,6 +40,8 @@ const testImprots = [
 
 const StudiesView = () => {
   const [selected, setSelected] = useState([]);
+  const [folders, setFolders] = useState([{'id':1, 'name':'test1'},{'id':2, 'name':'test2'}]);
+
 
   const handleSelect = (study) => {
     if (selected.includes(study)) {
@@ -70,12 +72,71 @@ const StudiesView = () => {
         <td>{item.title}</td>
         <td>{item.authors}</td>
         <td>{item.year}</td>
+        <td>not assigned</td>
       </tr>
     </tbody>
   );
 
+  const FoldersDropdown = () => {
+    const [title, setTitle] = useState('Select folder');
+
+    const handleSelectFolder = (event) => {
+      setTitle(event)
+    }
+
+    return (
+      <DropdownButton
+        id="slrspot__dropdown-folders"
+        title={title} onSelect={ handleSelectFolder }>
+        { folders.map(item => (
+          <Dropdown.Item 
+            key={item.id} 
+            eventKey={item.name}>
+            {item.name}
+          </Dropdown.Item>
+        ))}
+      </DropdownButton>
+    )
+  }
+
   return (
     <div>
+      <div className='slrspot__screening-options'>
+        <div className='slrspot__studiesView-container'>
+
+          <div className='slrspot__studiesView-search'>
+            <div className='slrspot__screening-options-container-checks'>
+              <div className='slrspot__screening-options-check'>
+                <Check />
+                <label>Title</label>
+              </div>
+              {/* <a>switch to review mode</a> */}
+              <div className='slrspot__screening-options-check'>
+                <Check />
+                <label>authors</label>
+              </div>
+            </div>
+            <div className='slrspot__screening-options-search'>
+              <label>Search</label>
+              <input></input>
+            </div>
+          </div>
+
+          <div className='slrspot__studiesView-folders'>
+            <div className='slrspot__screening-options-container-checks'>
+              <div className='slrspot__screening-options-check'>
+                <Check />
+                <label>Show only not assigned studies</label>
+              </div>
+            </div>
+            <div className='slrspot__studiesView-folders-select'>
+              <FoldersDropdown />
+              <label>Assign</label>
+            </div>
+          </div>
+
+        </div>
+      </div>
       <Table>
         <thead>
           <tr>
@@ -89,6 +150,9 @@ const StudiesView = () => {
             </th>
             <th>#</th>
             <th>Title</th>
+            <th>Authors</th>
+            <th>Year</th>
+            <th>Folder</th>
           </tr>
         </thead>
         { listTestData }
