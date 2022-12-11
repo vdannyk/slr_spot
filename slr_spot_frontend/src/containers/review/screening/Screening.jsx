@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../services/api';
 import { ScreeningCriteria, ScreeningMenu, ScreeningOptions, ScreeningStudy, FolderTree } from '../../../components';
 import Check from 'react-bootstrap/FormCheck';
+import { useParams } from "react-router-dom";
 import './screening.css';
 
 const testStudy = {
@@ -19,6 +20,9 @@ const Screening = (props) => {
   const [isStudiesView, setIsStudiesView] = useState(true);
   const [showAbstracts, setShowAbstracts] = useState(true);
   const [folders, setFolders] = useState([]);
+  const [studies, setStudies] = useState([]);
+  const { reviewId } = useParams();
+  const { userId } = 1;
 
   const [isToBeReviewed, setIsToBeReviewed] = useState(true);
   const [isReviewed, setIsReviewed] = useState(false);
@@ -32,6 +36,18 @@ const Screening = (props) => {
     .then((response) => {
       console.log(response.data);
       setFolders(response.data)
+    })
+    .catch(() => {
+    });
+  }, []);
+
+  useEffect(() => {
+    axiosInstance.get("/studies/to-review", { params: {
+      reviewId
+    }})
+    .then((response) => {
+      console.log(response.data)
+      setStudies(response.data)
     })
     .catch(() => {
     });
@@ -95,6 +111,10 @@ const Screening = (props) => {
         {/* <ScreeningCriteria /> */}
 
         <div className='slrspot__screening-studies'>
+          { studies.map(study => (
+            <ScreeningStudy study={study} isShowAbstracts={showAbstracts}/>
+          ))}
+          {/* <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
           <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
           <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
           <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
@@ -102,8 +122,7 @@ const Screening = (props) => {
           <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
           <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
           <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
-          <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
-          <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
+          <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/> */}
         </div>
       </>
       )}

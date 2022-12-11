@@ -22,9 +22,9 @@ const ScreeningStudy = ({study, isShowAbstracts}) => {
       <button onClick={handleShowAbstract} className='slrspot__screeningStudy-showAbstract-button'>
         { showAbstract ? 'hide abstract' : 'show abstract'}
       </button>
-      { showAbstract && <p><label>abstract:</label> { study.abstract }</p> }
+      { showAbstract && <p><label>abstract:</label> { study.documentAbstract }</p> }
       <p><label>authors:</label> { study.authors }</p>
-      <p><label>journal:</label> { study.journal }</p>
+      <p><label>journal:</label> { study.journalTitle }</p>
       <p><label>publicationYear:</label> { study.publicationYear }</p>
       <p><label>doi:</label> { study.doi }</p>
       <p><label>URL:</label> { study.url }</p>

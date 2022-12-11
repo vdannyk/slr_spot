@@ -22,4 +22,9 @@ public class StudyController {
     public ResponseEntity<List<Study>> getStudiesByReviewId(@RequestParam("reviewId") Long reviewId) {
         return ResponseEntity.ok(studyFacade.getStudiesByReviewId(reviewId));
     }
+
+    @GetMapping("/to-review")
+    public ResponseEntity<List<Study>> getStudiesToBeReviewed(@RequestParam("reviewId") Long reviewId) {
+        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewed(reviewId, 1L));
+    }
 }

@@ -1,6 +1,8 @@
 package com.dkwasniak.slr_spot_backend.study;
 
+import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
+import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
@@ -28,5 +30,9 @@ public class StudyService {
         List<Study> studies = StudyMapper.bibToStudies(records);
         saveAll(studies);
         return studies;
+    }
+
+    public List<Study> getStudiesToBeReviewed(Review review, User user) {
+        return studyRepository.findAllByStudyImport_Review_AndScreeningDecisions_Empty(review);
     }
 }
