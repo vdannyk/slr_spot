@@ -1,23 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Table } from "react-bootstrap";
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai'
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import axiosInstance from '../../services/api';
 import Folder from './Folder';
+import ConfirmationPopup from '../popups/confirmationPopup/ConfirmationPopup';
 
 const FolderTree = (props) => {
   const {register, handleSubmit, formState: { errors }} = useForm();
   const [showInput, setShowInput] = useState(false);
+  const { reviewId } = useParams();
 
   const handleNewFolder = (formData) => {
-    // useeffect
-    console.log(formData.folderName);
-    var folder = { 
-      "name": formData.folderName,
-      "children": [],
-      "childrenStudies": []
-    };
-    props.foldersChange(oldArray => [...oldArray, folder]);
-    setShowInput(false);
+    axiosInstance.post("/folders", {
+      name: formData.folderName,
+      reviewId: reviewId
+    })
+    .then((response) => {
+      var folder = {
+        "id": response.data,
+        "name": formData.folderName,
+        "children": [],
+        "childrenStudies": []
+      };
+      props.foldersChange(oldArray => [...oldArray, folder]);
+      setShowInput(false);
+    })
+    .catch(() => {
+    });
   }
 
   const NewFolder = () => {

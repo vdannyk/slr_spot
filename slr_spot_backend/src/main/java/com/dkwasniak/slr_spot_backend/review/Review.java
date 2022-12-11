@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.criterion.Criterion;
+import com.dkwasniak.slr_spot_backend.folder.Folder;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
@@ -21,7 +22,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -65,6 +68,9 @@ public class Review {
 
     @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     private Set<Import> imports = new HashSet<>();
+
+    @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    private List<Folder> folders = new ArrayList<>();
 
     public Review(String title) {
         this.title = title;

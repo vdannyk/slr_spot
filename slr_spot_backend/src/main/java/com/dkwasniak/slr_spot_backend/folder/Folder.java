@@ -1,9 +1,12 @@
 package com.dkwasniak.slr_spot_backend.folder;
 
+import com.dkwasniak.slr_spot_backend.review.Review;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +21,7 @@ import java.util.List;
 @Table(name="folders")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Folder {
 
     @Id
@@ -30,6 +34,15 @@ public class Folder {
     @JsonIgnore
     private Folder parent;
 
-    @OneToMany(mappedBy = "parent")
+    @ManyToOne
+    @JoinColumn(name = "review_id")
+    @JsonIgnore
+    private Review review;
+
+    @OneToMany(mappedBy = "parent", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<Folder> children;
+
+    public Folder(String name) {
+        this.name = name;
+    }
 }

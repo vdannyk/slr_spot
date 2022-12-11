@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import { AiFillFolder, AiFillFileText } from 'react-icons/ai';
-import { AiOutlineCheck, AiOutlineClose, AiFillPlusSquare } from 'react-icons/ai'
+import { AiOutlineCheck, AiOutlineClose, AiFillPlusSquare } from 'react-icons/ai';
+import axiosInstance from '../../services/api';
+import { useParams } from "react-router-dom";
+import EventBus from '../../common/EventBus';
 import './folder.css';
 
 const Folder = (props) => {
@@ -16,27 +19,39 @@ const Folder = (props) => {
   // const [parentFolders, setParentFolders] = useState(props.parentFolders);
   const [children, setChildren] = useState(props.children);
   const [childrenStudies, setChildrenStudies] = useState(props.childrenStudies);
+  const { reviewId } = useParams();
 
 
   const handleNewFolder = (formData) => {
-    // useeffect
-    console.log(formData.folderName);
-    var folder = {
-      "name": formData.folderName,
-      "children": [],
-      "childrenStudies": []
-    }; 
-    setChildren(oldArray => [...oldArray, folder]);
-    setShowInput(false);
+    axiosInstance.post("/folders", {
+      name: formData.folderName,
+      parentId: id,
+      reviewId: reviewId
+    })
+    .then((response) => {
+      var folder = {
+        "id": response.data,
+        "name": formData.folderName,
+        "children": [],
+        "childrenStudies": []
+      }; 
+      setChildren(oldArray => [...oldArray, folder]);
+      setShowInput(false);
+    })
+    .catch(() => {
+    });
   }
 
-  const handleRemoveFolder = (folder) => {
-    console.log('removing')
-    console.log(folder);
-    console.log(props.parentFolders);
-    var test = props.parentFolders.filter(item => item.id !== folder);
-    console.log(test);
-    props.triggerRemove(test);
+  const handleRemoveFolder = (folderId) => {
+    axiosInstance.delete("/folders/" + folderId)
+    .then(() => {
+      props.triggerRemove(props.parentFolders.filter(item => item.id !== folderId));
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
   }
 
   const handleClick = () => {
@@ -102,7 +117,7 @@ const Folder = (props) => {
               <tr key={folder.id}>
                 <td>
                   <Folder 
-                    id={folder.id} 
+                    id={folder.id}
                     name={folder.name}
                     parentFolders={children}
                     triggerRemove={setChildren}
