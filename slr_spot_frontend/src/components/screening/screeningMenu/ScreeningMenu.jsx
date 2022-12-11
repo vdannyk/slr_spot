@@ -1,4 +1,5 @@
 import React from 'react';
+import { AWAITING, CONFLICTED, EXCLUDED, TO_BE_REVIEWED } from '../../../constants/tabs';
 import './screeningMenu.css';
 
 const ScreeningMenu = (props) => {
@@ -19,40 +20,12 @@ const ScreeningMenu = (props) => {
     }
   }
 
-  const handleToBeReviewedClick = () => {
-    props.setIsToBeReviewed(true);
-    props.setIsConflicts(false);
-    props.setIsAwaiting(false);
-    props.setIsExcluded(false);
-  }
-  
-  const handleConflictedClick = () => {
-    props.setIsToBeReviewed(false);
-    props.setIsConflicts(true);
-    props.setIsAwaiting(false);
-    props.setIsExcluded(false);
-  }
-
-  const handleAwaitingClick = () => {
-    props.setIsToBeReviewed(false);
-    props.setIsConflicts(false);
-    props.setIsAwaiting(true);
-    props.setIsExcluded(false);
-  }
-
-  const handleExcludedClick = () => {
-    props.setIsToBeReviewed(false);
-    props.setIsConflicts(false);
-    props.setIsAwaiting(false);
-    props.setIsExcluded(true);
-  }
-
   const Menu = () => (
     <>
-      <MenuOption content='to be reviewed' isSelected={props.isToBeReviewed} handleClick={handleToBeReviewedClick}/>
-      <MenuOption content='conflicted' isSelected={props.isConflicts} handleClick={handleConflictedClick}/>
-      <MenuOption content='awaiting' isSelected={props.isAwaiting} handleClick={handleAwaitingClick}/>
-      <MenuOption content='excluded' isSelected={props.isExcluded} handleClick={handleExcludedClick}/>
+      <MenuOption content='to be reviewed' isSelected={props.tab === TO_BE_REVIEWED} handleClick={() => props.setTab(TO_BE_REVIEWED)}/>
+      <MenuOption content='conflicted' isSelected={props.tab === CONFLICTED} handleClick={() => props.setTab(CONFLICTED)}/>
+      <MenuOption content='awaiting' isSelected={props.tab === AWAITING} handleClick={() => props.setTab(AWAITING)}/>
+      <MenuOption content='excluded' isSelected={props.tab === EXCLUDED} handleClick={() => props.setTab(EXCLUDED)}/>
     </>
   )
 

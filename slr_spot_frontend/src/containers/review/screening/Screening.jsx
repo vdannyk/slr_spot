@@ -3,6 +3,7 @@ import axiosInstance from '../../../services/api';
 import { ScreeningCriteria, ScreeningMenu, ScreeningOptions, ScreeningStudy, FolderTree } from '../../../components';
 import { useParams } from "react-router-dom";
 import './screening.css';
+import { TO_BE_REVIEWED } from '../../../constants/tabs';
 
 
 const Screening = (props) => {
@@ -17,6 +18,8 @@ const Screening = (props) => {
   const [isConflicts, setIsConflicts] = useState(false);
   const [isAwaiting, setIsAwaiting] = useState(false);
   const [isExcluded, setIsExcluded] = useState(false);
+
+  const [tab, setTab] = useState(TO_BE_REVIEWED)
 
 
   useEffect(() => {
@@ -70,7 +73,9 @@ const Screening = (props) => {
         isAwaiting={isAwaiting}
         setIsAwaiting={setIsAwaiting}
         isExcluded={isExcluded}
-        setIsExcluded={setIsExcluded}/>
+        setIsExcluded={setIsExcluded}
+        tab={tab}
+        setTab={setTab}/>
 
       { isStudiesView && (
         <>
