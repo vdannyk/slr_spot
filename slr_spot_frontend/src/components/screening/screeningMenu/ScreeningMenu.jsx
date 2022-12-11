@@ -21,7 +21,6 @@ const ScreeningMenu = (props) => {
 
   const handleToBeReviewedClick = () => {
     props.setIsToBeReviewed(true);
-    props.setIsReviewed(false);
     props.setIsConflicts(false);
     props.setIsAwaiting(false);
     props.setIsExcluded(false);
@@ -29,7 +28,6 @@ const ScreeningMenu = (props) => {
   
   const handleConflictedClick = () => {
     props.setIsToBeReviewed(false);
-    props.setIsReviewed(false);
     props.setIsConflicts(true);
     props.setIsAwaiting(false);
     props.setIsExcluded(false);
@@ -37,7 +35,6 @@ const ScreeningMenu = (props) => {
 
   const handleAwaitingClick = () => {
     props.setIsToBeReviewed(false);
-    props.setIsReviewed(false);
     props.setIsConflicts(false);
     props.setIsAwaiting(true);
     props.setIsExcluded(false);
@@ -45,7 +42,6 @@ const ScreeningMenu = (props) => {
 
   const handleExcludedClick = () => {
     props.setIsToBeReviewed(false);
-    props.setIsReviewed(false);
     props.setIsConflicts(false);
     props.setIsAwaiting(false);
     props.setIsExcluded(true);
