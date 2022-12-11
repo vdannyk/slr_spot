@@ -210,4 +210,10 @@ INSERT INTO folders(NAME) VALUES ('root4');
 INSERT INTO folders(NAME) VALUES ('root5');
 INSERT INTO folders(NAME) VALUES ('root6');
 
+INSERT INTO imports(DATE, REVIEW_ID) VALUES ('2022-12-10 12:44:22', 1);
+
+INSERT INTO STUDIES(TITLE, IMPORT_ID) VALUES ('test', 1);
+
+INSERT INTO screening_decisions(user_id, study_id, stage, decision) VALUES (1, 1, 'TITLE_ABSTRACT', 'INCLUDE');
+
 

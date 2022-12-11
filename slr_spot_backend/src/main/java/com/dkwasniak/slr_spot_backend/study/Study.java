@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.imports.Import;
+import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +17,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="studies")
@@ -51,18 +56,8 @@ public class Study {
     @JsonIgnore
     private Import studyImport;
 
-    public Study(String title, String authors, String journalTitle, Integer publicationYear, String volume, String doi,
-                 String url, String documentAbstract, String issn, String language, String fullText) {
-        this.title = title;
-        this.authors = authors;
-        this.journalTitle = journalTitle;
-        this.publicationYear = publicationYear;
-        this.volume = volume;
-        this.doi = doi;
-        this.url = url;
-        this.documentAbstract = documentAbstract;
-        this.issn = issn;
-        this.language = language;
-        this.fullText = fullText;
-    }
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonIgnore
+    private Set<ScreeningDecision> screeningDecisions = new HashSet<>();
+
 }
