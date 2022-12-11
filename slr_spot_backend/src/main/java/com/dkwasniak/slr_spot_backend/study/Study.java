@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.imports.Import;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,7 +47,22 @@ public class Study {
     private String fullText;
 
     @ManyToOne
-    @JoinColumn(name = "import_id", nullable = false)
+    @JoinColumn(name = "import_id")
+    @JsonIgnore
     private Import studyImport;
 
+    public Study(String title, String authors, String journalTitle, Integer publicationYear, String volume, String doi,
+                 String url, String documentAbstract, String issn, String language, String fullText) {
+        this.title = title;
+        this.authors = authors;
+        this.journalTitle = journalTitle;
+        this.publicationYear = publicationYear;
+        this.volume = volume;
+        this.doi = doi;
+        this.url = url;
+        this.documentAbstract = documentAbstract;
+        this.issn = issn;
+        this.language = language;
+        this.fullText = fullText;
+    }
 }

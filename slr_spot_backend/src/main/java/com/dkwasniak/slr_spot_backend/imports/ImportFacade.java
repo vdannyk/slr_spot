@@ -41,9 +41,7 @@ public class ImportFacade {
         );
         studyImport.setReview(review);
         studyImport.setStudies(studies);
-        for (var study : studies) {
-            study.setStudyImport(studyImport);
-        }
+        studies.forEach(s -> s.setStudyImport(studyImport));
         importRepository.save(studyImport);
     }
 

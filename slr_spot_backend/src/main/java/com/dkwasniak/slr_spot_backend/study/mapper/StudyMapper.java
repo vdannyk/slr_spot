@@ -48,7 +48,7 @@ public class StudyMapper {
         for (CSVRecord csvRecord : csvRecords) {
             String authors;
             if ("SCOPUS".equals(source)) {
-                authors = csvRecord.get(1);
+                authors = csvRecord.get(0);
             } else {
                 authors = isNull(headers[1]) ? null : csvRecord.get(headers[1]);
             }

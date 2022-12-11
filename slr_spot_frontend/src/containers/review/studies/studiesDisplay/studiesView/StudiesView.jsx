@@ -1,46 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Check from 'react-bootstrap/FormCheck';
 import { Table } from "react-bootstrap";
 import { DropdownButton, Dropdown } from 'react-bootstrap';
+import axiosInstance from '../../../../../services/api';
+import { useParams } from "react-router-dom";
 import './studiesView.css';
 
 
-const testImprots = [
-  {
-    "id": 1,
-    "title": "title",
-    "authors": "author",
-    "year": "1000",
-  },
-  {
-    "id": 2,
-    "title": "title2",
-    "authors": "author2",
-    "year": "1002",
-  },
-  {
-    "id": 3,
-    "title": "title3",
-    "authors": "author3",
-    "year": "1003",
-  },
-  {
-    "id": 4,
-    "title": "title4",
-    "authors": "author4",
-    "year": "1004",
-  },
-  {
-    "id": 5,
-    "title": "title5",
-    "authors": "author5",
-    "year": "1005"
-  }
-]
-
 const StudiesView = () => {
-  const [selected, setSelected] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [folders, setFolders] = useState([{'id':1, 'name':'test1'},{'id':2, 'name':'test2'}]);
+  const [selected, setSelected] = useState([]);
+  const [studies, setStudies] = useState([]);
+  const { reviewId } = useParams();
+
+  useEffect(() => {
+    setLoading(true);
+    axiosInstance.get("/studies", { params: {
+      reviewId
+    }})
+    .then((response) => {
+      console.log(response.data);
+      setStudies(response.data)
+      setLoading(false);
+    })
+    .catch(() => {
+    });
+  }, []);
 
 
   const handleSelect = (study) => {
@@ -53,13 +39,13 @@ const StudiesView = () => {
 
   const handleSelectAll = (event) => {
       if (event.target.checked) {
-        setSelected(testImprots);
+        setSelected(studies);
       } else {
         setSelected([]);
       }
   }
 
-  const listTestData = testImprots.map((item, id) => 
+  const listTestData = studies.map((item, id) => 
     <tbody key={id}>
       <tr>
         <td>
@@ -71,7 +57,7 @@ const StudiesView = () => {
         <td>{id + 1}</td>
         <td>{item.title}</td>
         <td>{item.authors}</td>
-        <td>{item.year}</td>
+        <td>{item.publicationYear}</td>
         <td>not assigned</td>
       </tr>
     </tbody>
@@ -144,7 +130,7 @@ const StudiesView = () => {
               <div className='d-flex'>
                 <Check 
                   type='checkbox'
-                  checked={ selected.length === testImprots.length } 
+                  checked={ selected.length === studies.length } 
                   onChange={ handleSelectAll }/><span>All</span>
               </div>
             </th>
