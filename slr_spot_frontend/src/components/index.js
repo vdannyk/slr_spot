@@ -24,3 +24,5 @@ export { default as ScreeningCriteria } from './screening/screeningCriteria/Scre
 export { default as ScreeningStudy } from './screening/screeningStudy/ScreeningStudy';
 export { default as FolderTree } from './folder/FolderTree';
 export { default as ScreeningOptions } from './screening/screeningOptions/ScreeningOptions';
+export { default as StudyHistory } from './screening/screeningStudy/studyHistory/StudyHistory';
+export { default as StudyDiscussion } from './screening/screeningStudy/studyDiscussion/StudyDiscussion';

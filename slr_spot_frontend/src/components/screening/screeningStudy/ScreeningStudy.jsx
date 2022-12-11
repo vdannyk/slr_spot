@@ -3,7 +3,7 @@ import './screeningStudy.css';
 import StudyTags from './studyTags/StudyTags';
 
 
-const ScreeningStudy = ({study, isShowAbstracts}) => {
+const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussion}) => {
   const [showAbstract, setShowAbstract] = useState(isShowAbstracts);
 
   useEffect(() => {
@@ -31,8 +31,8 @@ const ScreeningStudy = ({study, isShowAbstracts}) => {
       <p><label>language:</label> { study.language }</p>
       <StudyTags />
       <div className='slrspot__screeningStudy-options'>
-        <button>discussion</button>
-        <button>history</button>
+        <button onClick={ () => triggerDiscussion(true)}>discussion</button>
+        <button onClick={ () => triggerHistory(true) }>history</button>
         <button>mark as duplicate</button>
       </div>
       <div className='slrspot__screeningStudy-decision'>

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import { ScreeningStudy } from '../../../../components';
+import { ScreeningStudy, StudyDiscussion, StudyHistory } from '../../../../components';
 import axiosInstance from '../../../../services/api';
 import '../screening.css';
 
 const ToBeReviewed = (props) => {
   const [studies, setStudies] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [showDiscussion, setShowDiscussion] = useState(false);
   const { reviewId } = useParams();
 
   useEffect(() => {
@@ -23,8 +25,15 @@ const ToBeReviewed = (props) => {
   return (
     <div className='slrspot__screening-studies'>
       { studies.map(study => (
-        <ScreeningStudy study={study} isShowAbstracts={props.showAbstracts}/>
+        <ScreeningStudy 
+          study={study} 
+          isShowAbstracts={props.showAbstracts} 
+          triggerHistory={setShowHistory} 
+          triggerDiscussion={setShowDiscussion} />
       ))}
+      { showHistory && <StudyHistory triggerCancel={setShowHistory} /> }
+      { showDiscussion && <StudyDiscussion triggerCancel={setShowDiscussion} /> }
+
     </div>
   )
 }
