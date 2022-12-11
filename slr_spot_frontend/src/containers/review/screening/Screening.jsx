@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../services/api';
-import { ScreeningCriteria, ScreeningMenu, ScreeningOptions, ScreeningStudy, FolderTree } from '../../../components';
-import { useParams } from "react-router-dom";
+import { ScreeningMenu, ScreeningOptions, FolderTree } from '../../../components';
 import './screening.css';
 import { TO_BE_REVIEWED } from '../../../constants/tabs';
+import ToBeReviewed from './tabs/ToBeReviewed';
 
 
 const Screening = (props) => {
   const [isStudiesView, setIsStudiesView] = useState(true);
   const [showAbstracts, setShowAbstracts] = useState(true);
   const [folders, setFolders] = useState([]);
-  const [studies, setStudies] = useState([]);
-  const { reviewId } = useParams();
-  const { userId } = 1;
   const [tab, setTab] = useState(TO_BE_REVIEWED)
 
 
@@ -21,18 +18,6 @@ const Screening = (props) => {
     .then((response) => {
       console.log(response.data);
       setFolders(response.data)
-    })
-    .catch(() => {
-    });
-  }, []);
-
-  useEffect(() => {
-    axiosInstance.get("/studies/to-review", { params: {
-      reviewId
-    }})
-    .then((response) => {
-      console.log(response.data)
-      setStudies(response.data)
     })
     .catch(() => {
     });
@@ -50,10 +35,18 @@ const Screening = (props) => {
     }
   }
 
+  function tabContent() {
+    if (tab === TO_BE_REVIEWED) {
+      return (
+        <ToBeReviewed showAbstracts={showAbstracts} />
+      )
+    }
+  }
+
   return (
     <div className='slrspot__screening'>
       <div className='slrspot__review-studiesDisplay-header'>
-        <h1>{ headerContent() }</h1>
+        { headerContent() }
         { isStudiesView 
           ? <span onClick={ () => setIsStudiesView(false) }>Switch to folders view</span> 
           : <span onClick={ () => setIsStudiesView(true) }>Switch to studies view</span> }
@@ -63,21 +56,14 @@ const Screening = (props) => {
         tab={tab}
         setTab={setTab}/>
 
-      { isStudiesView && (
+      { isStudiesView ? (
         <>
           <ScreeningOptions triggerChange={setShowAbstracts} showAbstracts={showAbstracts}/>
 
-          {/* <ScreeningCriteria /> */}
+          { tabContent() }
 
-          <div className='slrspot__screening-studies'>
-            { studies.map(study => (
-              <ScreeningStudy study={study} isShowAbstracts={showAbstracts}/>
-            ))}
-          </div>
         </>
-      )}
-
-      { !isStudiesView && (
+      ) : (
         <div className='slrspot__screening-studies-folders'>
           <FolderTree folders={folders} isScreening={true}/>
         </div>
