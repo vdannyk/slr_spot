@@ -1,20 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../services/api';
 import { ScreeningCriteria, ScreeningMenu, ScreeningOptions, ScreeningStudy, FolderTree } from '../../../components';
-import Check from 'react-bootstrap/FormCheck';
 import { useParams } from "react-router-dom";
 import './screening.css';
 
-const testStudy = {
-  "title": "Titleaas asdasd as asd asdasd aasdas sad as dasddasd as",
-  "abstract": "Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores  Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores  Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores  Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores Lorem ipsum dolores",
-  "authors": "authors, authors, authors, authors",
-  "journal": "journal journal journal journal",
-  "publicationYear": "1232",
-  "doi": "10.21212/s2123123123",
-  "url": "https://dupa.com",
-  "language": "language"
-}
 
 const Screening = (props) => {
   const [isStudiesView, setIsStudiesView] = useState(true);
@@ -25,7 +14,6 @@ const Screening = (props) => {
   const { userId } = 1;
 
   const [isToBeReviewed, setIsToBeReviewed] = useState(true);
-  const [isReviewed, setIsReviewed] = useState(false);
   const [isConflicts, setIsConflicts] = useState(false);
   const [isAwaiting, setIsAwaiting] = useState(false);
   const [isExcluded, setIsExcluded] = useState(false);
@@ -77,8 +65,6 @@ const Screening = (props) => {
       <ScreeningMenu 
         isToBeReviewed={isToBeReviewed}
         setIsToBeReviewed={setIsToBeReviewed}
-        isReviewed={isReviewed}
-        setIsReviewed={setIsReviewed}
         isConflicts={isConflicts}
         setIsConflicts={setIsConflicts}
         isAwaiting={isAwaiting}
@@ -88,43 +74,16 @@ const Screening = (props) => {
 
       { isStudiesView && (
         <>
-          <div className='slrspot__screening-options'>
-          <div className='slrspot__screening-options-container'>
-            <div className='slrspot__screening-options-container-checks'>
-              <div className='slrspot__screening-options-check'>
-                <Check />
-                <label>show highlighst</label>
-              </div>
-              {/* <a>switch to review mode</a> */}
-              <div className='slrspot__screening-options-check'>
-                <Check onChange={ () => setShowAbstracts(!showAbstracts) } defaultChecked={ showAbstracts }/>
-                <label>show abstracts</label>
-              </div>
-            </div>
-            <div className='slrspot__screening-options-search'>
-              <label>Search</label>
-              <input></input>
-            </div>
+          <ScreeningOptions triggerChange={setShowAbstracts} showAbstracts={showAbstracts}/>
+
+          {/* <ScreeningCriteria /> */}
+
+          <div className='slrspot__screening-studies'>
+            { studies.map(study => (
+              <ScreeningStudy study={study} isShowAbstracts={showAbstracts}/>
+            ))}
           </div>
-        </div>
-
-        {/* <ScreeningCriteria /> */}
-
-        <div className='slrspot__screening-studies'>
-          { studies.map(study => (
-            <ScreeningStudy study={study} isShowAbstracts={showAbstracts}/>
-          ))}
-          {/* <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
-          <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
-          <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
-          <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
-          <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
-          <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
-          <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
-          <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/>
-          <ScreeningStudy study={testStudy} isShowAbstracts={showAbstracts}/> */}
-        </div>
-      </>
+        </>
       )}
 
       { !isStudiesView && (

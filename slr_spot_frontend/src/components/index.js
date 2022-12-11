@@ -23,3 +23,4 @@ export { default as ScreeningMenu } from './screening/screeningMenu/ScreeningMen
 export { default as ScreeningCriteria } from './screening/screeningCriteria/ScreeningCriteria';
 export { default as ScreeningStudy } from './screening/screeningStudy/ScreeningStudy';
 export { default as FolderTree } from './folder/FolderTree';
+export { default as ScreeningOptions } from './screening/screeningOptions/ScreeningOptions';

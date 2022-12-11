@@ -26,14 +26,6 @@ const ScreeningMenu = (props) => {
     props.setIsAwaiting(false);
     props.setIsExcluded(false);
   }
-
-  const handleReviewedClick = () => {
-    props.setIsToBeReviewed(false);
-    props.setIsReviewed(true);
-    props.setIsConflicts(false);
-    props.setIsAwaiting(false);
-    props.setIsExcluded(false);
-  }
   
   const handleConflictedClick = () => {
     props.setIsToBeReviewed(false);
@@ -62,7 +54,6 @@ const ScreeningMenu = (props) => {
   const Menu = () => (
     <>
       <MenuOption content='to be reviewed' isSelected={props.isToBeReviewed} handleClick={handleToBeReviewedClick}/>
-      <MenuOption content='reviewed' isSelected={props.isReviewed} handleClick={handleReviewedClick}/>
       <MenuOption content='conflicted' isSelected={props.isConflicts} handleClick={handleConflictedClick}/>
       <MenuOption content='awaiting' isSelected={props.isAwaiting} handleClick={handleAwaitingClick}/>
       <MenuOption content='excluded' isSelected={props.isExcluded} handleClick={handleExcludedClick}/>

@@ -1,0 +1,41 @@
+.slrspot__screening-options {
+  background-color: #f8f8f8;
+  border: thin solid #c0c0c0;
+  margin: 10px 40px 5px;
+  border-radius: 2px;
+}
+
+.slrspot__screening-options-container {
+  margin: 10px;
+}
+
+.slrspot__screening-options-container-checks {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.slrspot__screening-options-check {
+  display: flex;
+  margin-left: 20px;
+}
+
+.slrspot__screening-options-check label {
+  margin-left: 5px;
+  text-transform: capitalize;
+}
+
+.slrspot__screening-options-search {
+  margin-left: 20px;
+}
+
+.slrspot__screening-options-search label {
+  background-color: #7344a6;
+  color: white;
+	padding: 3px 20px;
+  text-transform: uppercase;
+}
+
+.slrspot__screening-options-search input {
+	padding: 2px 30px;
+}
