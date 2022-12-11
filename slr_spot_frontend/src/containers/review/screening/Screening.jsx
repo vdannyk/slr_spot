@@ -13,12 +13,6 @@ const Screening = (props) => {
   const [studies, setStudies] = useState([]);
   const { reviewId } = useParams();
   const { userId } = 1;
-
-  const [isToBeReviewed, setIsToBeReviewed] = useState(true);
-  const [isConflicts, setIsConflicts] = useState(false);
-  const [isAwaiting, setIsAwaiting] = useState(false);
-  const [isExcluded, setIsExcluded] = useState(false);
-
   const [tab, setTab] = useState(TO_BE_REVIEWED)
 
 
@@ -66,14 +60,6 @@ const Screening = (props) => {
       </div>
 
       <ScreeningMenu 
-        isToBeReviewed={isToBeReviewed}
-        setIsToBeReviewed={setIsToBeReviewed}
-        isConflicts={isConflicts}
-        setIsConflicts={setIsConflicts}
-        isAwaiting={isAwaiting}
-        setIsAwaiting={setIsAwaiting}
-        isExcluded={isExcluded}
-        setIsExcluded={setIsExcluded}
         tab={tab}
         setTab={setTab}/>
 
