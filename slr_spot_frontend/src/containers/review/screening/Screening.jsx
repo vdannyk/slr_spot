@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../services/api';
 import { ScreeningMenu, ScreeningOptions, FolderTree } from '../../../components';
 import './screening.css';
-import { TO_BE_REVIEWED } from '../../../constants/tabs';
+import { AWAITING, CONFLICTED, TO_BE_REVIEWED } from '../../../constants/tabs';
 import ToBeReviewed from './tabs/ToBeReviewed';
+import Conflicted from './tabs/Conflicted';
+import Awaiting from './tabs/Awaiting';
+import Excluded from './tabs/Excluded';
 
 
 const Screening = (props) => {
@@ -38,7 +41,19 @@ const Screening = (props) => {
   function tabContent() {
     if (tab === TO_BE_REVIEWED) {
       return (
-        <ToBeReviewed showAbstracts={showAbstracts} />
+        <ToBeReviewed showAbstracts={showAbstracts} isFullText={props.isFullText} />
+      )
+    } else if (tab === CONFLICTED) {
+      return (
+        <Conflicted showAbstracts={showAbstracts} isFullText={props.isFullText} />
+      )
+    } else if (tab === AWAITING) {
+      return (
+        <Awaiting showAbstracts={showAbstracts} isFullText={props.isFullText} />
+      )
+    } else {
+      return (
+        <Excluded showAbstracts={showAbstracts} isFullText={props.isFullText} />
       )
     }
   }

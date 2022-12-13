@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { ScreeningStudy, StudyDiscussion, StudyHistory } from '../../../../components';
+import { TO_BE_REVIEWED } from '../../../../constants/tabs';
 import axiosInstance from '../../../../services/api';
 import '../screening.css';
 
@@ -29,7 +30,9 @@ const ToBeReviewed = (props) => {
           study={study} 
           isShowAbstracts={props.showAbstracts} 
           triggerHistory={setShowHistory} 
-          triggerDiscussion={setShowDiscussion} />
+          triggerDiscussion={setShowDiscussion} 
+          tab={TO_BE_REVIEWED}
+          isFullText={props.isFullText} />
       ))}
       { showHistory && <StudyHistory triggerCancel={setShowHistory} /> }
       { showDiscussion && <StudyDiscussion triggerCancel={setShowDiscussion} /> }

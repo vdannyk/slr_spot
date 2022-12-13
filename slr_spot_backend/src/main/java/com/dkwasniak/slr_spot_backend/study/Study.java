@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
+import com.dkwasniak.slr_spot_backend.study.status.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -55,6 +56,11 @@ public class Study {
     @JoinColumn(name = "import_id")
     @JsonIgnore
     private Import studyImport;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    @JsonIgnore
+    private Status status;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
