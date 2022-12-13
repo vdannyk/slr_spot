@@ -7,16 +7,15 @@ import axiosInstance from '../../services/api';
 import { useParams } from "react-router-dom";
 import EventBus from '../../common/EventBus';
 import './folder.css';
+import StudyFolderItem from '../study/studyFolderItem/StudyFolderItem';
 
 const Folder = (props) => {
   const {register, handleSubmit, formState: { errors }} = useForm();
-  // const { name, children, childrenStudies } = props;
   const [isExpanded, setIsExpanded] = useState(false);
   const [showInput, setShowInput] = useState(false);
 
   const [id, setIdentifier] = useState(props.id);
   const [name, setName] = useState(props.name);
-  // const [parentFolders, setParentFolders] = useState(props.parentFolders);
   const [children, setChildren] = useState(props.children);
   const [childrenStudies, setChildrenStudies] = useState(props.childrenStudies);
   const { reviewId } = useParams();
@@ -33,7 +32,7 @@ const Folder = (props) => {
         "id": response.data,
         "name": formData.folderName,
         "children": [],
-        "childrenStudies": []
+        "studies": []
       }; 
       setChildren(oldArray => [...oldArray, folder]);
       setShowInput(false);
@@ -107,10 +106,10 @@ const Folder = (props) => {
 
             { childrenStudies && childrenStudies.map((study, idx) => (
               <tr key={idx}>
-                <td>
-                  <p><AiFillFileText />{study.name}</p>
-                </td>
-            </tr>
+                  <td>
+                    <StudyFolderItem study={study} />
+                  </td>
+              </tr>
             ))}
 
             { children && children.map((folder) => (
@@ -122,7 +121,7 @@ const Folder = (props) => {
                     parentFolders={children}
                     triggerRemove={setChildren}
                     children={folder.children} 
-                    childrenStudies={folder.childrenStudies} 
+                    childrenStudies={folder.studies} 
                     isScreening={props.isScreening}/>
                 </td>
               </tr>

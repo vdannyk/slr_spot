@@ -22,7 +22,7 @@ const FolderTree = (props) => {
         "id": response.data,
         "name": formData.folderName,
         "children": [],
-        "childrenStudies": []
+        "studies": []
       };
       props.foldersChange(oldArray => [...oldArray, folder]);
       setShowInput(false);
@@ -69,7 +69,7 @@ const FolderTree = (props) => {
                   name={folder.name}
                   parentFolders={props.folders}
                   children={folder.children} 
-                  childrenStudies={folder.childrenStudies} 
+                  childrenStudies={folder.studies} 
                   triggerRemove={props.foldersChange}
                   isScreening={props.isScreening}/>
               </td>

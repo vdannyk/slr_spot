@@ -192,27 +192,33 @@ INSERT INTO keywords(NAME, CRITERION_TYPE_ID, USER_ID, REVIEW_ID) VALUES ('keywo
 INSERT INTO keywords(NAME, CRITERION_TYPE_ID, USER_ID, REVIEW_ID) VALUES ('keyword11', 2, null, 1);
 INSERT INTO keywords(NAME, CRITERION_TYPE_ID, USER_ID, REVIEW_ID) VALUES ('keyword12', 2, null, 1);
 
-INSERT INTO folders(NAME) VALUES ('root1');
-INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('sub1', 1);
-INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsub1', 2);
-INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsub2', 2);
-INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('sub1', 1);
-INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('sub1', 1);
+INSERT INTO folders(NAME) VALUES ('folder1');
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subfolder1', 1);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubfolder1', 2);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubfolder2', 2);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subfolder2', 1);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subfolder3', 1);
 
-INSERT INTO folders(NAME) VALUES ('root2');
-INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('sub1', 7);
-INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsub1', 8);
-INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubsub1', 9);
-INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubsubsub1', 10);
-INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubsubsub2', 10);
-INSERT INTO folders(NAME) VALUES ('root3');
-INSERT INTO folders(NAME) VALUES ('root4');
-INSERT INTO folders(NAME) VALUES ('root5');
-INSERT INTO folders(NAME) VALUES ('root6');
+INSERT INTO folders(NAME) VALUES ('folder2');
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subfolder1', 7);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubfolder1', 8);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubsubfolder1', 9);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubsubsubfolder1', 10);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubsubsubfolder2', 10);
+INSERT INTO folders(NAME) VALUES ('folder3');
+INSERT INTO folders(NAME) VALUES ('folder4');
+INSERT INTO folders(NAME) VALUES ('folder5');
+INSERT INTO folders(NAME) VALUES ('folder6');
 
 INSERT INTO imports(DATE, REVIEW_ID) VALUES ('2022-12-10 12:44:22', 1);
 
-INSERT INTO STUDIES(TITLE, IMPORT_ID) VALUES ('test', 1);
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID)
+VALUES ('Classification of neurologic outcomes from medical notes using natural language processing', 'Fernandes M.B., Valizadeh N., Alabsi H.S., Quadri S.A., Tesh R.A., Bucklin A.A., Sun H., Jain A., Brenner L.N., Ye E., Ge W., Collens S.I., Lin S., Das S., Robbins G.K., Zafar S.F., Mukerji S.S., Brandon Westover M.', 2012, 1, 3);
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID)
+VALUES ('Development of a certified reference material for the accurate determination of type B trichothecenes in corn', 'Sabau A.S., Yuan L., Fattebert J.-L., Turner J.A.', 2012, 1, 3);
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID)
+VALUES ('Filling gaps in significant wave height time series records using bidirectional gated recurrent unit and cressman analysis', 'Wang J., Wen K., Deng F.', 2013, 1, 3);
+
 
 INSERT INTO screening_decisions(user_id, study_id, stage, decision) VALUES (1, 1, 'TITLE_ABSTRACT', 'INCLUDE');
 

@@ -26,3 +26,4 @@ export { default as FolderTree } from './folder/FolderTree';
 export { default as ScreeningOptions } from './screening/screeningOptions/ScreeningOptions';
 export { default as StudyHistory } from './screening/screeningStudy/studyHistory/StudyHistory';
 export { default as StudyDiscussion } from './screening/screeningStudy/studyDiscussion/StudyDiscussion';
+export { default as StudyFolderItem } from './study/studyFolderItem/StudyFolderItem';

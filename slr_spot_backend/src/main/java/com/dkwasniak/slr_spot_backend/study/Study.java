@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.study;
 
+import com.dkwasniak.slr_spot_backend.folder.Folder;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.dkwasniak.slr_spot_backend.study.status.Status;
@@ -61,6 +62,11 @@ public class Study {
     @JoinColumn(name = "status_id")
     @JsonIgnore
     private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "folder_id")
+    @JsonIgnore
+    private Folder folder;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
