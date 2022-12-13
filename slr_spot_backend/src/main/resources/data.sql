@@ -51,7 +51,7 @@ INSERT INTO roles(NAME) VALUES ('GUEST');
 INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
 VALUES ('Co robią żółwie', 'Nauki przyrodnicze', 'Wszystko o żółwiach i nie tylko', true, 1);
 INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
-VALUES ('Testy jednostkowe', 'Inżynieria oprogramowania', 'To co programiści lubią robić najbardziej, czyli testy jednostkowe i wszystko co możliwe w okół nich', true, 2);
+VALUES ('Testy jednostkowe', 'Inżynieria oprogramowania', 'Metody testowania tworzonego oprogramowania poprzez wykonywanie testów weryfikujących poprawność działania pojedynczych elementów programu – np. metod lub obiektów w programowaniu obiektowym lub procedur w programowaniu proceduralnym.', true, 2);
 INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
 VALUES ('IntellijIdea i jego skróty', 'Oprogramowanie', 'Klawisze, szybkie akcje, ułatwienie pracy każdego programisty i nie tylko', true, 2);
 INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)

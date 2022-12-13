@@ -7,7 +7,9 @@ const Helper = (props) => {
 
   return showHelper && (
     <div className='slrspot__helper'>
-      <AiOutlineClose onClick={ () => setShowHelper(false) } className='slrspot__helper-close'/>
+      <AiOutlineClose 
+        onClick={ () => setShowHelper(false) } 
+        className='slrspot__helper-close'/>
       { props.content }
     </div>
   )

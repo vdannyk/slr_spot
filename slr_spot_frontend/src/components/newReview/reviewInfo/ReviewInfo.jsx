@@ -5,6 +5,7 @@ import './reviewInfo.css';
 const ReviewInfo = ({register, errors}) => {
   return (
     <div className='slrspot__newReview-reviewInfo'>
+
       <label>Review name</label>
       <input  
         {...register("name", { 
@@ -15,6 +16,7 @@ const ReviewInfo = ({register, errors}) => {
       {errors.name && errors.name.type=== "required" && 
         <p className="slrspot__newReview-error">This field is required</p>
       }
+
       <label>Area of research</label>
       <input  
         {...register("researchArea", { 
@@ -25,13 +27,24 @@ const ReviewInfo = ({register, errors}) => {
       {errors.researchArea && errors.researchArea.type=== "required" && 
         <p className="slrspot__newReview-error">This field is required</p>
       }
+
+      <label>Research question</label>
+      <input  
+        {...register("researchQuestion", { 
+          required: true,
+        })}
+        name='researchQuestion' 
+      />
+      {errors.researchQuestion && errors.researchQuestion.type=== "required" && 
+        <p className="slrspot__newReview-error">This field is required</p>
+      }
+
       <label>Description</label>
       <textarea  
         {...register("description")}
         name='description' 
       />
-      <label>Public review</label>
-      <Check {...register("isPublic")}/>
+
       <label>Reviewers required for screening</label>
       <input  
         {...register("screeningReviewers")}
@@ -39,6 +52,10 @@ const ReviewInfo = ({register, errors}) => {
         type='number'
         min={1}
       />
+
+      <label>Public review</label>
+      <Check {...register("isPublic")}/>
+
     </div>
   )
 }

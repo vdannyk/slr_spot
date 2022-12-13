@@ -39,10 +39,11 @@ const ReviewSettings = () => {
 
   return (
     <div className='slrspot__review-settings'>
-      <div className='slrspot__review-home-title'>
+      <div className='slrspot__review-team-header'>
         <h1>Settings</h1>
       </div>
       <form className='slrspot__review-settings-container' onSubmit={handleSubmit(onSubmit)}>
+
         <label>Review name</label>
         <input  
           {...register("name", { 
@@ -54,6 +55,7 @@ const ReviewSettings = () => {
         {/* {errors.name && errors.name.type=== "required" && 
           <p className="slrspot__newReview-error">This field is required</p>
         } */}
+
         <label>Area of research</label>
         <input  
           {...register("researchArea", { 
@@ -65,14 +67,28 @@ const ReviewSettings = () => {
         {/* {errors.researchArea && errors.researchArea.type=== "required" && 
           <p className="slrspot__newReview-error">This field is required</p>
         } */}
+
+        <label>Research question</label>
+        <input  
+          {...register("researchQuestion", { 
+            required: true,
+          })}
+          name='researchQuestion' 
+        />
+        {/* {errors.researchQuestion && errors.researchQuestion.type=== "required" && 
+          <p className="slrspot__newReview-error">This field is required</p>
+        } */}
+
         <label>Description</label>
         <textarea  
           {...register("description")}
           name='description'
           defaultValue={reviewData.description}
         />
+
         <label>Public review</label>
         <Check {...register("isPublic")} defaultChecked={reviewData.isPublic}/>
+
         <label>Reviewers required for screening</label>
         <input
           {...register("screeningReviewers")}
