@@ -62,3 +62,13 @@
 .slrspot__screeningStudy-decision-button:hover {
   background-color: #a653fe;
 }
+
+.pdf {
+  background-color: white;
+  font-size: 14px;
+  color: black;
+  border: thin solid #c0c0c0;
+  border-radius: 4px;
+  flex: 1;
+	padding: 8px;
+}
