@@ -70,6 +70,7 @@ const ReviewMenu = ({isPreview}) => {
             <div className='slrspot__review-submenu-options'>
               <SubMenuItem name='Search' redirect='/studies/search'/>
               <SubMenuItem name='Display' redirect='/studies/display'/>
+              <SubMenuItem name='Duplicates' redirect='/studies/duplicates'/>
             </div>
           )}
           <MenuItem name='Screening' setShowTrigger={setShowScreeningMenu} showTrigger={showScreeningMenu}/>
@@ -80,6 +81,7 @@ const ReviewMenu = ({isPreview}) => {
               <SubMenuItem name='Full text' redirect='/screening/full-text'/>
             </div>
           )}
+          <MenuItem name='Results' />
         </div>
       </div>
       <ShowMenuButton />
