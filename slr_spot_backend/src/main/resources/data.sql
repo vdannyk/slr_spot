@@ -46,7 +46,7 @@ VALUES ('Rafał', 'Sikor', 'sikorka@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrF
 INSERT INTO roles(NAME) VALUES ('OWNER');
 INSERT INTO roles(NAME) VALUES ('COOWNER');
 INSERT INTO roles(NAME) VALUES ('MEMBER');
-INSERT INTO roles(NAME) VALUES ('VIEWER');
+INSERT INTO roles(NAME) VALUES ('GUEST');
 
 INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
 VALUES ('Co robią żółwie', 'Nauki przyrodnicze', 'Wszystko o żółwiach i nie tylko', true, 1);
