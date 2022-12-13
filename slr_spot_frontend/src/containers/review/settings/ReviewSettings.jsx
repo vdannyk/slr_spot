@@ -89,6 +89,9 @@ const ReviewSettings = () => {
         <label>Public review</label>
         <Check {...register("isPublic")} defaultChecked={reviewData.isPublic}/>
 
+        <label>Show votes on conflicts</label>
+        <Check {...register("isPublic")} defaultChecked={reviewData.isPublic}/>
+
         <label>Reviewers required for screening</label>
         <input
           {...register("screeningReviewers")}
