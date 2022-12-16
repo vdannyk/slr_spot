@@ -1,6 +1,5 @@
 package com.dkwasniak.slr_spot_backend.user;
 
-import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
@@ -35,6 +34,17 @@ public class UserController {
         return ResponseEntity.created(uri).build();
     }
 
+    @GetMapping
+    public ResponseEntity<Set<UserDto>> getUsersByReviewId(@RequestParam Long reviewId) {
+        return ResponseEntity.ok().body(userFacade.getUsersByReviewId(reviewId));
+    }
+
+    @GetMapping("/emails")
+    public ResponseEntity<Set<String>> getUsersEmails() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return ResponseEntity.ok().body(userFacade.getEmails(username));
+    }
+
     @GetMapping("/confirm")
     public ResponseEntity<Void> confirmAccount(@RequestParam String confirmationToken) {
         userFacade.confirmAccount(confirmationToken);
@@ -66,17 +76,6 @@ public class UserController {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         userFacade.updateName(username, userDto);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{id}/reviews")
-    public ResponseEntity<Set<Review>> getReviewsByUser(@PathVariable Long id) {
-        return ResponseEntity.ok().body(userFacade.getReviewsByUser(id));
-    }
-
-    @GetMapping("/emails")
-    public ResponseEntity<Set<String>> getUsersEmails() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        return ResponseEntity.ok().body(userFacade.getEmails(username));
     }
 
 }

@@ -32,7 +32,9 @@ const ReviewTeam = () => {
   }, []);
 
   useEffect(() => {
-    axiosInstance.get("/reviews/" + reviewId + "/members")
+    axiosInstance.get("/users", { params: {
+      reviewId
+    }})
     .then((response) => {
       setMembers(response.data);
     });

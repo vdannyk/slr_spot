@@ -1,11 +1,9 @@
 package com.dkwasniak.slr_spot_backend.review;
 
-import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.imports.ImportService;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
-import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleEnum;
@@ -52,10 +50,6 @@ public class ReviewFacade {
         return reviewService.boundWithOwner(reviewService.getReviewById(id));
     }
 
-    public Set<ReviewMemberDto> getMembers(long id) {
-        return reviewService.getMembers(id);
-    }
-
     public ReviewsPageDto getReviewsByUserId(long userId, int page, int size) {
         return reviewService.toReviewsPageDto(
                 reviewService.getReviewsByUser(userId, page, size)
@@ -86,7 +80,4 @@ public class ReviewFacade {
         reviewService.updateReview(id, reviewDto);
     }
 
-    public Set<Import> getImports(long reviewId) {
-        return importService.getImportsByReviewId(reviewId);
-    }
 }

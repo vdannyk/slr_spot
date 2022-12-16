@@ -2,19 +2,19 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationToken;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
-import com.dkwasniak.slr_spot_backend.criterion.CriterionService;
 import com.dkwasniak.slr_spot_backend.email.EmailService;
-import com.dkwasniak.slr_spot_backend.keyWord.KeyWordService;
 import com.dkwasniak.slr_spot_backend.review.Review;
-import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
+import com.dkwasniak.slr_spot_backend.userReview.UserReview;
+import com.dkwasniak.slr_spot_backend.userReview.UserReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
@@ -28,6 +28,7 @@ public class UserFacade {
     private final UserService userService;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
+    private final UserReviewService userReviewService;
 
     public long createUser(User user) {
         User savedUser = userService.saveUser(user);
@@ -38,6 +39,11 @@ public class UserFacade {
         String activationLink = String.format("http://localhost:3000/activate/%s", confirmationToken.getToken());
         emailService.sendVerificationEmail(user.getEmail(), activationLink);
         return savedUser.getId();
+    }
+
+    public Set<UserDto> getUsersByReviewId(Long reviewId) {
+        Set<UserReview> users = userReviewService.getUserReviewByReviewId(reviewId);
+        return users.stream().map(userService::toUserDto).collect(Collectors.toSet());
     }
 
     @Transactional
@@ -75,10 +81,6 @@ public class UserFacade {
 
     public void updateName(String username, UserDto userDto) {
         userService.updateName(username, userDto.getFirstName(), userDto.getLastName());
-    }
-
-    public Set<Review> getReviewsByUser(long id) {
-        return userService.getReviewsByUser(id);
     }
 
     public Set<String> getEmails(String currentUserEmail) {

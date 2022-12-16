@@ -1,15 +1,12 @@
 package com.dkwasniak.slr_spot_backend.review;
 
-import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
-import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,11 +64,6 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/members")
-    public ResponseEntity<Set<ReviewMemberDto>> getMembers(@PathVariable Long id) {
-        return ResponseEntity.ok().body(reviewFacade.getMembers(id));
-    }
-
     @PostMapping("/{id}/members/{userId}/remove")
     public ResponseEntity<Void> removeMember(@PathVariable Long id, @PathVariable Long userId) {
         reviewFacade.removeMember(id, userId);
@@ -89,8 +81,4 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/imports")
-    public ResponseEntity<Set<Import>> getImports(@PathVariable Long id) {
-        return ResponseEntity.ok().body(reviewFacade.getImports(id));
-    }
 }

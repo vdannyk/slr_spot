@@ -10,7 +10,9 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+
     Optional<User> findByEmail(String email);
+    Set<User> findByReviews_Review_Id(long reviewId);
     @Transactional
     @Modifying
     @Query("UPDATE User u " +

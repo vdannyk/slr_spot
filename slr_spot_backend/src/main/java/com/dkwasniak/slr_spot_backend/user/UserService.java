@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
+import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
 import com.dkwasniak.slr_spot_backend.user.exception.UserNotFoundException;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
@@ -111,13 +112,18 @@ public class UserService implements UserDetailsService {
         log.info("User \"{}\" added to review \"{}\"", user.getEmail(), review.getTitle());
     }
 
-    public Set<Review> getReviewsByUser(long id) {
-        User user = getUserById(id);
-        return user.getReviews().stream().map(UserReview::getReview).collect(Collectors.toSet());
-    }
-
     public Set<String> getAllEmails() {
         return userRepository.getEmails();
+    }
+
+    public UserDto toUserDto(UserReview userReview) {
+        return UserDto.builder()
+                .userId(userReview.getUser().getId())
+                .firstName(userReview.getUser().getFirstName())
+                .lastName(userReview.getUser().getLastName())
+                .email(userReview.getUser().getEmail())
+                .role(userReview.getRole().getName())
+                .build();
     }
 
 }

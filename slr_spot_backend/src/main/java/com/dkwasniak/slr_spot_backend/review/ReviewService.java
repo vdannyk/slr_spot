@@ -2,10 +2,8 @@ package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
-import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.review.exception.ReviewNotFoundException;
-import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
@@ -62,33 +60,11 @@ public class ReviewService {
         return ReviewWithOwnerDto.of(owner.getFirstName(), owner.getLastName(), review);
     }
 
-    public Set<ReviewMemberDto> getMembers(long id) {
-        Set<UserReview> userReviews = getReviewById(id).getUsers();
-        return userReviews.stream()
-                .map((userReview) -> toReviewMemberDto(userReview.getUser(), userReview.getRole()))
-                .collect(Collectors.toSet());
-    }
-
     public Set<String> getMembersEmails(long id) {
         Set<UserReview> userReviews = getReviewById(id).getUsers();
         return userReviews.stream()
                 .map((userReview) -> userReview.getUser().getEmail())
                 .collect(Collectors.toSet());
-    }
-
-    public ReviewMemberDto toReviewMemberDto(User user, ReviewRole role) {
-        return ReviewMemberDto.builder()
-                .memberId(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .role(role.getName())
-                .build();
-    }
-
-    public Review getReviewByTitle(String title) {
-        return reviewRepository.findByTitle(title)
-                .orElseThrow(() -> new ReviewNotFoundException("Review with given title not found"));
     }
 
     public Review getReviewById(long id) {
