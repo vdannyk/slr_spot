@@ -1,10 +1,15 @@
 package com.dkwasniak.slr_spot_backend.confirmationToken;
 
+import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
@@ -12,15 +17,41 @@ public class ConfirmationTokenService {
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
 
+    public ConfirmationToken createConfirmationToken(User user) {
+        String token = UUID.randomUUID().toString();
+        return new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                user
+        );
+    }
+
     public void saveConfirmationToken(ConfirmationToken token) {
         confirmationTokenRepository.save(token);
     }
 
-    public Optional<ConfirmationToken> getConfirmationToken(String token) {
-        return confirmationTokenRepository.findByToken(token);
+    public ConfirmationToken getConfirmationToken(String token) {
+        return confirmationTokenRepository.findByToken(token)
+                .orElseThrow(() -> new IllegalStateException("Token not found"));
     }
 
-    public int setConfirmedAt(String token) {
-        return confirmationTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
+    public int confirmToken(ConfirmationToken token) {
+        if (checkIfTokenConfirmed(token)) {
+            throw new IllegalStateException("Email already confirmed");
+        }
+
+        if (checkIfTokenExpired(token)) {
+            throw new IllegalStateException("Token expired");
+        }
+        return confirmationTokenRepository.updateConfirmedAt(token.getToken(), LocalDateTime.now());
+    }
+
+    private boolean checkIfTokenConfirmed(ConfirmationToken token) {
+        return nonNull(token.getConfirmedAt());
+    }
+
+    private boolean checkIfTokenExpired(ConfirmationToken token) {
+        return token.getExpiresAt().isBefore(LocalDateTime.now());
     }
 }

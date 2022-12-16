@@ -1,0 +1,200 @@
+-- Aktywne konta
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Daniel', 'Danielowski', 'danny@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Bruno', 'Wróblewski', 'bruno@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Paweł', 'Krupa', 'krupa@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Rafał', 'Nowak', 'rnowak@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Marek', 'Lis', 'mlis@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Ariel', 'Kwiatkowski', 'akwiat@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Olga', 'Piotrowska', 'opiotr@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Elwira', 'Czarnecka', 'eczarnecka@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Bogna', 'Pawlak', 'bpawlak@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Agnieszka', 'Kozłowska', 'kozel@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Nikola', 'Witkowska', 'nwitek@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Andrea', 'Nowak', 'andrea@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Andżelika', 'Woźniak', 'andzela@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Edyta', 'Górecka', 'edycia@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Amir', 'Jasiński', 'amir@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Aleksy', 'Górecki', 'alek@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Remigiusz', 'Sokołowski', 'remeksokol@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Piotr', 'Zieliński', 'zielu@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Robert', 'Lewangoalski', 'polskagola@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+-- Nieaktywne konta
+VALUES ('Martin', 'Krajewski', 'martini@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', false);
+INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
+VALUES ('Rafał', 'Sikor', 'sikorka@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', false);
+
+INSERT INTO roles(NAME) VALUES ('OWNER');
+INSERT INTO roles(NAME) VALUES ('COOWNER');
+INSERT INTO roles(NAME) VALUES ('MEMBER');
+INSERT INTO roles(NAME) VALUES ('GUEST');
+
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Co robią żółwie', 'Nauki przyrodnicze', 'Wszystko o żółwiach i nie tylko', true, 1);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Testy jednostkowe', 'Inżynieria oprogramowania', 'Metody testowania tworzonego oprogramowania poprzez wykonywanie testów weryfikujących poprawność działania pojedynczych elementów programu – np. metod lub obiektów w programowaniu obiektowym lub procedur w programowaniu proceduralnym.', true, 2);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('IntellijIdea i jego skróty', 'Oprogramowanie', 'Klawisze, szybkie akcje, ułatwienie pracy każdego programisty i nie tylko', true, 2);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Co dobrego daje Postman', 'Oprogramowanie', 'Żadania wysyłane i żądania otrzymywanie to w dzisiejszych czasach codzienność', false, 2);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Leki na ból głowy', 'Medycyna', 'Każdego boli czasem głowa ale nikt nie wie czemu go boli głowa dopóki się nie dowie dlaczego go boli głowa i w tym bólu głowy wszystko tak tkwi', false, 2);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Przykładowy przegląd1', 'Przykładowy przegląd1', 'Przykładowy przegląd1', true, 1);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Przykładowy przegląd2', 'Przykładowy przegląd2', 'Przykładowy przegląd2', true, 1);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Przykładowy przegląd3', 'Przykładowy przegląd3', 'Przykładowy przegląd3', true, 1);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Przykładowy przegląd4', 'Przykładowy przegląd4', 'Przykładowy przegląd4', true, 1);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Przykładowy przegląd5', 'Przykładowy przegląd5', 'Przykładowy przegląd5', true, 1);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Przykładowy przegląd6', 'Przykładowy przegląd6', 'Przykładowy przegląd6', true, 1);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Przykładowy przegląd7', 'Przykładowy przegląd7', 'Przykładowy przegląd7', true, 1);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Przykładowy przegląd8', 'Przykładowy przegląd8', 'Przykładowy przegląd8', true, 1);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Przykładowy przegląd9', 'Przykładowy przegląd9', 'Przykładowy przegląd9', true, 1);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Przykładowy przegląd10', 'Przykładowy przegląd10', 'Przykładowy przegląd10', true, 1);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
+VALUES ('Przykładowy przegląd11', 'Przykładowy przegląd11', 'Przykładowy przegląd11', true, 1);
+
+-- Projekt 1
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 1, 1);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (2, 2, 1);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (2, 3, 1);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 4, 1);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 5, 1);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 6, 1);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 7, 1);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (4, 8, 1);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (4, 9, 1);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (4, 10, 1);
+
+-- Projekt 2
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 1, 2);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 2, 2);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 3, 2);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 4, 2);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 5, 2);
+
+-- Projekt 3
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 2, 3);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 10, 3);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 11, 3);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 12, 3);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 13, 3);
+
+-- Projekt 4
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 1, 4);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 2, 4);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 13, 4);
+
+-- Projekt 5
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 3, 5);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 9, 3);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 8, 3);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 7, 3);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (3, 6, 3);
+
+-- Reszta
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 20, 6);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 20, 7);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 20, 8);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 20, 9);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 20, 10);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 10, 11);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 11, 12);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 12, 13);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 13, 14);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 14, 15);
+INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 15, 16);
+
+INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag1', 1);
+INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag2', 1);
+INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag3', 1);
+INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag4', 1);
+INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag5', 1);
+INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag6', 1);
+INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag7', 1);
+INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag8', 1);
+INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag9', 1);
+INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag10', 1);
+
+INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria1', 'INCLUSION', 1);
+INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria2', 'INCLUSION', 1);
+INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria3', 'INCLUSION', 1);
+INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria4', 'INCLUSION', 1);
+INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria5', 'INCLUSION', 1);
+INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria6', 'EXCLUSION', 1);
+INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria7', 'EXCLUSION', 1);
+INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria8', 'EXCLUSION', 1);
+INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria9', 'EXCLUSION', 1);
+INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria10', 'EXCLUSION', 1);
+
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword1', 'INCLUSION', 1, 1);
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword2', 'INCLUSION', 1, 1);
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword3', 'INCLUSION', 1, 1);
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword4', 'INCLUSION', null, 1);
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword5', 'INCLUSION', null, 1);
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword6', 'INCLUSION', null, 1);
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword7', 'EXCLUSION', 1, 1);
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword8', 'EXCLUSION', 1, 1);
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword9', 'EXCLUSION', 1, 1);
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword10', 'EXCLUSION', null, 1);
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword11', 'EXCLUSION', null, 1);
+INSERT INTO keywords(NAME, TYPE, USER_ID, REVIEW_ID) VALUES ('keyword12', 'EXCLUSION', null, 1);
+
+INSERT INTO folders(NAME) VALUES ('folder1');
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subfolder1', 1);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubfolder1', 2);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubfolder2', 2);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subfolder2', 1);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subfolder3', 1);
+
+INSERT INTO folders(NAME) VALUES ('folder2');
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subfolder1', 7);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubfolder1', 8);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubsubfolder1', 9);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubsubsubfolder1', 10);
+INSERT INTO folders(NAME, PARENT_FOLDER_ID) VALUES ('subsubsubsubfolder2', 10);
+INSERT INTO folders(NAME) VALUES ('folder3');
+INSERT INTO folders(NAME) VALUES ('folder4');
+INSERT INTO folders(NAME) VALUES ('folder5');
+INSERT INTO folders(NAME) VALUES ('folder6');
+
+INSERT INTO imports(DATE, REVIEW_ID) VALUES ('2022-12-10 12:44:22', 1);
+
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID)
+VALUES ('Classification of neurologic outcomes from medical notes using natural language processing', 'Fernandes M.B., Valizadeh N., Alabsi H.S., Quadri S.A., Tesh R.A., Bucklin A.A., Sun H., Jain A., Brenner L.N., Ye E., Ge W., Collens S.I., Lin S., Das S., Robbins G.K., Zafar S.F., Mukerji S.S., Brandon Westover M.', 2012, 1, 3);
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID)
+VALUES ('Development of a certified reference material for the accurate determination of type B trichothecenes in corn', 'Sabau A.S., Yuan L., Fattebert J.-L., Turner J.A.', 2012, 1, 3);
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID)
+VALUES ('Filling gaps in significant wave height time series records using bidirectional gated recurrent unit and cressman analysis', 'Wang J., Wen K., Deng F.', 2013, 1, 3);
+
+
+INSERT INTO screening_decisions(user_id, study_id, stage, decision) VALUES (1, 1, 'TITLE_ABSTRACT', 'INCLUDE');
+
+

@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.jwt;
 
+import com.dkwasniak.slr_spot_backend.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -42,12 +44,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authResult) throws IOException {
-        User user = (User) authResult.getPrincipal();
+        String username = ((User) authResult.getPrincipal()).getUsername();
+        com.dkwasniak.slr_spot_backend.user.User user = userService.getUserByEmail(username);
         String jwtToken = generateJwt(user, request);
         String refreshToken = generateRefreshToken(user, request);
         JwtResponse jwtResponse = new JwtResponse(
-                jwtToken,
-                refreshToken
+            user.getId(),
+            user.getEmail(),
+            user.getFirstName(),
+            user.getLastName(),
+            jwtToken,
+            refreshToken
         );
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), jwtResponse);

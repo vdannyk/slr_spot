@@ -1,0 +1,57 @@
+.slrspot__usersBrowser {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: flex-start;
+}
+
+.slrspot__usersBrowser-search {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.slrspot__usersBrowser-search-field {
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.slrspot__usersBrowser-search-field input {
+  border-radius: 0px;
+  padding: 10px 20px;
+}
+
+.slrspot__usersBrowser-search-selected {
+  overflow-y: scroll;
+  height: 100px;
+  margin-left: 20px;
+}
+
+.slrspot__usersBrowser-userSelected {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #00FF0C8F;
+  margin-bottom: 2px;
+  font-size: 16px;
+  border-radius: 2px;
+}
+
+.slrspot__usersBrowser-userItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 10px 20px;
+}
+
+.slrspot__usersBrowser-userSelected-remove {
+  color: red;
+  size: 100;
+}
+
+.slrspot__usersBrowser-userItem-add {
+  color: green;
+  size: 100;
+}

@@ -1,0 +1,109 @@
+.slrspot__studiesImport {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+
+	display: flex;
+	align-items: center;
+}
+
+.slrspot__studiesImport-container {
+	background: white;
+	display: flex;
+	flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+	width: 480px;
+	max-width: 100%;
+	min-height: 240px;
+	position: relative;
+	overflow: hidden;
+	margin: auto;
+
+	border-radius: 3px; 
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.slrspot__studiesImport-container-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.slrspot__studiesImport-container-fields input {
+	margin: 10px 0;
+}
+
+.slrspot__studiesImport-file-input {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.slrspot__studiesImport-textarea {
+  width: 60%;
+	height: 10vh;
+	margin: 10px 0;
+	resize: none;
+}
+
+.slrspot__studiesImport-container-buttons {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+}
+
+.slrspot__studiesImport-container-buttons button {
+	background: white;
+  border-radius: 2px;
+  font-size: 16px;
+	font-weight: bold;
+	padding: 20px 20px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	cursor: pointer;
+  border: 0.001rem solid rgb(211, 211, 211);
+}
+
+.slrspot__studiesImport-confirmButton {
+	color: green;
+  width: 50%;
+}
+
+.slrspot__studiesImport-confirmButton:hover {
+	background-color: #e8d3fea9;
+}
+
+.slrspot__studiesImport-cancelButton {
+	color: rgb(222, 0, 0);
+  width: 50%;
+}
+
+.slrspot__studiesImport-cancelButton:hover {
+	background-color: #e8d3fea9;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  border: 1px solid #ccc;
+	border-radius: 2px;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+	color: white;
+	background-color: #AE67FA;
+}
+
+.slrspot__input-error {
+	border-radius: 2px;
+	padding: 4px;
+	background-color: rgba(255, 159, 159, 0.577);
+}

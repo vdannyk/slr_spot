@@ -1,0 +1,40 @@
+.slrspot__screening-menu {
+  display: flex;
+  height: 5vh;
+  border: thin solid #000000;
+  border-radius: 2px;
+}
+
+.slrspot__screening-menu-options {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  flex-direction: row;
+}
+
+.slrspot__screening-menu-option {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  border: thin solid #cfcfcf;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.slrspot__screening-menu-option:hover {
+  background-color: #AE67FA;
+  color: white;
+}
+
+#selected {
+  background-color: #AE67FA;
+  color: white;
+}
+
+
+.slrspot__screening-menu-option p {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}

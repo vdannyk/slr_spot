@@ -1,6 +1,7 @@
 import axiosInstance from "./api";
 import { refreshToken } from "../actions/auth";
 import TokenService from "./token.service";
+import { logout } from "../actions/auth";
 
 const setupInterceptors = (store) => {
   axiosInstance.interceptors.request.use(
@@ -17,6 +18,7 @@ const setupInterceptors = (store) => {
   );
 
   const { dispatch } = store;
+
   axiosInstance.interceptors.response.use(
     (res) => {
       return res;
@@ -30,7 +32,7 @@ const setupInterceptors = (store) => {
           originalConfig._retry = true;
 
           try {
-            const rs = await axiosInstance.post("/user/refreshtoken", {
+            const rs = await axiosInstance.post("/auth/refresh", {
               refreshToken: TokenService.getLocalRefreshToken(),
             });
 

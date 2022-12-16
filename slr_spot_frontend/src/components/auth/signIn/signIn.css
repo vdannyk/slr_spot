@@ -1,0 +1,93 @@
+.slrspot___signIn-container {
+  position: absolute;
+  display: flex;
+	flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: 50%;
+	padding: 0 30px;
+}
+
+.slrspot___signIn-container p {
+  padding: 0 30px;
+}
+
+.slrspot___signIn-container a{
+  color: rgb(8, 60, 229);
+  font-weight: 500;
+  font-size: 18px;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.slrspot__signIn-header {
+  position: fixed;
+  align-items: center;
+  text-align: center;
+  width: 40%;
+  top: 15%;
+  left: 25%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
+}
+
+.slrspot__signIn-header h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.slrspot___signIn-fields {
+  height: 35%;
+  text-align: center;
+}
+
+.slrspot___signIn-fields input {
+	margin-top: 30px;
+}
+
+.slrspot__signIn-field {
+  height: 40%;
+}
+
+.slrspot___signIn-submit {
+  position: fixed;
+  align-items: center;
+  text-align: center;
+  bottom: 15%;
+  left: 25%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
+}
+
+.slrspot___signIn-forgotPassword {
+  text-align: end;
+	width: 90%;
+}
+
+.slrspot___signIn-forgotPassword a {
+  text-align: end;
+  font-size: 12px;
+}
+
+.slrspot___signIn-newAccount {
+  position: fixed;
+  align-items: center;
+  text-align: center;
+  bottom: 0;
+  left: 25%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
+}
+
+.slrspot___signIn-newAccount a{
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+.slrspot__signIn-error {
+  /* background-color: red; */
+  font-size: 12px;
+  color: red;
+  margin-bottom: 0;
+}

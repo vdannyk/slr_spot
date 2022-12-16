@@ -3,6 +3,7 @@
     padding: 0;
     margin: 0;
     scroll-behavior: smooth;
+    font-family: var(--font-family);
 }
 
 body {
@@ -10,29 +11,61 @@ body {
 }
 
 a {
-    color: white;
+    color: black;
     text-decoration: none;
+}
+
+button {
+	border-radius: 20px;
+	border: 0;
+	background: #AE67FA;
+	color: white;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 10px 50px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #a653fe;
+}
+
+input {
+	background-color: white;
+	padding: 8px 15px;
+	font-size: 16px;
+  border-width: 1px 1px 1px 5px;
+  border-color: black;
+  border-left-color: #AE67FA;
+}
+
+.slrspot__app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .gradient__bg {
 
     /* ff 3.6+ */
-    background:-moz-linear-gradient(180deg, #40BBFF6E 0%, #4D77FF99 15%, #5A25C3 100%); 
+    background:-moz-linear-gradient(90deg, rgba(126, 155, 255, 1) 0%, rgba(176,236,255,255) 50%, rgba(126, 155, 255, 1) 100%); 
 
     /* safari 5.1+,chrome 10+ */
-    background:-webkit-linear-gradient(180deg, #40BBFF6E 0%, #4D77FF99 15%, #5A25C3 100%);
+    background:-webkit-linear-gradient(90deg, rgba(126, 155, 255, 1) 0%, rgba(176,236,255,255) 50%, rgba(126, 155, 255, 1) 100%);
 
     /* opera 11.10+ */
-    background:-o-linear-gradient(180deg, #40BBFF6E 0%, #4D77FF99 15%, #5A25C3 100%);
+    background:-o-linear-gradient(90deg, rgba(126, 155, 255, 1) 0%, rgba(176,236,255,255) 50%, rgba(126, 155, 255, 1) 100%);
 
     /* ie 6-9 */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5A25C3', endColorstr='#40BBFF', GradientType=0 );
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2054FF', endColorstr='#2054FF', GradientType=0 );
 
     /* ie 10+ */
-    background:-ms-linear-gradient(180deg, #40BBFF6E 0%, #4D77FF99 15%, #5A25C3 100%);
+    background:-ms-linear-gradient(90deg, rgba(126, 155, 255, 1) 0%, rgba(176,236,255,255) 50%, rgba(126, 155, 255, 1) 100%);
 
     /* global 94%+ browsers support */
-    background:linear-gradient(180deg, #40BBFF6E 0%, #4D77FF99 15%, #5A25C3 100%);
+    background:linear-gradient(90deg, rgba(126, 155, 255, 1) 0%, rgba(176,236,255,255) 50%, rgba(126, 155, 255, 1) 100%);
 
 }
 
@@ -54,6 +87,13 @@ a {
 .scale-up-center {
 	-webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	        animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+.slrspot__input-error {
+  /* background-color: red; */
+  font-size: 12px;
+  color: red;
+  margin-bottom: 0;
 }
 
 /* ----------------------------------------------

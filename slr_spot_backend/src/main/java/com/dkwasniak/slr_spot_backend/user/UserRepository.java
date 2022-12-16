@@ -6,14 +6,20 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+
     Optional<User> findByEmail(String email);
     @Transactional
     @Modifying
     @Query("UPDATE User u " +
-            "SET u.confirmed = TRUE " +
+            "SET u.isActivated = TRUE " +
             "WHERE u.email = ?1")
-    int enableUser(String email);
+    void enableUser(String email);
     Boolean existsByEmail(String email);
+    @Query("SELECT u.email " +
+            "FROM User u ")
+    Set<String> getEmails();
+
 }

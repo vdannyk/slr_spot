@@ -5,7 +5,7 @@ spring:
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
@@ -14,6 +14,10 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
   mail:
     host: localhost
     port: 1025
