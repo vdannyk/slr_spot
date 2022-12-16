@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
-import axiosInstance from "../../services/api";
+import axiosInstance from "../../../services/api";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import UsersBrowser from '../usersBrowser/UsersBrowser';
-import EventBus from '../../common/EventBus';
+import EventBus from '../../../common/EventBus';
 import ReviewInfo from './reviewInfo/ReviewInfo';
+import UsersBrowser from '../usersBrowser/UsersBrowser';
 import './newReview.css'
 
 

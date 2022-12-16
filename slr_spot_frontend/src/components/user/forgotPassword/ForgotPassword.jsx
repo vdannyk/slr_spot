@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axiosInstance from "../../services/api";
+import axiosInstance from "../../../services/api";
 import { useForm } from "react-hook-form";
 import './forgotPassword.css';
 

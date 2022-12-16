@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { register as registerAccount } from "../../actions/auth";
+import { register as registerAccount } from "../../../actions/auth";
 import { useForm } from "react-hook-form";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { BeatLoader } from "react-spinners";

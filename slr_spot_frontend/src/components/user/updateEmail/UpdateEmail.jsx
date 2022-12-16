@@ -1,14 +1,9 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../actions/auth";
 import { useNavigate, useParams } from "react-router-dom";
-import axiosInstance from "../../services/api";
-import TokenService from "../../services/token.service";
-import { refreshToken } from "../../actions/auth";
-import EventBus from "../../common/EventBus";
+import axiosInstance from "../../../services/api";
+import EventBus from "../../../common/EventBus";
 import './updateEmail.css'
-
-
 
 const UpdateEmail = () => {
   const { confirmationToken } = useParams();

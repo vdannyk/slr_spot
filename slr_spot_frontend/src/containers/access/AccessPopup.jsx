@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { SignIn, SignUp } from '../../components';
-import ForgotPassword from '../../components/forgotPassword/ForgotPassword';
+import { SignIn, SignUp, ForgotPassword } from '../../components';
 import './accessPopup.css';
 
 const AccessPopup = (props) => {

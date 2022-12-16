@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import './signIn.css';
-import { login } from "../../actions/auth";
+import { login } from "../../../actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { BeatLoader } from "react-spinners";

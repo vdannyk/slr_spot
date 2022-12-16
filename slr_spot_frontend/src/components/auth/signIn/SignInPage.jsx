@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AccessPopup } from '../../containers'
+import { AccessPopup } from '../../../containers'
 
 const SignInPage = () => {
   const [isAccessPopup, setIsAccessPopup] = useState(true);
