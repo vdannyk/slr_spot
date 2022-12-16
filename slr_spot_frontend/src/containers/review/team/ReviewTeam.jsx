@@ -42,7 +42,7 @@ const ReviewTeam = () => {
 
   const confirmRemoveMember = () => {
     console.log(memberId);
-    axiosInstance.post("/reviews/" + reviewId + "/members/" + memberId + "/remove")
+    axiosInstance.post("/reviews/" + reviewId + "/members/" + memberId)
     .then(() => {
       setIsRemoveMemberConfirmation(false);
       window.location.reload();
@@ -52,7 +52,7 @@ const ReviewTeam = () => {
   const onRemoveMemberClick = (triggerPopup, item) => {
     setIsRemoveMemberConfirmation(triggerPopup);
     setMemberNameToRemove(item.firstName + ' ' + item.lastName);
-    setMemberId(item.memberId);
+    setMemberId(item.userId);
   }
 
   const onCancelRemoveMember = () => {

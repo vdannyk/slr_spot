@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final UserService userService;
 
     public Long saveReview(Review review) {
         return reviewRepository.save(review).getId();
@@ -72,10 +71,8 @@ public class ReviewService {
                 .orElseThrow(() -> new ReviewNotFoundException("Review with given id not found"));
     }
 
-    public void removeMember(long reviewId, long userId) {
-        User user = userService.getUserById(userId);
-        Review review = getReviewById(reviewId);
-        user.removeReview(review);
+    public void removeMember(Review review, User user) {
+        review.removeUser(user);
     }
 
     public void updateReview(long id, ReviewDto reviewDto) {

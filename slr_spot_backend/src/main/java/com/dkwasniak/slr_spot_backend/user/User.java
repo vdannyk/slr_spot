@@ -66,21 +66,6 @@ public class User {
         this.password = password;
     }
 
-    public void addReview(Review review, ReviewRole role) {
-        UserReview userReview = new UserReview(this, review, role);
-        this.reviews.add(userReview);
-    }
-
-    public void removeReview(Review review) {
-        for (Iterator<UserReview> it = reviews.iterator(); it.hasNext();) {
-            UserReview userReview = it.next();
-            if (userReview.getUser().equals(this) && userReview.getReview().equals(review)) {
-                it.remove();
-                this.reviews.remove(userReview);
-            }
-        }
-    }
-
     public void addDecision(Study study, Stage stage, Decision decision) {
         ScreeningDecision screeningDecision = new ScreeningDecision(this, study, stage, decision);
         this.screeningDecisions.add(screeningDecision);

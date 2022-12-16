@@ -64,9 +64,9 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{id}/members/{userId}/remove")
-    public ResponseEntity<Void> removeMember(@PathVariable Long id, @PathVariable Long userId) {
-        reviewFacade.removeMember(id, userId);
+    @PostMapping("/{id}/members/{memberId}")
+    public ResponseEntity<Void> removeMember(@PathVariable Long id, @PathVariable Long memberId) {
+        reviewFacade.removeMember(id, memberId);
         return ResponseEntity.ok().build();
     }
 

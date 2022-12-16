@@ -57,7 +57,9 @@ public class ReviewFacade {
     }
 
     public void removeMember(long reviewId, long userId) {
-        reviewService.removeMember(reviewId, userId);
+        User user = userService.getUserById(userId);
+        Review review = reviewService.getReviewById(reviewId);
+        reviewService.removeMember(review, user);
     }
 
     public Set<String> getUsersAvailableToAdd(long reviewId) {

@@ -82,13 +82,13 @@ public class Review {
         this.users.add(userReview);
     }
 
-//    public void removeReview(Review review) {
-//        for (Iterator<UserReview> it = reviews.iterator(); it.hasNext();) {
-//            UserReview userReview = it.next();
-//            if (userReview.getUser().equals(this) && userReview.getReview().equals(review)) {
-//                it.remove();
-//                this.reviews.remove(userReview);
-//            }
-//        }
-//    }
+    public void removeUser(User user) {
+        for (Iterator<UserReview> it = users.iterator(); it.hasNext();) {
+            UserReview userReview = it.next();
+            if (userReview.getReview().equals(this) && userReview.getUser().equals(user)) {
+                it.remove();
+                this.users.remove(userReview);
+            }
+        }
+    }
 }
