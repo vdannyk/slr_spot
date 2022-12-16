@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +23,7 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "keywords",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = { "name", "criterion_type_id" })
+                @UniqueConstraint(columnNames = { "name", "type" })
         })
 @NoArgsConstructor
 @Getter
@@ -33,8 +35,7 @@ public class KeyWord {
     private long id;
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "criterion_type_id")
+    @Enumerated(EnumType.STRING)
     private CriterionType type;
 
     @ManyToOne

@@ -13,7 +13,7 @@ public class KeywordService {
     private final KeywordRepository keywordRepository;
 
     public boolean checkIfExistByNameAndTypeName(String keywordName, String typeName) {
-        return keywordRepository.existsByNameAndType_Name(keywordName, typeName);
+        return keywordRepository.existsByNameAndType(keywordName, CriterionType.valueOf(typeName));
     }
 
     public KeyWord getByNameAndType(String keywordName, CriterionType type) {

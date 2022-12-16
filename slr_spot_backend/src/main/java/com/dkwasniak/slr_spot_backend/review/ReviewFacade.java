@@ -1,8 +1,5 @@
 package com.dkwasniak.slr_spot_backend.review;
 
-import com.dkwasniak.slr_spot_backend.criterion.Criterion;
-import com.dkwasniak.slr_spot_backend.criterion.CriterionService;
-import com.dkwasniak.slr_spot_backend.criterion.CriterionType;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.imports.ImportService;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
@@ -32,7 +29,6 @@ public class ReviewFacade {
     private final ReviewService reviewService;
     private final UserService userService;
     private final TagService tagService;
-    private final CriterionService criterionService;
     private final KeywordService keywordService;
     private final ImportService importService;
     private final ReviewRoleService roleService;
@@ -97,11 +93,6 @@ public class ReviewFacade {
         return review.getTags();
     }
 
-    public Set<Criterion> getCriteria(long id) {
-        Review review = reviewService.getReviewById(id);
-        return review.getCriteria();
-    }
-
     public Set<KeyWord> getKeywords(long id) {
         return keywordService.getByReviewId(id);
     }
@@ -124,25 +115,9 @@ public class ReviewFacade {
         }
     }
 
-    public void addCriterion(long reviewId, String criterionName, String type) {
-        CriterionType criterionType = criterionService.getTypeByName(type);
-        if (!criterionService.checkIfExistByNameAndTypeName(criterionName, type)) {
-            reviewService.addCriterion(reviewId, new Criterion(criterionName, criterionType));
-        } else {
-            reviewService.addCriterion(reviewId, criterionService.getByNameAndType(criterionName, criterionType));
-        }
-    }
-
-    public void removeCriterion(long reviewId, long criterionId, long criterionTypeId) {
-        CriterionType criterionType = criterionService.getTypeById(criterionTypeId);
-        Criterion criterion = criterionService.getByIdAndType(criterionId, criterionType);
-        Review review = reviewService.getReviewById(reviewId);
-        reviewService.removeCriterion(review, criterion);
-    }
-
     public void addKeyword(long reviewId, String keywordName, String type) {
-        CriterionType criterionType = criterionService.getTypeByName(type);
-        reviewService.addKeyword(reviewId, new KeyWord(keywordName, criterionType));
+//        CriterionType criterionType = criterionService.getTypeByName(type);
+//        reviewService.addKeyword(reviewId, new KeyWord(keywordName, criterionType));
     }
 
     public void removeKeyword(long reviewId, long keywordId) {

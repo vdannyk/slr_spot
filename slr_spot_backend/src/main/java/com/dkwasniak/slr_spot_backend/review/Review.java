@@ -55,12 +55,13 @@ public class Review {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(
-            name = "reviews_criteria",
-            joinColumns = { @JoinColumn(name = "review_id") },
-            inverseJoinColumns = { @JoinColumn(name = "criterion_id") }
-    )
+//    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+//    @JoinTable(
+//            name = "reviews_criteria",
+//            joinColumns = { @JoinColumn(name = "review_id") },
+//            inverseJoinColumns = { @JoinColumn(name = "criterion_id") }
+//    )
+    @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     private Set<Criterion> criteria = new HashSet<>();
 
     @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)

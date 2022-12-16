@@ -1,6 +1,5 @@
 package com.dkwasniak.slr_spot_backend.review;
 
-import com.dkwasniak.slr_spot_backend.criterion.Criterion;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
@@ -121,22 +120,6 @@ public class ReviewService {
 
     public boolean checkIfContainsTag(Review review, String name) {
         return review.getTags().stream().map(Tag::getName).collect(Collectors.toSet()).contains(name);
-    }
-
-    public void addCriterion(long reviewId, Criterion criterion) {
-        Review review = getReviewById(reviewId);
-//        if (checkIfContainsCriterion(review, criterion)) {
-//            throw new TagExistsInReviewException("Given tag already exists in this review");
-//        }
-        review.getCriteria().add(criterion);
-    }
-
-    public void removeCriterion(Review review, Criterion criterion) {
-        review.getCriteria().remove(criterion);
-    }
-
-    public boolean checkIfContainsCriterion(Review review, Criterion criterion) {
-        return review.getCriteria().contains(criterion);
     }
 
     public void addKeyword(long reviewId, KeyWord keyWord) {

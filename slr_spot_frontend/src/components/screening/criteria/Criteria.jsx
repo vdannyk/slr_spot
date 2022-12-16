@@ -23,7 +23,7 @@ const Criteria = () => {
   const {register, handleSubmit, formState: { errors }} = useForm();
 
   
-  const inclusionCriteria = criteria.filter((criterion) => criterion.type.name === INCLUSION_TYPE)
+  const inclusionCriteria = criteria.filter((criterion) => criterion.type === INCLUSION_TYPE)
     .map((criterion) => 
       <p key={criterion.name}>
         <AiFillMinusCircle 
@@ -33,7 +33,7 @@ const Criteria = () => {
       </p>
   );
 
-  const exclusionCriteria = criteria.filter((criterion) => criterion.type.name === EXCLUSION_TYPE)
+  const exclusionCriteria = criteria.filter((criterion) => criterion.type === EXCLUSION_TYPE)
     .map((criterion) => 
       <p key={criterion.name}>
         <AiFillMinusCircle 
@@ -44,7 +44,9 @@ const Criteria = () => {
   );
 
   useEffect(() => {
-    axiosInstance.get("/reviews/" + reviewId + "/criteria")
+    axiosInstance.get("/criteria", { params: {
+      reviewId
+    }})
     .then((response) => {
       setCriteria(response.data);
     })
@@ -74,9 +76,8 @@ const Criteria = () => {
   }
 
   const confirmRemoveCriterion = () => {
-    console.log(criterionToRemove);
-    axiosInstance.post("/reviews/" + reviewId + "/criteria/" + criterionToRemove.id + 
-      "/" + criterionToRemove.type.id + "/remove")
+    console.log(criterionToRemove)
+    axiosInstance.delete("/criteria/" + criterionToRemove.id)
     .then(() => {
       setShowCriterionRemoveConfirmation(false);
       window.location.reload();
@@ -93,9 +94,11 @@ const Criteria = () => {
   }
 
   const onSubmitNewCriterion = (name, type) => {
-    axiosInstance.get("/reviews/" + reviewId + "/criteria/add", { params: {
-      name, type
-    }})
+    axiosInstance.post("/criteria", { 
+      reviewId: reviewId,
+      name: name,
+      type: type
+    })
     .then(() => {
       window.location.reload();
     });

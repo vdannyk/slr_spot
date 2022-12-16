@@ -100,11 +100,11 @@ public class UserFacade {
     }
 
     public void addKeyword(long userId, long reviewId, String keywordName, String type) {
-        CriterionType criterionType = criterionService.getTypeByName(type);
-        Review review = reviewService.getReviewById(reviewId);
-        KeyWord keyWord = new KeyWord(keywordName, criterionType, review);
-        review.getKeywords().add(keyWord);
-        userService.addKeyword(userId, keyWord);
+//        CriterionType criterionType = criterionService.getTypeByName(type);
+//        Review review = reviewService.getReviewById(reviewId);
+//        KeyWord keyWord = new KeyWord(keywordName, criterionType, review);
+//        review.getKeywords().add(keyWord);
+//        userService.addKeyword(userId, keyWord);
     }
 
 }

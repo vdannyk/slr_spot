@@ -10,7 +10,7 @@ import java.util.Set;
 @Repository
 public interface KeywordRepository extends JpaRepository<KeyWord, Long> {
 
-    boolean existsByNameAndType_Name(String name, String type);
+    boolean existsByNameAndType(String name, CriterionType type);
     Optional<KeyWord> findByNameAndType(String name, CriterionType type);
     Optional<KeyWord> findByIdAndType(long id, CriterionType type);
     Set<KeyWord> findByReview_IdAndUserNull(long reviewId);

@@ -1,6 +1,5 @@
 package com.dkwasniak.slr_spot_backend.review;
 
-import com.dkwasniak.slr_spot_backend.criterion.Criterion;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
@@ -101,27 +100,6 @@ public class ReviewController {
     @PostMapping("/{id}/tags/{tagId}/remove")
     public ResponseEntity<Void> removeTag(@PathVariable Long id, @PathVariable Long tagId) {
         reviewFacade.removeTag(id, tagId);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{id}/criteria")
-    public ResponseEntity<Set<Criterion>> getCriteria(@PathVariable Long id) {
-        return ResponseEntity.ok().body(reviewFacade.getCriteria(id));
-    }
-
-    @GetMapping("/{reviewId}/criteria/add")
-    public ResponseEntity<Void> addTag(@PathVariable Long reviewId,
-                                       @RequestParam String name,
-                                       @RequestParam String type) {
-        reviewFacade.addCriterion(reviewId, name, type);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/{reviewId}/criteria/{criterionId}/{criterionTypeId}/remove")
-    public ResponseEntity<Void> removeTag(@PathVariable Long reviewId,
-                                          @PathVariable Long criterionId,
-                                          @PathVariable Long criterionTypeId) {
-        reviewFacade.removeCriterion(reviewId, criterionId, criterionTypeId);
         return ResponseEntity.ok().build();
     }
 

@@ -3,30 +3,23 @@ package com.dkwasniak.slr_spot_backend.criterion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CriterionService {
 
     private final CriterionRepository criterionRepository;
-    private final CriterionTypeRepository criterionTypeRepository;
 
-    public CriterionType getTypeByName(String typeName) {
-        return criterionTypeRepository.findByName(typeName).orElseThrow();
+    public List<Criterion> getCriteriaByReviewId(Long reviewId) {
+        return criterionRepository.findByReview_Id(reviewId);
     }
 
-    public CriterionType getTypeById(long id) {
-        return criterionTypeRepository.findById(id).orElseThrow();
+    public Long saveCriterion(Criterion criterion) {
+        return criterionRepository.save(criterion).getId();
     }
 
-    public boolean checkIfExistByNameAndTypeName(String criterionName, String typeName) {
-        return criterionRepository.existsByNameAndType_Name(criterionName, typeName);
-    }
-
-    public Criterion getByNameAndType(String criterionName, CriterionType type) {
-        return criterionRepository.findByNameAndType(criterionName, type).orElseThrow();
-    }
-
-    public Criterion getByIdAndType(long criterionId, CriterionType type) {
-        return criterionRepository.findByIdAndType(criterionId, type).orElseThrow();
+    public void removeCriterion(Long criterionId) {
+        criterionRepository.deleteById(criterionId);
     }
 }
