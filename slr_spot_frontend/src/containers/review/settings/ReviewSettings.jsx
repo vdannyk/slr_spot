@@ -29,7 +29,7 @@ const ReviewSettings = () => {
     const isPublic = formData.isPublic;
     const screeningReviewers = formData.screeningReviewers;
     console.log(formData);
-    axiosInstance.post("/reviews/" + reviewId + "/update", {
+    axiosInstance.put("/reviews/" + reviewId, {
       name, researchArea, description, isPublic, screeningReviewers
     })
     .then(() => {

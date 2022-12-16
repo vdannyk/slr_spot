@@ -115,7 +115,6 @@ public class ReviewService {
         currentReview.setScreeningReviewers(reviewDto.getScreeningReviewers() == null
                 ? currentReview.getScreeningReviewers() : reviewDto.getScreeningReviewers());
         reviewRepository.save(currentReview);
-
     }
 
 }
