@@ -63,7 +63,7 @@ const ReviewTeam = () => {
 
   const onAddMembers = () => {
     const membersToAdd = selectedMembers;
-    axiosInstance.post("/reviews/" + reviewId + "/members/add", {
+    axiosInstance.post("/reviews/" + reviewId + "/members", {
       membersToAdd
     })
     .then(() => {

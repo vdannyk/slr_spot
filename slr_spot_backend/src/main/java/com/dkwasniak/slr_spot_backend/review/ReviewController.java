@@ -1,6 +1,6 @@
 package com.dkwasniak.slr_spot_backend.review;
 
-import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
+import com.dkwasniak.slr_spot_backend.review.dto.ReviewMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
@@ -75,9 +75,9 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewFacade.getUsersAvailableToAdd(id));
     }
 
-    @PostMapping("/{id}/members/add")
-    public ResponseEntity<Void> addMembers(@PathVariable Long id, @RequestBody AddMembersDto membersToAdd) {
-        reviewFacade.addMembers(id, membersToAdd);
+    @PostMapping("/{id}/members")
+    public ResponseEntity<Void> addMembers(@PathVariable Long id, @RequestBody ReviewMembersDto reviewMembersDto) {
+        reviewFacade.addMembers(id, reviewMembersDto);
         return ResponseEntity.ok().build();
     }
 

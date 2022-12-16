@@ -106,12 +106,6 @@ public class UserService implements UserDetailsService {
         return passwordEncoder.matches(password, user.getPassword());
     }
 
-    public void addReviewToUser(User user, Review review, ReviewRole role) {
-        user.addReview(review, role);
-        userRepository.save(user);
-        log.info("User \"{}\" added to review \"{}\"", user.getEmail(), review.getTitle());
-    }
-
     public Set<String> getAllEmails() {
         return userRepository.getEmails();
     }

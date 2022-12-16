@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class AddMembersDto {
+public class ReviewMembersDto {
 
     private List<String> membersToAdd;
 }
