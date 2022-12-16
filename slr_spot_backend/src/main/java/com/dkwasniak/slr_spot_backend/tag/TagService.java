@@ -3,23 +3,24 @@ package com.dkwasniak.slr_spot_backend.tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class TagService {
 
     private final TagRepository tagRepository;
 
-    public Tag getById(long id) {
-        return tagRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Tag with given id not found"));
+    public Set<Tag> getTagsByReviewId(Long reviewId) {
+        return tagRepository.findByReview_Id(reviewId);
     }
 
-    public Tag getByName(String name) {
-        return tagRepository.findByName(name)
-                .orElseThrow(() -> new IllegalStateException("Tag with given name not found"));
+    public Long saveTag(Tag tag) {
+        return tagRepository.save(tag).getId();
     }
 
-    public boolean checkIfExistsByName(String name) {
-        return tagRepository.existsByName(name);
+    public void removeTag(Long tagId) {
+        tagRepository.deleteById(tagId);
     }
+
 }

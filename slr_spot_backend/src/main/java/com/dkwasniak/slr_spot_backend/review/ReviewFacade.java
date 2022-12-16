@@ -9,8 +9,6 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleService;
-import com.dkwasniak.slr_spot_backend.tag.Tag;
-import com.dkwasniak.slr_spot_backend.tag.TagService;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +24,6 @@ public class ReviewFacade {
 
     private final ReviewService reviewService;
     private final UserService userService;
-    private final TagService tagService;
     private final ImportService importService;
     private final ReviewRoleService roleService;
 
@@ -82,25 +79,6 @@ public class ReviewFacade {
         for (String email : addMembersDto.getMembersToAdd()) {
             User user = userService.getUserByEmail(email);
             userService.addReviewToUser(user, review, memberRole);
-        }
-    }
-
-    public Set<Tag> getTags(long id) {
-        Review review = reviewService.getReviewById(id);
-        return review.getTags();
-    }
-
-    public void removeTag(long reviewId, long tagId) {
-        Tag tag = tagService.getById(tagId);
-        Review review = reviewService.getReviewById(reviewId);
-        reviewService.removeTag(review, tag);
-    }
-
-    public void addTag(long reviewId, String tagName) {
-        if (!tagService.checkIfExistsByName(tagName)) {
-            reviewService.addTag(reviewId, new Tag(tagName));
-        } else {
-            reviewService.addTag(reviewId, tagService.getByName(tagName));
         }
     }
 

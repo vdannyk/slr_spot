@@ -22,7 +22,9 @@ const Tags = () => {
 
 
   useEffect(() => {
-    axiosInstance.get("/reviews/" + reviewId + "/tags")
+    axiosInstance.get("/tags", { params: {
+      reviewId
+    }})
     .then((response) => {
       setTags(response.data);
     })
@@ -44,21 +46,17 @@ const Tags = () => {
   }
 
   const confirmRemoveTag = () => {
-    axiosInstance.post("/reviews/" + reviewId + "/tags/" + tagToRemove.id + "/remove")
+    axiosInstance.delete("/tags/" + tagToRemove.id)
     .then(() => {
       setShowTagRemoveConfirmation(false);
       window.location.reload();
     });
-    // .catch((error) => {
-    //   console.log(error.response);
-    //   setErrorMessage(error.response);
-    // });
   }
 
   const onSubmitNewTag = (formData) => {
     const name = formData.tagName;
-    axiosInstance.get("/reviews/" + reviewId + "/tags/add", { params: {
-      name
+    axiosInstance.post("/tags", null, { params: {
+      reviewId, name
     }})
     .then(() => {
       window.location.reload();

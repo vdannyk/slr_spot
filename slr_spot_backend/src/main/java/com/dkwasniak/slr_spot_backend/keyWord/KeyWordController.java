@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Set;
 
 @RestController
@@ -34,15 +36,19 @@ public class KeyWordController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addKeyword(@RequestBody KeyWordDto keyWordDto) {
-        keyWordFacade.addKeyWord(keyWordDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Long> addKeyword(@RequestBody KeyWordDto keyWordDto) {
+        long id = keyWordFacade.addKeyWord(keyWordDto);
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentContextPath().path(EndpointConstants.API_PATH + "/keywords").buildAndExpand(id).toUriString());
+        return ResponseEntity.created(uri).body(id);
     }
 
     @PostMapping("/personal")
-    public ResponseEntity<Void> addUserKeyword(@RequestBody KeyWordDto keyWordDto) {
-        keyWordFacade.addKeyWord(keyWordDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Long> addUserKeyword(@RequestBody KeyWordDto keyWordDto) {
+        long id = keyWordFacade.addKeyWord(keyWordDto);
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentContextPath().path(EndpointConstants.API_PATH + "/keywords").buildAndExpand(id).toUriString());
+        return ResponseEntity.created(uri).body(id);
     }
 
     @DeleteMapping("/{keywordId}")

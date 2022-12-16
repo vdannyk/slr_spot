@@ -6,7 +6,6 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
-import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -82,23 +81,6 @@ public class ReviewController {
     @PostMapping("/{id}/members/add")
     public ResponseEntity<Void> addMembers(@PathVariable Long id, @RequestBody AddMembersDto membersToAdd) {
         reviewFacade.addMembers(id, membersToAdd);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{id}/tags")
-    public ResponseEntity<Set<Tag>> getTags(@PathVariable Long id) {
-        return ResponseEntity.ok().body(reviewFacade.getTags(id));
-    }
-
-    @GetMapping("/{reviewId}/tags/add")
-    public ResponseEntity<Void> addTag(@PathVariable Long reviewId, @RequestParam String name) {
-        reviewFacade.addTag(reviewId, name);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/{id}/tags/{tagId}/remove")
-    public ResponseEntity<Void> removeTag(@PathVariable Long id, @PathVariable Long tagId) {
-        reviewFacade.removeTag(id, tagId);
         return ResponseEntity.ok().build();
     }
 
