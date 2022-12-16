@@ -3,6 +3,7 @@ import axiosInstance from '../../../../../services/api';
 import FolderTree from '../../../../../components/folder/FolderTree';
 import { BeatLoader } from "react-spinners";
 import './foldersView.css';
+import FolderService from '../../../../../services/folder_service';
 
 
 const FoldersView = () => {
@@ -11,13 +12,10 @@ const FoldersView = () => {
 
   useEffect(() => {
     setLoading(true);
-    axiosInstance.get("/folders")
-    .then((response) => {
-      console.log(response.data);
+    FolderService.getFolderTree()
+    .then( (response) => {
       setFolders(response.data)
       setLoading(false);
-    })
-    .catch(() => {
     });
   }, []);
 
