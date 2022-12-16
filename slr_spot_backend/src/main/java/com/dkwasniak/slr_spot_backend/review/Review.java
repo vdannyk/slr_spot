@@ -4,7 +4,9 @@ import com.dkwasniak.slr_spot_backend.criterion.Criterion;
 import com.dkwasniak.slr_spot_backend.folder.Folder;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
+import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
+import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
@@ -24,6 +26,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -74,4 +77,18 @@ public class Review {
         this.screeningReviewers = screeningReviewers;
     }
 
+    public void addUser(User user, ReviewRole role) {
+        UserReview userReview = new UserReview(user, this, role);
+        this.users.add(userReview);
+    }
+
+//    public void removeReview(Review review) {
+//        for (Iterator<UserReview> it = reviews.iterator(); it.hasNext();) {
+//            UserReview userReview = it.next();
+//            if (userReview.getUser().equals(this) && userReview.getReview().equals(review)) {
+//                it.remove();
+//                this.reviews.remove(userReview);
+//            }
+//        }
+//    }
 }

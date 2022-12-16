@@ -8,6 +8,7 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMemberDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
+import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleEnum;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleService;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
@@ -27,19 +28,18 @@ public class ReviewFacade {
     private final ImportService importService;
     private final ReviewRoleService roleService;
 
-    public long createReview(ReviewDto reviewDto, String username) {
+    public long addReview(ReviewDto reviewDto) {
+        User owner = userService.getUserById(reviewDto.getUserId());
         Review review = new Review(reviewDto.getName(), reviewDto.getResearchArea(), reviewDto.getDescription(),
                 reviewDto.getIsPublic(), reviewDto.getScreeningReviewers());
-        long id = reviewService.saveReview(review);
-        User owner = userService.getUserByEmail(username);
-        ReviewRole ownerRole = roleService.getRoleByName("OWNER");
-        ReviewRole memberRole = roleService.getRoleByName("MEMBER");
-        userService.addReviewToUser(owner, review, ownerRole);
-        for (String email : reviewDto.getReviewers()) {
+        ReviewRole ownerRole = roleService.getRoleByName(ReviewRoleEnum.OWNER.name());
+        ReviewRole memberRole = roleService.getRoleByName(ReviewRoleEnum.MEMBER.name());
+        review.addUser(owner, ownerRole);
+        reviewDto.getReviewers().forEach(email -> {
             User user = userService.getUserByEmail(email);
-            userService.addReviewToUser(user, review, memberRole);
-        }
-        return id;
+            review.addUser(user, memberRole);
+        });
+        return reviewService.saveReview(review);
     }
 
     public ReviewsPageDto getPublicReviews(int page, int size) {
@@ -56,7 +56,7 @@ public class ReviewFacade {
         return reviewService.getMembers(id);
     }
 
-    public ReviewsPageDto getReviewsByUser(long userId, int page, int size) {
+    public ReviewsPageDto getReviewsByUserId(long userId, int page, int size) {
         return reviewService.toReviewsPageDto(
                 reviewService.getReviewsByUser(userId, page, size)
         );

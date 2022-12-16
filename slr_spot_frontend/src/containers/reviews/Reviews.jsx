@@ -37,7 +37,10 @@ const Reviews = () => {
         }
       });
     } else {
-      axiosInstance.get("/reviews/users/" + currentUser.id)
+      var userId = currentUser.id;
+      axiosInstance.get("/reviews", { params: {
+        userId
+      }})
       .then((response) => {
         setData(response.data.reviews);
         console.log(response.data);
