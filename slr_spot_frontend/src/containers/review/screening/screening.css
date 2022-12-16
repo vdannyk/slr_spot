@@ -1,0 +1,26 @@
+.slrspot__screening {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.slrspot__screening-showOptions {
+  display: flex;
+  margin: 5px 40px 0;
+  text-transform: uppercase;
+  align-items: center;
+}
+
+
+
+.slrspot__screening-studies {
+  display: flex;
+  flex-direction: column;
+  margin: 0 40px;
+}
+
+.slrspot__screening-studies-folders {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 40px;
+}

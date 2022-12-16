@@ -1,0 +1,20 @@
+.slrspot__studiesDisplay-newFolder {
+  display: flex;
+  font-size: 20px;
+}
+
+.slrspot__studiesDisplay-newFolder button {
+  border-radius: 4px;
+	padding: 9px 50px;
+}
+
+.slrspot__studiesDisplay-newFolder-buttons {
+ background-color: #7344a6;
+ padding: 0 5px;
+}
+
+.slrspot__studiesDisplay-newFolder span {
+  color: white;
+  font-size: 24px;
+  margin-left: 5px;
+}

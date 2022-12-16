@@ -1,0 +1,24 @@
+.slrspot__helper {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 5px;
+  border: thin solid #ae67faa9;
+  background-color: #ae67fa6a;
+  font-size: 12px;
+}
+
+.slrspot__helper p {
+  margin: 10px 10px 0;
+}
+
+.slrspot__helper-close {
+  align-self: flex-end;
+  font-size: 15px;
+  color: black;
+  position: absolute;
+  cursor: pointer;
+  margin-top: 2px;
+  margin-right: 400px;
+}

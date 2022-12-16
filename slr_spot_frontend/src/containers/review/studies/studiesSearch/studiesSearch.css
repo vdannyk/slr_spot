@@ -1,0 +1,31 @@
+.slrspot__review-studiesSearch {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.slrspot__review-studiesSearch-import {
+  margin: 20px 40px;
+}
+
+.slrspot__review-studiesSearch h3 {
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.slrspot__review-studiesSearch-imports-list {
+  margin: 20px 40px;
+}
+
+.slrspot__imports-empty {
+  font-size: 20px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: rgb(217, 217, 217);
+}
+
+.slrspot__review-studiesSearch-imports-showMore {
+  color: blue;
+  cursor: pointer;
+}

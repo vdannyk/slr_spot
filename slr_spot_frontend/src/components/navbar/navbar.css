@@ -6,7 +6,7 @@
 
     padding: 0.1rem 6rem;
     height: 10vh;
-    border-bottom: thin dotted #000000;
+    border-bottom: thin solid #000000;
 }
 
 .slrspot__navbar-links {
@@ -53,15 +53,10 @@
 .slrspot__navbar-sign button,
 .slrspot__navbar-menu_container button {
     padding: 0.5rem 2rem;
-    color: white;
     background: #00a6ff;
-    font-family: var(--font-family);
-    font-weight: bold;
     font-size: 25px;
     line-height: 25px;
     border-radius: 5px;
-    border: 0;
-    cursor: pointer;
 }
 
 .slrspot__navbar-menu {

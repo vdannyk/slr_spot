@@ -40,14 +40,13 @@ public class JwtController {
             try {
                 String refreshToken = refreshTokenRequest.getRefreshToken();
                 DecodedJWT decodedJWT = validateJwt(refreshToken);
-                User user = userService.getUser(getUsername(decodedJWT));
+                User user = userService.getUserByEmail(getUsername(decodedJWT));
                 String jwtToken = generateJwt(user, request);
                 JwtResponse jwtResponse = new JwtResponse(
                         user.getId(),
                         user.getEmail(),
                         user.getFirstName(),
                         user.getLastName(),
-                        user.getRoles(),
                         jwtToken,
                         refreshToken
                 );

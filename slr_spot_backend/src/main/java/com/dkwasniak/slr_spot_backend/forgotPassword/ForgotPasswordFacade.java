@@ -17,7 +17,7 @@ public class ForgotPasswordFacade {
     private final EmailService emailService;
 
     public void resetPassword(String email) {
-        User user = userService.getUser(email);
+        User user = userService.getUserByEmail(email);
         String token = forgotPasswordService.generatePasswordResetToken();
         forgotPasswordService.save(new ForgotPasswordToken(token, user));
         constructResetTokenEmail(token, user);

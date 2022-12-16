@@ -45,7 +45,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authResult) throws IOException {
         String username = ((User) authResult.getPrincipal()).getUsername();
-        com.dkwasniak.slr_spot_backend.user.User user = userService.getUser(username);
+        com.dkwasniak.slr_spot_backend.user.User user = userService.getUserByEmail(username);
         String jwtToken = generateJwt(user, request);
         String refreshToken = generateRefreshToken(user, request);
         JwtResponse jwtResponse = new JwtResponse(
@@ -53,7 +53,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             user.getEmail(),
             user.getFirstName(),
             user.getLastName(),
-            user.getRoles(),
             jwtToken,
             refreshToken
         );

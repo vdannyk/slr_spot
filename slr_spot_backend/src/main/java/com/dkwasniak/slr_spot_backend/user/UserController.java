@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Set;
 
 
 @RestController
@@ -30,6 +32,17 @@ public class UserController {
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/api/v1/users/{id}").buildAndExpand(id).toUriString());
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Set<UserDto>> getUsersByReviewId(@RequestParam Long reviewId) {
+        return ResponseEntity.ok().body(userFacade.getUsersByReviewId(reviewId));
+    }
+
+    @GetMapping("/emails")
+    public ResponseEntity<Set<String>> getUsersEmails() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return ResponseEntity.ok().body(userFacade.getEmails(username));
     }
 
     @GetMapping("/confirm")
@@ -52,12 +65,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-//    @PostMapping("/email/update/confirm")
-//    public ResponseEntity<String> updateEmail(@RequestParam String confirmationToken) {
-//        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-//        userFacade.updateEmail(username, emailUpdateDto.getNewEmail());
-//        return ResponseEntity.ok().build();
-//    }
+    @GetMapping("/{id}/email/update/confirm")
+    public ResponseEntity<String> saveEmail(@RequestParam String confirmationToken, @PathVariable String id) {
+        userFacade.saveEmail(confirmationToken);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/name/update")
     public ResponseEntity<String> updateName(@RequestBody UserDto userDto) {
@@ -65,4 +77,5 @@ public class UserController {
         userFacade.updateName(username, userDto);
         return ResponseEntity.ok().build();
     }
+
 }

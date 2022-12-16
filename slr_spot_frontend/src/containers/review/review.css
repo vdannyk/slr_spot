@@ -1,0 +1,18 @@
+.slrspot__review {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  background-color: white;
+  min-height: 90vh;
+}
+
+.slrspot__review-content {
+  display: flex;
+  flex: 1;
+}
+
+.slrspot__review-header {
+  display: flex;
+  padding: 30px 40px 10px;
+  text-transform: uppercase;
+}

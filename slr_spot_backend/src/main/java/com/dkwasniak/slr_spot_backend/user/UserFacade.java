@@ -3,17 +3,21 @@ package com.dkwasniak.slr_spot_backend.user;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationToken;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
 import com.dkwasniak.slr_spot_backend.email.EmailService;
-import com.dkwasniak.slr_spot_backend.role.Role;
-import com.dkwasniak.slr_spot_backend.role.RoleRepository;
+import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
+import com.dkwasniak.slr_spot_backend.userReview.UserReview;
+import com.dkwasniak.slr_spot_backend.userReview.UserReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
+
 
 @Component
 @RequiredArgsConstructor
@@ -22,9 +26,9 @@ import java.util.UUID;
 public class UserFacade {
 
     private final UserService userService;
-    private final RoleRepository roleRepository;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
+    private final UserReviewService userReviewService;
 
     public long createUser(User user) {
         User savedUser = userService.saveUser(user);
@@ -37,28 +41,35 @@ public class UserFacade {
         return savedUser.getId();
     }
 
+    public Set<UserDto> getUsersByReviewId(Long reviewId) {
+        Set<UserReview> users = userReviewService.getUserReviewByReviewId(reviewId);
+        return users.stream().map(userService::toUserDto).collect(Collectors.toSet());
+    }
+
     @Transactional
     public void confirmAccount(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationToken(token);
         confirmationTokenService.confirmToken(confirmationToken);
-//        User user = confirmationToken.getUser();
         userService.activateUser(confirmationToken.getUser().getEmail());
     }
 
-    public void addRoleToUser(String username, String roleName) {
-        log.info("Role {} added to user {}", roleName, username);
-        User user = userService.getUser(username);
-        Role role = roleRepository.findByName(roleName).orElseThrow();
-        user.getRoles().add(role);
-    }
-
     public void updateEmail(String oldEmail, String newEmail) {
-        User user = userService.getUser(oldEmail);
+        User user = userService.getUserByEmail(oldEmail);
         ConfirmationToken confirmationToken = confirmationTokenService.createConfirmationToken(user);
+        confirmationToken.setNewEmail(newEmail);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String activationLink = String.format("http://localhost:3000/activate/%s", confirmationToken.getToken());
+        String activationLink = String.format("http://localhost:3000/email/confirm/%s", confirmationToken.getToken());
         emailService.sendVerificationEmail(newEmail, activationLink);
+    }
+
+    public void saveEmail(String token) {
+        ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationToken(token);
+        if (isNull(confirmationToken.getNewEmail())) {
+            throw new IllegalStateException("Cant confirm new email");
+        }
+        confirmationTokenService.confirmToken(confirmationToken);
+        userService.updateEmail(confirmationToken.getUser(), confirmationToken.getNewEmail());
     }
 
     public void updatePassword(String username, UpdatePasswordDto updatePasswordDto) {
@@ -68,11 +79,14 @@ public class UserFacade {
                 updatePasswordDto.getConfirmPassword());
     }
 
-//    public void updateEmail(String username, String newEmail) {
-//        userService.updateEmail(username, newEmail);
-//    }
-
     public void updateName(String username, UserDto userDto) {
         userService.updateName(username, userDto.getFirstName(), userDto.getLastName());
     }
+
+    public Set<String> getEmails(String currentUserEmail) {
+        Set<String> allUsersEmails = userService.getAllEmails();
+        allUsersEmails.remove(currentUserEmail);
+        return allUsersEmails;
+    }
+
 }

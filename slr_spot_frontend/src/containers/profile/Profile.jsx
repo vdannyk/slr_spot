@@ -71,17 +71,6 @@ const Profile = () => {
     });
   };
 
-  const refreshAccessToken = () => {
-    axiosInstance.post("/auth/refresh", {
-      refreshToken: TokenService.getLocalRefreshToken(),
-    })
-    .then((response) => {
-      const { accessToken } = response.data;
-      dispatch(refreshToken(accessToken));
-      TokenService.updateLocalAccessToken(accessToken);
-    });
-  };
-
   return (
     <div className='slrspot__profile'>
       <div className='slrspot__profile-header'>

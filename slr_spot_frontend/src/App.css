@@ -18,12 +18,27 @@ a {
 button {
 	border-radius: 20px;
 	border: 0;
-	background: linear-gradient(89.97deg, #AE67FA 1.84%, #F49867 102.67%);
-	color: #FFFFFF;
-	font-size: 14px;
+	background: #AE67FA;
+	color: white;
+	font-size: 16px;
 	font-weight: bold;
+	padding: 10px 50px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #a653fe;
+}
+
+input {
+	background-color: white;
+	padding: 8px 15px;
+	font-size: 16px;
+  border-width: 1px 1px 1px 5px;
+  border-color: black;
+  border-left-color: #AE67FA;
 }
 
 .slrspot__app {
@@ -72,6 +87,13 @@ button {
 .scale-up-center {
 	-webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	        animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+.slrspot__input-error {
+  /* background-color: red; */
+  font-size: 12px;
+  color: red;
+  margin-bottom: 0;
 }
 
 /* ----------------------------------------------

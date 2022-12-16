@@ -1,0 +1,109 @@
+.slrspot__newReview {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  flex: 1;
+  margin: 20px 20px;
+  border-radius: 5px;
+  min-height: 85vh;
+}
+
+.slrspot__newReview input {
+	padding: 10px 20px;
+	font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.slrspot__newReview textarea {
+	width: 50%;
+  margin-bottom: 10px;
+  height: 10vh;
+	resize: none;
+}
+
+.slrspot__newReview-header {
+  display: flex;
+  border-bottom: thin solid #000000;
+  text-transform: uppercase;
+}
+
+.slrspot__newReview-header h1 {
+  font-size: 40px;
+  margin: 10px;
+}
+
+.slrspot__newReview-container {
+  display: flex;
+  flex: 1;
+}
+
+.slrspot__newReview-menu {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+}
+
+.slrspot__newReview-settings {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid black;
+  width: 80%;
+}
+
+.slrspot__newReview-settings-header {
+  display: flex;
+  border-bottom: thin solid #000000;
+  text-transform: uppercase;
+}
+
+.slrspot__newReview-settings-header h2 {
+  font-size: 30px;
+  margin: 10px;
+}
+
+.slrspot__newReview-settings-container {
+  display: flex;
+  flex: 1;
+  margin: 20px 40px;
+}
+
+.slrspot__newReview-settings-buttons {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid black;
+  padding: 10px;
+}
+
+.slrspot__newReview-settings-buttons button {
+  width: 20%;
+}
+
+.slrspot__newReview-settings-nextButton {
+  margin-left: auto;
+}
+
+.slrspot__newReview-menu p {
+  width: 100%;
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0;
+  border-bottom: 1px solid #eee;
+}
+
+.slrspot__newReview-menu p:hover {
+  background-color: #967aff;
+}
+
+.slrspot__newReview-menu-selected {
+  background-color: #967aff;
+  color: white;
+}
+
+.slrspot__newReview-settings button {
+  border-radius: 5px;
+  font-size: 16px;
+	padding: 10px 20px;
+	letter-spacing: 2px;
+}

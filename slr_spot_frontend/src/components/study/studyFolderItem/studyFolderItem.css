@@ -1,0 +1,18 @@
+.slrspot__studyFolder {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+}
+
+.slrspot__studyFolder p { 
+  margin: 0;
+  font-size: 20px;
+  margin-left: 10px;
+}
+
+.slrspot__studyFolder-details {
+  color: blue;
+  text-transform: uppercase;
+  cursor: pointer;
+}

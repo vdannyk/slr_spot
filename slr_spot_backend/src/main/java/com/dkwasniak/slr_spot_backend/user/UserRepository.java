@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+
     Optional<User> findByEmail(String email);
     @Transactional
     @Modifying
@@ -16,4 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE u.email = ?1")
     void enableUser(String email);
     Boolean existsByEmail(String email);
+    @Query("SELECT u.email " +
+            "FROM User u ")
+    Set<String> getEmails();
+
 }

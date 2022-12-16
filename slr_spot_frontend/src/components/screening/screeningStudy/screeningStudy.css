@@ -1,0 +1,74 @@
+.slrspot__screeningStudy {
+  display: flex;
+  flex-direction: column;
+  border-bottom: thin solid #c0c0c0;
+  margin: 10px 0;
+}
+
+.slrspot__screeningStudy h3 {
+  margin: 2px 0;
+  font-weight: bold;
+}
+
+.slrspot__screeningStudy p {
+  margin: 2px 0;
+}
+
+.slrspot__screeningStudy label {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.slrspot__screeningStudy-showAbstract-button {
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+.slrspot__screeningStudy-options {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 5px 0;
+}
+
+.slrspot__screeningStudy-options button {
+  background-color: white;
+  font-size: 12px;
+  color: black;
+  border: thin solid #c0c0c0;
+  border-radius: 4px;
+  flex: 1;
+	padding: 4px;
+}
+
+.slrspot__screeningStudy-options button:hover {
+  background-color: rgb(206, 206, 206);
+}
+
+.slrspot__screeningStudy-decision {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.slrspot__screeningStudy-decision-button {
+  flex: 1;
+  padding: 4px;
+}
+
+.slrspot__screeningStudy-decision-button:hover {
+  background-color: #a653fe;
+}
+
+.pdf {
+  background-color: white;
+  font-size: 14px;
+  color: black;
+  border: thin solid #c0c0c0;
+  border-radius: 4px;
+  flex: 1;
+	padding: 8px;
+}
