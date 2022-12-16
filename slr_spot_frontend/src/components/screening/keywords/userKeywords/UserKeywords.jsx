@@ -46,7 +46,9 @@ const UserKeywords = () => {
 
   useEffect(() => {
     if (showTeamKeywords) {
-      axiosInstance.get("/reviews/" + reviewId + "/keywords")
+      axiosInstance.get("/keywords", { params: {
+        reviewId
+      }})
       .then((response) => {
         setKeywords(response.data);
       })

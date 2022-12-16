@@ -3,10 +3,8 @@ package com.dkwasniak.slr_spot_backend.user;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationToken;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
 import com.dkwasniak.slr_spot_backend.criterion.CriterionService;
-import com.dkwasniak.slr_spot_backend.criterion.CriterionType;
 import com.dkwasniak.slr_spot_backend.email.EmailService;
-import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
-import com.dkwasniak.slr_spot_backend.keyWord.KeywordService;
+import com.dkwasniak.slr_spot_backend.keyWord.KeyWordService;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
@@ -30,9 +28,6 @@ public class UserFacade {
     private final UserService userService;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
-    private final ReviewService reviewService;
-    private final KeywordService keywordService;
-    private final CriterionService criterionService;
 
     public long createUser(User user) {
         User savedUser = userService.saveUser(user);
@@ -82,13 +77,6 @@ public class UserFacade {
         userService.updateName(username, userDto.getFirstName(), userDto.getLastName());
     }
 
-    // TODO remove it
-//    public void addReviewToUser(String username, long reviewId) {
-//        User user = userService.getUserByEmail(username);
-//        Review review = reviewService.getReviewById(reviewId);
-//        userService.addReviewToUser(user, review);
-//    }
-
     public Set<Review> getReviewsByUser(long id) {
         return userService.getReviewsByUser(id);
     }
@@ -97,14 +85,6 @@ public class UserFacade {
         Set<String> allUsersEmails = userService.getAllEmails();
         allUsersEmails.remove(currentUserEmail);
         return allUsersEmails;
-    }
-
-    public void addKeyword(long userId, long reviewId, String keywordName, String type) {
-//        CriterionType criterionType = criterionService.getTypeByName(type);
-//        Review review = reviewService.getReviewById(reviewId);
-//        KeyWord keyWord = new KeyWord(keywordName, criterionType, review);
-//        review.getKeywords().add(keyWord);
-//        userService.addKeyword(userId, keyWord);
     }
 
 }

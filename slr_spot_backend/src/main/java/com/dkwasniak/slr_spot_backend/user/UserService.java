@@ -1,22 +1,18 @@
 package com.dkwasniak.slr_spot_backend.user;
 
-import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.Review;
-import com.dkwasniak.slr_spot_backend.review.ReviewRepository;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.user.exception.UserAlreadyExistException;
 import com.dkwasniak.slr_spot_backend.user.exception.UserNotFoundException;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -115,13 +111,6 @@ public class UserService implements UserDetailsService {
         log.info("User \"{}\" added to review \"{}\"", user.getEmail(), review.getTitle());
     }
 
-    // TODO remove it probably
-//    public void addReviewToUser(User user, Review review) {
-//        user.addReview(review, ReviewRole.MEMBER);
-//        userRepository.save(user);
-//        log.info("User \"{}\" added to review \"{}\"", user.getEmail(), review.getTitle());
-//    }
-
     public Set<Review> getReviewsByUser(long id) {
         User user = getUserById(id);
         return user.getReviews().stream().map(UserReview::getReview).collect(Collectors.toSet());
@@ -131,9 +120,4 @@ public class UserService implements UserDetailsService {
         return userRepository.getEmails();
     }
 
-    public void addKeyword(long userId, KeyWord keyWord) {
-        User user = getUserById(userId);
-        keyWord.setUser(user);
-        user.getKeywords().add(keyWord);
-    }
 }

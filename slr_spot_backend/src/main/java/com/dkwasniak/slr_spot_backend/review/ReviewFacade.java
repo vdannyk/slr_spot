@@ -2,8 +2,6 @@ package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.imports.ImportService;
-import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
-import com.dkwasniak.slr_spot_backend.keyWord.KeywordService;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
@@ -29,7 +27,6 @@ public class ReviewFacade {
     private final ReviewService reviewService;
     private final UserService userService;
     private final TagService tagService;
-    private final KeywordService keywordService;
     private final ImportService importService;
     private final ReviewRoleService roleService;
 
@@ -93,14 +90,6 @@ public class ReviewFacade {
         return review.getTags();
     }
 
-    public Set<KeyWord> getKeywords(long id) {
-        return keywordService.getByReviewId(id);
-    }
-
-    public Set<KeyWord> getKeywords(long reviewId, long userId) {
-        return keywordService.getByReviewIdAndUserId(reviewId, userId);
-    }
-
     public void removeTag(long reviewId, long tagId) {
         Tag tag = tagService.getById(tagId);
         Review review = reviewService.getReviewById(reviewId);
@@ -113,16 +102,6 @@ public class ReviewFacade {
         } else {
             reviewService.addTag(reviewId, tagService.getByName(tagName));
         }
-    }
-
-    public void addKeyword(long reviewId, String keywordName, String type) {
-//        CriterionType criterionType = criterionService.getTypeByName(type);
-//        reviewService.addKeyword(reviewId, new KeyWord(keywordName, criterionType));
-    }
-
-    public void removeKeyword(long reviewId, long keywordId) {
-        KeyWord keyWord = keywordService.getById(keywordId);
-        reviewService.removeKeyword(reviewId, keyWord);
     }
 
     public void updateReview(long id, ReviewDto reviewDto) {

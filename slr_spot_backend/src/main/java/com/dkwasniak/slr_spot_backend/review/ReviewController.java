@@ -1,7 +1,6 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.imports.Import;
-import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.dto.AddMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
@@ -100,31 +99,6 @@ public class ReviewController {
     @PostMapping("/{id}/tags/{tagId}/remove")
     public ResponseEntity<Void> removeTag(@PathVariable Long id, @PathVariable Long tagId) {
         reviewFacade.removeTag(id, tagId);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{id}/keywords")
-    public ResponseEntity<Set<KeyWord>> getKeywords(@PathVariable Long id) {
-        return ResponseEntity.ok().body(reviewFacade.getKeywords(id));
-    }
-
-    @GetMapping("/{reviewId}/{userId}/keywords")
-    public ResponseEntity<Set<KeyWord>> getKeywords(@PathVariable Long reviewId, @PathVariable Long userId) {
-        return ResponseEntity.ok().body(reviewFacade.getKeywords(reviewId, userId));
-    }
-
-    @GetMapping("/{reviewId}/keywords/add")
-    public ResponseEntity<Void> addKeyword(@PathVariable Long reviewId,
-                                       @RequestParam String name,
-                                       @RequestParam String type) {
-        reviewFacade.addKeyword(reviewId, name, type);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/{reviewId}/keywords/{keywordId}/remove")
-    public ResponseEntity<Void> removeKeyword(@PathVariable Long reviewId,
-                                          @PathVariable Long keywordId) {
-        reviewFacade.removeKeyword(reviewId, keywordId);
         return ResponseEntity.ok().build();
     }
 

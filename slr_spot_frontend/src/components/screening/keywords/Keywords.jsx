@@ -24,7 +24,7 @@ const Keywords = (props) => {
   const {register, handleSubmit, formState: { errors }} = useForm();
   const { user: currentUser } = useSelector((state) => state.auth);
 
-  const inclusionKeywords = keywords.filter((keyword) => keyword.type.name === INCLUSION_TYPE)
+  const inclusionKeywords = keywords.filter((keyword) => keyword.type === INCLUSION_TYPE)
     .map((keyword) => 
       <p key={keyword.name}>
         <AiFillMinusCircle 
@@ -34,7 +34,7 @@ const Keywords = (props) => {
       </p>
   );
 
-  const exclusionKeywords = keywords.filter((keyword) => keyword.type.name === EXCLUSION_TYPE)
+  const exclusionKeywords = keywords.filter((keyword) => keyword.type === EXCLUSION_TYPE)
     .map((keyword) => 
       <p key={keyword.name}>
         <AiFillMinusCircle 
@@ -46,7 +46,9 @@ const Keywords = (props) => {
 
   useEffect(() => {
     if (props.showAll) {
-      axiosInstance.get("/reviews/" + reviewId + "/keywords")
+      axiosInstance.get("/keywords", { params: {
+        reviewId
+      }})
       .then((response) => {
         setKeywords(response.data);
       })
@@ -56,7 +58,10 @@ const Keywords = (props) => {
         }
       });
     } else {
-      axiosInstance.get("/reviews/" + reviewId + "/" + currentUser.id + "/keywords")
+      var userId = currentUser.id;
+      axiosInstance.get("/keywords/personal", { params: {
+        reviewId, userId
+      }})
       .then((response) => {
         setKeywords(response.data);
       })
@@ -79,7 +84,7 @@ const Keywords = (props) => {
   }
 
   const confirmRemoveKeyword= () => {
-    axiosInstance.post("/reviews/" + reviewId + "/keywords/" + keywordToRemove.id + "/remove")
+    axiosInstance.delete("/keywords/" + keywordToRemove.id)
     .then(() => {
       setShowKeywordRemoveConfirmation(false);
       window.location.reload();
@@ -96,16 +101,22 @@ const Keywords = (props) => {
 
   const onSubmitNewKeyword = (name, type) => {
     if (props.showAll) {
-      axiosInstance.get("/reviews/" + reviewId + "/keywords/add", { params: {
-        name, type
-      }})
+      axiosInstance.post("/keywords", {
+        reviewId: reviewId,
+        name: name,
+        type: type
+      })
       .then(() => {
         window.location.reload();
       });
     } else {
-      axiosInstance.get("users/" + currentUser.id + "/reviews/" + reviewId + "/keywords/add", { params: {
-        name, type
-      }})
+      var userId = currentUser.id;
+      axiosInstance.post("/keywords/personal", {
+        reviewId: reviewId,
+        userId: userId,
+        name: name,
+        type: type
+      })
       .then(() => {
         window.location.reload();
       });
@@ -124,7 +135,7 @@ const Keywords = (props) => {
     <div className='slrspot__screening-keywords'>
       <OptionHeader 
         content='Manage keywords'
-        backward={ () => navigate(location.pathname.replace('/keywords', '')) }/>
+        backward={ () => navigate('/reviews/' + reviewId + '/screening') }/>
       <div className='slrspot__screening-keywords-assignment-container'>
         <h2 onClick={ () => navigate("/reviews/" + reviewId + "/screening/keywords") }>Shared with team</h2>
         <h2 onClick={ () => navigate("/reviews/" + reviewId + "/screening/keywords/personal") }>Personal keywords</h2>
