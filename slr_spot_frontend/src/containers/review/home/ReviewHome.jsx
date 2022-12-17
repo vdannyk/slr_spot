@@ -8,6 +8,7 @@ import './reviewHome.css'
 
 const ReviewHome = () => {
   const [reviewData, setReviewData] = useState([]);
+  const [researchQuestions, setResearchQuestions] = useState([]);
   const [owner, setOwner] = useState();
   const { reviewId } = useParams();
   const navigate = useNavigate();
@@ -18,8 +19,9 @@ const ReviewHome = () => {
     axiosInstance.get("/reviews/" + reviewId)
     .then((response) => {
       setReviewData(response.data.review);
+      setResearchQuestions(response.data.review.researchQuestions);
       setOwner(response.data.firstName + ' ' + response.data.lastName);
-      console.log(response.data.review);
+      console.log(response.data)
     });
   }, []);
 
@@ -35,15 +37,26 @@ const ReviewHome = () => {
         <tbody>
           <tr>
             <th>Research Area</th>
-            <td>{reviewData.researchArea}</td>
+            <td>{ reviewData.researchArea }</td>
+          </tr>
+          <tr>
+            <th>Research Questions</th>
+            <td>
+              { researchQuestions.length > 0 
+              ? researchQuestions.map((question) => (
+                <li>{ question.name }</li>
+                ))
+              : '-'  
+              }
+            </td>
           </tr>
           <tr>
             <th>Description</th>
-            <td>{reviewData.description}</td>
+            <td>{ reviewData.description }</td>
           </tr>
           <tr>
             <th>Owner</th>
-            <td>{owner}</td>
+            <td>{ owner }</td>
           </tr>
           <tr>
             <th>Team members</th>
