@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { Table } from "react-bootstrap";
 import './studyDiscussion.css'
 
@@ -42,9 +43,10 @@ const testNotes = [
 ]
 
 const StudyDiscussion = (props) => {
+  const [comments, setComments] = useState(testNotes);
 
-  return (
-    <div className='slrspot__studyDiscussion'>
+  const DiscussionTable = () => {
+    return (
       <Table>
         <thead>
           <th>Date</th>
@@ -52,7 +54,7 @@ const StudyDiscussion = (props) => {
           <th style={{borderLeft: '0.01px solid black'}}>Comment</th>
         </thead>
         <tbody>
-          { testNotes.map(record => (
+          { comments.map(record => (
             <tr>
               <td style={{ width: '20%'}}>{record.date}</td>
               <td style={{ width: '30%'}}>{record.author}</td>
@@ -61,6 +63,14 @@ const StudyDiscussion = (props) => {
           ))}
         </tbody>
       </Table>
+    )
+  }
+
+  return (
+    <div className='slrspot__studyDiscussion'>
+      { comments.length > 0 
+        ? <DiscussionTable /> 
+        : <h2 style={{ alignSelf: 'center', marginTop: '40px'}}>START DISCUSSION</h2>}
       <div className='slrspot__studyDiscussion-comment'>
         <textarea></textarea>
         <button>comment</button>
