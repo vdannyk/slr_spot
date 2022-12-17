@@ -32,8 +32,8 @@ const AppRoutes = () => {
       <Route path="reviews/:reviewId/screening/tags" element={isLoggedIn ? <Review page={<Tags />} /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/screening/keywords" element={isLoggedIn ? <Review page={<Keywords showAll={true} />} /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/screening/keywords/personal" element={isLoggedIn ? <Review page={<Keywords showAll={false} />} /> : <Navigate to='/' />} />
-      <Route path="reviews/:reviewId/screening/title_abstract" element={isLoggedIn ? <Review page={<Screening isFulltext={false} />} /> : <Navigate to='/' />} />
-      <Route path="reviews/:reviewId/screening/full-text" element={isLoggedIn ? <Review page={<Screening isFulltext={true} />} /> : <Navigate to='/' />} />
+      <Route path="reviews/:reviewId/screening/title_abstract" element={isLoggedIn ? <Review page={<Screening isFullText={false} />} /> : <Navigate to='/' />} />
+      <Route path="reviews/:reviewId/screening/full-text" element={isLoggedIn ? <Review page={<Screening isFullText={true} />} /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/screening/study/full-text" element={isLoggedIn ? <Review page={<FullTextStudy />} /> : <Navigate to='/' />} />
 
       <Route path="reviews/:reviewId/studies/search" element={isLoggedIn ? <Review page={<StudiesSearch />} /> : <Navigate to='/' />} />

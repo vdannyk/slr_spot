@@ -16,7 +16,6 @@ const ToBeReviewed = (props) => {
       reviewId
     }})
     .then((response) => {
-      console.log(response.data)
       setStudies(response.data)
     })
     .catch(() => {
@@ -27,12 +26,13 @@ const ToBeReviewed = (props) => {
     <div className='slrspot__screening-studies'>
       { studies.map(study => (
         <ScreeningStudy 
-          study={study} 
-          isShowAbstracts={props.showAbstracts} 
-          triggerHistory={setShowHistory} 
-          triggerDiscussion={setShowDiscussion} 
-          tab={TO_BE_REVIEWED}
-          isFullText={props.isFullText} />
+          study={ study } 
+          isShowAbstracts={ props.showAbstracts } 
+          triggerHistory={ setShowHistory } 
+          triggerDiscussion={ setShowDiscussion } 
+          tab={ TO_BE_REVIEWED }
+          isFullText={ props.isFullText } 
+          reviewTags={ props.reviewTags } />
       ))}
       { showHistory && <StudyHistory triggerCancel={setShowHistory} /> }
       { showDiscussion && <StudyDiscussion triggerCancel={setShowDiscussion} /> }

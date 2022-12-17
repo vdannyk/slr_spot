@@ -5,12 +5,11 @@ import StudyTags from './studyTags/StudyTags';
 import { useNavigate, useParams } from "react-router-dom";
 
 
-const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussion, tab, isFullText}) => {
+const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussion, tab, isFullText, reviewTags}) => {
   const [showAbstract, setShowAbstract] = useState(isShowAbstracts);
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(isFullText);
     if (showAbstract !== isShowAbstracts) {
       setShowAbstract(!showAbstract)
     }
@@ -51,6 +50,14 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussi
     }
   }
 
+  const FullTextField = () => {
+    return isFullText && (
+      <p><label>full text:</label> { study.fullText }
+        <button className='pdf' onClick={() => navigate('/reviews/2/screening/study/full-text')}>test.pdf</button>
+      </p>
+    )
+  }
+
   return (
     <div className='slrspot__screeningStudy'>
       <h3>{ study.title }</h3>
@@ -64,11 +71,12 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussi
       <p><label>doi:</label> { study.doi }</p>
       <p><label>URL:</label> { study.url }</p>
       <p><label>language:</label> { study.language }</p>
-      <p><label>full text:</label> { study.fullText }
-        <button className='pdf' onClick={() => navigate('/reviews/2/screening/study/full-text')}>test.pdf</button>
-      </p>
+      <FullTextField />
       
-      <StudyTags />
+      <StudyTags 
+        studyId={ study.id } 
+        reviewTags={ reviewTags } />
+        
       <div className='slrspot__screeningStudy-options'>
         <button onClick={ () => triggerDiscussion(true)}>discussion</button>
         <button onClick={ () => triggerHistory(true) }>history</button>

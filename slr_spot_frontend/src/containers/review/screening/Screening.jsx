@@ -7,6 +7,7 @@ import ToBeReviewed from './tabs/ToBeReviewed';
 import Conflicted from './tabs/Conflicted';
 import Awaiting from './tabs/Awaiting';
 import Excluded from './tabs/Excluded';
+import { useParams } from 'react-router-dom';
 
 
 const Screening = (props) => {
@@ -14,20 +15,31 @@ const Screening = (props) => {
   const [showAbstracts, setShowAbstracts] = useState(true);
   const [folders, setFolders] = useState([]);
   const [tab, setTab] = useState(TO_BE_REVIEWED)
-
+  const [reviewTags, setReviewTags] = useState([]);
+  const { reviewId } = useParams();
 
   useEffect(() => {
     axiosInstance.get("/folders")
     .then((response) => {
-      console.log(response.data);
       setFolders(response.data)
     })
     .catch(() => {
     });
   }, []);
 
+  useEffect(() => {
+    axiosInstance.get("/tags", { params: {
+      reviewId
+    }})
+    .then((response) => {
+      setReviewTags(response.data)
+    })
+    .catch(() => {
+    });
+  }, []);
+
   function headerContent() {
-    if (props.isFulltext) {
+    if (props.isFullText) {
       return (
         <h1>Full text screening</h1>
       )
@@ -41,7 +53,10 @@ const Screening = (props) => {
   function tabContent() {
     if (tab === TO_BE_REVIEWED) {
       return (
-        <ToBeReviewed showAbstracts={showAbstracts} isFullText={props.isFullText} />
+        <ToBeReviewed 
+          showAbstracts={ showAbstracts } 
+          isFullText={ props.isFullText } 
+          reviewTags={ reviewTags } />
       )
     } else if (tab === CONFLICTED) {
       return (

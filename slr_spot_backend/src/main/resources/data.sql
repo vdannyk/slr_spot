@@ -143,6 +143,10 @@ INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag8', 1);
 INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag9', 1);
 INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag10', 1);
 
+
+
+
+
 INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria1', 'INCLUSION', 1);
 INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria2', 'INCLUSION', 1);
 INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria3', 'INCLUSION', 1);
@@ -195,6 +199,11 @@ INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID)
 VALUES ('Filling gaps in significant wave height time series records using bidirectional gated recurrent unit and cressman analysis', 'Wang J., Wen K., Deng F.', 2013, 1, 3);
 
 
-INSERT INTO screening_decisions(user_id, study_id, stage, decision) VALUES (1, 1, 'TITLE_ABSTRACT', 'INCLUDE');
+-- INSERT INTO screening_decisions(user_id, study_id, stage, decision) VALUES (1, 1, 'TITLE_ABSTRACT', 'INCLUDE');
 
+INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (2, 1);
+INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (2, 2);
+INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (1, 1);
+INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (1, 2);
+INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (1, 3);
 
