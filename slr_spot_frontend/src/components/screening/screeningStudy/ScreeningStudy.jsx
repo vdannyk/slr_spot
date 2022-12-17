@@ -3,10 +3,15 @@ import { AWAITING, CONFLICTED, EXCLUDED, TO_BE_REVIEWED } from '../../../constan
 import './screeningStudy.css';
 import StudyTags from './studyTags/StudyTags';
 import { useNavigate, useParams } from "react-router-dom";
+import ContentPopup from '../../popups/contentPopup/ContentPopup';
+import StudyHistory from './studyHistory/StudyHistory';
+import StudyDiscussion from './studyDiscussion/StudyDiscussion';
 
 
 const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussion, tab, isFullText, reviewTags}) => {
   const [showAbstract, setShowAbstract] = useState(isShowAbstracts);
+  const [showDiscussion, setShowDiscussion] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,11 +83,16 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussi
         reviewTags={ reviewTags } />
         
       <div className='slrspot__screeningStudy-options'>
-        <button onClick={ () => triggerDiscussion(true)}>discussion</button>
-        <button onClick={ () => triggerHistory(true) }>history</button>
+        <button onClick={ () => setShowDiscussion(true)}>discussion</button>
+        <button onClick={ () => setShowHistory(true) }>history</button>
         { !(tab === EXCLUDED) && <button>mark as duplicate</button>}
       </div>
       { tabSpecificContent() }
+      { showDiscussion && 
+        <ContentPopup content={<StudyDiscussion />} triggerExit={() => setShowDiscussion(false)}/> }
+      { showHistory && 
+        <ContentPopup content={<StudyHistory />} triggerExit={() => setShowHistory(false)} /> }
+
     </div>
   )
 }

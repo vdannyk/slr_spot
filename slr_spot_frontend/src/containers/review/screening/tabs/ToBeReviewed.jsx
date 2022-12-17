@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import { ScreeningStudy, StudyDiscussion, StudyHistory } from '../../../../components';
+import { ScreeningStudy, StudyDiscussion, StudyHistory,ContentPopup } from '../../../../components';
 import { TO_BE_REVIEWED } from '../../../../constants/tabs';
 import axiosInstance from '../../../../services/api';
 import '../screening.css';

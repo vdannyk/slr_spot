@@ -17,6 +17,7 @@ export { default as UsersBrowser } from './review/usersBrowser/UsersBrowser';
 export { default as NewReview } from './review/newReview/NewReview';
 
 export { default as ConfirmationPopup } from './popups/confirmationPopup/ConfirmationPopup';
+export { default as ContentPopup } from './popups/contentPopup/ContentPopup';
 
 export { default as Criteria } from './screening/criteria/Criteria';
 export { default as Tags } from './screening/tags/Tags';
