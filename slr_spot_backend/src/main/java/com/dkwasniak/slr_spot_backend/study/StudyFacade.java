@@ -1,5 +1,9 @@
 package com.dkwasniak.slr_spot_backend.study;
 
+import com.dkwasniak.slr_spot_backend.comment.Comment;
+import com.dkwasniak.slr_spot_backend.comment.CommentService;
+import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
+import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
 import com.dkwasniak.slr_spot_backend.file.FileService;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.imports.ImportService;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +40,7 @@ public class StudyFacade {
     private final ReviewService reviewService;
     private final UserService userService;
     private final TagService tagService;
+    private final CommentService commentService;
 
     public List<Study> getStudiesByReviewId(Long reviewId) {
         Set<Import> imports = importService.getImportsByReviewId(reviewId);
@@ -69,4 +75,19 @@ public class StudyFacade {
         studyService.removeTagFromStudy(study, tag);
     }
 
+    public List<CommentDto> getStudyComments(Long studyId) {
+        Study study = studyService.getStudyById(studyId);
+        List<Comment> comments = studyService.getStudyComments(study);
+        comments.sort(Comparator.comparing(Comment::getDate));
+        return comments.stream().map(commentService::toCommentDto)
+                .collect(Collectors.toList());
+    }
+
+    public void addCommentToStudy(Long studyId, CommentRequest commentRequest) {
+        Study study = studyService.getStudyById(studyId);
+        User user = userService.getUserById(commentRequest.getUserId());
+        Comment comment = new Comment(commentRequest.getContent());
+        comment.setUser(user);
+        studyService.addCommentToStudy(study, comment);
+    }
 }

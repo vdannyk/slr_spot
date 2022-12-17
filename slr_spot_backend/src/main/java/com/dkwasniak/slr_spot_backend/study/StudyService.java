@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.study;
 
+import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyNotFoundException;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
@@ -55,6 +56,15 @@ public class StudyService {
 
     public void removeTagFromStudy(Study study, Tag tag) {
         study.removeTag(tag);
+        studyRepository.save(study);
+    }
+
+    public List<Comment> getStudyComments(Study study) {
+        return study.getComments();
+    }
+
+    public void addCommentToStudy(Study study, Comment comment) {
+        study.addComment(comment);
         studyRepository.save(study);
     }
 }

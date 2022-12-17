@@ -1,5 +1,8 @@
 package com.dkwasniak.slr_spot_backend.study;
 
+import com.dkwasniak.slr_spot_backend.comment.Comment;
+import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
+import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,5 +53,17 @@ public class StudyController {
                                                        @PathVariable Long tagId) {
         studyFacade.removeTagFromStudy(id, tagId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<CommentDto>> getCommentsByStudy(@PathVariable Long id) {
+        return ResponseEntity.ok().body(studyFacade.getStudyComments(id));
+    }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<Void> addCommentToStudy(@PathVariable Long id,
+                                                  @RequestBody CommentRequest commentRequest) {
+        studyFacade.addCommentToStudy(id, commentRequest);
+        return ResponseEntity.ok().build();
     }
 }

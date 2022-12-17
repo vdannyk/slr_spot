@@ -207,3 +207,6 @@ INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (1, 1);
 INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (1, 2);
 INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (1, 3);
 
+INSERT INTO comments(CONTENT, DATE, STUDY_ID, USER_ID) VALUES ('testowy komentarz jeden', '2022-12-12 12:41:21',1, 1);
+INSERT INTO comments(CONTENT, DATE, STUDY_ID, USER_ID) VALUES ('testowy komentarz dwa', '2022-11-12 11:22:22', 1, 2);
+

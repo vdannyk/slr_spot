@@ -89,9 +89,9 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussi
       </div>
       { tabSpecificContent() }
       { showDiscussion && 
-        <ContentPopup content={<StudyDiscussion />} triggerExit={() => setShowDiscussion(false)}/> }
+        <ContentPopup content={<StudyDiscussion studyId={ study.id } />} triggerExit={() => setShowDiscussion(false)}/> }
       { showHistory && 
-        <ContentPopup content={<StudyHistory />} triggerExit={() => setShowHistory(false)} /> }
+        <ContentPopup content={<StudyHistory studyId={ study.id } />} triggerExit={() => setShowHistory(false)} /> }
 
     </div>
   )

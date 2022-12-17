@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Table } from "react-bootstrap";
+import EventBus from '../../../../common/EventBus';
+import axiosInstance from '../../../../services/api';
+import { useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
 import './studyDiscussion.css'
 
 
@@ -44,6 +48,33 @@ const testNotes = [
 
 const StudyDiscussion = (props) => {
   const [comments, setComments] = useState(testNotes);
+  const {register, handleSubmit, formState: { errors }} = useForm();
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const [triggerUpdate, setTriggerUpdate] = useState(false);
+
+  useEffect(() => {
+    axiosInstance.get("/studies/" + props.studyId + "/comments")
+    .then((response) => {
+      setComments(response.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+  }, [triggerUpdate]);
+
+  const onSubmit = (formData) => {
+    const comment = formData.comment;
+    var userId = currentUser.id;
+    axiosInstance.post("/studies/" + props.studyId + "/comments", {
+      userId: userId,
+      content: comment
+    })
+    .then(() => {
+      setTriggerUpdate(!triggerUpdate);
+    });
+  };
 
   const DiscussionTable = () => {
     return (
@@ -54,11 +85,11 @@ const StudyDiscussion = (props) => {
           <th style={{borderLeft: '0.01px solid black'}}>Comment</th>
         </thead>
         <tbody>
-          { comments.map(record => (
+          { comments.map(comment => (
             <tr>
-              <td style={{ width: '20%'}}>{record.date}</td>
-              <td style={{ width: '30%'}}>{record.author}</td>
-              <td style={{ width: '50%', borderLeft: '0.01px solid black'}}>{record.comment}</td>
+              <td style={{ width: '20%'}}>{comment.date}</td>
+              <td style={{ width: '30%'}}>{comment.author}</td>
+              <td style={{ width: '50%', borderLeft: '0.01px solid black'}}>{comment.content}</td>
             </tr>
           ))}
         </tbody>
@@ -71,10 +102,13 @@ const StudyDiscussion = (props) => {
       { comments.length > 0 
         ? <DiscussionTable /> 
         : <h2 style={{ alignSelf: 'center', marginTop: '40px'}}>START DISCUSSION</h2>}
-      <div className='slrspot__studyDiscussion-comment'>
-        <textarea></textarea>
-        <button>comment</button>
-      </div>
+      <form className='slrspot__studyDiscussion-comment' onSubmit={handleSubmit(onSubmit)} >
+        <textarea 
+          {...register("comment")}
+          name='comment' 
+          required/>
+        <button type='submit'>comment</button>
+      </form>
     </div>
   )
 }
