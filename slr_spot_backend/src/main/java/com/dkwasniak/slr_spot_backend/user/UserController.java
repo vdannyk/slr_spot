@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Set;
 
 
@@ -35,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<UserDto>> getUsersByReviewId(@RequestParam Long reviewId) {
+    public ResponseEntity<List<UserDto>> getUsersByReviewId(@RequestParam Long reviewId) {
         return ResponseEntity.ok().body(userFacade.getUsersByReviewId(reviewId));
     }
 
@@ -75,6 +77,14 @@ public class UserController {
     public ResponseEntity<String> updateName(@RequestBody UserDto userDto) {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         userFacade.updateName(username, userDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/role")
+    public ResponseEntity<Void> changeUserRole(@PathVariable Long id,
+                                               @RequestParam Long reviewId,
+                                               @RequestParam String role) {
+        userFacade.changeUserRole(id, reviewId, role);
         return ResponseEntity.ok().build();
     }
 
