@@ -29,6 +29,7 @@ export { default as ScreeningStudy } from './screening/screeningStudy/ScreeningS
 export { default as ScreeningOptions } from './screening/screeningOptions/ScreeningOptions';
 export { default as StudyHistory } from './screening/screeningStudy/studyHistory/StudyHistory';
 export { default as StudyDiscussion } from './screening/screeningStudy/studyDiscussion/StudyDiscussion';
+export { default as CriteriaButton } from './screening/screeningCriteria/CriteriaButton';
 
 export { default as Helper } from './helper/Helper';
 export { default as DropdownSelect } from './dropdownSelect/DropdownSelect';
