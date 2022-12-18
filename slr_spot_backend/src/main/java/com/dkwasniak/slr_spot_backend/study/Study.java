@@ -7,6 +7,7 @@ import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.dkwasniak.slr_spot_backend.study.status.Status;
+import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,8 @@ import lombok.Setter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -66,10 +69,8 @@ public class Study {
     @JsonIgnore
     private Import studyImport;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    @JsonIgnore
-    private Status status;
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status;
 
     @ManyToOne
     @JoinColumn(name = "folder_id")

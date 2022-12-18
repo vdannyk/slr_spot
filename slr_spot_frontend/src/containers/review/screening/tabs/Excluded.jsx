@@ -13,16 +13,33 @@ const Excluded = (props) => {
   const [showDiscussion, setShowDiscussion] = useState(false);
   const { reviewId } = useParams();
 
+  function getStudies() {
+    if (props.isFullText) {
+      var status = 'FULL_TEXT';
+      axiosInstance.get("/studies/excluded", { params: {
+        reviewId, status
+      }})
+      .then((response) => {
+        setStudies(response.data)
+      })
+      .catch(() => {
+      });
+    } else {
+      var status = 'TITLE_ABSTRACT';
+      axiosInstance.get("/studies/excluded", { params: {
+        reviewId, status
+      }})
+      .then((response) => {
+        setStudies(response.data)
+      })
+      .catch(() => {
+      });
+    }
+  }
+
   useEffect(() => {
-    axiosInstance.get("/studies/excluded", { params: {
-      reviewId
-    }})
-    .then((response) => {
-      setStudies(response.data)
-    })
-    .catch(() => {
-    });
-  }, []);
+    getStudies()
+  }, [props.isFullText]);
 
   return (
     <div className='slrspot__screening-studies'>

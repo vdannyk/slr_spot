@@ -11,6 +11,7 @@ import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
+import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.tag.TagService;
 import com.dkwasniak.slr_spot_backend.user.User;
@@ -51,28 +52,28 @@ public class StudyFacade {
         return studies;
     }
 
-    public List<Study> getStudiesToBeReviewed(Long reviewId, Long userId) {
+    public List<Study> getStudiesToBeReviewed(Long reviewId, Long userId, StatusEnum status) {
         Review review = reviewService.getReviewById(reviewId);
         int requiredReviewers = review.getScreeningReviewers();
-        return studyService.getStudiesToBeReviewed(reviewId, userId, requiredReviewers);
+        return studyService.getStudiesToBeReviewed(reviewId, userId, requiredReviewers, status);
     }
 
-    public List<Study> getStudiesConflicted(Long reviewId) {
+    public List<Study> getStudiesConflicted(Long reviewId, StatusEnum status) {
         Review review = reviewService.getReviewById(reviewId);
         int requiredReviewers = review.getScreeningReviewers();
-        return studyService.getStudiesConflicted(reviewId, requiredReviewers);
+        return studyService.getStudiesConflicted(reviewId, requiredReviewers, status);
     }
 
-    public List<Study> getStudiesAwaiting(Long reviewId, Long userId) {
+    public List<Study> getStudiesAwaiting(Long reviewId, Long userId, StatusEnum status) {
         Review review = reviewService.getReviewById(reviewId);
         int requiredReviewers = review.getScreeningReviewers();
-        return studyService.getStudiesAwaiting(reviewId, userId, requiredReviewers);
+        return studyService.getStudiesAwaiting(reviewId, userId, requiredReviewers, status);
     }
 
-    public List<Study> getStudiesExcluded(Long reviewId) {
+    public List<Study> getStudiesExcluded(Long reviewId, StatusEnum status) {
         Review review = reviewService.getReviewById(reviewId);
         int requiredReviewers = review.getScreeningReviewers();
-        return studyService.getStudiesExcluded(reviewId, requiredReviewers);
+        return studyService.getStudiesExcluded(reviewId, requiredReviewers, status);
     }
 
     public Set<Tag> getStudyTags(Long studyId) {

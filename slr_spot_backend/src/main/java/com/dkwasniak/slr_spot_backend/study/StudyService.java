@@ -4,6 +4,7 @@ import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyNotFoundException;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
+import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.RequiredArgsConstructor;
@@ -41,27 +42,24 @@ public class StudyService {
         return studies;
     }
 
-    public List<Study> getStudiesToBeReviewed(Long reviewId, Long userId, int requiredReviewers) {
-        List<Study> studiesToReview = studyRepository.findAllToBeReviewed(reviewId, requiredReviewers);
-        List<Study> studiesReviewed = getStudiesReviewedByUserId(reviewId, userId);
-        studiesToReview.removeAll(studiesReviewed);
-        return studiesToReview;
+    public List<Study> getStudiesToBeReviewed(Long reviewId, Long userId, int requiredReviewers, StatusEnum status) {
+        return studyRepository.findAllToBeReviewed(reviewId, userId, requiredReviewers, status);
     }
 
     public List<Study> getStudiesReviewedByUserId(Long reviewId, Long userId) {
         return studyRepository.findAllReviewedByUserId(reviewId, userId);
     }
 
-    public List<Study> getStudiesConflicted(Long reviewId, int requiredReviewers) {
-        return studyRepository.findAllConflicted(reviewId, requiredReviewers);
+    public List<Study> getStudiesConflicted(Long reviewId, int requiredReviewers, StatusEnum status) {
+        return studyRepository.findAllConflicted(reviewId, requiredReviewers, status);
     }
 
-    public List<Study> getStudiesAwaiting(Long reviewId, Long userId, int requiredReviewers) {
-        return studyRepository.findAllAwaiting(reviewId, userId, requiredReviewers);
+    public List<Study> getStudiesAwaiting(Long reviewId, Long userId, int requiredReviewers, StatusEnum status) {
+        return studyRepository.findAllAwaiting(reviewId, userId, requiredReviewers, status);
     }
 
-    public List<Study> getStudiesExcluded(Long reviewId, int requiredReviewers) {
-        return studyRepository.findAllExcluded(reviewId, requiredReviewers);
+    public List<Study> getStudiesExcluded(Long reviewId, int requiredReviewers, StatusEnum status) {
+        return studyRepository.findAllExcluded(reviewId, requiredReviewers, status);
     }
 
     public Set<Tag> getStudyTags(Study study) {

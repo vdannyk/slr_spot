@@ -3,6 +3,7 @@ package com.dkwasniak.slr_spot_backend.study;
 import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
+import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
@@ -34,24 +35,28 @@ public class StudyController {
 
     @GetMapping("/to-review")
     public ResponseEntity<List<Study>> getStudiesToBeReviewed(@RequestParam("reviewId") Long reviewId,
-                                                              @RequestParam("userId") Long userId) {
-        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewed(reviewId, userId));
+                                                              @RequestParam("userId") Long userId,
+                                                              @RequestParam("status") StatusEnum status) {
+        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewed(reviewId, userId, status));
     }
 
     @GetMapping("/conflicted")
-    public ResponseEntity<List<Study>> getStudiesConflicted(@RequestParam("reviewId") Long reviewId) {
-        return ResponseEntity.ok(studyFacade.getStudiesConflicted(reviewId));
+    public ResponseEntity<List<Study>> getStudiesConflicted(@RequestParam("reviewId") Long reviewId,
+                                                            @RequestParam("status") StatusEnum status) {
+        return ResponseEntity.ok(studyFacade.getStudiesConflicted(reviewId, status));
     }
 
     @GetMapping("/awaiting")
     public ResponseEntity<List<Study>> getStudiesAwaiting(@RequestParam("reviewId") Long reviewId,
-                                                              @RequestParam("userId") Long userId) {
-        return ResponseEntity.ok(studyFacade.getStudiesAwaiting(reviewId, userId));
+                                                          @RequestParam("userId") Long userId,
+                                                          @RequestParam("status") StatusEnum status) {
+        return ResponseEntity.ok(studyFacade.getStudiesAwaiting(reviewId, userId, status));
     }
 
     @GetMapping("/excluded")
-    public ResponseEntity<List<Study>> getStudiesExcluded(@RequestParam("reviewId") Long reviewId) {
-        return ResponseEntity.ok(studyFacade.getStudiesExcluded(reviewId));
+    public ResponseEntity<List<Study>> getStudiesExcluded(@RequestParam("reviewId") Long reviewId,
+                                                          @RequestParam("status") StatusEnum status) {
+        return ResponseEntity.ok(studyFacade.getStudiesExcluded(reviewId, status));
     }
 
     @GetMapping("/{id}/tags")

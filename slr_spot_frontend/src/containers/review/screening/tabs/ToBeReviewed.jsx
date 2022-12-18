@@ -13,17 +13,34 @@ const ToBeReviewed = (props) => {
   const { reviewId } = useParams();
   const { user: currentUser } = useSelector((state) => state.auth);
 
-  useEffect(() => {
+  function getStudies() {
     var userId = currentUser.id;
-    axiosInstance.get("/studies/to-review", { params: {
-      reviewId, userId
-    }})
-    .then((response) => {
-      setStudies(response.data)
-    })
-    .catch(() => {
-    });
-  }, []);
+    if (props.isFullText) {
+      var status = 'FULL_TEXT';
+      axiosInstance.get("/studies/to-review", { params: {
+        reviewId, userId, status
+      }})
+      .then((response) => {
+        setStudies(response.data)
+      })
+      .catch(() => {
+      });
+    } else {
+      var status = 'TITLE_ABSTRACT';
+      axiosInstance.get("/studies/to-review", { params: {
+        reviewId, userId, status
+      }})
+      .then((response) => {
+        setStudies(response.data)
+      })
+      .catch(() => {
+      });
+    }
+  }
+
+  useEffect(() => {
+    getStudies()
+  }, [props.isFullText]);
 
   return (
     <div className='slrspot__screening-studies'>
