@@ -38,6 +38,10 @@ const ToBeReviewed = (props) => {
     }
   }
 
+  const handleStudiesUpdate = (id) => {
+    setStudies(studies.filter(study => study.id !== id));
+  }
+
   useEffect(() => {
     getStudies()
   }, [props.isFullText]);
@@ -48,8 +52,7 @@ const ToBeReviewed = (props) => {
         <ScreeningStudy 
           study={ study } 
           isShowAbstracts={ props.showAbstracts } 
-          triggerHistory={ setShowHistory } 
-          triggerDiscussion={ setShowDiscussion } 
+          triggerVote={ handleStudiesUpdate } 
           tab={ TO_BE_REVIEWED }
           isFullText={ props.isFullText } 
           reviewTags={ props.reviewTags } />

@@ -9,7 +9,9 @@ import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.imports.ImportService;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
+import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
+import com.dkwasniak.slr_spot_backend.screeningDecision.dto.ScreeningDecisionDto;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
 import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
@@ -107,5 +109,20 @@ public class StudyFacade {
         Comment comment = new Comment(commentRequest.getContent());
         comment.setUser(user);
         studyService.addCommentToStudy(study, comment);
+    }
+
+    public void addStudyScreeningDecision(Long studyId, ScreeningDecisionDto screeningDecisionDto) {
+        Review review = reviewService.getReviewById(screeningDecisionDto.getReviewId());
+        int requiredReviewers = review.getScreeningReviewers();
+        Study study = studyService.getStudyById(studyId);
+        if (studyService.isStudyScreeningAllowed(study)) {
+            User user = userService.getUserById(screeningDecisionDto.getUserId());
+            ScreeningDecision screeningDecision = new ScreeningDecision(user, study, screeningDecisionDto.getDecision());
+            studyService.addScreeningDecisionToStudy(study, screeningDecision);
+            StatusEnum newStatus = studyService.verifyStudyStatus(study, requiredReviewers);
+            if (!newStatus.equals(study.getStatus())) {
+                studyService.updateStudyStatus(study, newStatus);
+            }
+        }
     }
 }

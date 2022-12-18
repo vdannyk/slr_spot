@@ -116,4 +116,8 @@ public class Study {
         this.operations.add(operation);
         operation.setStudy(this);
     }
+
+    public void addScreeningDecision(ScreeningDecision screeningDecision) {
+        this.screeningDecisions.add(screeningDecision);
+    }
 }

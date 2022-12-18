@@ -6,19 +6,37 @@ import { useNavigate, useParams } from "react-router-dom";
 import ContentPopup from '../../popups/contentPopup/ContentPopup';
 import StudyHistory from './studyHistory/StudyHistory';
 import StudyDiscussion from './studyDiscussion/StudyDiscussion';
+import { useSelector } from 'react-redux';
+import axiosInstance from '../../../services/api';
 
 
-const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussion, tab, isFullText, reviewTags}) => {
+
+const ScreeningStudy = ({study, isShowAbstracts, triggerVote, tab, isFullText, reviewTags}) => {
   const [showAbstract, setShowAbstract] = useState(isShowAbstracts);
   const [showDiscussion, setShowDiscussion] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const navigate = useNavigate();
+  const { reviewId } = useParams();
+  const { user: currentUser } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (showAbstract !== isShowAbstracts) {
       setShowAbstract(!showAbstract)
     }
   }, [isShowAbstracts]);
+
+  const handleVote = (vote) => {
+    axiosInstance.post("/studies/" + study.id + "/screening_decisions", {
+      reviewId: reviewId,
+      userId: currentUser.id,
+      decision: vote
+    })
+    .then(() => {
+      triggerVote(study.id);
+    })
+    .catch(() => {
+    });
+  }
 
   const handleShowAbstract = () => {
     setShowAbstract(!showAbstract);
@@ -28,9 +46,21 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussi
     if (tab === TO_BE_REVIEWED) {
       return (
         <div className='slrspot__screeningStudy-decision'>
-          <button className='slrspot__screeningStudy-decision-button'>exclude</button>
-          <button className='slrspot__screeningStudy-decision-button'>unclear</button>
-          <button className='slrspot__screeningStudy-decision-button'>include</button>
+          <button 
+            className='slrspot__screeningStudy-decision-button'
+            onClick={ () => handleVote('EXCLUDE')}>
+              exclude
+          </button>
+          <button 
+            className='slrspot__screeningStudy-decision-button' 
+            onClick={ () => handleVote('UNCLEAR')}>
+              unclear
+          </button>
+          <button 
+            className='slrspot__screeningStudy-decision-button' 
+            onClick={ () => handleVote('INCLUDE')}>
+              include
+          </button>
         </div>
       )
     } else if (tab === CONFLICTED) {

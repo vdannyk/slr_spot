@@ -3,6 +3,7 @@ package com.dkwasniak.slr_spot_backend.study;
 import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
+import com.dkwasniak.slr_spot_backend.screeningDecision.dto.ScreeningDecisionDto;
 import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
@@ -86,6 +87,13 @@ public class StudyController {
     public ResponseEntity<Void> addCommentToStudy(@PathVariable Long id,
                                                   @RequestBody CommentRequest commentRequest) {
         studyFacade.addCommentToStudy(id, commentRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/screening_decisions")
+    public ResponseEntity<Void> addScreeningDecision(@PathVariable Long id,
+                                                     @RequestBody ScreeningDecisionDto screeningDecisionDto) {
+        studyFacade.addStudyScreeningDecision(id, screeningDecisionDto);
         return ResponseEntity.ok().build();
     }
 }

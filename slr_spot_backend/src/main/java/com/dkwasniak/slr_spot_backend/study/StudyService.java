@@ -2,6 +2,8 @@ package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.review.Review;
+import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
+import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyNotFoundException;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
 import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -82,6 +85,38 @@ public class StudyService {
 
     public void addCommentToStudy(Study study, Comment comment) {
         study.addComment(comment);
+        studyRepository.save(study);
+    }
+
+    public boolean isStudyScreeningAllowed(Study study) {
+        StatusEnum status = study.getStatus();
+        return StatusEnum.TITLE_ABSTRACT.equals(status) || StatusEnum.FULL_TEXT.equals(status);
+    }
+
+    public void addScreeningDecisionToStudy(Study study, ScreeningDecision screeningDecision) {
+        study.addScreeningDecision(screeningDecision);
+        studyRepository.save(study);
+    }
+
+    public StatusEnum verifyStudyStatus(Study study, int requiredReviewers) {
+        StatusEnum currentStatus = study.getStatus();
+        List<ScreeningDecision> screeningDecisions = study.getScreeningDecisions();
+        if (screeningDecisions.stream().filter(sd -> Decision.INCLUDE.equals(sd.getDecision())).count() == requiredReviewers) {
+            if (StatusEnum.TITLE_ABSTRACT.equals(currentStatus)) {
+                return StatusEnum.FULL_TEXT;
+            } else if (StatusEnum.FULL_TEXT.equals(currentStatus)) {
+                return StatusEnum.INCLUDED;
+            } else {
+                return currentStatus;
+            }
+        } else {
+            return currentStatus;
+        }
+    }
+
+    public void updateStudyStatus(Study study, StatusEnum statusEnum) {
+        study.setStatus(statusEnum);
+        study.getScreeningDecisions().clear();
         studyRepository.save(study);
     }
 }
