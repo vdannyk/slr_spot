@@ -145,4 +145,9 @@ public class StudyFacade {
         Study study = studyService.getStudyById(studyId);
         studyService.clearDecisions(study);
     }
+
+    public void markStudyAsDuplicate(Long studyId) {
+        Study study = studyService.getStudyById(studyId);
+        studyService.updateStudyStatus(study, StatusEnum.DUPLICATES);
+    }
 }

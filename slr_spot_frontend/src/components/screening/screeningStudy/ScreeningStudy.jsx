@@ -51,6 +51,15 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, triggerRefresh, ta
     });
   }
 
+  const handleDuplicate = () => {
+    axiosInstance.put("/studies/" + study.id + "/duplicate")
+    .then(() => {
+      triggerVote(study.id);
+    })
+    .catch(() => {
+    });
+  }
+
   const handleShowAbstract = () => {
     setShowAbstract(!showAbstract);
   }
@@ -203,7 +212,7 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, triggerRefresh, ta
       <div className='slrspot__screeningStudy-options'>
         <button onClick={ () => setShowDiscussion(true)}>discussion</button>
         <button onClick={ () => setShowHistory(true) }>history</button>
-        { !(tab === EXCLUDED) && <button>mark as duplicate</button>}
+        { !(tab === EXCLUDED) && <button onClick={ handleDuplicate }>mark as duplicate</button>}
       </div>
       { tabSpecificContent() }
       { showDiscussion && 

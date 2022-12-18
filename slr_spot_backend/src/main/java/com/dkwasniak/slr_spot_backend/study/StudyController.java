@@ -110,4 +110,10 @@ public class StudyController {
         studyFacade.restoreStudy(id);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{id}/duplicate")
+    public ResponseEntity<Decision> markStudyAsDuplicate(@PathVariable Long id) {
+        studyFacade.markStudyAsDuplicate(id);
+        return ResponseEntity.ok().build();
+    }
 }
