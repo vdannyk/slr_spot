@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend.imports;
 
 import com.dkwasniak.slr_spot_backend.file.FileService;
 import com.dkwasniak.slr_spot_backend.imports.dto.ImportDto;
+import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.study.Study;
@@ -41,7 +42,10 @@ public class ImportFacade {
         );
         studyImport.setReview(review);
         studyImport.setStudies(studies);
-        studies.forEach(s -> s.setStudyImport(studyImport));
+        studies.forEach(s -> {
+            s.setStudyImport(studyImport);
+//            s.addOperation(new Operation("Import performed"));
+        });
         importRepository.save(studyImport);
     }
 

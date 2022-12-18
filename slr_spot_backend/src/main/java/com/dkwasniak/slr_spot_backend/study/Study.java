@@ -4,6 +4,7 @@ import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.folder.Folder;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
+import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.dkwasniak.slr_spot_backend.study.status.Status;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
@@ -91,6 +92,10 @@ public class Study {
     @JsonIgnore
     private List<Comment> comments = new ArrayList();
 
+    @OneToMany(mappedBy = "study", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonIgnore
+    private List<Operation> operations = new ArrayList();
+
     public void addTag(Tag tag) {
         this.tags.add(tag);
         tag.getStudies().add(this);
@@ -104,5 +109,10 @@ public class Study {
     public void addComment(Comment comment) {
         this.comments.add(comment);
         comment.setStudy(this);
+    }
+
+    public void addOperation(Operation operation) {
+        this.operations.add(operation);
+        operation.setStudy(this);
     }
 }
