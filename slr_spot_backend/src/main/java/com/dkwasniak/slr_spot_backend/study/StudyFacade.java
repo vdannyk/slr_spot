@@ -11,6 +11,7 @@ import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
+import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningService;
 import com.dkwasniak.slr_spot_backend.screeningDecision.dto.ScreeningDecisionDto;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
 import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
@@ -29,6 +30,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,6 +46,7 @@ public class StudyFacade {
     private final UserService userService;
     private final TagService tagService;
     private final CommentService commentService;
+    private final ScreeningService screeningService;
 
     public List<Study> getStudiesByReviewId(Long reviewId) {
         Set<Import> imports = importService.getImportsByReviewId(reviewId);
@@ -117,8 +120,14 @@ public class StudyFacade {
         Study study = studyService.getStudyById(studyId);
         if (studyService.isStudyScreeningAllowed(study)) {
             User user = userService.getUserById(screeningDecisionDto.getUserId());
-            ScreeningDecision screeningDecision = new ScreeningDecision(user, study, screeningDecisionDto.getDecision());
-            studyService.addScreeningDecisionToStudy(study, screeningDecision);
+
+            Optional<ScreeningDecision> oldDecision = user.getScreeningDecisions().stream().filter(sd -> Objects.equals(sd.getStudy().getId(), studyId)).findFirst();
+            if (oldDecision.isPresent()) {
+                screeningService.updateDecision(oldDecision.get(), screeningDecisionDto.getDecision());
+            } else {
+                ScreeningDecision screeningDecision = new ScreeningDecision(user, study, screeningDecisionDto.getDecision());
+                studyService.addScreeningDecisionToStudy(study, screeningDecision);
+            }
             StatusEnum newStatus = studyService.verifyStudyStatus(study, requiredReviewers);
             if (!newStatus.equals(study.getStatus())) {
                 studyService.updateStudyStatus(study, newStatus);

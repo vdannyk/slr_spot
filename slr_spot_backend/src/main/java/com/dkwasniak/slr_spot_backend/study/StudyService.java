@@ -101,7 +101,7 @@ public class StudyService {
     public StatusEnum verifyStudyStatus(Study study, int requiredReviewers) {
         StatusEnum currentStatus = study.getStatus();
         List<ScreeningDecision> screeningDecisions = study.getScreeningDecisions();
-        if (screeningDecisions.stream().filter(sd -> Decision.INCLUDE.equals(sd.getDecision())).count() == requiredReviewers) {
+        if (screeningDecisions.stream().filter(sd -> Decision.INCLUDE.equals(sd.getDecision())).count() >= requiredReviewers) {
             if (StatusEnum.TITLE_ABSTRACT.equals(currentStatus)) {
                 return StatusEnum.FULL_TEXT;
             } else if (StatusEnum.FULL_TEXT.equals(currentStatus)) {

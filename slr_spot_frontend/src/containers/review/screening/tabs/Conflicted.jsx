@@ -43,14 +43,17 @@ const Conflicted = (props) => {
     getStudies()
   }, [props.isFullText]);
 
+  const handleStudiesUpdate = (id) => {
+    setStudies(studies.filter(study => study.id !== id));
+  }
+
   return (
     <div className='slrspot__screening-studies'>
       { studies.map(study => (
         <ScreeningStudy 
           study={study} 
           isShowAbstracts={props.showAbstracts} 
-          triggerHistory={setShowHistory} 
-          triggerDiscussion={setShowDiscussion} 
+          triggerVote={ handleStudiesUpdate }  
           tab={CONFLICTED} 
           isFullText={props.isFullText} />
       ))}

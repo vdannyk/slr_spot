@@ -42,6 +42,35 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, tab, isFullText, r
     setShowAbstract(!showAbstract);
   }
 
+  const ConflictedOptions = () => {
+    // to do -> check role in useState
+    const [showOptions, setShowOptions] = useState(false);
+
+    return (
+      <div className='slrspot__screeningStudy-decision'>
+        { showOptions 
+        ? <>
+            <button 
+              className='slrspot__screeningStudy-decision-button'
+              onClick={ () => handleVote('EXCLUDE')}>
+                exclude
+            </button>
+            <button 
+              className='slrspot__screeningStudy-decision-button' 
+              onClick={ () => handleVote('INCLUDE')}>
+                include
+            </button>
+          </>
+        : <button 
+            className='slrspot__screeningStudy-decision-button' 
+            onClick={() => setShowOptions(true)}>
+              change decision
+          </button>
+        }
+      </div>
+    )
+  }
+
   function tabSpecificContent() {
     if (tab === TO_BE_REVIEWED) {
       return (
@@ -65,10 +94,7 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, tab, isFullText, r
       )
     } else if (tab === CONFLICTED) {
       return (
-        <div className='slrspot__screeningStudy-decision'>
-          <button className='slrspot__screeningStudy-decision-button'>exclude</button>
-          <button className='slrspot__screeningStudy-decision-button'>include</button>
-        </div>
+        <ConflictedOptions />
       )
     } else if (tab === AWAITING) {
       return (
