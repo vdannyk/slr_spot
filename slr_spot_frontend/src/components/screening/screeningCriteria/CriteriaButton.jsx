@@ -5,7 +5,7 @@ const CriteriaButton = (props) => {
   return (
     <div className='slrspot__criteriaButton'>
       <div className='slrspot__criteriaButton-container' onClick={ props.triggerCriteria }>
-        SHOW CRITERIA
+        CRITERIA
       </div>
     </div>
   )

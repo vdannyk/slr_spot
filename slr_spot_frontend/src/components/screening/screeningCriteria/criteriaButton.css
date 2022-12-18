@@ -1,7 +1,7 @@
 .slrspot__criteriaButton {
 	position: fixed;
-	top: 90vh;
-	left: 170vh;
+	top: 95vh;
+	left: 3%;
 
 	display: flex;
 	align-items: center;
@@ -16,7 +16,7 @@
   text-align: center;
   justify-content: center;
 
-	width: 150px;
+	width: 90px;
 	max-width: 100%;
 	height: 20px;
 	position: relative;
