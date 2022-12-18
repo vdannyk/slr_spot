@@ -121,4 +121,10 @@ public class StudyService {
         study.getScreeningDecisions().clear();
         studyRepository.save(study);
     }
+
+    @Transactional
+    public void clearDecisions(Study study) {
+        study.getScreeningDecisions().clear();
+        studyRepository.save(study);
+    }
 }

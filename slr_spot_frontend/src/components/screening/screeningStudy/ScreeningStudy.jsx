@@ -42,6 +42,15 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, triggerRefresh, ta
     });
   }
 
+  const handleRestore = () => {
+    axiosInstance.put("/studies/" + study.id + "/restore")
+    .then(() => {
+      triggerVote(study.id);
+    })
+    .catch(() => {
+    });
+  }
+
   const handleShowAbstract = () => {
     setShowAbstract(!showAbstract);
   }
@@ -154,7 +163,11 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, triggerRefresh, ta
     } else {
       return (
         <div className='slrspot__screeningStudy-decision'>
-          <button className='slrspot__screeningStudy-decision-button'>screen again</button>
+          <button 
+            className='slrspot__screeningStudy-decision-button' 
+            onClick={ () => handleRestore() }>
+              screen again
+          </button>
         </div>
       )
     }

@@ -140,4 +140,9 @@ public class StudyFacade {
     public Decision getScreeningDecisionByUser(Long studyId, Long userId) {
         return screeningService.getScreeningDecisionByStudyIdAndUserId(studyId, userId).getDecision();
     }
+
+    public void restoreStudy(Long studyId) {
+        Study study = studyService.getStudyById(studyId);
+        studyService.clearDecisions(study);
+    }
 }

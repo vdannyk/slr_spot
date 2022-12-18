@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -102,5 +103,11 @@ public class StudyController {
     public ResponseEntity<Decision> getScreeningDecisionByUser(@PathVariable Long id,
                                                                @RequestParam Long userId) {
         return ResponseEntity.ok().body(studyFacade.getScreeningDecisionByUser(id, userId));
+    }
+
+    @PutMapping("/{id}/restore")
+    public ResponseEntity<Decision> restoreStudy(@PathVariable Long id) {
+        studyFacade.restoreStudy(id);
+        return ResponseEntity.ok().build();
     }
 }
