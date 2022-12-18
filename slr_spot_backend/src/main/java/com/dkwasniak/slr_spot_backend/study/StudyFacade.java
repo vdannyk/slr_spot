@@ -53,9 +53,26 @@ public class StudyFacade {
 
     public List<Study> getStudiesToBeReviewed(Long reviewId, Long userId) {
         Review review = reviewService.getReviewById(reviewId);
-        User user = userService.getUserById(userId);
-        List<Study> studies = studyService.getStudiesToBeReviewed(review, user);
-        return studies;
+        int requiredReviewers = review.getScreeningReviewers();
+        return studyService.getStudiesToBeReviewed(reviewId, userId, requiredReviewers);
+    }
+
+    public List<Study> getStudiesConflicted(Long reviewId) {
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+        return studyService.getStudiesConflicted(reviewId, requiredReviewers);
+    }
+
+    public List<Study> getStudiesAwaiting(Long reviewId, Long userId) {
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+        return studyService.getStudiesAwaiting(reviewId, userId, requiredReviewers);
+    }
+
+    public List<Study> getStudiesExcluded(Long reviewId) {
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+        return studyService.getStudiesExcluded(reviewId, requiredReviewers);
     }
 
     public Set<Tag> getStudyTags(Long studyId) {

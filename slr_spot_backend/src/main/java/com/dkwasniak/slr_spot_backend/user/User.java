@@ -74,8 +74,8 @@ public class User {
     }
 
     public void addDecision(Study study, Stage stage, Decision decision) {
-        ScreeningDecision screeningDecision = new ScreeningDecision(this, study, stage, decision);
-        this.screeningDecisions.add(screeningDecision);
+//        ScreeningDecision screeningDecision = new ScreeningDecision(this, study, decision);
+//        this.screeningDecisions.add(screeningDecision);
     }
 
     public void removeDecision(Study study, Stage stage, Decision decision) {

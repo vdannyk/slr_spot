@@ -41,8 +41,27 @@ public class StudyService {
         return studies;
     }
 
-    public List<Study> getStudiesToBeReviewed(Review review, User user) {
-        return studyRepository.findAllByStudyImport_Review_AndScreeningDecisions_Empty(review);
+    public List<Study> getStudiesToBeReviewed(Long reviewId, Long userId, int requiredReviewers) {
+        List<Study> studiesToReview = studyRepository.findAllToBeReviewed(reviewId, requiredReviewers);
+        List<Study> studiesReviewed = getStudiesReviewedByUserId(reviewId, userId);
+        studiesToReview.removeAll(studiesReviewed);
+        return studiesToReview;
+    }
+
+    public List<Study> getStudiesReviewedByUserId(Long reviewId, Long userId) {
+        return studyRepository.findAllReviewedByUserId(reviewId, userId);
+    }
+
+    public List<Study> getStudiesConflicted(Long reviewId, int requiredReviewers) {
+        return studyRepository.findAllConflicted(reviewId, requiredReviewers);
+    }
+
+    public List<Study> getStudiesAwaiting(Long reviewId, Long userId, int requiredReviewers) {
+        return studyRepository.findAllAwaiting(reviewId, userId, requiredReviewers);
+    }
+
+    public List<Study> getStudiesExcluded(Long reviewId, int requiredReviewers) {
+        return studyRepository.findAllExcluded(reviewId, requiredReviewers);
     }
 
     public Set<Tag> getStudyTags(Study study) {

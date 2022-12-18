@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { ScreeningStudy, StudyDiscussion, StudyHistory,ContentPopup } from '../../../../components';
 import { TO_BE_REVIEWED } from '../../../../constants/tabs';
 import axiosInstance from '../../../../services/api';
+import { useSelector } from "react-redux";
 import '../screening.css';
 
 const ToBeReviewed = (props) => {
@@ -10,10 +11,12 @@ const ToBeReviewed = (props) => {
   const [showHistory, setShowHistory] = useState(false);
   const [showDiscussion, setShowDiscussion] = useState(false);
   const { reviewId } = useParams();
+  const { user: currentUser } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    var userId = currentUser.id;
     axiosInstance.get("/studies/to-review", { params: {
-      reviewId
+      reviewId, userId
     }})
     .then((response) => {
       setStudies(response.data)

@@ -33,8 +33,25 @@ public class StudyController {
     }
 
     @GetMapping("/to-review")
-    public ResponseEntity<List<Study>> getStudiesToBeReviewed(@RequestParam("reviewId") Long reviewId) {
-        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewed(reviewId, 1L));
+    public ResponseEntity<List<Study>> getStudiesToBeReviewed(@RequestParam("reviewId") Long reviewId,
+                                                              @RequestParam("userId") Long userId) {
+        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewed(reviewId, userId));
+    }
+
+    @GetMapping("/conflicted")
+    public ResponseEntity<List<Study>> getStudiesConflicted(@RequestParam("reviewId") Long reviewId) {
+        return ResponseEntity.ok(studyFacade.getStudiesConflicted(reviewId));
+    }
+
+    @GetMapping("/awaiting")
+    public ResponseEntity<List<Study>> getStudiesAwaiting(@RequestParam("reviewId") Long reviewId,
+                                                              @RequestParam("userId") Long userId) {
+        return ResponseEntity.ok(studyFacade.getStudiesAwaiting(reviewId, userId));
+    }
+
+    @GetMapping("/excluded")
+    public ResponseEntity<List<Study>> getStudiesExcluded(@RequestParam("reviewId") Long reviewId) {
+        return ResponseEntity.ok(studyFacade.getStudiesExcluded(reviewId));
     }
 
     @GetMapping("/{id}/tags")

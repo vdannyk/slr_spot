@@ -19,6 +19,5 @@ public class ScreeningDecisionId implements Serializable {
 
     private Long userId;
     private Long studyId;
-    @Enumerated(EnumType.STRING)
-    private Stage stage;
+
 }

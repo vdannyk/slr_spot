@@ -34,8 +34,8 @@ public class ScreeningDecision {
     @Enumerated(EnumType.STRING)
     private Decision decision;
 
-    public ScreeningDecision(User user, Study study, Stage stage, Decision decision) {
-        this.id = new ScreeningDecisionId(user.getId(), study.getId(), stage);
+    public ScreeningDecision(User user, Study study, Decision decision) {
+        this.id = new ScreeningDecisionId(user.getId(), study.getId());
         this.user = user;
         this.study = study;
         this.decision = decision;

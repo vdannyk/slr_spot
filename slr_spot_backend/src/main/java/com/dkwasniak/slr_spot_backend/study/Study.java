@@ -84,9 +84,9 @@ public class Study {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @OneToMany(mappedBy = "study", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
-    private Set<ScreeningDecision> screeningDecisions = new HashSet<>();
+    private List<ScreeningDecision> screeningDecisions = new ArrayList<>();
 
     @OneToMany(mappedBy = "study", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
