@@ -14,6 +14,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -114,6 +115,7 @@ public class StudyService {
         }
     }
 
+    @Transactional
     public void updateStudyStatus(Study study, StatusEnum statusEnum) {
         study.setStatus(statusEnum);
         study.getScreeningDecisions().clear();

@@ -25,6 +25,7 @@ import org.jbibtex.BibTeXDatabase;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -114,6 +115,7 @@ public class StudyFacade {
         studyService.addCommentToStudy(study, comment);
     }
 
+    @Transactional
     public void addStudyScreeningDecision(Long studyId, ScreeningDecisionDto screeningDecisionDto) {
         Review review = reviewService.getReviewById(screeningDecisionDto.getReviewId());
         int requiredReviewers = review.getScreeningReviewers();
@@ -133,5 +135,9 @@ public class StudyFacade {
                 studyService.updateStudyStatus(study, newStatus);
             }
         }
+    }
+
+    public Decision getScreeningDecisionByUser(Long studyId, Long userId) {
+        return screeningService.getScreeningDecisionByStudyIdAndUserId(studyId, userId).getDecision();
     }
 }

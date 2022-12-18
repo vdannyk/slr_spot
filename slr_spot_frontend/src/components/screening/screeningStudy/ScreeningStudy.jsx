@@ -11,7 +11,7 @@ import axiosInstance from '../../../services/api';
 
 
 
-const ScreeningStudy = ({study, isShowAbstracts, triggerVote, tab, isFullText, reviewTags}) => {
+const ScreeningStudy = ({study, isShowAbstracts, triggerVote, triggerRefresh, tab, isFullText, reviewTags}) => {
   const [showAbstract, setShowAbstract] = useState(isShowAbstracts);
   const [showDiscussion, setShowDiscussion] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -32,7 +32,11 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, tab, isFullText, r
       decision: vote
     })
     .then(() => {
-      triggerVote(study.id);
+      if (tab === AWAITING ) {
+        triggerRefresh();
+      } else {
+        triggerVote(study.id);
+      }
     })
     .catch(() => {
     });
@@ -71,6 +75,53 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, tab, isFullText, r
     )
   }
 
+  const AwaitingOptions = () => {
+    const [showOptions, setShowOptions] = useState(false);
+    const [currentVote, setCurrentVote] = useState('');
+
+    useEffect(() => {
+      var userId = currentUser.id;
+      axiosInstance.get("/studies/" + study.id + "/screening_decision", { params: {
+        userId
+      }})
+      .then((response) => {
+        setCurrentVote(response.data);
+      })
+    }, []);
+
+    return (
+      <div className='slrspot__screeningStudy-awaiting'>
+        <div className='slrspot__screeningStudy-votes'>
+          <p>current vote: <span><b>{currentVote}</b></span></p>
+        </div>
+        { showOptions 
+        ? <div className='slrspot__screeningStudy-awaiting-decision'>
+            <button 
+              className='slrspot__screeningStudy-decision-button'
+              onClick={ () => handleVote('EXCLUDE')}>
+                exclude
+            </button>
+            <button 
+              className='slrspot__screeningStudy-decision-button' 
+              onClick={ () => handleVote('UNCLEAR')}>
+                unclear
+            </button>
+            <button 
+              className='slrspot__screeningStudy-decision-button' 
+              onClick={ () => handleVote('INCLUDE')}>
+                include
+            </button>
+          </div>
+        : <button 
+            className='slrspot__screeningStudy-decision-button' 
+            onClick={() => setShowOptions(true)}>
+              change decision
+          </button>
+        }
+      </div>
+    )
+  }
+
   function tabSpecificContent() {
     if (tab === TO_BE_REVIEWED) {
       return (
@@ -98,9 +149,7 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, tab, isFullText, r
       )
     } else if (tab === AWAITING) {
       return (
-        <div className='slrspot__screeningStudy-decision'>
-          <button className='slrspot__screeningStudy-decision-button'>change decision</button>
-        </div>
+        <AwaitingOptions />
       )
     } else {
       return (

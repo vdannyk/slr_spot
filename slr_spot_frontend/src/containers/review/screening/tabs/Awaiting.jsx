@@ -13,6 +13,7 @@ const Awaiting = (props) => {
   const [showDiscussion, setShowDiscussion] = useState(false);
   const { reviewId } = useParams();
   const { user: currentUser } = useSelector((state) => state.auth);
+  const [refreshStudies, setRefreshStudies] = useState(false);
 
   function getStudies() {
     var userId = currentUser.id;
@@ -41,7 +42,11 @@ const Awaiting = (props) => {
 
   useEffect(() => {
     getStudies()
-  }, [props.isFullText]);
+  }, [props.isFullText, refreshStudies]);
+
+  const handleStudiesUpdate = (id) => {
+    setStudies(studies.filter(study => study.id !== id));
+  }
 
   return (
     <div className='slrspot__screening-studies'>
@@ -49,8 +54,8 @@ const Awaiting = (props) => {
         <ScreeningStudy 
           study={study} 
           isShowAbstracts={props.showAbstracts} 
-          triggerHistory={setShowHistory} 
-          triggerDiscussion={setShowDiscussion} 
+          triggerVote={ handleStudiesUpdate }
+          triggerRefresh={ () => setRefreshStudies(!refreshStudies)}
           tab={AWAITING} 
           isFullText={props.isFullText} />
       ))}
