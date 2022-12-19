@@ -36,6 +36,12 @@ public class StudyController {
         return ResponseEntity.ok(studyFacade.getStudiesByReviewId(reviewId));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<List<Study>> removeStudyById(@PathVariable Long id) {
+        studyFacade.removeStudyById(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/to-review")
     public ResponseEntity<List<Study>> getStudiesToBeReviewed(@RequestParam("reviewId") Long reviewId,
                                                               @RequestParam("userId") Long userId,
@@ -106,9 +112,14 @@ public class StudyController {
     }
 
     @PutMapping("/{id}/restore")
-    public ResponseEntity<Decision> restoreStudy(@PathVariable Long id) {
-        studyFacade.restoreStudy(id);
+    public ResponseEntity<Decision> restoreStudy(@PathVariable Long id, @RequestParam StatusEnum status) {
+        studyFacade.restoreStudy(id, status);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/duplicates")
+    public ResponseEntity<List<Study>> getDuplicates(@RequestParam Long reviewId) {
+        return ResponseEntity.ok().body(studyFacade.getDuplicates(reviewId));
     }
 
     @PutMapping("/{id}/duplicate")

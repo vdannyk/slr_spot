@@ -58,6 +58,10 @@ public class StudyFacade {
         return studies;
     }
 
+    public void removeStudyById(Long studyId) {
+        studyService.removeStudyById(studyId);
+    }
+
     public List<Study> getStudiesToBeReviewed(Long reviewId, Long userId, StatusEnum status) {
         Review review = reviewService.getReviewById(reviewId);
         int requiredReviewers = review.getScreeningReviewers();
@@ -141,13 +145,21 @@ public class StudyFacade {
         return screeningService.getScreeningDecisionByStudyIdAndUserId(studyId, userId).getDecision();
     }
 
-    public void restoreStudy(Long studyId) {
+    public void restoreStudy(Long studyId, StatusEnum status) {
         Study study = studyService.getStudyById(studyId);
-        studyService.clearDecisions(study);
+        if (status != null) {
+            studyService.updateStudyStatus(study, status);
+        } else {
+            studyService.clearDecisions(study);
+        }
     }
 
     public void markStudyAsDuplicate(Long studyId) {
         Study study = studyService.getStudyById(studyId);
         studyService.updateStudyStatus(study, StatusEnum.DUPLICATES);
+    }
+
+    public List<Study> getDuplicates(Long reviewId) {
+        return studyService.getDuplicates(reviewId);
     }
 }

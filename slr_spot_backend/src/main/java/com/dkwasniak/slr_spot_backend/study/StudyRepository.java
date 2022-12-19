@@ -111,4 +111,12 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                   @Param("size") long size,
                                   @Param("status") StatusEnum status);
 
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.status = 'DUPLICATES' ")
+    List<Study> findAllDuplicates(@Param("reviewId") long reviewId);
+
 }

@@ -11,3 +11,4 @@ export { default as ScreeningSettings } from './review/screening/settings/Screen
 export { default as StudiesSearch } from './review/studies/studiesSearch/StudiesSearch';
 export { default as StudiesDisplay } from './review/studies/studiesDisplay/StudiesDisplay';
 export { default as Screening } from './review/screening/Screening';
+export { default as Duplicates } from './review/studies/duplicates/Duplicates';

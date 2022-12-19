@@ -30,6 +30,10 @@ public class StudyService {
                 .orElseThrow(() -> new StudyNotFoundException("Study not found"));
     }
 
+    public void removeStudyById(Long studyId) {
+        studyRepository.deleteById(studyId);
+    }
+
     public void saveAll(List<Study> studies) {
         studyRepository.saveAll(studies);
     }
@@ -126,5 +130,9 @@ public class StudyService {
     public void clearDecisions(Study study) {
         study.getScreeningDecisions().clear();
         studyRepository.save(study);
+    }
+
+    public List<Study> getDuplicates(Long reviewId) {
+        return studyRepository.findAllDuplicates(reviewId);
     }
 }
