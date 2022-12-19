@@ -81,7 +81,7 @@ const ReviewMenu = ({isPreview}) => {
               <SubMenuItem name='Full text' redirect='/screening/full-text'/>
             </div>
           )}
-          <MenuItem name='Results' />
+          <MenuItem name='Results' redirect='/results'/>
         </div>
       </div>
       <ShowMenuButton />

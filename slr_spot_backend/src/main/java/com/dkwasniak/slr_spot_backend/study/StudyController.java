@@ -122,6 +122,11 @@ public class StudyController {
         return ResponseEntity.ok().body(studyFacade.getDuplicates(reviewId));
     }
 
+    @GetMapping("/included")
+    public ResponseEntity<List<Study>> getIncludedStudies(@RequestParam Long reviewId) {
+        return ResponseEntity.ok().body(studyFacade.getIncludedStudies(reviewId));
+    }
+
     @PutMapping("/{id}/duplicate")
     public ResponseEntity<Decision> markStudyAsDuplicate(@PathVariable Long id) {
         studyFacade.markStudyAsDuplicate(id);

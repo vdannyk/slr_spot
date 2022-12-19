@@ -1,0 +1,5 @@
+.slrspot__review-results {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

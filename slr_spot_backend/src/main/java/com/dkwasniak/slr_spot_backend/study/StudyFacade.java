@@ -162,4 +162,9 @@ public class StudyFacade {
     public List<Study> getDuplicates(Long reviewId) {
         return studyService.getDuplicates(reviewId);
     }
+
+    public List<Study> getIncludedStudies(Long reviewId) {
+        return studyService.getIncludedStudies(reviewId);
+    }
+
 }

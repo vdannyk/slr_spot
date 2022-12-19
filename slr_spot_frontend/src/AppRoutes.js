@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSelector } from "react-redux";
-import { ReviewHome, ReviewTeam, ReviewSettings, HomePage, Profile, Review, Reviews, ScreeningSettings, StudiesSearch, StudiesDisplay, Screening, Duplicates } from './containers';
+import { ReviewHome, ReviewTeam, ReviewSettings, HomePage, Profile, Review, Reviews, ScreeningSettings, StudiesSearch, StudiesDisplay, Screening, Duplicates, Results } from './containers';
 import { NewReview, SignInPage, AccountActivation, PasswordRecovery, UpdateEmail, Criteria, Tags, Keywords } from './components';
 import FullTextStudy from './containers/fullTextStudy/FullTextStudy';
 
@@ -39,6 +39,8 @@ const AppRoutes = () => {
       <Route path="reviews/:reviewId/studies/search" element={isLoggedIn ? <Review page={<StudiesSearch />} /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/studies/display" element={isLoggedIn ? <Review page={<StudiesDisplay />} /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/studies/duplicates" element={isLoggedIn ? <Review page={<Duplicates />} /> : <Navigate to='/' />} />
+
+      <Route path="reviews/:reviewId/results" element={isLoggedIn ? <Review page={<Results />} /> : <Navigate to='/' />} />
     </Routes>
   )
 }

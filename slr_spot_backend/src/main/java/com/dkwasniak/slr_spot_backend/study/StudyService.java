@@ -135,4 +135,8 @@ public class StudyService {
     public List<Study> getDuplicates(Long reviewId) {
         return studyRepository.findAllDuplicates(reviewId);
     }
+
+    public List<Study> getIncludedStudies(Long reviewId) {
+        return studyRepository.findAllIncluded(reviewId);
+    }
 }
