@@ -1,5 +1,6 @@
-package com.dkwasniak.slr_spot_backend.study.dto;
+package com.dkwasniak.slr_spot_backend.dataExtraction.dto;
 
+import com.dkwasniak.slr_spot_backend.dataExtraction.ExtractionField;
 import com.dkwasniak.slr_spot_backend.study.Study;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,6 @@ import java.util.List;
 @Getter
 public class ExtractionRequest {
 
-    private List<String> fields;
+    private List<ExtractionField> fields;
     private List<Study> studies;
 }

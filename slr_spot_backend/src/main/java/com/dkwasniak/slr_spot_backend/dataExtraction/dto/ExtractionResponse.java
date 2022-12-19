@@ -1,7 +1,5 @@
-package com.dkwasniak.slr_spot_backend.study.dto;
+package com.dkwasniak.slr_spot_backend.dataExtraction.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

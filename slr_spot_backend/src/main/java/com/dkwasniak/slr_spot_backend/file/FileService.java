@@ -1,22 +1,34 @@
 package com.dkwasniak.slr_spot_backend.file;
 
+import com.dkwasniak.slr_spot_backend.dataExtraction.ExtractionField;
 import com.dkwasniak.slr_spot_backend.file.exception.FileLoadingException;
 import com.dkwasniak.slr_spot_backend.file.exception.NotAllowedFileContentTypeException;
+import com.dkwasniak.slr_spot_backend.study.Study;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXParser;
 import org.jbibtex.ParseException;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -82,5 +94,48 @@ public class FileService {
 
     private List<CSVRecord> loadFromRis(MultipartFile multipartFile) {
         return null;
+    }
+
+    public InputStreamResource exportCsv(List<ExtractionField> extractionFields, String[] headers, List<Study> studies) {
+        CSVFormat format = CSVFormat.Builder.create().setHeader(headers).build();
+        try (
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            CSVPrinter printer = new CSVPrinter(new PrintWriter(outputStream), format);
+        ) {
+            for (var study : studies) {
+                printer.printRecord(extractionFields.stream().map(e -> getField(study, e)).collect(Collectors.toList()));
+            }
+            printer.flush();
+
+            return new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
+        } catch (IOException e) {
+            throw new IllegalStateException("Error while extracting data");
+        }
+    }
+
+    private String getField(Study study, ExtractionField field) {
+        switch (field) {
+            case AUTHORS -> {
+                return study.getAuthors();
+            }
+            case TITLE -> {
+                return study.getTitle();
+            }
+            case JOURNAL -> {
+                return study.getJournalTitle();
+            }
+            case ABSTRACT -> {
+                return study.getDocumentAbstract();
+            }
+            case PUBLICATIONYEAR -> {
+                return String.valueOf(study.getPublicationYear());
+            }
+            case DOI -> {
+                return study.getDoi();
+            }
+            default -> {
+                throw new IllegalStateException("Unable to map extraction field");
+            }
+        }
     }
 }
