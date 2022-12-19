@@ -5,10 +5,16 @@ import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.dto.ScreeningDecisionDto;
+import com.dkwasniak.slr_spot_backend.study.dto.ExtractionRequest;
+import com.dkwasniak.slr_spot_backend.study.dto.ExtractionResponse;
 import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
 
@@ -131,5 +140,23 @@ public class StudyController {
     public ResponseEntity<Decision> markStudyAsDuplicate(@PathVariable Long id) {
         studyFacade.markStudyAsDuplicate(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/extract_data")
+    public ResponseEntity<byte[]> extractData(@RequestBody ExtractionRequest extractionRequest) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        CSVFormat format = CSVFormat.Builder.create().setHeader("title").build();
+        CSVPrinter printer = new CSVPrinter(new PrintWriter(baos), format);
+        for (var study : extractionRequest.getStudies()) {
+            printer.printRecord(study.getTitle());
+        }
+        printer.flush();
+
+        byte[] data = baos.toByteArray();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + "data.csv");
+        httpHeaders.set(HttpHeaders.CONTENT_TYPE, "text/csv");
+        return ResponseEntity.ok().headers(httpHeaders).body(data);
     }
 }
