@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.comment.Comment;
+import com.dkwasniak.slr_spot_backend.document.Document;
 import com.dkwasniak.slr_spot_backend.folder.Folder;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
@@ -29,6 +30,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -61,8 +63,9 @@ public class Study {
     private String issn;
     private String language;
 
-    // TODO pdfs
-    private String fullText;
+    @OneToOne(mappedBy = "study", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonIgnore
+    private Document fullText;
 
     @ManyToOne
     @JoinColumn(name = "import_id")
@@ -119,5 +122,10 @@ public class Study {
 
     public void addScreeningDecision(ScreeningDecision screeningDecision) {
         this.screeningDecisions.add(screeningDecision);
+    }
+
+    public void setDocument(Document document) {
+        this.fullText = document;
+        document.setStudy(this);
     }
 }

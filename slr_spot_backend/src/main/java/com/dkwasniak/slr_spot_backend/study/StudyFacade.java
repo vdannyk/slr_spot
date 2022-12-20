@@ -4,6 +4,7 @@ import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.comment.CommentService;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
+import com.dkwasniak.slr_spot_backend.document.Document;
 import com.dkwasniak.slr_spot_backend.file.FileService;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.imports.ImportService;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -34,6 +36,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 
 @Component
@@ -167,4 +171,37 @@ public class StudyFacade {
         return studyService.getIncludedStudies(reviewId);
     }
 
+    public Document getFullTextDocument(Long studyId) {
+        Study study = studyService.getStudyById(studyId);
+        return study.getFullText();
+    }
+
+    public String getFullTextDocumentName(Long studyId) {
+        Study study = studyService.getStudyById(studyId);
+        Document document = study.getFullText();
+        if (isNull(document)) {
+            return null;
+        }
+        return document.getName();
+    }
+
+    public Document addFullTextDocument(Long studyId, MultipartFile file) {
+        Study study = studyService.getStudyById(studyId);
+        Document document = new Document();
+        document.setName(file.getOriginalFilename());
+        try {
+            document.setData(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        study.setDocument(document);
+        studyService.updateStudy(study);
+        return document;
+    }
+
+    public void deleteFullTextDocument(Long studyId) {
+        Study study = studyService.getStudyById(studyId);
+        study.setFullText(null);
+        studyService.updateStudy(study);
+    }
 }

@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.comment.Comment;
+import com.dkwasniak.slr_spot_backend.document.Document;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
@@ -138,5 +139,9 @@ public class StudyService {
 
     public List<Study> getIncludedStudies(Long reviewId) {
         return studyRepository.findAllIncluded(reviewId);
+    }
+
+    public Study updateStudy(Study study) {
+        return studyRepository.save(study);
     }
 }

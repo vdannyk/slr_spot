@@ -8,7 +8,7 @@ import StudyHistory from './studyHistory/StudyHistory';
 import StudyDiscussion from './studyDiscussion/StudyDiscussion';
 import { useSelector } from 'react-redux';
 import axiosInstance from '../../../services/api';
-
+import FullTextField from './fullTextField/FullTextField';
 
 
 const ScreeningStudy = ({study, isShowAbstracts, triggerVote, triggerRefresh, tab, isFullText, reviewTags}) => {
@@ -182,14 +182,6 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, triggerRefresh, ta
     }
   }
 
-  const FullTextField = () => {
-    return isFullText && (
-      <p><label>full text:</label> { study.fullText }
-        <button className='pdf' onClick={() => navigate('/reviews/2/screening/study/full-text')}>test.pdf</button>
-      </p>
-    )
-  }
-
   return (
     <div className='slrspot__screeningStudy'>
       <h3>{ study.title }</h3>
@@ -203,7 +195,7 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, triggerRefresh, ta
       <p><label>doi:</label> { study.doi }</p>
       <p><label>URL:</label> { study.url }</p>
       <p><label>language:</label> { study.language }</p>
-      <FullTextField />
+      <FullTextField isFullText={isFullText} study={ study }/>
       
       <StudyTags 
         studyId={ study.id } 
