@@ -1,55 +1,51 @@
-import React from 'react'
-import { useState } from 'react';
-import { DownloadButton, Helper } from '../../../components';
+import React, { useRef, useState } from 'react'
+import { DownloadButton } from '../../../components';
 import axiosInstance from '../../../services/api';
-import { AiFillCheckCircle } from "react-icons/ai";
+import FieldItem from './FieldItem';
+import './results.css';
 
 const ExtractData = (props) => {
-  const [fileUrl, setFileUrl] = useState();
+  const fileUrl = useRef(null);
   const [selected, setSelected] = useState([]);
+  const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleExtraction = () => {
-    axiosInstance.post('data_extraction', { 
-      fields: selected,
-      studies: props.selectedStudies
-    })
-    .then(response => {
-      const csvData = response.data;
-      const blob = new Blob([csvData], { type: 'text/csv' });
-      setFileUrl(URL.createObjectURL(blob));
-    })
-  }
-
-  const FieldItem = (props) => {
-    const [isSelected, setIsSelected] = useState(false);
-
-    const handleClick = () => {
-      if (selected.includes(props.value)) {
-        setSelected(selected.filter(item => item !== props.value));
-      } else {
-        setSelected(oldArray => [...oldArray, props.value]);
-      }
+    if (props.selectedStudies.length === 0) {
+      setShowError(true);
+      setErrorMsg('No studies selected');
+    } else if (selected.length === 0) {
+      setShowError(true);
+      setErrorMsg('No fields selected');
+    } else {
+      axiosInstance.post('data_extraction', { 
+        fields: selected,
+        studies: props.selectedStudies
+      })
+      .then(response => {
+        const csvData = response.data;
+        const blob = new Blob([csvData], { type: 'text/csv' });
+        fileUrl.current.href = URL.createObjectURL(blob);
+        fileUrl.current.click()
+      })
     }
-
-    return (
-      <div className='slrspot__extractData-field' onClick={ () => { handleClick(); setIsSelected(!isSelected)}}>
-        <p>{props.name}{ isSelected ? <AiFillCheckCircle color='green' style={{ marginLeft: '5px' }}/> 
-                                    : <AiFillCheckCircle style={{ marginLeft: '5px' }} />} </p>
-      </div>
-    )
   }
 
   return (
     <div className='slrspot__extractData'>
-      <p>Select fields which you want to extract</p>
-      <FieldItem name="authors" value='AUTHORS'/>
-      <FieldItem name="title" value='TITLE'/>
-      <FieldItem name="journal" value='JOURNAL'/>
-      <FieldItem name="publication year" value='PUBLICATIONYEAR'/>
-      <FieldItem name="abstract" value='ABSTRACT'/>
-      <FieldItem name="doi" value='DOI'/>
+      <h2>Select fields to extract</h2>
+      { showError && <p className='slrspot__input-error' style={{ marginBottom: '5px' }}>{errorMsg}</p>}
+      <FieldItem name="authors" value='AUTHORS' selected={selected} setSelected={setSelected} />
+      <FieldItem name="title" value='TITLE' selected={selected} setSelected={setSelected} />
+      <FieldItem name="journal" value='JOURNAL' selected={selected} setSelected={setSelected} />
+      <FieldItem name="publication year" value='PUBLICATIONYEAR' selected={selected} setSelected={setSelected} />
+      <FieldItem name="abstract" value='ABSTRACT' selected={selected} setSelected={setSelected} />
+      <FieldItem name="doi" value='DOI' selected={selected} setSelected={setSelected} />
 
-      <DownloadButton name='Extract data' fileUrl={fileUrl} handleExtraction={handleExtraction} />
+      <div className='slrspot__extractData-download'>
+        <a ref={fileUrl} style={{ display: 'none' }}/>
+        <button onClick={ handleExtraction }>Extract data</button>
+      </div>
     </div>
   )
 }

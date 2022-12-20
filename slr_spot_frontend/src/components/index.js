@@ -35,5 +35,3 @@ export { default as Helper } from './helper/Helper';
 export { default as DropdownSelect } from './dropdownSelect/DropdownSelect';
 export { default as FolderTree } from './folder/FolderTree';
 export { default as StudyFolderItem } from './study/studyFolderItem/StudyFolderItem';
-
-export { default as DownloadButton } from './downloadButton/DownloadButton';

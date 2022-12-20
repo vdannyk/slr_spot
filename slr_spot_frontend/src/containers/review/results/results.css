@@ -57,9 +57,14 @@
   border-radius: 10px;
   padding: 0 5px;
   margin-bottom: 5px;
+  cursor: pointer;
 }
 
 .slrspot__extractData-field p {
   margin: 0;
   margin-right: 5px;
+}
+
+.slrspot__extractData-download {
+  margin-bottom: 20px;
 }
