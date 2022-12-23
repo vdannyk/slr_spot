@@ -9,14 +9,16 @@ import ExtractData from './ExtractData';
 import GenerateRaport from './GenerateRaport';
 import ExportStudies from './ExportStudies';
 import ResultStudy from './ResultStudy';
+import { OWNER, MEMBER, COOWNER } from '../../../constants/roles';
 
-const Results = () => {
+const Results = (props) => {
   const [includedStudies, setIncludedStudies] = useState([]);
   const [selected, setSelected] = useState([]);
   const [showExtractMenu, setShowExtractMenu] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showRaportMenu, setShowRaportMenu] = useState(false);
   const { reviewId } = useParams();
+  var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
   useEffect(() => {
     axiosInstance.get("/studies/included", { params: {
@@ -71,11 +73,13 @@ const Results = () => {
             </div>
           </div>
         </div>
-        <div className='slrspot__review-results-options-container'>
-          <button onClick={ () => setShowExtractMenu(true) }>extract data</button>
-          <button onClick={ () => setShowExportMenu(true) }>export studies</button>
-          <button onClick={ () => setShowRaportMenu(true) }>generate raport</button>
-        </div>
+        { allowChanges && 
+          <div className='slrspot__review-results-options-container'>
+            <button onClick={ () => setShowExtractMenu(true) }>extract data</button>
+            <button onClick={ () => setShowExportMenu(true) }>export studies</button>
+            <button onClick={ () => setShowRaportMenu(true) }>generate raport</button>
+          </div>
+        }
       </div>
 
       <div className='slrspot__review-results-list'>

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../../services/api';
 import { useParams } from 'react-router-dom';
+import { OWNER, COOWNER } from '../../../../constants/roles';
 import './duplicates.css';
 
-const Duplicates = () => {
+const Duplicates = (props) => {
   const [duplicates, setDuplicates] = useState([]);
   const { reviewId } = useParams();
+  var allowChanges = props.userRole && [OWNER, COOWNER].includes(props.userRole);
 
   useEffect(() => {
     axiosInstance.get("/studies/duplicates", { params: {
@@ -21,7 +23,7 @@ const Duplicates = () => {
     setDuplicates(duplicates.filter(study => study.id !== id));
   }
 
-  const StudyDuplicate = ({study}) => {
+  const StudyDuplicate = ({study, allowChanges}) => {
     const [showAbstract, setShowAbstract] = useState(false);
 
     const handleShowAbstract = () => {
@@ -63,18 +65,20 @@ const Duplicates = () => {
         <p><label>URL:</label> { study.url }</p>
         <p><label>language:</label> { study.language }</p>
           
-        <div className='slrspot__screeningStudy-decision'>
-          <button 
-            className='slrspot__screeningStudy-decision-button'
-            onClick={ handleRestore }>
-              RESTORE TO SCREENING
-          </button>
-          <button 
-            className='slrspot__screeningStudy-decision-button' 
-            onClick={ handleDelete }>
-              REMOVE
-          </button>
-        </div>
+        { allowChanges && 
+          <div className='slrspot__screeningStudy-decision'>
+            <button 
+              className='slrspot__screeningStudy-decision-button'
+              onClick={ handleRestore }>
+                RESTORE TO SCREENING
+            </button>
+            <button 
+              className='slrspot__screeningStudy-decision-button' 
+              onClick={ handleDelete }>
+                REMOVE
+            </button>
+          </div>
+        }
       </div>
     )
   }
@@ -87,7 +91,9 @@ const Duplicates = () => {
       <div className='slrspot__review-duplicates-container'>
         { duplicates.map(study => (
           <StudyDuplicate 
-            study={ study } />
+            study={ study } 
+            allowChanges={ allowChanges }
+          />
         ))}
       </div>
     </div>

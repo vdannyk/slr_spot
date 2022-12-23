@@ -9,9 +9,10 @@ import { useForm } from "react-hook-form";
 import NewElementField from '../newElementField/NewElementField';
 import './criteria.css';
 import ConfirmationPopup from '../../popups/confirmationPopup/ConfirmationPopup';
+import { OWNER, MEMBER, COOWNER } from '../../../constants/roles';
 
 
-const Criteria = () => {
+const Criteria = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { reviewId } = useParams();
@@ -21,14 +22,17 @@ const Criteria = () => {
   const [showCriterionRemoveConfirmation, setShowCriterionRemoveConfirmation] = useState(false);
   const [criterionToRemove, setCriterionToRemove] = useState();
   const {register, handleSubmit, formState: { errors }} = useForm();
+  var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
   
   const inclusionCriteria = criteria.filter((criterion) => criterion.type === INCLUSION_TYPE)
     .map((criterion) => 
       <p key={criterion.name}>
-        <AiFillMinusCircle 
-          className='slrspot__screening-criteria-table-removeIcon'
-          onClick={ () => handleRemoveCriterion(criterion)}/>
+        { allowChanges && 
+          <AiFillMinusCircle 
+            className='slrspot__screening-criteria-table-removeIcon'
+            onClick={ () => handleRemoveCriterion(criterion)}/>
+        }
         {criterion.name}
       </p>
   );
@@ -36,9 +40,11 @@ const Criteria = () => {
   const exclusionCriteria = criteria.filter((criterion) => criterion.type === EXCLUSION_TYPE)
     .map((criterion) => 
       <p key={criterion.name}>
-        <AiFillMinusCircle 
-          className='slrspot__screening-criteria-table-removeIcon'
-          onClick={ () => handleRemoveCriterion(criterion)}/>
+        { allowChanges && 
+          <AiFillMinusCircle 
+            className='slrspot__screening-criteria-table-removeIcon'
+            onClick={ () => handleRemoveCriterion(criterion)}/>
+        }
         {criterion.name}
       </p>
   );
@@ -115,7 +121,7 @@ const Criteria = () => {
           <div className='slrspot__screening-criteria-table-header'>
             <div className='slrspot__screening-criteria-table-header-title'>
               <h2>{ INCLUSION_TYPE }</h2>
-              { !showAddInclusion && 
+              { allowChanges && !showAddInclusion && 
                 <AiFillPlusCircle 
                   className='slrspot__screening-criteria-table-addIcon'
                   onClick={ () => setShowAddInclusion(true) }/> }
@@ -136,7 +142,7 @@ const Criteria = () => {
           <div className='slrspot__screening-criteria-table-header'>
             <div className='slrspot__screening-criteria-table-header-title'>
               <h2>{ EXCLUSION_TYPE }</h2>
-              { !showAddExclusion && 
+              { allowChanges && !showAddExclusion && 
                 <AiFillPlusCircle 
                   className='slrspot__screening-criteria-table-addIcon'
                   onClick={ () => setShowAddExclusion(true) }/> }

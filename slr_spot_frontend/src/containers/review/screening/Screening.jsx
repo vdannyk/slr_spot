@@ -10,6 +10,7 @@ import Excluded from './tabs/Excluded';
 import { useParams } from 'react-router-dom';
 import EventBus from '../../../common/EventBus';
 import { INCLUSION_TYPE, EXCLUSION_TYPE } from '../../../components/screening/criteria/CriteriaTypes';
+import { OWNER, MEMBER, COOWNER } from '../../../constants/roles';
 
 
 const Screening = (props) => {
@@ -21,6 +22,7 @@ const Screening = (props) => {
   const [tab, setTab] = useState(TO_BE_REVIEWED)
   const [reviewTags, setReviewTags] = useState([]);
   const { reviewId } = useParams();
+  var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
   useEffect(() => {
     axiosInstance.get("/folders")
@@ -57,7 +59,7 @@ const Screening = (props) => {
   }, []);
 
   function headerContent() {
-    if (props.isFullText) {
+    if (props.state.isFullText) {
       return (
         <h1>Full text screening</h1>
       )
@@ -73,20 +75,21 @@ const Screening = (props) => {
       return (
         <ToBeReviewed 
           showAbstracts={ showAbstracts } 
-          isFullText={ props.isFullText } 
-          reviewTags={ reviewTags } />
+          isFullText={ props.state.isFullText } 
+          reviewTags={ reviewTags } 
+          allowChanges={props.allowChanges}/>
       )
     } else if (tab === CONFLICTED) {
       return (
-        <Conflicted showAbstracts={showAbstracts} isFullText={props.isFullText} />
+        <Conflicted showAbstracts={showAbstracts} isFullText={props.state.isFullText} allowChanges={props.allowChanges}/>
       )
     } else if (tab === AWAITING) {
       return (
-        <Awaiting showAbstracts={showAbstracts} isFullText={props.isFullText} />
+        <Awaiting showAbstracts={showAbstracts} isFullText={props.state.isFullText} allowChanges={props.allowChanges}/>
       )
     } else {
       return (
-        <Excluded showAbstracts={showAbstracts} isFullText={props.isFullText} />
+        <Excluded showAbstracts={showAbstracts} isFullText={props.state.isFullText} allowChanges={props.allowChanges}/>
       )
     }
   }

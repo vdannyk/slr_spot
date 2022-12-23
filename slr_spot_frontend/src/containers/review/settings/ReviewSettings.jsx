@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
-import { BeatLoader } from "react-spinners";
 import Check from 'react-bootstrap/FormCheck';
 import { useParams } from "react-router-dom";
 import axiosInstance from '../../../services/api';
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
+import { OWNER, COOWNER } from '../../../constants/roles';
 import './reviewSettings.css';
 
 
-const ReviewSettings = () => {
+const ReviewSettings = (props) => {
   const [loading, setLoading] = useState(false);
   const [reviewData, setReviewData] = useState([]);
   const { reviewId } = useParams();
@@ -68,6 +68,10 @@ const ReviewSettings = () => {
       window.location.reload();
     });
   };
+
+  if (!props.isPublic || !(props.userRole && [OWNER, COOWNER].includes(props.userRole))) {
+    return <p>ACCESS NOT ALLOWED</p>
+  }
 
   return (
     <div className='slrspot__review-settings'>

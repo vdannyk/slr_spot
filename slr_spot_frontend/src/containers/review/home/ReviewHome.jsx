@@ -3,10 +3,11 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axiosInstance from "../../../services/api";
 import { Table } from "react-bootstrap";
 import { CgPen } from "react-icons/cg";
+import { OWNER, COOWNER } from '../../../constants/roles';
 import './reviewHome.css'
 
 
-const ReviewHome = () => {
+const ReviewHome = (props) => {
   const [reviewData, setReviewData] = useState([]);
   const [researchQuestions, setResearchQuestions] = useState([]);
   const [owner, setOwner] = useState();
@@ -21,16 +22,17 @@ const ReviewHome = () => {
       setReviewData(response.data.review);
       setResearchQuestions(response.data.review.researchQuestions);
       setOwner(response.data.firstName + ' ' + response.data.lastName);
-      console.log(response.data)
     });
   }, []);
 
+
+  console.log(props.userRole)
   return (
     <div className='slrspot__review-home'>
       <div className='slrspot__review-home-title'>
         <h1>
-          {reviewData.title}
-          <CgPen size={25} onClick={ () => navigate(location.pathname + "/settings") } cursor='pointer' />
+          { reviewData.title }
+          { !props.isPublic || props.userRole && [OWNER, COOWNER].includes(props.userRole) && <CgPen size={25} onClick={ () => navigate(location.pathname + "/settings") } cursor='pointer' /> }
         </h1>
       </div>
       <Table>

@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import './keywords.css';
 import ConfirmationPopup from '../../popups/confirmationPopup/ConfirmationPopup';
 import NewElementField from '../newElementField/NewElementField';
+import { OWNER, MEMBER, COOWNER } from '../../../constants/roles';
 
 
 const Keywords = (props) => {
@@ -23,13 +24,16 @@ const Keywords = (props) => {
   const [keywordToRemove, setKeywordToRemove] = useState();
   const {register, handleSubmit, formState: { errors }} = useForm();
   const { user: currentUser } = useSelector((state) => state.auth);
+  var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
   const inclusionKeywords = keywords.filter((keyword) => keyword.type === INCLUSION_TYPE)
     .map((keyword) => 
       <p key={keyword.name}>
-        <AiFillMinusCircle 
-          className='slrspot__screening-keywords-table-removeIcon'
-          onClick={ () => handleRemoveKeyword(keyword)}/>
+        { allowChanges &&           
+          <AiFillMinusCircle 
+            className='slrspot__screening-keywords-table-removeIcon'
+            onClick={ () => handleRemoveKeyword(keyword)}/>
+        }
         {keyword.name}
       </p>
   );
@@ -37,15 +41,17 @@ const Keywords = (props) => {
   const exclusionKeywords = keywords.filter((keyword) => keyword.type === EXCLUSION_TYPE)
     .map((keyword) => 
       <p key={keyword.name}>
-        <AiFillMinusCircle 
-          className='slrspot__screening-keywords-table-removeIcon'
-          onClick={ () => handleRemoveKeyword(keyword)}/>
+        { allowChanges &&    
+          <AiFillMinusCircle 
+            className='slrspot__screening-keywords-table-removeIcon'
+            onClick={ () => handleRemoveKeyword(keyword)}/>
+        }
         {keyword.name}
       </p>
   );
 
   useEffect(() => {
-    if (props.showAll) {
+    if (props.state.showAll) {
       axiosInstance.get("/keywords", { params: {
         reviewId
       }})
@@ -71,7 +77,7 @@ const Keywords = (props) => {
         }
       });
     }
-  }, [props.showAll]);
+  }, [props.state.showAll]);
 
   const handleRemoveKeyword = (keyword) => {
     setShowKeywordRemoveConfirmation(true);
@@ -100,7 +106,7 @@ const Keywords = (props) => {
   }
 
   const onSubmitNewKeyword = (name, type) => {
-    if (props.showAll) {
+    if (props.state.showAll) {
       axiosInstance.post("/keywords", {
         reviewId: reviewId,
         name: name,
@@ -144,7 +150,7 @@ const Keywords = (props) => {
             <div className='slrspot__screening-keywords-table-header'>
               <div className='slrspot__screening-keywords-table-header-title'>
                 <h2>{ INCLUSION_TYPE }</h2>
-                { !showAddInclusion && 
+                { allowChanges && !showAddInclusion && 
                   <AiFillPlusCircle 
                     className='slrspot__screening-keywords-table-addIcon'
                     onClick={ () => setShowAddInclusion(true) }/> }
@@ -167,7 +173,7 @@ const Keywords = (props) => {
           <div className='slrspot__screening-keywords-table-header'>
               <div className='slrspot__screening-keywords-table-header-title'>
                 <h2>{ EXCLUSION_TYPE }</h2>
-                { !showAddExclusion && 
+                { allowChanges && !showAddExclusion && 
                   <AiFillPlusCircle 
                     className='slrspot__screening-keywords-table-addIcon'
                     onClick={ () => setShowAddExclusion(true) }/> }

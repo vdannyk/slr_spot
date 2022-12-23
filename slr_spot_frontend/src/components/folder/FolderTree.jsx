@@ -48,7 +48,7 @@ const FolderTree = (props) => {
         </div>
       )
     } else {
-      return (
+      return props.allowChanges && (
         <div  className='slrspot__folderTree-newFolder'>
           <button onClick={ () => setShowInput(true) }>New folder</button>
         </div>

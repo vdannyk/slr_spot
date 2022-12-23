@@ -5,11 +5,11 @@ import axiosInstance from "../../../services/api";
 import { AiOutlineClose, AiFillEdit, AiFillCheckSquare, AiFillCloseSquare } from "react-icons/ai";
 import EventBus from '../../../common/EventBus';
 import { UsersBrowser, ConfirmationPopup, DropdownSelect } from '../../../components';
-import { OWNER, ROLES } from '../../../constants/roles';
+import { OWNER, ROLES, COOWNER } from '../../../constants/roles';
 import './reviewTeam.css';
 
 
-const ReviewTeam = () => {
+const ReviewTeam = (props) => {
   const [members, setMembers] = useState([]);
   const { reviewId } = useParams();
   const [selectedMembers, setSelectedMembers] = useState([]);
@@ -19,8 +19,7 @@ const ReviewTeam = () => {
   const [memberId, setMemberId] = useState();
   const [selectedChangeRoleMember, setSelectedChangeRoleMember] = useState();
   const [newRole, setNewRole] = useState('');
-
-
+  var allowChanges = props.userRole && [OWNER, COOWNER].includes(props.userRole);
 
   useEffect(() => {
     axiosInstance.get("/reviews/" + reviewId + "/members/search")
@@ -145,14 +144,16 @@ const ReviewTeam = () => {
         <td>
           <MemberRole item={item} />
         </td>
-        <td>
-          {item.role !== OWNER && 
-            <AiOutlineClose 
-              onClick={ () => onRemoveMemberClick(true, item) } 
-              style={ {color: 'red', cursor: 'pointer'} }
-            />
-          }
-        </td>
+        { allowChanges && 
+          <td>
+            {item.role !== OWNER && 
+              <AiOutlineClose 
+                onClick={ () => onRemoveMemberClick(true, item) } 
+                style={ {color: 'red', cursor: 'pointer'} }
+              />
+            }
+          </td>
+        }
       </tr>
     </tbody>
   );
@@ -170,7 +171,7 @@ const ReviewTeam = () => {
                 <th>#</th>
                 <th>Name</th>
                 <th>Role</th>
-                <th>Remove</th>
+                { allowChanges && <th>Remove</th> }
               </tr>
             </thead>
             { listMembers }
@@ -185,6 +186,7 @@ const ReviewTeam = () => {
         /> 
         }
       </div>
+      { allowChanges && 
       <div className='slrspot__review-team-newMember'>
         <div className='slrspot__review-team-header'>
           <h1>Add new member</h1>
@@ -199,6 +201,7 @@ const ReviewTeam = () => {
           <button onClick={onAddMembers}>Add</button>
         </div>
       </div>
+      }
     </div>
   )
 }

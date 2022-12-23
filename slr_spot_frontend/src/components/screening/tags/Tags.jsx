@@ -6,10 +6,11 @@ import EventBus from '../../../common/EventBus';
 import axiosInstance from '../../../services/api';
 import { useForm } from "react-hook-form";
 import ConfirmationPopup from '../../popups/confirmationPopup/ConfirmationPopup';
+import { OWNER, MEMBER, COOWNER } from '../../../constants/roles';
 import './tags.css';
 
 
-const Tags = () => {
+const Tags = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { reviewId } = useParams();
@@ -19,6 +20,7 @@ const Tags = () => {
   const [tags, setTags] = useState([]);
   const {register, handleSubmit, formState: { errors }} = useForm();
   const [errorMessage, setErrorMessage] = useState();
+  var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
 
   useEffect(() => {
@@ -65,10 +67,12 @@ const Tags = () => {
 
   const listTags = tags.map((tag) => 
     <p key={tag.name}>
+      { allowChanges && 
       <AiFillMinusCircle 
         className='slrspot__screening-tags-table-removeIcon'
         onClick={ () => handleRemoveTag(tag)}
         />
+      }
       {tag.name}
     </p>
   );
@@ -117,7 +121,7 @@ const Tags = () => {
             <h2>Tags</h2>
             { showAddTag 
               ? <NewTagInput /> 
-              : <AiFillPlusCircle 
+              : allowChanges && <AiFillPlusCircle 
                   className='slrspot__screening-tags-table-addIcon'
                   onClick={ () => setShowAddTag(true) }/> }
           </div>

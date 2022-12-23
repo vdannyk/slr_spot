@@ -11,6 +11,8 @@ import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleEnum;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleService;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
+import com.dkwasniak.slr_spot_backend.userReview.UserReview;
+import com.dkwasniak.slr_spot_backend.userReview.UserReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,7 @@ public class ReviewFacade {
     private final UserService userService;
     private final ImportService importService;
     private final ReviewRoleService roleService;
+    private final UserReviewService userReviewService;
 
     public long addReview(ReviewDto reviewDto) {
         User owner = userService.getUserById(reviewDto.getUserId());
@@ -54,6 +57,10 @@ public class ReviewFacade {
 
     public ReviewWithOwnerDto getReviewById(long id) {
         return reviewService.boundWithOwner(reviewService.getReviewById(id));
+    }
+
+    public Boolean getIsPublic(Long reviewId) {
+        return reviewService.getReviewById(reviewId).getIsPublic();
     }
 
     public ReviewsPageDto getReviewsByUserId(long userId, int page, int size) {
@@ -86,6 +93,10 @@ public class ReviewFacade {
 
     public void updateReview(long id, ReviewDto reviewDto) {
         reviewService.updateReview(id, reviewDto);
+    }
+
+    public String getMemberRole(Long reviewId, Long userId) {
+        return userReviewService.getUserReviewByReviewIdAndUserId(reviewId, userId).getRole().getName();
     }
 
 }
