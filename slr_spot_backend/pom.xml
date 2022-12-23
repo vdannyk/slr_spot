@@ -120,6 +120,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>slr-spot-backend</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

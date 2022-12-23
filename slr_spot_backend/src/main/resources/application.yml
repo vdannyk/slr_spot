@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/slr-database
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://database:5432/slr-database
     username: postgres
     password: postgres
   jpa:
