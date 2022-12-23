@@ -6,7 +6,7 @@ import axiosInstance from '../../../../services/api';
 import './fullTextField.css';
 
 
-const FullTextField = ({ study, isFullText }) => {
+const FullTextField = ({ study, isFullText, allowChanges }) => {
   const navigate = useNavigate();
   const [fullTextFilename, setFulltextFilename] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -24,14 +24,26 @@ const FullTextField = ({ study, isFullText }) => {
     });
   }, [isLoaded]);
 
-  return isFullText && (
-    <div className='slrspot__fullTextField'>
+  if (allowChanges) {
+    return isFullText && (
+      <div className='slrspot__fullTextField'>
         <label>full text:</label>
-        { fullTextFilename 
+        { fullTextFilename
           ? <button onClick={() => navigate('/reviews/' + reviewId + '/studies/' + study.id + '/full-text')}>{ fullTextFilename }</button> 
           : <PdfUploader studyId={study.id} setIsLoaded={setIsLoaded}/> }
-    </div>
-  )
+      </div>
+    )
+  } else {
+    return isFullText && (
+      <div className='slrspot__fullTextField'>
+        <label>full text:</label>
+        { fullTextFilename 
+            ? <button onClick={() => navigate('/reviews/' + reviewId + '/studies/' + study.id + '/full-text')}>{ fullTextFilename }</button> 
+            : <p>not available</p> }
+      </div> 
+    )
+  }
+
 }
 
 export default FullTextField

@@ -195,7 +195,10 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
       <p><label>doi:</label> { study.doi }</p>
       <p><label>URL:</label> { study.url }</p>
       <p><label>language:</label> { study.language }</p>
-      <FullTextField isFullText={isFullText} study={ study }/>
+      <FullTextField 
+        isFullText={ isFullText } 
+        study={ study }
+        allowChanges={ allowChanges } />
       
       <StudyTags 
         studyId={ study.id } 
@@ -210,7 +213,9 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
       { allowChanges && tabSpecificContent() }
       { showDiscussion && 
         <ContentPopup 
-          content={<StudyDiscussion studyId={ study.id } allowChanges={ allowChanges }/>} 
+          content={<StudyDiscussion 
+                      studyId={ study.id } 
+                      allowChanges={ allowChanges } />} 
           triggerExit={() => setShowDiscussion(false)}/> }
       { showHistory && 
         <ContentPopup 
