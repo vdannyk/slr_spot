@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import './studiesView.css';
 
 
-const StudiesView = () => {
+const StudiesView = ({allowChanges}) => {
   const [loading, setLoading] = useState(false);
   const [folders, setFolders] = useState([{'id':1, 'name':'test1'},{'id':2, 'name':'test2'}]);
   const [selected, setSelected] = useState([]);
@@ -115,10 +115,12 @@ const StudiesView = () => {
                 <label>Show only not assigned studies</label>
               </div>
             </div>
-            <div className='slrspot__studiesView-folders-select'>
-              <FoldersDropdown />
-              <label>Assign</label>
-            </div>
+            { allowChanges &&
+              <div className='slrspot__studiesView-folders-select'>
+                <FoldersDropdown />
+                <label>Assign</label>
+              </div>
+            }
           </div>
 
         </div>

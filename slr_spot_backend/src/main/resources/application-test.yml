@@ -7,6 +7,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.HSQLDialect
   datasource:
+    driver-class-name:
     url: jdbc:hsqldb:mem:scratchdb
 
 mail:

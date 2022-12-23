@@ -43,7 +43,7 @@ public class UserControllerTest {
 
         when(userFacade.createUser(any())).thenReturn(1L);
 
-        this.mockMvc.perform(post("/api/users/save")
+        this.mockMvc.perform(post("/api/v1/users/save")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)))
                 .andDo(print())

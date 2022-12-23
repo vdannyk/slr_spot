@@ -56,7 +56,7 @@ public class Import {
 
     public Import(String searchValue, String source, String additionalInformation,
                   String performedBy) {
-        this.date = LocalDateTime.ofInstant(now(), ZoneId.systemDefault());;
+        this.date = LocalDateTime.ofInstant(now(), ZoneId.systemDefault());
         this.searchValue = searchValue;
         this.source = source;
         this.additionalInformation = additionalInformation;

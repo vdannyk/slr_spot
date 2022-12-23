@@ -85,7 +85,7 @@ const Folder = (props) => {
     <div>
       <div  className='slrspot__folder-item'>
         <p onClick={handleClick}>
-          <AiFillFolder style={{ "margin-right": '5px'}}/>
+          <AiFillFolder style={{ "marginRight": '5px'}}/>
           {name}
         </p>
         { !props.isScreening && (

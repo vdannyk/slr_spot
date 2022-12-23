@@ -4,12 +4,12 @@ import Check from 'react-bootstrap/FormCheck';
 import './studiesDisplay.css';
 import StudiesView from './studiesView/StudiesView';
 import FoldersView from './foldersView/FoldersView';
+import { OWNER, COOWNER, MEMBER } from '../../../../constants/roles';
 
 
-
-
-const StudiesDisplay = () => {
+const StudiesDisplay = (props) => {
   const [isStudiesView, setIsStudiesView] = useState(true);
+  var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
   return (
     <div className='slrspot__review-studiesDisplay'>
@@ -20,7 +20,7 @@ const StudiesDisplay = () => {
           : <span onClick={ () => setIsStudiesView(true) }>Switch to studies view</span> }
       </div>
       <div className='slrspot__review-studiesDisplay-container'>
-          { isStudiesView ? <StudiesView /> : <FoldersView />}
+          { isStudiesView ? <StudiesView allowChanges={allowChanges}/> : <FoldersView allowChanges={allowChanges}/>}
       </div>
     </div>
   )

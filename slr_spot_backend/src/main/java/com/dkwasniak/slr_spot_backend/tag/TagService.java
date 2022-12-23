@@ -11,6 +11,12 @@ public class TagService {
 
     private final TagRepository tagRepository;
 
+    public Tag getTagById(Long id) {
+        return tagRepository.findById(id)
+                .orElseThrow();
+    }
+
+
     public Set<Tag> getTagsByReviewId(Long reviewId) {
         return tagRepository.findByReview_Id(reviewId);
     }

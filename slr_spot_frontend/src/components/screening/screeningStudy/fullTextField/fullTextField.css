@@ -1,0 +1,21 @@
+.slrspot__fullTextField {
+  display: flex;
+  align-items: center;
+}
+
+.slrspot__fullTextField label {
+  margin-right: 10px;
+}
+
+.slrspot__fullTextField button {
+  background-color: white;
+  font-size: 12px;
+  color: black;
+  border: thin solid #c0c0c0;
+  border-radius: 4px;
+	padding: 4px;
+}
+
+.slrspot__fullTextField button:hover {
+  background-color: rgb(206, 206, 206);
+}

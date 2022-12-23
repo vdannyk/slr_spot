@@ -1,0 +1,9 @@
+.slrspot__review-duplicates {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.slrspot__review-duplicates-container {
+  margin: 0 40px;
+}

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axiosInstance from "../../../services/api";
-import { AiOutlineClose } from "react-icons/ai";
-import './reviewTeam.css';
+import { AiOutlineClose, AiFillEdit, AiFillCheckSquare, AiFillCloseSquare } from "react-icons/ai";
 import EventBus from '../../../common/EventBus';
-import { UsersBrowser, ConfirmationPopup } from '../../../components';
+import { UsersBrowser, ConfirmationPopup, DropdownSelect } from '../../../components';
+import { OWNER, ROLES, COOWNER } from '../../../constants/roles';
+import './reviewTeam.css';
 
 
-const ReviewTeam = () => {
+const ReviewTeam = (props) => {
   const [members, setMembers] = useState([]);
   const { reviewId } = useParams();
   const [selectedMembers, setSelectedMembers] = useState([]);
@@ -16,12 +17,13 @@ const ReviewTeam = () => {
   const [isRemoveMemberConfirmation, setIsRemoveMemberConfirmation] = useState(false);
   const [memberNameToRemove, setMemberNameToRemove] = useState('');
   const [memberId, setMemberId] = useState();
-  
+  const [selectedChangeRoleMember, setSelectedChangeRoleMember] = useState();
+  const [newRole, setNewRole] = useState('');
+  var allowChanges = props.userRole && [OWNER, COOWNER].includes(props.userRole);
 
   useEffect(() => {
     axiosInstance.get("/reviews/" + reviewId + "/members/search")
     .then((response) => {
-      console.log(response.data);
       setSearchedUsers(response.data);
     })
     .catch((error) => {
@@ -67,9 +69,71 @@ const ReviewTeam = () => {
       membersToAdd
     })
     .then(() => {
-      console.log('Adding succesfull');
       window.location.reload();
     });
+  }
+
+  const showRoleDropdown = (member) => {
+    setSelectedChangeRoleMember(member);
+  }
+
+  const hideRoleDropdown = () => {
+    setSelectedChangeRoleMember();
+    setNewRole();
+  }
+
+  const handleSelect = (event) => {
+    setNewRole(event);
+  }
+  
+  const handleChangeRole = () => {
+    var userId = selectedChangeRoleMember.userId;
+    var role = newRole;
+    axiosInstance.put("/users/" + userId + "/role", null, { params: {
+      reviewId, role
+    }})
+    .then(() => {
+      window.location.reload()
+    });
+  }
+
+  const RoleDropdown = (props) => {
+    return (
+      <div className='slrspot__review-team-roleDropdown'> 
+        <DropdownSelect 
+            title='Select role' 
+            options={ROLES.filter((role) => role !== props.currentRole && role !== OWNER)} 
+            onSelect={ handleSelect } 
+            value={ newRole } />
+        <AiFillCheckSquare 
+          className='slrspot__screening-newElement-button' 
+          color='green' 
+          onClick={ handleChangeRole }/>
+        <AiFillCloseSquare 
+          className='slrspot__screening-newElement-button' 
+          color='red' 
+          onClick={ hideRoleDropdown }/>
+      </div>
+    )
+  }
+
+  const MemberRole = ({item}) => {
+    return (
+      <>
+        { selectedChangeRoleMember && selectedChangeRoleMember.userId === item.userId 
+          ? 
+            <RoleDropdown currentRole={ item.role }/>
+          : 
+            <>
+              {item.role}
+              {item.role !== OWNER && 
+                <AiFillEdit 
+                  onClick={ () => showRoleDropdown(item) } />
+              }
+            </>
+        }
+      </>
+    )
   }
 
   const listMembers = members.map((item, id) => 
@@ -77,15 +141,19 @@ const ReviewTeam = () => {
       <tr>
         <td>{id+1}</td>
         <td>{item.firstName} {item.lastName}</td>
-        <td>{item.role}</td>
         <td>
-          {item.role !== 'OWNER' && 
-            <AiOutlineClose 
-              onClick={() => onRemoveMemberClick(true, item)} 
-              style={{color: 'red', cursor: 'pointer'}}
-            />
-          }
+          <MemberRole item={item} />
         </td>
+        { allowChanges && 
+          <td>
+            {item.role !== OWNER && 
+              <AiOutlineClose 
+                onClick={ () => onRemoveMemberClick(true, item) } 
+                style={ {color: 'red', cursor: 'pointer'} }
+              />
+            }
+          </td>
+        }
       </tr>
     </tbody>
   );
@@ -103,7 +171,7 @@ const ReviewTeam = () => {
                 <th>#</th>
                 <th>Name</th>
                 <th>Role</th>
-                <th>Remove</th>
+                { allowChanges && <th>Remove</th> }
               </tr>
             </thead>
             { listMembers }
@@ -118,6 +186,7 @@ const ReviewTeam = () => {
         /> 
         }
       </div>
+      { allowChanges && 
       <div className='slrspot__review-team-newMember'>
         <div className='slrspot__review-team-header'>
           <h1>Add new member</h1>
@@ -132,6 +201,7 @@ const ReviewTeam = () => {
           <button onClick={onAddMembers}>Add</button>
         </div>
       </div>
+      }
     </div>
   )
 }

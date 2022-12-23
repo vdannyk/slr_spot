@@ -1,0 +1,70 @@
+.slrspot__review-results {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.slrspot__review-results-options {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f8f8;
+  border: thin solid #c0c0c0;
+  margin: 10px 40px 5px;
+  border-radius: 2px;
+}
+
+.slrspot__review-results-options-container {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  margin: 10px 40px 5px;
+}
+
+.slrspot__extractData a {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.slrspot__review-results-list {
+  margin: 0 40px;
+}
+
+.slrspot__review-list-selectAll {
+  display: flex;
+  border-bottom: thin solid #000000;
+  margin: 5px 0;
+}
+.slrspot__review-list-selectAll p {
+  margin: 0;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.slrspot__extractData {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+}
+
+.slrspot__extractData-field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #ececec;
+  border-radius: 10px;
+  padding: 0 5px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.slrspot__extractData-field p {
+  margin: 0;
+  margin-right: 5px;
+}
+
+.slrspot__extractData-download {
+  margin-bottom: 20px;
+}

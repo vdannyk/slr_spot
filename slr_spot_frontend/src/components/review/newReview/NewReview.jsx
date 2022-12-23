@@ -11,14 +11,14 @@ import './newReview.css'
 
 const NewReview = () => {
   const [loading, setLoading] = useState(false);
-  const {register, handleSubmit, formState: { errors }} = useForm();
+  const {register, handleSubmit, watch, formState: { errors }} = useForm();
   const [isReviewInfo, setIsReviewInfo] = useState(true);
   const [isMembersSettings, setIsMembersSettings] = useState(false);
-  const [isProtocolSettings, setIsProtocolSettings] = useState(false);
   const navigate = useNavigate();
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const { user: currentUser } = useSelector((state) => state.auth);
+  const [questions, setQuestions] = useState(['test1', 'test2', 'test3']);
 
   useEffect(() => {
     axiosInstance.get("/users/emails")
@@ -42,9 +42,10 @@ const NewReview = () => {
     const screeningReviewers = formData.screeningReviewers;
     const reviewers = selectedMembers;
     const userId = currentUser.id;
-    console.log(formData);
+    const researchQuestions = questions;
+
     axiosInstance.post("/reviews", {
-      userId, name, researchArea, description, isPublic, screeningReviewers, reviewers
+      userId, name, researchArea, description, isPublic, screeningReviewers, reviewers, researchQuestions
     })
     .then((response) => {
       setLoading(false);
@@ -56,19 +57,11 @@ const NewReview = () => {
   const onReviewsClick = () => {
     setIsReviewInfo(true);
     setIsMembersSettings(false);
-    setIsProtocolSettings(false);
   };
 
   const onMembersClick = () => {
     setIsReviewInfo(false);
     setIsMembersSettings(true);
-    setIsProtocolSettings(false);
-  };
-
-  const onProtocolClick = () => {
-    setIsReviewInfo(false);
-    setIsMembersSettings(false);
-    setIsProtocolSettings(true);
   };
 
   const showSelectedPage = () => {
@@ -77,6 +70,8 @@ const NewReview = () => {
         <ReviewInfo 
           register={register}
           errors={errors}
+          questions={questions}
+          setQuestions={setQuestions}
         />
       ) 
     }
@@ -88,13 +83,6 @@ const NewReview = () => {
           selectedMembers={selectedMembers} 
           setMembersList={setSelectedMembers} 
         />
-      )
-    }
-    if (isProtocolSettings) {
-      return (
-        <div>
-          Protocol
-        </div>
       )
     }
   }
@@ -120,14 +108,12 @@ const NewReview = () => {
           <div className='slrspot__newReview-menu'>
             <OptionItem trigger={isReviewInfo} name='Review' handleClick={onReviewsClick} />
             <OptionItem trigger={isMembersSettings} name='Members' handleClick={onMembersClick} />
-            {/* <OptionItem trigger={isProtocolSettings} name='Protocol' handleClick={onProtocolClick} /> */}
           </div>
 
           <div className='slrspot__newReview-settings'>
             <div className='slrspot__newReview-settings-header'>
               { isReviewInfo && <h2>review information</h2>}
               { isMembersSettings && <h2>add members</h2>}
-              { isProtocolSettings && <h2>prepare protocol</h2>}
             </div>
             <div className='slrspot__newReview-settings-container'>
               { showSelectedPage() }
@@ -137,12 +123,6 @@ const NewReview = () => {
                 <button className='slrspot__newReview-settings-nextButton' onClick={onMembersClick}>next</button>
               </div>
             }
-            {/* { isMembersSettings && 
-              <div className='slrspot__newReview-settings-buttons'>
-                <button onClick={onReviewsClick}>previous</button>
-                <button onClick={onProtocolClick}>next</button>
-              </div>
-            } */}
             { isMembersSettings && 
               <div className='slrspot__newReview-settings-buttons'>
                 <button onClick={onReviewsClick}>previous</button>

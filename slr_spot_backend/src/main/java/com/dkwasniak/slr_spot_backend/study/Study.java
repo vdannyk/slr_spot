@@ -1,9 +1,15 @@
 package com.dkwasniak.slr_spot_backend.study;
 
+import com.dkwasniak.slr_spot_backend.comment.Comment;
+import com.dkwasniak.slr_spot_backend.document.Document;
 import com.dkwasniak.slr_spot_backend.folder.Folder;
 import com.dkwasniak.slr_spot_backend.imports.Import;
+import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
+import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.dkwasniak.slr_spot_backend.study.status.Status;
+import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
+import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,14 +20,21 @@ import lombok.Setter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -50,26 +63,69 @@ public class Study {
     private String issn;
     private String language;
 
-    // TODO pdfs
-    private String fullText;
+    @OneToOne(mappedBy = "study", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonIgnore
+    private Document fullText;
 
     @ManyToOne
     @JoinColumn(name = "import_id")
     @JsonIgnore
     private Import studyImport;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    @JsonIgnore
-    private Status status;
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status;
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
     @JsonIgnore
     private Folder folder;
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
-    @JsonIgnore
-    private Set<ScreeningDecision> screeningDecisions = new HashSet<>();
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "studies_tags",
+            joinColumns = { @JoinColumn(name = "study_id") },
+            inverseJoinColumns = { @JoinColumn(name = "tag_id") }
+    )
+    private Set<Tag> tags = new HashSet<>();
 
+    @OneToMany(mappedBy = "study", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonIgnore
+    private List<ScreeningDecision> screeningDecisions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "study", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonIgnore
+    private List<Comment> comments = new ArrayList();
+
+    @OneToMany(mappedBy = "study", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonIgnore
+    private List<Operation> operations = new ArrayList();
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+        tag.getStudies().add(this);
+    }
+
+    public void removeTag(Tag tag) {
+        this.tags.remove(tag);
+        tag.getStudies().remove(this);
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.setStudy(this);
+    }
+
+    public void addOperation(Operation operation) {
+        this.operations.add(operation);
+        operation.setStudy(this);
+    }
+
+    public void addScreeningDecision(ScreeningDecision screeningDecision) {
+        this.screeningDecisions.add(screeningDecision);
+    }
+
+    public void setDocument(Document document) {
+        this.fullText = document;
+        document.setStudy(this);
+    }
 }

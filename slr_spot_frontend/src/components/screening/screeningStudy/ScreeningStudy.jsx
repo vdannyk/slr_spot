@@ -3,49 +3,180 @@ import { AWAITING, CONFLICTED, EXCLUDED, TO_BE_REVIEWED } from '../../../constan
 import './screeningStudy.css';
 import StudyTags from './studyTags/StudyTags';
 import { useNavigate, useParams } from "react-router-dom";
+import ContentPopup from '../../popups/contentPopup/ContentPopup';
+import StudyHistory from './studyHistory/StudyHistory';
+import StudyDiscussion from './studyDiscussion/StudyDiscussion';
+import { useSelector } from 'react-redux';
+import axiosInstance from '../../../services/api';
+import FullTextField from './fullTextField/FullTextField';
 
 
-const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussion, tab, isFullText}) => {
+const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh, 
+                          tab, isFullText, reviewTags, allowChanges }) => {
   const [showAbstract, setShowAbstract] = useState(isShowAbstracts);
-  const navigate = useNavigate();
+  const [showDiscussion, setShowDiscussion] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const { reviewId } = useParams();
+  const { user: currentUser } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    console.log(isFullText);
     if (showAbstract !== isShowAbstracts) {
       setShowAbstract(!showAbstract)
     }
   }, [isShowAbstracts]);
 
+  const handleVote = (vote) => {
+    axiosInstance.post("/studies/" + study.id + "/screening_decisions", {
+      reviewId: reviewId,
+      userId: currentUser.id,
+      decision: vote
+    })
+    .then(() => {
+      if (tab === AWAITING ) {
+        triggerRefresh();
+      } else {
+        triggerVote(study.id);
+      }
+    })
+    .catch(() => {
+    });
+  }
+
+  const handleRestore = () => {
+    axiosInstance.put("/studies/" + study.id + "/restore")
+    .then(() => {
+      triggerVote(study.id);
+    })
+    .catch(() => {
+    });
+  }
+
+  const handleDuplicate = () => {
+    axiosInstance.put("/studies/" + study.id + "/duplicate")
+    .then(() => {
+      triggerVote(study.id);
+    })
+    .catch(() => {
+    });
+  }
+
   const handleShowAbstract = () => {
     setShowAbstract(!showAbstract);
+  }
+
+  const ConflictedOptions = () => {
+    // to do -> check role in useState
+    const [showOptions, setShowOptions] = useState(false);
+
+    return (
+      <div className='slrspot__screeningStudy-decision'>
+        { showOptions 
+        ? <>
+            <button 
+              className='slrspot__screeningStudy-decision-button'
+              onClick={ () => handleVote('EXCLUDE')}>
+                exclude
+            </button>
+            <button 
+              className='slrspot__screeningStudy-decision-button' 
+              onClick={ () => handleVote('INCLUDE')}>
+                include
+            </button>
+          </>
+        : <button 
+            className='slrspot__screeningStudy-decision-button' 
+            onClick={() => setShowOptions(true)}>
+              change decision
+          </button>
+        }
+      </div>
+    )
+  }
+
+  const AwaitingOptions = () => {
+    const [showOptions, setShowOptions] = useState(false);
+    const [currentVote, setCurrentVote] = useState('');
+
+    useEffect(() => {
+      var userId = currentUser.id;
+      axiosInstance.get("/studies/" + study.id + "/screening_decision", { params: {
+        userId
+      }})
+      .then((response) => {
+        setCurrentVote(response.data);
+      })
+    }, []);
+
+    return (
+      <div className='slrspot__screeningStudy-awaiting'>
+        <div className='slrspot__screeningStudy-votes'>
+          <p>current vote: <span><b>{currentVote}</b></span></p>
+        </div>
+        { showOptions 
+        ? <div className='slrspot__screeningStudy-awaiting-decision'>
+            <button 
+              className='slrspot__screeningStudy-decision-button'
+              onClick={ () => handleVote('EXCLUDE')}>
+                exclude
+            </button>
+            <button 
+              className='slrspot__screeningStudy-decision-button' 
+              onClick={ () => handleVote('UNCLEAR')}>
+                unclear
+            </button>
+            <button 
+              className='slrspot__screeningStudy-decision-button' 
+              onClick={ () => handleVote('INCLUDE')}>
+                include
+            </button>
+          </div>
+        : <button 
+            className='slrspot__screeningStudy-decision-button' 
+            onClick={() => setShowOptions(true)}>
+              change decision
+          </button>
+        }
+      </div>
+    )
   }
 
   function tabSpecificContent() {
     if (tab === TO_BE_REVIEWED) {
       return (
         <div className='slrspot__screeningStudy-decision'>
-          <button className='slrspot__screeningStudy-decision-button'>exclude</button>
-          <button className='slrspot__screeningStudy-decision-button'>unclear</button>
-          <button className='slrspot__screeningStudy-decision-button'>include</button>
+          <button 
+            className='slrspot__screeningStudy-decision-button'
+            onClick={ () => handleVote('EXCLUDE')}>
+              exclude
+          </button>
+          <button 
+            className='slrspot__screeningStudy-decision-button' 
+            onClick={ () => handleVote('UNCLEAR')}>
+              unclear
+          </button>
+          <button 
+            className='slrspot__screeningStudy-decision-button' 
+            onClick={ () => handleVote('INCLUDE')}>
+              include
+          </button>
         </div>
       )
     } else if (tab === CONFLICTED) {
       return (
-        <div className='slrspot__screeningStudy-decision'>
-          <button className='slrspot__screeningStudy-decision-button'>exclude</button>
-          <button className='slrspot__screeningStudy-decision-button'>include</button>
-        </div>
+        <ConflictedOptions />
       )
     } else if (tab === AWAITING) {
       return (
-        <div className='slrspot__screeningStudy-decision'>
-          <button className='slrspot__screeningStudy-decision-button'>change decision</button>
-        </div>
+        <AwaitingOptions />
       )
     } else {
       return (
         <div className='slrspot__screeningStudy-decision'>
-          <button className='slrspot__screeningStudy-decision-button'>screen again</button>
+          <button 
+            className='slrspot__screeningStudy-decision-button' 
+            onClick={ () => handleRestore() }>
+              screen again
+          </button>
         </div>
       )
     }
@@ -64,17 +195,33 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerHistory, triggerDiscussi
       <p><label>doi:</label> { study.doi }</p>
       <p><label>URL:</label> { study.url }</p>
       <p><label>language:</label> { study.language }</p>
-      <p><label>full text:</label> { study.fullText }
-        <button className='pdf' onClick={() => navigate('/reviews/2/screening/study/full-text')}>test.pdf</button>
-      </p>
+      <FullTextField 
+        isFullText={ isFullText } 
+        study={ study }
+        allowChanges={ allowChanges } />
       
-      <StudyTags />
+      <StudyTags 
+        studyId={ study.id } 
+        reviewTags={ reviewTags } 
+        allowChanges={ allowChanges }/>
+        
       <div className='slrspot__screeningStudy-options'>
-        <button onClick={ () => triggerDiscussion(true)}>discussion</button>
-        <button onClick={ () => triggerHistory(true) }>history</button>
-        { !(tab === EXCLUDED) && <button>mark as duplicate</button>}
+        <button onClick={ () => setShowDiscussion(true)}>discussion</button>
+        <button onClick={ () => setShowHistory(true) }>history</button>
+        { !(tab === EXCLUDED) && allowChanges && <button onClick={ handleDuplicate }>mark as duplicate</button>}
       </div>
-      { tabSpecificContent() }
+      { allowChanges && tabSpecificContent() }
+      { showDiscussion && 
+        <ContentPopup 
+          content={<StudyDiscussion 
+                      studyId={ study.id } 
+                      allowChanges={ allowChanges } />} 
+          triggerExit={() => setShowDiscussion(false)}/> }
+      { showHistory && 
+        <ContentPopup 
+          content={<StudyHistory studyId={ study.id } />} 
+          triggerExit={() => setShowHistory(false)} /> }
+
     </div>
   )
 }

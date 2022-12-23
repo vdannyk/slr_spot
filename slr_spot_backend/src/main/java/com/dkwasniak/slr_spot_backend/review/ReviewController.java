@@ -4,6 +4,7 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
+import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleEnum;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,11 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewFacade.getReviewById(id));
     }
 
+    @GetMapping("/{id}/is-public")
+    public ResponseEntity<Boolean> getIsPublic(@PathVariable Long id) {
+        return ResponseEntity.ok().body(reviewFacade.getIsPublic(id));
+    }
+
     @PostMapping
     public ResponseEntity<Long> saveProject(@RequestBody ReviewDto reviewDto) {
         long id = reviewFacade.addReview(reviewDto);
@@ -79,6 +85,12 @@ public class ReviewController {
     public ResponseEntity<Void> addMembers(@PathVariable Long id, @RequestBody ReviewMembersDto reviewMembersDto) {
         reviewFacade.addMembers(id, reviewMembersDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/members/{userId}/role")
+    public ResponseEntity<String> getMemberRole(@PathVariable Long id,
+                                                @PathVariable Long userId) {
+        return ResponseEntity.ok().body(reviewFacade.getMemberRole(id, userId));
     }
 
 }

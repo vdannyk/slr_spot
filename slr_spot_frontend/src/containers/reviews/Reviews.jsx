@@ -20,10 +20,6 @@ const Reviews = () => {
     navigate('/reviews/' + id);
   };
 
-  const onPublicReviewClick = (id) => {
-    navigate('/reviews/' + id + '/preview');
-  };
-
   useEffect(() => {
     if (isShowAll) {
       axiosInstance.get("/reviews/public")
@@ -57,7 +53,7 @@ const Reviews = () => {
     <tbody key={id}>
       <tr>
         <td>{id+1}</td>
-        <td onClick={ () => onPublicReviewClick(item.review.id) }>{item.review.title}</td>
+        <td onClick={ () => onReviewClick(item.review.id) }>{item.review.title}</td>
         <td>{item.firstName} {item.lastName}</td>
       </tr>
     </tbody>

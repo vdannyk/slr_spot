@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.tag;
 
 import com.dkwasniak.slr_spot_backend.review.Review;
+import com.dkwasniak.slr_spot_backend.study.Study;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.util.List;
 
 @Entity
 @Table(name = "tags",
@@ -34,6 +37,10 @@ public class Tag {
     @JoinColumn(name = "review_id", nullable = false)
     @JsonIgnore
     private Review review;
+
+    @ManyToMany(mappedBy = "tags")
+    @JsonIgnore
+    private List<Study> studies;
 
     public Tag(String name) {
         this.name = name;

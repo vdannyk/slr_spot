@@ -45,3 +45,8 @@
   flex: 1;
   margin: 0 40px 20px;
 }
+
+.slrspot__review-team-roleDropdown {
+  display: flex;
+  align-items: center;
+}

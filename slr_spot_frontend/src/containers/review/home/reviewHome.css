@@ -4,6 +4,10 @@
   margin: 40px;
 }
 
+.slrspot__review-home th {
+  text-transform: capitalize;
+}
+
 .slrspot__review-home-title {
   display: flex;
   padding: 40px;

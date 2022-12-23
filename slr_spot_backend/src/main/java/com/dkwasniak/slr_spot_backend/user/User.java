@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.user;
 
+import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
@@ -24,8 +25,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -59,6 +62,10 @@ public class User {
     @JsonIgnore
     private Set<ScreeningDecision> screeningDecisions = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonIgnore
+    private List<Comment> comments = new ArrayList();
+
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -67,8 +74,8 @@ public class User {
     }
 
     public void addDecision(Study study, Stage stage, Decision decision) {
-        ScreeningDecision screeningDecision = new ScreeningDecision(this, study, stage, decision);
-        this.screeningDecisions.add(screeningDecision);
+//        ScreeningDecision screeningDecision = new ScreeningDecision(this, study, decision);
+//        this.screeningDecisions.add(screeningDecision);
     }
 
     public void removeDecision(Study study, Stage stage, Decision decision) {
