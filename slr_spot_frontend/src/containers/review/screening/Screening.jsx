@@ -10,7 +10,6 @@ import Excluded from './tabs/Excluded';
 import { useParams } from 'react-router-dom';
 import EventBus from '../../../common/EventBus';
 import { INCLUSION_TYPE, EXCLUSION_TYPE } from '../../../components/screening/criteria/CriteriaTypes';
-import { OWNER, MEMBER, COOWNER } from '../../../constants/roles';
 
 
 const Screening = (props) => {
@@ -22,7 +21,6 @@ const Screening = (props) => {
   const [tab, setTab] = useState(TO_BE_REVIEWED)
   const [reviewTags, setReviewTags] = useState([]);
   const { reviewId } = useParams();
-  var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
   useEffect(() => {
     axiosInstance.get("/folders")
@@ -77,19 +75,31 @@ const Screening = (props) => {
           showAbstracts={ showAbstracts } 
           isFullText={ props.state.isFullText } 
           reviewTags={ reviewTags } 
-          allowChanges={props.allowChanges}/>
+          userRole={props.userRole}/>
       )
     } else if (tab === CONFLICTED) {
       return (
-        <Conflicted showAbstracts={showAbstracts} isFullText={props.state.isFullText} allowChanges={props.allowChanges}/>
+        <Conflicted 
+          showAbstracts={showAbstracts} 
+          isFullText={props.state.isFullText} 
+          allowChanges={props.allowChanges}
+          userRole={props.userRole}/>
       )
     } else if (tab === AWAITING) {
       return (
-        <Awaiting showAbstracts={showAbstracts} isFullText={props.state.isFullText} allowChanges={props.allowChanges}/>
+        <Awaiting 
+          showAbstracts={showAbstracts} 
+          isFullText={props.state.isFullText} 
+          allowChanges={props.allowChanges}
+          userRole={props.userRole}/>
       )
     } else {
       return (
-        <Excluded showAbstracts={showAbstracts} isFullText={props.state.isFullText} allowChanges={props.allowChanges}/>
+        <Excluded 
+          showAbstracts={showAbstracts}
+          isFullText={props.state.isFullText} 
+          allowChanges={props.allowChanges}
+          userRole={props.userRole}/>
       )
     }
   }

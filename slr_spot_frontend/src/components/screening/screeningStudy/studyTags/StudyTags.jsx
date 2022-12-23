@@ -77,18 +77,23 @@ const StudyTags = (props) => {
   return (
     <div className='slrspot__study-tags'>
       <div className='slrspot__study-tags-container'>
+
         { tags.length > 0 && tags.map((tag) => (
           <p key={ tag.name } className='slrspot__study-tags-tag'>
             { tag.name }
-            <AiFillMinusCircle 
-              className='slrspot__study-tags-removeIcon'
-              onClick={ () => handleRemoveTag(tag) }/>
+            { props.allowChanges &&
+              <AiFillMinusCircle 
+                className='slrspot__study-tags-removeIcon'
+                onClick={ () => handleRemoveTag(tag) }/>
+            }
           </p>
         ))}
+
+        { props.allowChanges && 
         <p className='slrspot__study-tags-tag'>
           { showAdd 
             ? <AddTagField />
-            :
+            : 
             <> 
               add
               <AiFillPlusCircle 
@@ -97,8 +102,9 @@ const StudyTags = (props) => {
                 />
             </>
           }
-
         </p>
+        }
+
       </div>
     </div>
   )

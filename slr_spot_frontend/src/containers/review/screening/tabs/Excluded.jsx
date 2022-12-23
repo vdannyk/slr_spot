@@ -4,14 +4,15 @@ import { ScreeningStudy, StudyDiscussion, StudyHistory } from '../../../../compo
 import { EXCLUDED } from '../../../../constants/tabs';
 import axiosInstance from '../../../../services/api';
 import { useSelector } from "react-redux";
+import { OWNER, MEMBER, COOWNER } from '../../../../constants/roles';
 import '../screening.css';
 
 
 const Excluded = (props) => {
   const [studies, setStudies] = useState([]);
-  const [showHistory, setShowHistory] = useState(false);
-  const [showDiscussion, setShowDiscussion] = useState(false);
   const { reviewId } = useParams();
+  var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
+
 
   function getStudies() {
     if (props.isFullText) {
@@ -53,10 +54,9 @@ const Excluded = (props) => {
           isShowAbstracts={props.showAbstracts} 
           triggerVote={ handleStudiesUpdate }   
           tab={EXCLUDED} 
-          isFullText={props.isFullText} />
+          isFullText={props.isFullText} 
+          allowChanges={ allowChanges } />
       ))}
-      { showHistory && <StudyHistory triggerCancel={setShowHistory} /> }
-      { showDiscussion && <StudyDiscussion triggerCancel={setShowDiscussion} /> }
 
     </div>
   )

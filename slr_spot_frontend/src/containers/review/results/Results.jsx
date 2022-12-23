@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../services/api';
 import { useParams } from 'react-router-dom';
-import { Table } from "react-bootstrap";
 import Check from 'react-bootstrap/FormCheck';
 import { ContentPopup } from '../../../components'
 import './results.css';
@@ -17,6 +16,7 @@ const Results = (props) => {
   const [showExtractMenu, setShowExtractMenu] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showRaportMenu, setShowRaportMenu] = useState(false);
+  const [reviewTags, setReviewTags] = useState([]);
   const { reviewId } = useParams();
   var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
@@ -27,6 +27,17 @@ const Results = (props) => {
     .then((response) => {
       console.log(response.data);
       setIncludedStudies(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    axiosInstance.get("/tags", { params: {
+      reviewId
+    }})
+    .then((response) => {
+      setReviewTags(response.data)
+    })
+    .catch(() => {
     });
   }, []);
 
@@ -94,7 +105,9 @@ const Results = (props) => {
           <ResultStudy 
             study={ study } 
             selected={ selected }
-            handleSelect= { () => handleSelect(study) }/>
+            handleSelect= { () => handleSelect(study) }
+            allowChanges={ allowChanges } 
+            reviewTags={ reviewTags }/>
         ))}
       </div>
       { showExtractMenu && <ContentPopup content={<ExtractData selectedStudies={selected} />} triggerExit={ () => setShowExtractMenu(false)} /> }

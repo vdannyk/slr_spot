@@ -4,14 +4,14 @@ import { ScreeningStudy, StudyDiscussion, StudyHistory,ContentPopup } from '../.
 import { TO_BE_REVIEWED } from '../../../../constants/tabs';
 import axiosInstance from '../../../../services/api';
 import { useSelector } from "react-redux";
+import { OWNER, MEMBER, COOWNER } from '../../../../constants/roles';
 import '../screening.css';
 
 const ToBeReviewed = (props) => {
   const [studies, setStudies] = useState([]);
-  const [showHistory, setShowHistory] = useState(false);
-  const [showDiscussion, setShowDiscussion] = useState(false);
   const { reviewId } = useParams();
   const { user: currentUser } = useSelector((state) => state.auth);
+  var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
   function getStudies() {
     var userId = currentUser.id;
@@ -55,10 +55,9 @@ const ToBeReviewed = (props) => {
           triggerVote={ handleStudiesUpdate } 
           tab={ TO_BE_REVIEWED }
           isFullText={ props.isFullText } 
-          reviewTags={ props.reviewTags } />
+          reviewTags={ props.reviewTags } 
+          allowChanges={ allowChanges } />
       ))}
-      { showHistory && <StudyHistory triggerCancel={setShowHistory} /> }
-      { showDiscussion && <StudyDiscussion triggerCancel={setShowDiscussion} /> }
 
     </div>
   )

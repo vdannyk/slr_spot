@@ -11,11 +11,11 @@ import axiosInstance from '../../../services/api';
 import FullTextField from './fullTextField/FullTextField';
 
 
-const ScreeningStudy = ({study, isShowAbstracts, triggerVote, triggerRefresh, tab, isFullText, reviewTags}) => {
+const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh, 
+                          tab, isFullText, reviewTags, allowChanges }) => {
   const [showAbstract, setShowAbstract] = useState(isShowAbstracts);
   const [showDiscussion, setShowDiscussion] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  const navigate = useNavigate();
   const { reviewId } = useParams();
   const { user: currentUser } = useSelector((state) => state.auth);
 
@@ -199,18 +199,23 @@ const ScreeningStudy = ({study, isShowAbstracts, triggerVote, triggerRefresh, ta
       
       <StudyTags 
         studyId={ study.id } 
-        reviewTags={ reviewTags } />
+        reviewTags={ reviewTags } 
+        allowChanges={ allowChanges }/>
         
       <div className='slrspot__screeningStudy-options'>
         <button onClick={ () => setShowDiscussion(true)}>discussion</button>
         <button onClick={ () => setShowHistory(true) }>history</button>
-        { !(tab === EXCLUDED) && <button onClick={ handleDuplicate }>mark as duplicate</button>}
+        { !(tab === EXCLUDED) && allowChanges && <button onClick={ handleDuplicate }>mark as duplicate</button>}
       </div>
-      { tabSpecificContent() }
+      { allowChanges && tabSpecificContent() }
       { showDiscussion && 
-        <ContentPopup content={<StudyDiscussion studyId={ study.id } />} triggerExit={() => setShowDiscussion(false)}/> }
+        <ContentPopup 
+          content={<StudyDiscussion studyId={ study.id } allowChanges={ allowChanges }/>} 
+          triggerExit={() => setShowDiscussion(false)}/> }
       { showHistory && 
-        <ContentPopup content={<StudyHistory studyId={ study.id } />} triggerExit={() => setShowHistory(false)} /> }
+        <ContentPopup 
+          content={<StudyHistory studyId={ study.id } />} 
+          triggerExit={() => setShowHistory(false)} /> }
 
     </div>
   )

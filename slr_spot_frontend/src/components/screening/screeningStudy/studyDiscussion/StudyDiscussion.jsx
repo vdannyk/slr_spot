@@ -102,13 +102,15 @@ const StudyDiscussion = (props) => {
       { comments.length > 0 
         ? <DiscussionTable /> 
         : <h2 style={{ alignSelf: 'center', marginTop: '40px'}}>START DISCUSSION</h2>}
-      <form className='slrspot__studyDiscussion-comment' onSubmit={handleSubmit(onSubmit)} >
-        <textarea 
-          {...register("comment")}
-          name='comment' 
-          required/>
-        <button type='submit'>comment</button>
-      </form>
+      { props.allowChanges &&      
+        <form className='slrspot__studyDiscussion-comment' onSubmit={handleSubmit(onSubmit)} >
+          <textarea 
+            {...register("comment")}
+            name='comment' 
+            required/>
+          <button type='submit'>comment</button>
+        </form>
+      }
     </div>
   )
 }
