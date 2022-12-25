@@ -2,66 +2,50 @@ services:
   database:
     image: "postgres:14.2-alpine"
     container_name: slr-db
-    restart: always
+    # restart: always
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       - POSTGRES_DB=slr-database
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
       - db_data:/var/lib/postgresql/data
-    networks:
-      - backend
+    # networks:
+    #   - slrspotnet
 #    secrets:
 #      - postgres_password
 
   app:
     build:
-      context: .
+      context: ../slr_spot_backend
       dockerfile: Dockerfile
-    image: slr-java-docker
+    # image: slr-java-docker
     container_name: slr-app
     ports:
       - "8080:8080"
-      - "5005:5005"
-    depends_on:
+    links:
       - database
-    networks:
-      - frontend
-      - backend
+    # networks:
+    #   - slrspotnet
 #    secrets:
 #      - postgres_password
 
-  jenkins:
-    image: "jenkins/jenkins:2.319.3-jdk11"
-    container_name: slr-jenkins
+  frontend:
+    build:
+      context: ../slr_spot_frontend
+      dockerfile: Dockerfile
+    container_name: slr_spot_frontend
     ports:
-      - "8081:8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - jenkins_data:/var/jenkins_home
-
-  sonarqube:
-    image: "sonarqube:8.9.9-community"
-    container_name: slr-sonarqube
-    ports:
-      - "9000:9000"
-      - "9002:9002"
-    volumes:
-      - sonarqube_data:/opt/sonarqube
+      - 3000:3000
 
 volumes:
   db_data:
-  jenkins_data:
-    external: true
-  sonarqube_data:
-    external: true
 
 #secrets:
 #  postgres_password:
 #    file: ./devsecrets/postgres_password
 
-networks:
-  frontend:
-  backend:
+# networks:
+#   slrspotnet:
+#     driver: bridge

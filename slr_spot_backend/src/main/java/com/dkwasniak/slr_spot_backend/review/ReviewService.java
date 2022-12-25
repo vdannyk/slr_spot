@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.review;
 
+import com.dkwasniak.slr_spot_backend.researchQuestion.ResearchQuestion;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -87,6 +89,12 @@ public class ReviewService {
                 ? currentReview.getIsPublic() : reviewDto.getIsPublic());
         currentReview.setScreeningReviewers(reviewDto.getScreeningReviewers() == null
                 ? currentReview.getScreeningReviewers() : reviewDto.getScreeningReviewers());
+        currentReview.getResearchQuestions().clear();
+        reviewDto.getResearchQuestions().forEach(q -> {
+            ResearchQuestion researchQuestion = new ResearchQuestion(q);
+            researchQuestion.setReview(currentReview);
+            currentReview.addResearchQuestion(researchQuestion);
+        });
         reviewRepository.save(currentReview);
     }
 

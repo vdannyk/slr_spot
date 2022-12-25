@@ -1,0 +1,33 @@
+.slrspot__studyDiscussion {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: auto;
+  font-size: 14px;
+  text-align: left;
+}
+
+.slrspot__studyDiscussion th {
+  padding: 0 6px;
+}
+
+.slrspot__studyDiscussion td {
+  word-break: break-all;
+}
+
+.slrspot__studyDiscussion-comment {
+  display: flex;
+  justify-content: center;
+  margin: 0 10px 10px;
+}
+
+.slrspot__studyDiscussion-comment textarea {
+  flex: 1;
+  resize: none;
+  height: 10vh;
+}
+
+.slrspot__studyDiscussion-comment button {
+  border-radius: 2px;
+  padding: 6px;
+}
+

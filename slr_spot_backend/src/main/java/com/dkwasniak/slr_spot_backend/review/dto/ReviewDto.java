@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -20,5 +21,5 @@ public class ReviewDto {
     private Boolean isPublic;
     private Integer screeningReviewers;
     private Set<String> reviewers;
-    private String protocol;
+    private List<String> researchQuestions;
 }

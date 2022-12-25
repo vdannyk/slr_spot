@@ -3,11 +3,13 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axiosInstance from "../../../services/api";
 import { Table } from "react-bootstrap";
 import { CgPen } from "react-icons/cg";
+import { OWNER, COOWNER } from '../../../constants/roles';
 import './reviewHome.css'
 
 
-const ReviewHome = () => {
+const ReviewHome = (props) => {
   const [reviewData, setReviewData] = useState([]);
+  const [researchQuestions, setResearchQuestions] = useState([]);
   const [owner, setOwner] = useState();
   const { reviewId } = useParams();
   const navigate = useNavigate();
@@ -18,32 +20,45 @@ const ReviewHome = () => {
     axiosInstance.get("/reviews/" + reviewId)
     .then((response) => {
       setReviewData(response.data.review);
+      setResearchQuestions(response.data.review.researchQuestions);
       setOwner(response.data.firstName + ' ' + response.data.lastName);
-      console.log(response.data.review);
     });
   }, []);
 
+
+  console.log(props.userRole)
   return (
     <div className='slrspot__review-home'>
       <div className='slrspot__review-home-title'>
         <h1>
-          {reviewData.title}
-          <CgPen size={25} onClick={ () => navigate(location.pathname + "/settings") } cursor='pointer' />
+          { reviewData.title }
+          { !props.isPublic || props.userRole && [OWNER, COOWNER].includes(props.userRole) && <CgPen size={25} onClick={ () => navigate(location.pathname + "/settings") } cursor='pointer' /> }
         </h1>
       </div>
       <Table>
         <tbody>
           <tr>
             <th>Research Area</th>
-            <td>{reviewData.researchArea}</td>
+            <td>{ reviewData.researchArea }</td>
+          </tr>
+          <tr>
+            <th>Research Questions</th>
+            <td>
+              { researchQuestions.length > 0 
+              ? researchQuestions.map((question) => (
+                <li>{ question.name }</li>
+                ))
+              : '-'  
+              }
+            </td>
           </tr>
           <tr>
             <th>Description</th>
-            <td>{reviewData.description}</td>
+            <td>{ reviewData.description }</td>
           </tr>
           <tr>
             <th>Owner</th>
-            <td>{owner}</td>
+            <td>{ owner }</td>
           </tr>
           <tr>
             <th>Team members</th>

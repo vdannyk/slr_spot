@@ -1,0 +1,15 @@
+.slrspot__studyHistory {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: auto;
+  font-size: 14px;
+  text-align: left;
+}
+
+.slrspot__studyHistory th {
+  padding: 0 6px;
+}
+
+.slrspot__studyHistory td {
+  word-break: break-all;
+}

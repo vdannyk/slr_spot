@@ -3,64 +3,49 @@ import { useParams } from "react-router-dom";
 import { ScreeningStudy, StudyDiscussion, StudyHistory } from '../../../../components';
 import { CONFLICTED } from '../../../../constants/tabs';
 import axiosInstance from '../../../../services/api';
+import { useSelector } from "react-redux";
+import { OWNER, MEMBER, COOWNER } from '../../../../constants/roles';
 import '../screening.css';
 
-const studies = [
-  {
-    "documentAbstract": "blablasdasdasdasd asd asdasd asd asd asd asd asa",
-    "authors": "authorsblabla",
-    "journalTitle": "jorunalltitlebla",
-    "publicationYear": 2012,
-    "doi": "123123/12312",
-    "url": "https//:test",
-    "language": "polish"
-  },
-  {
-    "documentAbstract": "blabla",
-    "authors": "authorsblabla",
-    "journalTitle": "jorunalltitlebla",
-    "publicationYear": 2012,
-    "doi": "123123/12312",
-    "url": "https//:test",
-    "language": "polish"
-  },
-  {
-    "documentAbstract": "bla asd asdasd asd asd asdas das asd asd asd asdasd asd asd asd asbla",
-    "authors": "authorsblabla",
-    "journalTitle": "jorunalltitlebla",
-    "publicationYear": 2012,
-    "doi": "123123/12312",
-    "url": "https//:test",
-    "language": "polish"
-  },
-  {
-    "documentAbstract": "blabla",
-    "authors": "authorsblabla",
-    "journalTitle": "jorunalltitlebla",
-    "publicationYear": 2012,
-    "doi": "123123/12312",
-    "url": "https//:test",
-    "language": "polish"
-  },
-]
 
 const Conflicted = (props) => {
-  // const [studies, setStudies] = useState([]);
-  const [showHistory, setShowHistory] = useState(false);
-  const [showDiscussion, setShowDiscussion] = useState(false);
+  const [studies, setStudies] = useState([]);
   const { reviewId } = useParams();
+  const { user: currentUser } = useSelector((state) => state.auth);
+  var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
-  // useEffect(() => {
-  //   axiosInstance.get("/studies/to-review", { params: {
-  //     reviewId
-  //   }})
-  //   .then((response) => {
-  //     console.log(response.data)
-  //     setStudies(response.data)
-  //   })
-  //   .catch(() => {
-  //   });
-  // }, []);
+  function getStudies() {
+    var userId = currentUser.id;
+    if (props.isFullText) {
+      var status = 'FULL_TEXT';
+      axiosInstance.get("/studies/conflicted", { params: {
+        reviewId, userId, status
+      }})
+      .then((response) => {
+        setStudies(response.data)
+      })
+      .catch(() => {
+      });
+    } else {
+      var status = 'TITLE_ABSTRACT';
+      axiosInstance.get("/studies/conflicted", { params: {
+        reviewId, userId, status
+      }})
+      .then((response) => {
+        setStudies(response.data)
+      })
+      .catch(() => {
+      });
+    }
+  }
+
+  useEffect(() => {
+    getStudies()
+  }, [props.isFullText]);
+
+  const handleStudiesUpdate = (id) => {
+    setStudies(studies.filter(study => study.id !== id));
+  }
 
   return (
     <div className='slrspot__screening-studies'>
@@ -68,14 +53,11 @@ const Conflicted = (props) => {
         <ScreeningStudy 
           study={study} 
           isShowAbstracts={props.showAbstracts} 
-          triggerHistory={setShowHistory} 
-          triggerDiscussion={setShowDiscussion} 
+          triggerVote={ handleStudiesUpdate }  
           tab={CONFLICTED} 
-          isFullText={props.isFullText} />
+          isFullText={props.isFullText}
+          allowChanges={ allowChanges } />
       ))}
-      { showHistory && <StudyHistory triggerCancel={setShowHistory} /> }
-      { showDiscussion && <StudyDiscussion triggerCancel={setShowDiscussion} /> }
-
     </div>
   )
 }

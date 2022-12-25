@@ -72,3 +72,31 @@
   flex: 1;
 	padding: 8px;
 }
+
+.slrspot__screeningStudy-awaiting {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.slrspot__screeningStudy-awaiting-decision {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.slrspot__screeningStudy-votes {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+  background-color: #f8f8f8;
+  border: thin solid #c0c0c0;
+  margin: 0 0 5px;
+  border-radius: 2px;
+}
+
+.slrspot__screeningStudy-votes p {
+  text-transform: capitalize;
+}

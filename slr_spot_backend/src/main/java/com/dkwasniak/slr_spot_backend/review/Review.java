@@ -4,6 +4,7 @@ import com.dkwasniak.slr_spot_backend.criterion.Criterion;
 import com.dkwasniak.slr_spot_backend.folder.Folder;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
+import com.dkwasniak.slr_spot_backend.researchQuestion.ResearchQuestion;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.user.User;
@@ -65,6 +66,9 @@ public class Review {
     @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<Folder> folders = new ArrayList<>();
 
+    @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    private Set<ResearchQuestion> researchQuestions = new HashSet<>();
+
     public Review(String title) {
         this.title = title;
     }
@@ -90,5 +94,9 @@ public class Review {
                 this.users.remove(userReview);
             }
         }
+    }
+
+    public void addResearchQuestion(ResearchQuestion researchQuestion) {
+        this.researchQuestions.add(researchQuestion);
     }
 }

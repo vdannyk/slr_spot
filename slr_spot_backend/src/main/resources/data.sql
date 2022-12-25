@@ -49,7 +49,7 @@ INSERT INTO roles(NAME) VALUES ('MEMBER');
 INSERT INTO roles(NAME) VALUES ('GUEST');
 
 INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
-VALUES ('Co robią żółwie', 'Nauki przyrodnicze', 'Wszystko o żółwiach i nie tylko', true, 1);
+VALUES ('Co robią żółwie', 'Nauki przyrodnicze', 'Wszystko o żółwiach i nie tylko', true, 2);
 INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
 VALUES ('Testy jednostkowe', 'Inżynieria oprogramowania', 'Metody testowania tworzonego oprogramowania poprzez wykonywanie testów weryfikujących poprawność działania pojedynczych elementów programu – np. metod lub obiektów w programowaniu obiektowym lub procedur w programowaniu proceduralnym.', true, 2);
 INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS)
@@ -143,6 +143,10 @@ INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag8', 1);
 INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag9', 1);
 INSERT INTO tags(NAME, REVIEW_ID) VALUES ('tag10', 1);
 
+
+
+
+
 INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria1', 'INCLUSION', 1);
 INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria2', 'INCLUSION', 1);
 INSERT INTO criteria(NAME, TYPE, REVIEW_ID) VALUES ('criteria3', 'INCLUSION', 1);
@@ -187,14 +191,66 @@ INSERT INTO folders(NAME) VALUES ('folder6');
 
 INSERT INTO imports(DATE, REVIEW_ID) VALUES ('2022-12-10 12:44:22', 1);
 
-INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID)
-VALUES ('Classification of neurologic outcomes from medical notes using natural language processing', 'Fernandes M.B., Valizadeh N., Alabsi H.S., Quadri S.A., Tesh R.A., Bucklin A.A., Sun H., Jain A., Brenner L.N., Ye E., Ge W., Collens S.I., Lin S., Das S., Robbins G.K., Zafar S.F., Mukerji S.S., Brandon Westover M.', 2012, 1, 3);
-INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID)
-VALUES ('Development of a certified reference material for the accurate determination of type B trichothecenes in corn', 'Sabau A.S., Yuan L., Fattebert J.-L., Turner J.A.', 2012, 1, 3);
-INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID)
-VALUES ('Filling gaps in significant wave height time series records using bidirectional gated recurrent unit and cressman analysis', 'Wang J., Wen K., Deng F.', 2013, 1, 3);
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie bez zadnego oddanego glosu: id=1', 'Bez glosow TITLE_ABSTRACT', 2012, 1, 3, 'TITLE_ABSTRACT');
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie z jednym glosem: id=2', 'nie lub tak TITLE_ABSTRACT', 2012, 1, 3, 'TITLE_ABSTRACT');
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie z dwoma glosami na tak: id=3', 'tak tak TITLE_ABSTRACT', 2013, 1, 3, 'TITLE_ABSTRACT');
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie z dwoma glosami na nie: id=4', 'nie nie TITLE_ABSTRACT', 2013, 1, 3, 'TITLE_ABSTRACT');
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie z dwoma glosami roznymi glosami: id=5', 'tak i nie TITLE_ABSTRACT', 2013, 1, 3, 'TITLE_ABSTRACT');
 
+-- jeden glos
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (1, 2, 'INCLUDE');
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (3, 2, 'UNCLEAR');
 
-INSERT INTO screening_decisions(user_id, study_id, stage, decision) VALUES (1, 1, 'TITLE_ABSTRACT', 'INCLUDE');
+-- dwa glosy na tak
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (1, 3, 'INCLUDE');
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (2, 3, 'INCLUDE');
 
+-- dwa glosy na nie
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (1, 4, 'EXCLUDE');
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (2, 4, 'EXCLUDE');
+
+-- dwa rozne glosy
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (1, 5, 'INCLUDE');
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (2, 5, 'EXCLUDE');
+
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie bez zadnego oddanego glosu: id=1', 'Bez glosow FULL_TEXT', 2012, 1, 3, 'FULL_TEXT');
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie z jednym glosem: id=2', 'nie lub tak FULL_TEXT', 2012, 1, 3, 'FULL_TEXT');
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie z dwoma glosami na tak: id=3', 'tak tak FULL_TEXT', 2013, 1, 3, 'FULL_TEXT');
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie z dwoma glosami na nie: id=4', 'nie nie FULL_TEXT', 2013, 1, 3, 'FULL_TEXT');
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie z dwoma glosami roznymi glosami: id=5', 'tak i nie FULL_TEXT', 2013, 1, 3, 'FULL_TEXT');
+
+-- jeden glos
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (1, 7, 'INCLUDE');
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (3, 7, 'UNCLEAR');
+
+-- dwa glosy na tak
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (1, 8, 'INCLUDE');
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (2, 8, 'INCLUDE');
+
+-- dwa glosy na nie
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (1, 9, 'EXCLUDE');
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (2, 9, 'EXCLUDE');
+
+-- dwa rozne glosy
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (1, 10, 'INCLUDE');
+INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (2, 10, 'EXCLUDE');
+
+INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (2, 1);
+INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (2, 2);
+INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (1, 1);
+INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (1, 2);
+INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (1, 3);
+
+INSERT INTO comments(CONTENT, DATE, STUDY_ID, USER_ID) VALUES ('testowy komentarz jeden', '2022-12-12 12:41:21',1, 1);
+INSERT INTO comments(CONTENT, DATE, STUDY_ID, USER_ID) VALUES ('testowy komentarz dwa', '2022-11-12 11:22:22', 1, 2);
 

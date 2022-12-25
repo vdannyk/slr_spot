@@ -7,9 +7,10 @@ import Helper from '../../../../components/helper/Helper';
 import './studiesSearch.css';
 import { ConfirmationPopup, ImportDetails, StudiesImport } from '../../../../components';
 import EventBus from '../../../../common/EventBus';
+import { OWNER, COOWNER, MEMBER } from '../../../../constants/roles';
 
 
-const StudiesSearch = () => {
+const StudiesSearch = (props) => {
   const [imports, setImports] = useState([]);
   const [showNewImport, setShowNewImport] = useState(false);
   const { reviewId } = useParams();
@@ -18,6 +19,7 @@ const StudiesSearch = () => {
   const [importToRemove, setImportToRemove] = useState();
   const [showImportDetails, setShowImportDetails] = useState(false);
   const [importDetails, setImportDetails] = useState();
+  var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
   useEffect(() => {
     axiosInstance.get("/imports", { params: {
@@ -85,9 +87,6 @@ const StudiesSearch = () => {
       <tr>
         <td>{id + 1}</td>
         <td>{item.studyImport.date}</td>
-        {/* <td>{item.studyImport.performedBy}</td> */}
-        {/* <td>{item.studyImport.searchValue}</td> */}
-        {/* <td>{item.studyImport.source}</td> */}
         <td>{item.studiesAdded}</td>
         <td>{item.duplicatesRemoved}</td>
         <td>
@@ -97,11 +96,13 @@ const StudiesSearch = () => {
             SHOW
           </a>
         </td>
-        <td>
-          <AiOutlineClose 
-            onClick={ () => handleRemoveImport(item.studyImport) } 
-            style={ {color: 'red', cursor: 'pointer'} } />
-        </td>
+        { allowChanges &&
+          <td>
+            <AiOutlineClose 
+              onClick={ () => handleRemoveImport(item.studyImport) } 
+              style={ {color: 'red', cursor: 'pointer'} } />
+          </td>
+        }
       </tr>
     </tbody>
   );
@@ -114,13 +115,15 @@ const StudiesSearch = () => {
 
       <Helper content={ helperContent() } show={ true }/> 
       
-      <div className='slrspot__review-studiesSearch-import'>
-        <h3>Import references</h3>
+      { allowChanges && 
+        <div className='slrspot__review-studiesSearch-import'>
+          <h3>Import references</h3>
 
-        { showNewImport && <StudiesImport triggerCancel={ setShowNewImport } /> }
+          { showNewImport && <StudiesImport triggerCancel={ setShowNewImport } /> }
 
-        <button onClick={ () => setShowNewImport(true) }>New import</button>
-      </div>
+          <button onClick={ () => setShowNewImport(true) }>New import</button>
+        </div>
+      }
 
       <div className='slrspot__review-studiesSearch-imports-list'>
         <h3>Import history</h3>
@@ -137,7 +140,7 @@ const StudiesSearch = () => {
                   <th>Studies added</th>
                   <th>Duplicates removed</th>
                   <th>Details</th>
-                  <th>Remove</th>
+                  { allowChanges && <th>Remove</th> }
                 </tr>
               </thead>
               { listTestData }

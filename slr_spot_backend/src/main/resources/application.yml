@@ -1,12 +1,13 @@
 spring:
   datasource:
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/slr-database
     username: postgres
     password: postgres
   jpa:
     hibernate:
       ddl-auto: create-drop
-    show-sql: true
+#    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

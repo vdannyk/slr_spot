@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { AiFillCaretRight,  AiFillCaretLeft, AiFillCaretDown } from "react-icons/ai";
+import { OWNER, COOWNER } from '../../../constants/roles';
 import './reviewMenu.css';
 
 
-const ReviewMenu = ({isPreview}) => {
+const ReviewMenu = (props) => {
   const [isHidden, setIsHidden] = useState(false);
   const [showReviewMenu, setShowReviewMenu] = useState(false);
   const [showScreeningMenu, setShowScreeningMenu] = useState(false);
   const [showStudiesMenu, setShowStudiesMenu] = useState(false);
   const { reviewId } = useParams();
   const navigate = useNavigate();
-
 
   const onItemClick = (props) => {
     if (props.setShowTrigger) {
@@ -61,7 +61,7 @@ const ReviewMenu = ({isPreview}) => {
           <MenuItem name='Review' setShowTrigger={setShowReviewMenu} showTrigger={showReviewMenu}/>
           { showReviewMenu && (
             <div className='slrspot__review-submenu-options'>
-              { !isPreview && <SubMenuItem name='Settings' redirect='/settings'/> }
+              { !props.isPublic || props.userRole && [OWNER, COOWNER].includes(props.userRole) && <SubMenuItem name='Settings' redirect='/settings'/> }
               <SubMenuItem name='Team' redirect='/team'/>
             </div>
           )}
@@ -81,7 +81,7 @@ const ReviewMenu = ({isPreview}) => {
               <SubMenuItem name='Full text' redirect='/screening/full-text'/>
             </div>
           )}
-          <MenuItem name='Results' />
+          <MenuItem name='Results' redirect='/results'/>
         </div>
       </div>
       <ShowMenuButton />

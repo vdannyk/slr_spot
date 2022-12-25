@@ -8,3 +8,47 @@
 .slrspot__newReview-reviewInfo label {
   font-weight: bold;
 }
+
+.slrspot__reviewInfo-question {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  background-color: #f8f8f8;
+  border: thin solid #c0c0c0;
+  border-radius: 10px;
+  padding: 4px 5px;
+  width: 50%;
+}
+
+.slrspot__reviewInfo-question p {
+  margin: 0;
+}
+
+#questionField {
+  border-radius: 10px;
+  align-self: center;
+  margin: 0;
+  padding: 2px 5px;
+  width: 100%;
+}
+
+
+.slrspot__reviewInfo-addIcon {
+  color: green;
+  margin-left: 5px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.slrspot__reviewInfo-removeIcon {
+  color: red;
+  margin-left: 5px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.slrspot__reviewInfo-reviewersNum {
+  padding: 0;
+  width: 10%;
+} 

@@ -1,8 +1,38 @@
 import React from 'react';
+import { useState } from 'react';
 import Check from 'react-bootstrap/FormCheck';
+import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
 import './reviewInfo.css';
 
-const ReviewInfo = ({register, errors}) => {
+const ReviewInfo = ({register, errors, questions, setQuestions}) => {
+  const [question, setQuestion] = useState('');
+
+  const listQuestions = questions.map((question, idx) => (
+    <div className='slrspot__reviewInfo-question' key={idx}>
+      <p>
+        {question}
+      </p>
+      <AiFillMinusCircle 
+        className='slrspot__reviewInfo-removeIcon' 
+        onClick={ () => handleRemoveQuestion(question) }/>
+    </div>
+  ));
+
+  const handleAddQuestion = () => {
+    if (question.trim().length > 0 && questions.filter(item => item === question) < 1) {
+      setQuestions(oldArray => [...oldArray, question]);
+      document.getElementById("questionField").value = "";
+    }
+  }
+
+  const handleRemoveQuestion = (question) => {
+    setQuestions(questions.filter(item => item !== question));
+  }
+
+  const handleChangeQuestion = (event) => {
+    setQuestion(event.target.value);
+  }
+
   return (
     <div className='slrspot__newReview-reviewInfo'>
 
@@ -29,12 +59,14 @@ const ReviewInfo = ({register, errors}) => {
       }
 
       <label>Research question</label>
-      <input  
-        {...register("researchQuestion", { 
-          required: true,
-        })}
-        name='researchQuestion' 
-      />
+      { questions.length > 0 && listQuestions }
+      <div className='slrspot__reviewInfo-question'>
+        <input id="questionField" onChange={ handleChangeQuestion }/>
+        <AiFillPlusCircle 
+          className='slrspot__reviewInfo-addIcon'
+          onClick={ () => handleAddQuestion() }/>
+      </div>
+      
       {errors.researchQuestion && errors.researchQuestion.type=== "required" && 
         <p className="slrspot__newReview-error">This field is required</p>
       }
@@ -46,7 +78,8 @@ const ReviewInfo = ({register, errors}) => {
       />
 
       <label>Reviewers required for screening</label>
-      <input  
+      <input
+        className='slrspot__reviewInfo-reviewersNum'
         {...register("screeningReviewers")}
         name='screeningReviewers'
         type='number'

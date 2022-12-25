@@ -4,6 +4,8 @@ import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationToken;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
 import com.dkwasniak.slr_spot_backend.email.EmailService;
 import com.dkwasniak.slr_spot_backend.review.Review;
+import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
+import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleService;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
@@ -13,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,6 +33,7 @@ public class UserFacade {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
     private final UserReviewService userReviewService;
+    private final ReviewRoleService reviewRoleService;
 
     public long createUser(User user) {
         User savedUser = userService.saveUser(user);
@@ -41,9 +46,9 @@ public class UserFacade {
         return savedUser.getId();
     }
 
-    public Set<UserDto> getUsersByReviewId(Long reviewId) {
-        Set<UserReview> users = userReviewService.getUserReviewByReviewId(reviewId);
-        return users.stream().map(userService::toUserDto).collect(Collectors.toSet());
+    public List<UserDto> getUsersByReviewId(Long reviewId) {
+        List<UserReview> users = userReviewService.getUserReviewByReviewId(reviewId);
+        return users.stream().map(userService::toUserDto).collect(Collectors.toList());
     }
 
     @Transactional
@@ -89,4 +94,9 @@ public class UserFacade {
         return allUsersEmails;
     }
 
+
+    public void changeUserRole(Long userId, Long reviewId, String role) {
+        UserReview userReview = userReviewService.getUserReviewByReviewIdAndUserId(reviewId, userId);
+        userReviewService.changeUserReviewRole(userReview, reviewRoleService.getRoleByName(role));
+    }
 }

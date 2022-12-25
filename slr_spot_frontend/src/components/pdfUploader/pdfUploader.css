@@ -1,0 +1,17 @@
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  background-color: white;
+  font-size: 12px;
+  color: black;
+  border: thin solid #c0c0c0;
+  border-radius: 4px;
+  flex: 1;
+	padding: 4px;
+}
+
+.custom-file-upload:hover {
+  background-color: rgb(206, 206, 206);
+}
