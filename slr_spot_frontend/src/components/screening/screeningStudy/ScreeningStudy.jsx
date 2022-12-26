@@ -9,15 +9,23 @@ import StudyDiscussion from './studyDiscussion/StudyDiscussion';
 import { useSelector } from 'react-redux';
 import axiosInstance from '../../../services/api';
 import FullTextField from './fullTextField/FullTextField';
+import KeyWordHighlight from '../../keyWordHighlight/KeyWordHighlight';
+import { INCLUSION_TYPE, EXCLUSION_TYPE } from '../criteria/CriteriaTypes';
 
 
 const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh, 
-                          tab, isFullText, reviewTags, allowChanges }) => {
+                          tab, isFullText, reviewTags, allowChanges, showHighlights, highlights }) => {
   const [showAbstract, setShowAbstract] = useState(isShowAbstracts);
   const [showDiscussion, setShowDiscussion] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const { reviewId } = useParams();
   const { user: currentUser } = useSelector((state) => state.auth);
+
+  const inclusionHighlights = highlights.filter((highlight) => highlight.type === INCLUSION_TYPE)
+    .map((highlight) => highlight.name);
+
+  const exclusionHighlights = highlights.filter((highlight) => highlight.type === EXCLUSION_TYPE)
+    .map((highlight) => highlight.name);
 
   useEffect(() => {
     if (showAbstract !== isShowAbstracts) {
@@ -189,12 +197,62 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
         { showAbstract ? 'hide abstract' : 'show abstract'}
       </button>
       { showAbstract && <p><label>abstract:</label> { study.documentAbstract }</p> }
-      <p><label>authors:</label> { study.authors }</p>
-      <p><label>journal:</label> { study.journalTitle }</p>
-      <p><label>publicationYear:</label> { study.publicationYear }</p>
-      <p><label>doi:</label> { study.doi }</p>
-      <p><label>URL:</label> { study.url }</p>
-      <p><label>language:</label> { study.language }</p>
+      {showHighlights ? (
+        <>
+          <p>
+            <label>authors:</label><span> </span>
+            <KeyWordHighlight 
+              text={ study.authors } 
+              inclusionWords={ inclusionHighlights } 
+              exclusionWords={ exclusionHighlights }/>
+          </p>
+          <p>
+            <label>journal:</label><span> </span>
+            <KeyWordHighlight 
+              text={ study.journalTitle } 
+              inclusionWords={ inclusionHighlights } 
+              exclusionWords={ exclusionHighlights }/>
+          </p>
+          <p>
+            <label>publicationYear:</label><span> </span> 
+            <KeyWordHighlight 
+              text={ study.publicationYear.toString() } 
+              inclusionWords={ inclusionHighlights } 
+              exclusionWords={ exclusionHighlights }/>
+          </p>
+          <p>
+            <label>doi:</label><span> </span>
+            <KeyWordHighlight 
+              text={ study.doi } 
+              inclusionWords={ inclusionHighlights } 
+              exclusionWords={ exclusionHighlights }/>
+          </p>
+          <p>
+            <label>URL:</label><span> </span> 
+            <KeyWordHighlight 
+              text={ study.url } 
+              inclusionWords={ inclusionHighlights } 
+              exclusionWords={ exclusionHighlights }/>
+          </p>
+          <p>
+            <label>language:</label><span> </span> 
+            <KeyWordHighlight 
+              text={ study.language } 
+              inclusionWords={ inclusionHighlights } 
+              exclusionWords={ exclusionHighlights }/>
+          </p>
+        </>
+      ) : (
+        <>
+          <p><label>authors:</label> { study.authors }</p>
+          <p><label>journal:</label> { study.journalTitle }</p>
+          <p><label>publicationYear:</label> { study.publicationYear }</p>
+          <p><label>doi:</label> { study.doi }</p>
+          <p><label>URL:</label> { study.url }</p>
+          <p><label>language:</label> { study.language }</p>
+        </>
+      )}
+
       <FullTextField 
         isFullText={ isFullText } 
         study={ study }

@@ -1,0 +1,9 @@
+.inclusion_highlight {
+  background-color: green;
+  color: white;
+}
+
+.exclusion_highlight {
+  background-color: red;
+  color: white;
+}
