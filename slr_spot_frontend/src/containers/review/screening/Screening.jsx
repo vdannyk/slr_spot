@@ -10,17 +10,23 @@ import Excluded from './tabs/Excluded';
 import { useParams } from 'react-router-dom';
 import EventBus from '../../../common/EventBus';
 import { INCLUSION_TYPE, EXCLUSION_TYPE } from '../../../components/screening/criteria/CriteriaTypes';
+import { useSelector } from "react-redux";
 
 
 const Screening = (props) => {
   const [isStudiesView, setIsStudiesView] = useState(true);
   const [showAbstracts, setShowAbstracts] = useState(true);
+  const [showTeamHighlights, setShowTeamHighlights] = useState(false);
+  const [showPersonalHighlights, setShowPersonalHighlights] = useState(false);
   const [showCriteria, setShowCriteria] = useState(false);
   const [folders, setFolders] = useState([]);
   const [criteria, setCriteria] = useState([]);
   const [tab, setTab] = useState(TO_BE_REVIEWED)
   const [reviewTags, setReviewTags] = useState([]);
+  const [teamHighlights, setTeamHighlights] = useState([]);
+  const [personalHighlights, setPersonalHighlights] = useState([]);
   const { reviewId } = useParams();
+  const { user: currentUser } = useSelector((state) => state.auth);
 
   useEffect(() => {
     axiosInstance.get("/folders")
@@ -37,6 +43,29 @@ const Screening = (props) => {
     }})
     .then((response) => {
       setReviewTags(response.data)
+    })
+    .catch(() => {
+    });
+  }, []);
+
+  useEffect(() => {
+    axiosInstance.get("/keywords", { params: {
+      reviewId
+    }})
+    .then((response) => {
+      setTeamHighlights(response.data)
+    })
+    .catch(() => {
+    });
+  }, []);
+
+  useEffect(() => {
+    var userId = currentUser.id;
+    axiosInstance.get("/keywords/personal", { params: {
+      reviewId, userId
+    }})
+    .then((response) => {
+      setPersonalHighlights(response.data)
     })
     .catch(() => {
     });
@@ -75,7 +104,9 @@ const Screening = (props) => {
           showAbstracts={ showAbstracts } 
           isFullText={ props.state.isFullText } 
           reviewTags={ reviewTags } 
-          userRole={props.userRole}/>
+          userRole={ props.userRole }
+          showHighlights={ showTeamHighlights || showPersonalHighlights } 
+          highlights={ showTeamHighlights ? teamHighlights : personalHighlights } />
       )
     } else if (tab === CONFLICTED) {
       return (
@@ -83,7 +114,9 @@ const Screening = (props) => {
           showAbstracts={showAbstracts} 
           isFullText={props.state.isFullText} 
           allowChanges={props.allowChanges}
-          userRole={props.userRole}/>
+          userRole={props.userRole}
+          showHighlights={ showTeamHighlights || showPersonalHighlights } 
+          highlights={ showTeamHighlights ? teamHighlights : personalHighlights } />
       )
     } else if (tab === AWAITING) {
       return (
@@ -91,7 +124,9 @@ const Screening = (props) => {
           showAbstracts={showAbstracts} 
           isFullText={props.state.isFullText} 
           allowChanges={props.allowChanges}
-          userRole={props.userRole}/>
+          userRole={props.userRole}
+          showHighlights={ showTeamHighlights || showPersonalHighlights } 
+          highlights={ showTeamHighlights ? teamHighlights : personalHighlights } />
       )
     } else {
       return (
@@ -99,7 +134,9 @@ const Screening = (props) => {
           showAbstracts={showAbstracts}
           isFullText={props.state.isFullText} 
           allowChanges={props.allowChanges}
-          userRole={props.userRole}/>
+          userRole={props.userRole}
+          showHighlights={ showTeamHighlights || showPersonalHighlights } 
+          highlights={ showTeamHighlights ? teamHighlights : personalHighlights } />
       )
     }
   }
@@ -144,7 +181,13 @@ const Screening = (props) => {
 
       { isStudiesView ? (
         <>
-          <ScreeningOptions triggerChange={setShowAbstracts} showAbstracts={showAbstracts}/>
+          <ScreeningOptions 
+            triggerShowAbstractsChange={setShowAbstracts}
+            showAbstracts={showAbstracts} 
+            triggerShowTeamHighlights={setShowTeamHighlights}
+            showTeamHighlights={showTeamHighlights} 
+            triggerShowPersonalHighlights={setShowPersonalHighlights}
+            showPersonalHighlights={showPersonalHighlights} />
 
           { tabContent() }
 

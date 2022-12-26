@@ -56,7 +56,9 @@ const Conflicted = (props) => {
           triggerVote={ handleStudiesUpdate }  
           tab={CONFLICTED} 
           isFullText={props.isFullText}
-          allowChanges={ allowChanges } />
+          allowChanges={ allowChanges }
+          showHighlights={ props.showHighlights } 
+          highlights={ props.highlights } />
       ))}
     </div>
   )
