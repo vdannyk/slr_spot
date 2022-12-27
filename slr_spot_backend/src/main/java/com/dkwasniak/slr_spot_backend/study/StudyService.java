@@ -144,4 +144,11 @@ public class StudyService {
     public Study updateStudy(Study study) {
         return studyRepository.save(study);
     }
+
+    public int getStudiesCountByStatus(long reviewId, StatusEnum status) {
+        if (StatusEnum.EXCLUDED.equals(status)) {
+            return 0;
+        }
+        return studyRepository.findStudiesCountByStatus(reviewId, status);
+    }
 }

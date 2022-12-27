@@ -169,4 +169,12 @@ public class StudyController {
     public ResponseEntity<Void> deleteFullTextDocument(@PathVariable Long id) {
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/count")
+    @Transactional
+    public ResponseEntity<Integer> getFullTextDocumentName(@RequestParam Long reviewId,
+                                                          @RequestParam StatusEnum status) {
+        int studiesCount = studyFacade.getStudiesCountByStatus(reviewId, status);
+        return ResponseEntity.ok(studiesCount);
+    }
 }

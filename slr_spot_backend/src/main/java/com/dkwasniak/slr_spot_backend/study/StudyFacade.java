@@ -204,4 +204,8 @@ public class StudyFacade {
         study.setFullText(null);
         studyService.updateStudy(study);
     }
+
+    public int getStudiesCountByStatus(Long reviewId, StatusEnum statusEnum) {
+        return studyService.getStudiesCountByStatus(reviewId, statusEnum);
+    }
 }
