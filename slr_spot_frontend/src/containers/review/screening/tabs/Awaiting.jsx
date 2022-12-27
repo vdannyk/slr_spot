@@ -59,7 +59,9 @@ const Awaiting = (props) => {
           triggerRefresh={ () => setRefreshStudies(!refreshStudies)}
           tab={AWAITING} 
           isFullText={props.isFullText}
-          allowChanges={ allowChanges } />
+          allowChanges={ allowChanges }
+          showHighlights={ props.showHighlights } 
+          highlights={ props.highlights } />
       ))}
     </div>
   )

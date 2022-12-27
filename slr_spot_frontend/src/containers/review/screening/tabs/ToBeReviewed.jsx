@@ -56,7 +56,9 @@ const ToBeReviewed = (props) => {
           tab={ TO_BE_REVIEWED }
           isFullText={ props.isFullText } 
           reviewTags={ props.reviewTags } 
-          allowChanges={ allowChanges } />
+          allowChanges={ allowChanges } 
+          showHighlights={ props.showHighlights } 
+          highlights={ props.highlights } />
       ))}
 
     </div>
