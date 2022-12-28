@@ -4,6 +4,8 @@ import com.dkwasniak.slr_spot_backend.dataExtraction.ExtractionField;
 import com.dkwasniak.slr_spot_backend.file.exception.FileLoadingException;
 import com.dkwasniak.slr_spot_backend.file.exception.NotAllowedFileContentTypeException;
 import com.dkwasniak.slr_spot_backend.study.Study;
+import com.dkwasniak.slr_spot_backend.study.writer.BibWriter;
+import com.dkwasniak.slr_spot_backend.study.writer.CsvWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -40,6 +42,13 @@ public class FileService {
     private final static String XLS_MEDIA_TYPE = "xls";
     private final static List<String> ALLOWED_CONTENT = List.of(
             CSV_MEDIA_TYPE, BIB_MEDIA_TYPE, RIS_MEDIA_TYPE, XLS_MEDIA_TYPE
+    );
+    private static final String CSV_FORMAT = "CSV";
+    private static final String BIB_FORMAT = "BIB";
+    private static final String XLS_FORMAT = "XLS";
+    private static final String RIS_FORMAT = "RIS";
+    private final static List<String> ALLOWED_EXPORT_FORMAT = List.of(
+            CSV_FORMAT, BIB_FORMAT
     );
 
     public void checkIfAllowedFileContentType(String contentType) {
@@ -137,5 +146,23 @@ public class FileService {
                 throw new IllegalStateException("Unable to map extraction field");
             }
         }
+    }
+
+    public void checkIfExportFileFormatAllowed(String format) {
+        if  (!ALLOWED_EXPORT_FORMAT.contains(format)) {
+            log.error(String.format("Export to '%s' file not allowed", format));
+            throw new IllegalStateException(String.format("Export to '%s' file not allowed", format));
+        }
+    }
+
+    public InputStreamResource write(List<Study> studies, String format) {
+        if (CSV_FORMAT.equals(format)) {
+            return new CsvWriter().write(studies);
+        } else if (BIB_FORMAT.equals(format)) {
+            return new BibWriter().write(studies);
+        } else {
+            throw new IllegalStateException(String.format("Export to '%s' file not allowed", format));
+        }
+
     }
 }

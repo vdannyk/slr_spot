@@ -127,4 +127,21 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
             "AND s.status = 'INCLUDED' ")
     List<Study> findAllIncluded(@Param("reviewId") long reviewId);
 
+    @Query("SELECT COUNT(s) " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.status = :status ")
+    int findStudiesCountByStatus(@Param("reviewId") long reviewId,
+                                 @Param("status") StatusEnum status);
+
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.status = :status ")
+    List<Study> findStudiesByReviewIdAndStatus(@Param("reviewId") long reviewId,
+                                               @Param("status") StatusEnum status);
 }

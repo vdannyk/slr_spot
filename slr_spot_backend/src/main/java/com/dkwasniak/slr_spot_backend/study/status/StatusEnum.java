@@ -4,5 +4,6 @@ public enum StatusEnum {
     TITLE_ABSTRACT,
     FULL_TEXT,
     DUPLICATES,
-    INCLUDED
+    INCLUDED,
+    EXCLUDED
 }
