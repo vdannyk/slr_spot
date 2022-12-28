@@ -6,18 +6,26 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
+import com.dkwasniak.slr_spot_backend.review.report.ReportData;
+import com.dkwasniak.slr_spot_backend.review.report.ReportFactory;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleEnum;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleService;
+import com.dkwasniak.slr_spot_backend.study.StudyService;
+import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.dkwasniak.slr_spot_backend.userReview.UserReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @Transactional
@@ -29,6 +37,8 @@ public class ReviewFacade {
     private final ImportService importService;
     private final ReviewRoleService roleService;
     private final UserReviewService userReviewService;
+    private final ReportFactory reportFactory;
+    private final StudyService studyService;
 
     public long addReview(ReviewDto reviewDto) {
         User owner = userService.getUserById(reviewDto.getUserId());
@@ -97,6 +107,24 @@ public class ReviewFacade {
 
     public String getMemberRole(Long reviewId, Long userId) {
         return userReviewService.getUserReviewByReviewIdAndUserId(reviewId, userId).getRole().getName();
+    }
+
+    public InputStreamResource generateReviewReport(Long reviewId) {
+        Review review = reviewService.getReviewById(reviewId);
+        return reportFactory.createReport(
+                ReportData.builder()
+                        .title(review.getTitle())
+                        .owner(review.getUsers().stream().filter(u -> ReviewRoleEnum.OWNER.name().equals(u.getRole().getName())).map(u -> u.getUser().getFirstName() + " " + u.getUser().getLastName()).findFirst().orElseThrow())
+                        .researchArea(review.getResearchArea())
+                        .description(review.getDescription())
+                        .researchQuestions(review.getResearchQuestions().stream().map(ResearchQuestion::getName).collect(Collectors.toList()))
+                        .members(review.getUsers()
+                                .stream()
+                                .filter(u -> !ReviewRoleEnum.OWNER.name().equals(u.getRole().getName())).map(u -> u.getUser().getFirstName() + " " + u.getUser().getLastName() + " - " + u.getRole().getName()).collect(Collectors.toList()))
+                        .totalStudiesImported(0)
+                        .removedDuplicates(0)
+                        .selectedStudies(studyService.getStudiesCountByStatus(reviewId, StatusEnum.INCLUDED))
+                .build());
     }
 
 }
