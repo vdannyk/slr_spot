@@ -169,4 +169,28 @@ public class StudyController {
     public ResponseEntity<Void> deleteFullTextDocument(@PathVariable Long id) {
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getFullTextDocumentName(@RequestParam Long reviewId,
+                                                          @RequestParam StatusEnum status) {
+        int studiesCount = studyFacade.getStudiesCountByStatus(reviewId, status);
+        return ResponseEntity.ok(studiesCount);
+    }
+
+    @GetMapping("/{status}/{format}")
+    public ResponseEntity<Resource> exportStudiesByStatus(@RequestParam Long reviewId,
+                                                          @PathVariable StatusEnum status,
+                                                          @PathVariable String format) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        Resource studies = studyFacade.exportStudiesByStatus(reviewId, status, format);
+        if ("CSV".equals(format)) {
+            httpHeaders.set(HttpHeaders.CONTENT_TYPE, "text/csv");
+        }
+        if ("BIB".equals(format)) {
+            httpHeaders.set(HttpHeaders.CONTENT_TYPE, "application/x-bibtex");
+        }
+        return ResponseEntity.ok()
+                .headers(httpHeaders)
+                .body(studies);
+    }
 }

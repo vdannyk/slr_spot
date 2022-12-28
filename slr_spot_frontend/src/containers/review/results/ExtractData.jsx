@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-import { DownloadButton } from '../../../components';
 import axiosInstance from '../../../services/api';
 import FieldItem from './FieldItem';
 import './results.css';
