@@ -14,8 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -150,5 +152,16 @@ public class StudyService {
             return 0;
         }
         return studyRepository.findStudiesCountByStatus(reviewId, status);
+    }
+
+    public List<Study> getStudiesByReviewIdAndStatus(long reviewId, StatusEnum status) {
+        if (StatusEnum.EXCLUDED.equals(status)) {
+            return new ArrayList<>();
+        }
+        List<Study> studies = studyRepository.findStudiesByReviewIdAndStatus(reviewId, status);
+        if (CollectionUtils.isEmpty(studies)) {
+            throw new IllegalStateException("No studies to export");
+        }
+        return studies;
     }
 }

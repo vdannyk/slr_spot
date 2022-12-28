@@ -23,6 +23,7 @@ import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -207,5 +208,11 @@ public class StudyFacade {
 
     public int getStudiesCountByStatus(Long reviewId, StatusEnum statusEnum) {
         return studyService.getStudiesCountByStatus(reviewId, statusEnum);
+    }
+
+    public InputStreamResource exportStudiesByStatus(Long reviewId, StatusEnum statusEnum, String format) {
+        fileService.checkIfExportFileFormatAllowed(format);
+        List<Study> studiesToExport = studyService.getStudiesByReviewIdAndStatus(reviewId, statusEnum);
+        return fileService.write(studiesToExport, format);
     }
 }
