@@ -21,7 +21,7 @@ const ImportDetails = (props) => {
           <label className='slrspot__importDetails-label'>STUDIES ADDED</label>
           <p>{ props.importDetails.studiesAdded }</p>
           <label className='slrspot__importDetails-label'>DUPLICATES REMOVED</label>
-          <p>{ props.importDetails.duplicatesRemoved }</p>
+          <p>{ props.importDetails.studyImport.numOfRemovedDuplicates }</p>
         </div>
         <div className='slrspot__importDetails-container-buttons'>
           <button 

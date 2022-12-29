@@ -12,6 +12,5 @@ public class ImportDto {
 
     private Import studyImport;
     private Integer studiesAdded;
-    private Integer duplicatesRemoved;
 
 }

@@ -164,4 +164,16 @@ public class StudyService {
         }
         return studies;
     }
+
+    public List<String> getStudiesDoiByReviewId(Long reviewId) {
+        return studyRepository.findAllStudiesDoiByReviewId(reviewId);
+    }
+
+    public List<String> getStudiesTitlesByReviewId(Long reviewId) {
+        return studyRepository.findAllStudiesDoiByReviewId(reviewId);
+    }
+
+    public List<String> getStudiesAuthorsByReviewId(Long reviewId) {
+        return studyRepository.findAllStudiesDoiByReviewId(reviewId);
+    }
 }

@@ -44,6 +44,7 @@ public class Import {
     private String source;
     private String additionalInformation;
     private String performedBy;
+    private Integer numOfRemovedDuplicates;
 
     @OneToMany(mappedBy = "studyImport", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
@@ -55,11 +56,12 @@ public class Import {
     private Review review;
 
     public Import(String searchValue, String source, String additionalInformation,
-                  String performedBy) {
+                  String performedBy, Integer numOfRemovedDuplicates) {
         this.date = LocalDateTime.ofInstant(now(), ZoneId.systemDefault());
         this.searchValue = searchValue;
         this.source = source;
         this.additionalInformation = additionalInformation;
         this.performedBy = performedBy;
+        this.numOfRemovedDuplicates = numOfRemovedDuplicates;
     }
 }

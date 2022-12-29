@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../services/api';
 import DropdownSelect from '../../dropdownSelect/DropdownSelect';
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import Check from 'react-bootstrap/FormCheck';
+import { DOI, TITLE, AUTHORS } from '../../../constants/deduplicationFields';
+import { useSelector } from 'react-redux';
 import './studiesImport.css';
 
 
@@ -15,6 +18,11 @@ const StudiesImport = (props) => {
   const [otherSource, setOtherSource] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const { reviewId } = useParams();
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const [selectedDeduplicationFields, setSelectedDeduplicationFields] = useState([DOI]);
+  const [checkDoi, setCheckDoi] = useState(true);
+  const [checkTitle, setCheckTitle] = useState(false);
+  const [checkAuthors, setCheckAuthors] = useState(false);
 
   const uploadFile = () => {
     let data = new FormData();
@@ -36,6 +44,8 @@ const StudiesImport = (props) => {
       data.append("source", source)
     }
     data.append("additionalInformations", additionalInfo);
+    data.append("userId", currentUser.id);
+    data.append("deduplicationFields", selectedDeduplicationFields);
 
     axiosInstance.post("/imports", data)
     .then(() => {
@@ -69,6 +79,40 @@ const StudiesImport = (props) => {
 
   const handleSelect = (event) => {
     setSource(event);
+  }
+
+  useEffect(() => {
+    if (selectedDeduplicationFields.length === 0) {
+      setCheckDoi(true);
+      setSelectedDeduplicationFields(oldArray => [...oldArray, DOI]);
+    }
+  }, [checkDoi, checkTitle, checkAuthors]);
+
+  const handleCheckDoi = () => {
+    setCheckDoi(!checkDoi);
+    if (selectedDeduplicationFields.includes(DOI)) {
+      setSelectedDeduplicationFields(selectedDeduplicationFields.filter(item => item !== DOI));
+    } else {
+      setSelectedDeduplicationFields(oldArray => [...oldArray, DOI]);
+    }
+  }
+
+  const handleCheckTitle = () => {
+    setCheckTitle(!checkTitle);
+    if (selectedDeduplicationFields.includes(TITLE)) {
+      setSelectedDeduplicationFields(selectedDeduplicationFields.filter(item => item !== TITLE));
+    } else {
+      setSelectedDeduplicationFields(oldArray => [...oldArray, TITLE]);
+    }
+  }
+
+  const handleCheckAuthors = () => {
+    setCheckAuthors(!checkAuthors);
+    if (selectedDeduplicationFields.includes(AUTHORS)) {
+      setSelectedDeduplicationFields(selectedDeduplicationFields.filter(item => item !== AUTHORS));
+    } else {
+      setSelectedDeduplicationFields(oldArray => [...oldArray, AUTHORS]);
+    }
   }
 
   return (
@@ -105,6 +149,28 @@ const StudiesImport = (props) => {
             <input type="file" onChange={ handleOnFileChange } />
           </label>
           <span> { selectedFile }</span>
+
+          <label className='slrspot__deduplication-header'>Deduplicate using:</label>
+          <div className='slrspot__deduplication-options'>
+            <div className='slrspot__deduplication-option'>
+              <Check 
+                onChange={ handleCheckDoi } 
+                checked={ checkDoi } />
+              <span>{ DOI }</span>
+            </div>
+            <div className='slrspot__deduplication-option'>
+              <Check
+                onChange={ handleCheckTitle } 
+                checked={ checkTitle } />
+              <span>{ TITLE }</span>
+            </div>
+            <div className='slrspot__deduplication-option'>
+              <Check
+                onChange={ handleCheckAuthors } 
+                checked={ checkAuthors } />
+              <span>{ AUTHORS }</span>
+            </div>
+          </div>
 
         </div>
         <div className='slrspot__studiesImport-container-buttons'>

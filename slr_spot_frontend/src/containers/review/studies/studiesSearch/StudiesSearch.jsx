@@ -41,9 +41,9 @@ const StudiesSearch = (props) => {
       <p>Studies can be imported using files with given formats:</p>
         <ul>
           <li>CSV</li>
-          <li>RIS</li>
+          {/* <li>RIS</li> */}
           <li>BibTeX</li>
-          <li>XLS</li>
+          {/* <li>XLS</li> */}
         </ul>
       </>
     )
@@ -88,7 +88,7 @@ const StudiesSearch = (props) => {
         <td>{id + 1}</td>
         <td>{item.studyImport.date}</td>
         <td>{item.studiesAdded}</td>
-        <td>{item.duplicatesRemoved}</td>
+        <td>{item.studyImport.numOfRemovedDuplicates}</td>
         <td>
           <a 
             className='slrspot__review-studiesSearch-imports-showMore'

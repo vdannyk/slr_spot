@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,13 +26,8 @@ public class ImportController {
     private final ImportFacade importFacade;
 
     @PostMapping
-    public ResponseEntity<Void> saveImport(@RequestParam("file") MultipartFile file,
-                                           @RequestParam("reviewId") Long reviewId,
-                                           @RequestParam("source") String source,
-                                           @RequestParam("searchValue") String searchValue,
-                                           @RequestParam("additionalInformations") String additionalInfo) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        importFacade.importStudies(file, reviewId, source, searchValue, additionalInfo, username);
+    public ResponseEntity<Void> saveImport(@ModelAttribute ImportContext importContext) {
+        importFacade.importStudies(importContext);
         return ResponseEntity.ok().build();
     }
 
