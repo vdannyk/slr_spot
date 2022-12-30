@@ -24,7 +24,7 @@ const StudyFolderItem = (props) => {
   return (
     <div className='slrspot__studyFolder'>
       <p>
-        <AiFillFileText style={{ "margin-right": '5px'}} />
+        <AiFillFileText style={{ "marginRight": '5px'}} />
       </p>
       <b>{shortenText(props.study.title)}</b>
       {shortenText(props.study.authors)}

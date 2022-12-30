@@ -20,7 +20,6 @@ const StudiesView = ({allowChanges}) => {
       reviewId
     }})
     .then((response) => {
-      console.log(response.data);
       setStudies(response.data)
       setLoading(false);
     })

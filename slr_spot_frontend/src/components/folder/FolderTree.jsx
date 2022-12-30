@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import axiosInstance from '../../services/api';
 import Folder from './Folder';
-import ConfirmationPopup from '../popups/confirmationPopup/ConfirmationPopup';
+
 
 const FolderTree = (props) => {
   const {register, handleSubmit, formState: { errors }} = useForm();
@@ -69,7 +69,6 @@ const FolderTree = (props) => {
                   name={folder.name}
                   parentFolders={props.folders}
                   children={folder.children} 
-                  childrenStudies={folder.studies} 
                   triggerRemove={props.foldersChange}
                   isScreening={props.isScreening}/>
               </td>
