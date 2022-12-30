@@ -7,6 +7,9 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleEnum;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -91,6 +94,16 @@ public class ReviewController {
     public ResponseEntity<String> getMemberRole(@PathVariable Long id,
                                                 @PathVariable Long userId) {
         return ResponseEntity.ok().body(reviewFacade.getMemberRole(id, userId));
+    }
+
+    @GetMapping("/{id}/report")
+    public ResponseEntity<Resource> generateReviewReport(@PathVariable Long id) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Disposition", "attachment; filename=study.pdf");
+        httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
+        return ResponseEntity.ok()
+                .headers(httpHeaders)
+                .body(reviewFacade.generateReviewReport(id));
     }
 
 }

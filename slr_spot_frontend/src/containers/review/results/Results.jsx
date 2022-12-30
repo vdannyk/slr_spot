@@ -88,7 +88,7 @@ const Results = (props) => {
           <div className='slrspot__review-results-options-container'>
             <button onClick={ () => setShowExtractMenu(true) }>extract data</button>
             <button onClick={ () => setShowExportMenu(true) }>export studies</button>
-            <button onClick={ () => setShowRaportMenu(true) }>generate raport</button>
+            <button onClick={ () => setShowRaportMenu(true) }>generate report</button>
           </div>
         }
       </div>

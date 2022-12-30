@@ -1,21 +1,19 @@
 package com.dkwasniak.slr_spot_backend.imports;
 
-import com.dkwasniak.slr_spot_backend.imports.dto.ImportDto;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -25,13 +23,8 @@ public class ImportController {
     private final ImportFacade importFacade;
 
     @PostMapping
-    public ResponseEntity<Void> saveImport(@RequestParam("file") MultipartFile file,
-                                           @RequestParam("reviewId") Long reviewId,
-                                           @RequestParam("source") String source,
-                                           @RequestParam("searchValue") String searchValue,
-                                           @RequestParam("additionalInformations") String additionalInfo) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        importFacade.importStudies(file, reviewId, source, searchValue, additionalInfo, username);
+    public ResponseEntity<Void> saveImport(@ModelAttribute ImportContext importContext) {
+        importFacade.importStudies(importContext);
         return ResponseEntity.ok().build();
     }
 
@@ -42,7 +35,7 @@ public class ImportController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<ImportDto>> getImportsByReviewId(@RequestParam Long reviewId) {
+    public ResponseEntity<Set<Import>> getImportsByReviewId(@RequestParam Long reviewId) {
         return ResponseEntity.ok().body(importFacade.getImportsByReviewId(reviewId));
     }
 }

@@ -9,19 +9,19 @@ const ImportDetails = (props) => {
       <div className='slrspot__importDetails-container'>
         <div className='slrspot__importDetails-container-fields'>
           <label className='slrspot__importDetails-label'>IMPORT DATE</label>
-          <p>{ props.importDetails.studyImport.date }</p>
+          <p>{ props.importDetails.date }</p>
           <label className='slrspot__importDetails-label'>PERFORMED BY</label>
-          <p>{ props.importDetails.studyImport.performedBy }</p>
+          <p>{ props.importDetails.performedBy }</p>
           <label className='slrspot__importDetails-label'>SEARCH VALUE</label>
-          <p>{ props.importDetails.studyImport.searchValue ? props.importDetails.studyImport.searchValue : '-' }</p>
+          <p>{ props.importDetails.searchValue ? props.importDetails.searchValue : '-' }</p>
           <label className='slrspot__importDetails-label'>ADDITIONAL INFORMATIONS</label>
-          <p>{ props.importDetails.studyImport.additionalInformation ? props.importDetails.studyImport.additionalInformation : '-' }</p>
+          <p>{ props.importDetails.additionalInformation ? props.importDetails.additionalInformation : '-' }</p>
           <label className='slrspot__importDetails-label'>SOURCE</label>
-          <p>{ props.importDetails.studyImport.source }</p>
+          <p>{ props.importDetails.source }</p>
           <label className='slrspot__importDetails-label'>STUDIES ADDED</label>
-          <p>{ props.importDetails.studiesAdded }</p>
+          <p>{ props.importDetails.numOfImportedStudies }</p>
           <label className='slrspot__importDetails-label'>DUPLICATES REMOVED</label>
-          <p>{ props.importDetails.duplicatesRemoved }</p>
+          <p>{ props.importDetails.numOfRemovedDuplicates }</p>
         </div>
         <div className='slrspot__importDetails-container-buttons'>
           <button 
