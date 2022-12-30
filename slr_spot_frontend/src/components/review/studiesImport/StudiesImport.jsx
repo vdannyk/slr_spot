@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../services/api';
 import DropdownSelect from '../../dropdownSelect/DropdownSelect';
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import Check from 'react-bootstrap/FormCheck';
+import { DOI, BASIC_INFORMATION } from '../../../constants/deduplicationTypes';
+import { useSelector } from 'react-redux';
 import './studiesImport.css';
 
 
@@ -15,6 +18,10 @@ const StudiesImport = (props) => {
   const [otherSource, setOtherSource] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const { reviewId } = useParams();
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const [selectDeduplicationType, setSelectDeduplicationType] = useState(DOI);
+  const [checkDoi, setCheckDoi] = useState(true);
+  const [checkOther, setCheckOther] = useState(false);
 
   const uploadFile = () => {
     let data = new FormData();
@@ -36,6 +43,8 @@ const StudiesImport = (props) => {
       data.append("source", source)
     }
     data.append("additionalInformations", additionalInfo);
+    data.append("userId", currentUser.id);
+    data.append("deduplicationType", selectDeduplicationType);
 
     axiosInstance.post("/imports", data)
     .then(() => {
@@ -69,6 +78,19 @@ const StudiesImport = (props) => {
 
   const handleSelect = (event) => {
     setSource(event);
+  }
+
+  const handleCheck = () => {
+    console.log(selectDeduplicationType);
+    if (checkOther) {
+      setCheckOther(false);
+      setSelectDeduplicationType(DOI)
+      setCheckDoi(true);
+    } else {
+      setCheckOther(true);
+      setSelectDeduplicationType(BASIC_INFORMATION)
+      setCheckDoi(false);
+    }
   }
 
   return (
@@ -105,6 +127,22 @@ const StudiesImport = (props) => {
             <input type="file" onChange={ handleOnFileChange } />
           </label>
           <span> { selectedFile }</span>
+
+          <label className='slrspot__deduplication-header'>Deduplicate using:</label>
+          <div className='slrspot__deduplication-options'>
+            <div className='slrspot__deduplication-option'>
+              <Check 
+                onChange={ handleCheck } 
+                checked={ checkDoi } />
+              <span>{ DOI }</span>
+            </div>
+            <div className='slrspot__deduplication-option'>
+              <Check
+                onChange={ handleCheck } 
+                checked={ checkOther } />
+              <span>TILE, AUTHORS, YEAR</span>
+            </div>
+          </div>
 
         </div>
         <div className='slrspot__studiesImport-container-buttons'>

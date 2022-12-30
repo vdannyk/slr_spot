@@ -10,7 +10,6 @@ import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,9 +19,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -46,6 +42,7 @@ public class Review {
     private String description;
     private Boolean isPublic;
     private Integer screeningReviewers;
+    private Integer numOfRemovedDuplicates;
 
     @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
@@ -73,12 +70,24 @@ public class Review {
         this.title = title;
     }
 
-    public Review(String title, String researchArea, String description, Boolean isPublic, Integer screeningReviewers) {
+    public Review(String title, String researchArea, String description,
+                  Boolean isPublic, Integer screeningReviewers) {
         this.title = title;
         this.researchArea = researchArea;
         this.description = description;
         this.isPublic = isPublic;
         this.screeningReviewers = screeningReviewers;
+        this.numOfRemovedDuplicates = 0;
+    }
+
+    public Review(String title, String researchArea, String description,
+                  Boolean isPublic, Integer screeningReviewers, Integer numOfRemovedDuplicates) {
+        this.title = title;
+        this.researchArea = researchArea;
+        this.description = description;
+        this.isPublic = isPublic;
+        this.screeningReviewers = screeningReviewers;
+        this.numOfRemovedDuplicates = numOfRemovedDuplicates;
     }
 
     public void addUser(User user, ReviewRole role) {

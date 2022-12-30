@@ -1,16 +1,17 @@
 package com.dkwasniak.slr_spot_backend.imports;
 
+import com.dkwasniak.slr_spot_backend.deduplication.DeduplicationService;
+import com.dkwasniak.slr_spot_backend.deduplication.dto.DeduplicationDto;
 import com.dkwasniak.slr_spot_backend.file.FileService;
-import com.dkwasniak.slr_spot_backend.imports.dto.ImportDto;
-import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.study.Study;
-import com.dkwasniak.slr_spot_backend.study.StudyService;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingException;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingInvalidHeadersException;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
 import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
+import com.dkwasniak.slr_spot_backend.user.User;
+import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVRecord;
@@ -18,28 +19,44 @@ import org.jbibtex.BibTeXDatabase;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class ImportFacade {
 
-    private final StudyService studyService;
     private final FileService fileService;
     private final ImportService importService;
     private final ReviewService reviewService;
     private final ImportRepository importRepository;
+    private final DeduplicationService deduplicationService;
+    private final UserService userService;
 
-    public void importStudies(MultipartFile file, Long reviewId, String source, String searchValue,
-                              String additionalInfo, String username) {
-        List<Study> studies = loadFromFile(file, source);
-        Review review = reviewService.getReviewById(reviewId);
+    @Transactional
+    public void importStudies(ImportContext importContext) {
+        List<Study> studies = loadFromFile(importContext.getFile(), importContext.getSource());
+        DeduplicationDto deduplicationDto = deduplicationService.removeDuplicates(importContext.getReviewId(),
+                studies, importContext.getDeduplicationType());
+        studies = deduplicationDto.getCorrectStudies();
+
+        Review review = reviewService.getReviewById(importContext.getReviewId());
+        review.setNumOfRemovedDuplicates(
+                review.getNumOfRemovedDuplicates() + deduplicationDto.getNumOfRemovedDuplicates()
+        );
+
+        User user = userService.getUserById(importContext.getUserId());
         Import studyImport = new Import(
-                searchValue, source, additionalInfo, username
+                importContext.getSearchValue(),
+                importContext.getSource(),
+                importContext.getAdditionalInfo(),
+                user.getEmail(),
+                studies.size(),
+                deduplicationDto.getNumOfRemovedDuplicates()
         );
         studyImport.setReview(review);
         studyImport.setStudies(studies);
@@ -95,10 +112,7 @@ public class ImportFacade {
         importService.deleteImportById(importId);
     }
 
-    public Set<ImportDto> getImportsByReviewId(Long reviewId) {
-        Set<Import> imports = reviewService.getReviewById(reviewId).getImports();
-        return imports.stream()
-                .map((i) -> new ImportDto(i, i.getStudies().size(), 0))
-                .collect(Collectors.toSet());
+    public Set<Import> getImportsByReviewId(Long reviewId) {
+        return reviewService.getReviewById(reviewId).getImports();
     }
 }

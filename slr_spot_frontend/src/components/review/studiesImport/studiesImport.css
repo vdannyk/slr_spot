@@ -107,3 +107,21 @@ input[type="file"] {
 	padding: 4px;
 	background-color: rgba(255, 159, 159, 0.577);
 }
+.slrspot__deduplication-header {
+	margin-top: 10px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.slrspot__deduplication-options {
+	display: flex;
+	text-align: center;
+	align-items: center;
+}
+
+.slrspot__deduplication-option {
+	display: flex;
+	text-align: center;
+	align-items: center;
+	margin-left: 10px;
+}
