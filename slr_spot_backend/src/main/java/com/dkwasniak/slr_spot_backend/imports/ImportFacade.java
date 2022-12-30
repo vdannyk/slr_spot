@@ -3,11 +3,9 @@ package com.dkwasniak.slr_spot_backend.imports;
 import com.dkwasniak.slr_spot_backend.deduplication.DeduplicationService;
 import com.dkwasniak.slr_spot_backend.deduplication.dto.DeduplicationDto;
 import com.dkwasniak.slr_spot_backend.file.FileService;
-import com.dkwasniak.slr_spot_backend.imports.dto.ImportDto;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.study.Study;
-import com.dkwasniak.slr_spot_backend.study.StudyService;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingException;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingInvalidHeadersException;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
@@ -25,7 +23,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Component
 @RequiredArgsConstructor
@@ -57,6 +55,7 @@ public class ImportFacade {
                 importContext.getSource(),
                 importContext.getAdditionalInfo(),
                 user.getEmail(),
+                studies.size(),
                 deduplicationDto.getNumOfRemovedDuplicates()
         );
         studyImport.setReview(review);
@@ -113,10 +112,7 @@ public class ImportFacade {
         importService.deleteImportById(importId);
     }
 
-    public Set<ImportDto> getImportsByReviewId(Long reviewId) {
-        Set<Import> imports = reviewService.getReviewById(reviewId).getImports();
-        return imports.stream()
-                .map((i) -> new ImportDto(i, i.getStudies().size()))
-                .collect(Collectors.toSet());
+    public Set<Import> getImportsByReviewId(Long reviewId) {
+        return reviewService.getReviewById(reviewId).getImports();
     }
 }

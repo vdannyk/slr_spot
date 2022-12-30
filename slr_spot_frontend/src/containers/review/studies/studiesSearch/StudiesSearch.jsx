@@ -86,9 +86,9 @@ const StudiesSearch = (props) => {
     <tbody key={id}>
       <tr>
         <td>{id + 1}</td>
-        <td>{item.studyImport.date}</td>
-        <td>{item.studiesAdded}</td>
-        <td>{item.studyImport.numOfRemovedDuplicates}</td>
+        <td>{item.date}</td>
+        <td>{item.numOfImportedStudies}</td>
+        <td>{item.numOfRemovedDuplicates}</td>
         <td>
           <a 
             className='slrspot__review-studiesSearch-imports-showMore'
@@ -99,7 +99,7 @@ const StudiesSearch = (props) => {
         { allowChanges &&
           <td>
             <AiOutlineClose 
-              onClick={ () => handleRemoveImport(item.studyImport) } 
+              onClick={ () => handleRemoveImport(item) } 
               style={ {color: 'red', cursor: 'pointer'} } />
           </td>
         }
