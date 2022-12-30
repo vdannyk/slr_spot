@@ -25,6 +25,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -240,5 +244,10 @@ public class StudyFacade {
         List<Operation> history = studyService.getStudyHistory(study);
         history.sort(Comparator.comparing(Operation::getDate));
         return history;
+    }
+
+    public Page<Study> getStudiesByFolderId(Long folderId, Long reviewId, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesByFolderId(folderId, reviewId, pageRq);
     }
 }

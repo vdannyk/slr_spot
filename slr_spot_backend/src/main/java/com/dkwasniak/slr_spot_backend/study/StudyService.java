@@ -12,6 +12,8 @@ import com.dkwasniak.slr_spot_backend.tag.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -180,6 +182,10 @@ public class StudyService {
 
     public List<Operation> getStudyHistory(Study study) {
         return study.getOperations();
+    }
+
+    public Page<Study> getStudiesByFolderId(Long folderId, Long reviewId, Pageable pageable) {
+        return studyRepository.findAllByStudyImport_Review_IdAndFolder_Id(reviewId, folderId, pageable);
     }
 
 }

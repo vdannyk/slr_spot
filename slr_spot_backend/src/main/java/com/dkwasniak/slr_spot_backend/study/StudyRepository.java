@@ -2,6 +2,8 @@ package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +17,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     List<Study> findAllByStudyImport_Review(Review studyImport_review);
     List<Study> findAllByStudyImport_Review_AndScreeningDecisions_Empty(Review studyImport_review);
+    Page<Study> findAllByStudyImport_Review_IdAndFolder_Id(long reviewId, long folderId, Pageable pageable);
 
     @Query("SELECT s " +
             "FROM Study s " +
