@@ -245,6 +245,15 @@ INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (2, 9, 'EXCL
 INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (1, 10, 'INCLUDE');
 INSERT INTO screening_decisions(user_id, study_id, decision) VALUES (2, 10, 'EXCLUDE');
 
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie bez zadnego oddanego glosu: id=test1', 'Bez glosow TITLE_ABSTRACT', 2012, 1, 3, 'TITLE_ABSTRACT');
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie bez zadnego oddanego glosu: id=test2', 'Bez glosow TITLE_ABSTRACT', 2012, 1, 3, 'TITLE_ABSTRACT');
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie bez zadnego oddanego glosu: id=test3', 'Bez glosow TITLE_ABSTRACT', 2012, 1, 3, 'TITLE_ABSTRACT');
+INSERT INTO STUDIES(TITLE, AUTHORS, PUBLICATION_YEAR, IMPORT_ID, FOLDER_ID, STATUS)
+VALUES ('Badanie bez zadnego oddanego glosu: id=test4', 'Bez glosow TITLE_ABSTRACT', 2012, 1, 3, 'TITLE_ABSTRACT');
+
 INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (2, 1);
 INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (2, 2);
 INSERT INTO studies_tags(STUDY_ID, TAG_ID) VALUES (1, 1);

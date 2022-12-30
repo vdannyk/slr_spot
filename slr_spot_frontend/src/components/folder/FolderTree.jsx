@@ -72,6 +72,7 @@ const FolderTree = (props) => {
                   triggerRemove={ props.foldersChange }
                   isScreening={ props.isScreening }
                   tab={ props.tab }
+                  isFullText={ props.isFullText }
                 />
               </td>
             </tr>

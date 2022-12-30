@@ -91,7 +91,7 @@ const Folder = (props) => {
       setCurrentPage(0);
       selectStudies()
     }
-  }, [isExpanded, props.tab]);
+  }, [isExpanded, props.tab, props.isFullText]);
 
 
   const handleNewFolder = (formData) => {
@@ -136,14 +136,61 @@ const Folder = (props) => {
   const handlePageChange = (studyPage) => {
     var page = studyPage.selected;
     setCurrentPage(page);
-    axiosInstance.get("/studies/by-folder/" + id, { params: {
-      reviewId, page
-    }})
-    .then((response) => {
-      setChildrenStudies(response.data.content);
-    })
-    .catch(() => {
-    });
+    var userId = currentUser.id;
+    var status;
+    if (props.isFullText) {
+      status = "FULL_TEXT";
+    } else {
+      status = "TITLE_ABSTRACT";
+    }
+    var test = props.tab;
+    switch(test) {
+      case TO_BE_REVIEWED:
+        axiosInstance.get("/studies/to-review/by-folder/" + id, { params: {
+          reviewId, userId, status, page
+        }})
+        .then((response) => {
+          setChildrenStudies(response.data.content);
+          setPageCount(response.data.totalPages);
+        })
+        return;
+      case CONFLICTED:
+        axiosInstance.get("/studies/conflicted/by-folder/" + id, { params: {
+          reviewId, status, page
+        }})
+        .then((response) => {
+          setChildrenStudies(response.data.content);
+          setPageCount(response.data.totalPages);
+        })
+        return;
+      case AWAITING:
+        axiosInstance.get("/studies/awaiting/by-folder/" + id, { params: {
+          reviewId, userId, status, page
+        }})
+        .then((response) => {
+          setChildrenStudies(response.data.content);
+          setPageCount(response.data.totalPages);
+        })
+        return;
+      case EXCLUDED:
+        axiosInstance.get("/studies/excluded/by-folder/" + id, { params: {
+          reviewId, status, page
+        }})
+        .then((response) => {
+          setChildrenStudies(response.data.content);
+          setPageCount(response.data.totalPages);
+        })
+        return;
+      default:
+        axiosInstance.get("/studies/by-folder/" + id, { params: {
+          reviewId, page
+        }})
+        .then((response) => {
+          setChildrenStudies(response.data.content);
+          setPageCount(response.data.totalPages);
+        })
+        return;
+    }
   }
 
   const NewFolder = () => {
@@ -220,6 +267,7 @@ const Folder = (props) => {
                     children={folder.children} 
                     isScreening={props.isScreening}
                     tab={ props.tab }
+                    isFullText={ props.isFullText }
                   />
                 </td>
               </tr>

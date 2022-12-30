@@ -198,6 +198,7 @@ const Screening = (props) => {
             folders={ folders } 
             isScreening={ true }
             tab={ tab }
+            isFullText={ props.state.isFullText }
           />
         </div>
       )}
