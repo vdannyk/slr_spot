@@ -3,8 +3,10 @@ package com.dkwasniak.slr_spot_backend.imports;
 import com.dkwasniak.slr_spot_backend.deduplication.DeduplicationService;
 import com.dkwasniak.slr_spot_backend.deduplication.dto.DeduplicationDto;
 import com.dkwasniak.slr_spot_backend.file.FileService;
+import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
+import com.dkwasniak.slr_spot_backend.study.OperationDescription;
 import com.dkwasniak.slr_spot_backend.study.Study;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingException;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingInvalidHeadersException;
@@ -63,7 +65,9 @@ public class ImportFacade {
         studies.forEach(s -> {
             s.setStudyImport(studyImport);
             s.setStatus(StatusEnum.TITLE_ABSTRACT);
-//            s.addOperation(new Operation("Import performed"));
+            var operation = new Operation(OperationDescription.IMPORT.getDescription());
+            operation.setStudy(s);
+            s.setOperations(new ArrayList<>() {{ add(operation); }});
         });
         importRepository.save(studyImport);
     }
