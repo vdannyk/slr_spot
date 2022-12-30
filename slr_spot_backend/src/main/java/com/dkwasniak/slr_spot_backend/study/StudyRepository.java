@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface StudyRepository extends JpaRepository<Study, Long> {
@@ -148,15 +149,13 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     @Query("SELECT s.doi " +
             "FROM Study s " +
             "WHERE s.studyImport.review.id = :reviewId AND s.doi IS NOT null ")
-    List<String> findAllStudiesDoiByReviewId(@Param("reviewId") long reviewId);
+    Set<String> findAllStudiesDoiByReviewId(@Param("reviewId") long reviewId);
 
-    @Query("SELECT s.title " +
+    @Query("SELECT s " +
             "FROM Study s " +
-            "WHERE s.studyImport.review.id = :reviewId AND s.title IS NOT null ")
-    List<String> findAllStudiesTitlesByReviewId(@Param("reviewId") long reviewId);
-
-    @Query("SELECT s.authors " +
-            "FROM Study s " +
-            "WHERE s.studyImport.review.id = :reviewId AND s.authors IS NOT null ")
-    List<String> findAllStudiesAuthorsByReviewId(@Param("reviewId") long reviewId);
+            "WHERE s.studyImport.review.id = :reviewId " +
+            "AND s.authors IS NOT null " +
+            "AND s.title IS NOT null " +
+            "AND s.publicationYear IS NOT null ")
+    Set<TitleAndAuthorsAndPublicationYear> findAllBasicInfoByReviewId(@Param("reviewId") long reviewId);
 }

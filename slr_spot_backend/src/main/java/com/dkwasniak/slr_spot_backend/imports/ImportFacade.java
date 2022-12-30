@@ -43,7 +43,7 @@ public class ImportFacade {
     public void importStudies(ImportContext importContext) {
         List<Study> studies = loadFromFile(importContext.getFile(), importContext.getSource());
         DeduplicationDto deduplicationDto = deduplicationService.removeDuplicates(importContext.getReviewId(),
-                studies, importContext.getDeduplicationFields());
+                studies, importContext.getDeduplicationType());
         studies = deduplicationDto.getCorrectStudies();
 
         Review review = reviewService.getReviewById(importContext.getReviewId());

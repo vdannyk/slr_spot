@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.imports;
 
+import com.dkwasniak.slr_spot_backend.deduplication.DeduplicationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +21,5 @@ public class ImportContext implements Serializable {
     private String searchValue;
     private String additionalInfo;
     private Long userId;
-    private String[] deduplicationFields;
+    private DeduplicationType deduplicationType;
 }

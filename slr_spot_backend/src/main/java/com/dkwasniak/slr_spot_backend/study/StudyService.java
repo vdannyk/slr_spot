@@ -1,15 +1,13 @@
 package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.comment.Comment;
-import com.dkwasniak.slr_spot_backend.document.Document;
-import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
+import com.dkwasniak.slr_spot_backend.study.dto.IdentificationDto;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyNotFoundException;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
 import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
-import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
@@ -165,15 +163,13 @@ public class StudyService {
         return studies;
     }
 
-    public List<String> getStudiesDoiByReviewId(Long reviewId) {
+    public Set<String> getStudiesDoiByReviewId(Long reviewId) {
         return studyRepository.findAllStudiesDoiByReviewId(reviewId);
     }
 
-    public List<String> getStudiesTitlesByReviewId(Long reviewId) {
-        return studyRepository.findAllStudiesDoiByReviewId(reviewId);
+    public Set<IdentificationDto> getStudyBasicInfoByReviewId(Long reviewId) {
+        Set<TitleAndAuthorsAndPublicationYear> studiesWithBasicInfo = studyRepository.findAllBasicInfoByReviewId(reviewId);
+        return studiesWithBasicInfo.stream().map(s -> IdentificationDto.builder().title(s.getTitle()).authors(s.getAuthors()).publicationYear(s.getPublicationYear()).build()).collect(Collectors.toSet());
     }
 
-    public List<String> getStudiesAuthorsByReviewId(Long reviewId) {
-        return studyRepository.findAllStudiesDoiByReviewId(reviewId);
-    }
 }
