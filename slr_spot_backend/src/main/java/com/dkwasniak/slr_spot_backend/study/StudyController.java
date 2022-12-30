@@ -3,6 +3,7 @@ package com.dkwasniak.slr_spot_backend.study;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
 import com.dkwasniak.slr_spot_backend.document.Document;
+import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.dto.ScreeningDecisionDto;
 import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
@@ -22,11 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
@@ -141,7 +139,6 @@ public class StudyController {
     }
 
     @GetMapping("/{id}/full-text")
-    @Transactional
     public ResponseEntity<byte[]> getFullTextDocument(@PathVariable Long id) {
         Document document = studyFacade.getFullTextDocument(id);
         return ResponseEntity.ok()
@@ -150,14 +147,12 @@ public class StudyController {
     }
 
     @GetMapping("/{id}/full-text/name")
-    @Transactional
     public ResponseEntity<String> getFullTextDocumentName(@PathVariable Long id) {
         String documentName = studyFacade.getFullTextDocumentName(id);
         return ResponseEntity.ok(documentName);
     }
 
     @PostMapping("/{id}/full-text")
-    @Transactional
     public ResponseEntity<Void> addFullTextDocument(@PathVariable Long id,
                                                     @RequestParam("file") MultipartFile file) {
         studyFacade.addFullTextDocument(id, file);
@@ -165,7 +160,6 @@ public class StudyController {
     }
 
     @DeleteMapping("/{id}/full-text")
-    @Transactional
     public ResponseEntity<Void> deleteFullTextDocument(@PathVariable Long id) {
         return ResponseEntity.ok().build();
     }
@@ -192,5 +186,10 @@ public class StudyController {
         return ResponseEntity.ok()
                 .headers(httpHeaders)
                 .body(studies);
+    }
+
+    @GetMapping("/{id}/history")
+    public ResponseEntity<List<Operation>> getStudyHistory(@PathVariable Long id) {
+        return ResponseEntity.ok(studyFacade.getStudyHistory(id));
     }
 }

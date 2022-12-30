@@ -1,18 +1,24 @@
-import React from 'react';
-import { useState } from 'react';
+import React,{ useState, useEffect } from 'react';
 import { Table } from "react-bootstrap";
+import axiosInstance from '../../../../services/api';
+import EventBus from '../../../../common/EventBus';
 import './studyHistory.css';
 
-const testHistory = [
-  {
-    "date": "xxxx/xx/xx",
-    "action": "importing"
-  },
-
-]
 
 const StudyHistory = (props) => {
-  const [history, setHistory] = useState(testHistory);
+  const [history, setHistory] = useState([]);
+
+  useEffect(() => {
+    axiosInstance.get("/studies/" + props.studyId + "/history")
+    .then((response) => {
+      setHistory(response.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+  }, []);
 
   const HistoryTable = () => {
     return (
@@ -25,7 +31,7 @@ const StudyHistory = (props) => {
           { history.map(record => (
             <tr>
               <td style={{ width: '20%'}}>{ record.date }</td>
-              <td style={{ width: '80%', borderLeft: '0.01px solid black'}}>{ record.action }</td>
+              <td style={{ width: '80%', borderLeft: '0.01px solid black'}}>{ record.description }</td>
             </tr>
           ))}
         </tbody>

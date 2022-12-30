@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.comment.Comment;
+import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.dkwasniak.slr_spot_backend.study.dto.IdentificationDto;
@@ -170,6 +171,15 @@ public class StudyService {
     public Set<IdentificationDto> getStudyBasicInfoByReviewId(Long reviewId) {
         Set<TitleAndAuthorsAndPublicationYear> studiesWithBasicInfo = studyRepository.findAllBasicInfoByReviewId(reviewId);
         return studiesWithBasicInfo.stream().map(s -> IdentificationDto.builder().title(s.getTitle()).authors(s.getAuthors()).publicationYear(s.getPublicationYear()).build()).collect(Collectors.toSet());
+    }
+
+    public void addOperation(Study study, Operation operation) {
+        study.addOperation(operation);
+        studyRepository.save(study);
+    }
+
+    public List<Operation> getStudyHistory(Study study) {
+        return study.getOperations();
     }
 
 }

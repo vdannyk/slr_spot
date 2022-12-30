@@ -8,6 +8,7 @@ import com.dkwasniak.slr_spot_backend.document.Document;
 import com.dkwasniak.slr_spot_backend.file.FileService;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.imports.ImportService;
+import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
@@ -99,12 +100,16 @@ public class StudyFacade {
     public void addTagToStudy(Long studyId, Long tagId) {
         Study study = studyService.getStudyById(studyId);
         Tag tag = tagService.getTagById(tagId);
+        Operation operation = new Operation(String.format(OperationDescription.ADD_TAG.getDescription(), tag.getName()));
+        study.addOperation(operation);
         studyService.addTagToStudy(study, tag);
     }
 
     public void removeTagFromStudy(Long studyId, Long tagId) {
         Study study = studyService.getStudyById(studyId);
         Tag tag = tagService.getTagById(tagId);
+        Operation operation = new Operation(String.format(OperationDescription.REMOVE_TAG.getDescription(), tag.getName()));
+        study.addOperation(operation);
         studyService.removeTagFromStudy(study, tag);
     }
 
@@ -122,6 +127,8 @@ public class StudyFacade {
         Comment comment = new Comment(commentRequest.getContent());
         comment.setUser(user);
         studyService.addCommentToStudy(study, comment);
+        studyService.addOperation(study,
+                new Operation(String.format(OperationDescription.ADD_COMMENT.getDescription(), user.getEmail())));
     }
 
     @Transactional
@@ -135,13 +142,19 @@ public class StudyFacade {
             Optional<ScreeningDecision> oldDecision = user.getScreeningDecisions().stream().filter(sd -> Objects.equals(sd.getStudy().getId(), studyId)).findFirst();
             if (oldDecision.isPresent()) {
                 screeningService.updateDecision(oldDecision.get(), screeningDecisionDto.getDecision());
+                studyService.addOperation(study,
+                        new Operation(String.format(OperationDescription.CHANGE_VOTE.getDescription(), user.getEmail())));
             } else {
                 ScreeningDecision screeningDecision = new ScreeningDecision(user, study, screeningDecisionDto.getDecision());
                 studyService.addScreeningDecisionToStudy(study, screeningDecision);
+                studyService.addOperation(study,
+                        new Operation(String.format(OperationDescription.VOTE.getDescription(), user.getEmail())));
             }
             StatusEnum newStatus = studyService.verifyStudyStatus(study, requiredReviewers);
             if (!newStatus.equals(study.getStatus())) {
                 studyService.updateStudyStatus(study, newStatus);
+                studyService.addOperation(study,
+                        new Operation(String.format(OperationDescription.CHANGE_STATUS.getDescription(), newStatus.name())));
             }
         }
     }
@@ -157,11 +170,13 @@ public class StudyFacade {
         } else {
             studyService.clearDecisions(study);
         }
+        studyService.addOperation(study, new Operation(OperationDescription.RESTORE_TO_SCREENING.getDescription()));
     }
 
     public void markStudyAsDuplicate(Long studyId) {
         Study study = studyService.getStudyById(studyId);
         studyService.updateStudyStatus(study, StatusEnum.DUPLICATES);
+        studyService.addOperation(study, new Operation(OperationDescription.MARK_DUPLICATE.getDescription()));
     }
 
     public List<Study> getDuplicates(Long reviewId) {
@@ -197,6 +212,8 @@ public class StudyFacade {
         }
         study.setDocument(document);
         studyService.updateStudy(study);
+        studyService.addOperation(study,
+                new Operation(OperationDescription.LOAD_FULLTEXT.getDescription()));
         return document;
     }
 
@@ -204,6 +221,8 @@ public class StudyFacade {
         Study study = studyService.getStudyById(studyId);
         study.setFullText(null);
         studyService.updateStudy(study);
+        studyService.addOperation(study,
+                new Operation(OperationDescription.REMOVE_FULLTEXT.getDescription()));
     }
 
     public int getStudiesCountByStatus(Long reviewId, StatusEnum statusEnum) {
@@ -214,5 +233,12 @@ public class StudyFacade {
         fileService.checkIfExportFileFormatAllowed(format);
         List<Study> studiesToExport = studyService.getStudiesByReviewIdAndStatus(reviewId, statusEnum);
         return fileService.write(studiesToExport, format);
+    }
+
+    public List<Operation> getStudyHistory(Long studyId) {
+        Study study = studyService.getStudyById(studyId);
+        List<Operation> history = studyService.getStudyHistory(study);
+        history.sort(Comparator.comparing(Operation::getDate));
+        return history;
     }
 }
