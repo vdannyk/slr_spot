@@ -92,14 +92,21 @@ const StudiesView = ({allowChanges}) => {
 
           <div className='slrspot__studiesView-search'>
             <div className='slrspot__screening-options-container-checks'>
-              <div className='slrspot__screening-options-check'>
+              <div className='slrspot__screening-options-check' style={{ marginLeft: '20px' }}>
                 <Check />
                 <label>Title</label>
               </div>
-              {/* <a>switch to review mode</a> */}
-              <div className='slrspot__screening-options-check'>
+              <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>
                 <Check />
-                <label>authors</label>
+                <label>Abstract</label>
+              </div>
+              <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>
+                <Check />
+                <label>Authors</label>
+              </div>
+              <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>
+                <Check />
+                <label>Year</label>
               </div>
             </div>
             <div className='slrspot__screening-options-search'>
@@ -119,6 +126,14 @@ const StudiesView = ({allowChanges}) => {
               <div className='slrspot__studiesView-folders-select'>
                 <FoldersDropdown />
                 <label>Assign</label>
+              </div>
+            }
+          </div>
+
+          <div className='slrspot__studiesView-duplicate'>
+            { allowChanges &&
+              <div className='slrspot__studiesView-duplicate-option'>
+                <label>Mark as duplicate</label>
               </div>
             }
           </div>
