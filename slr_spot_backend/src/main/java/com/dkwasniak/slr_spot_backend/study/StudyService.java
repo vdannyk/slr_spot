@@ -188,4 +188,24 @@ public class StudyService {
         return studyRepository.findAllByStudyImport_Review_IdAndFolder_Id(reviewId, folderId, pageable);
     }
 
+    public Page<Study> getStudiesToBeReviewedByFolderId(Long reviewId, Long folderId, Long userId,
+                                                        int requiredReviewers, StatusEnum status, Pageable pageable) {
+        return studyRepository.findAllToBeReviewedByFolderId(reviewId, folderId, userId, requiredReviewers, status, pageable);
+    }
+
+    public Page<Study> getStudiesConflictedByFolderId(Long reviewId, Long folderId, int requiredReviewers,
+                                                      StatusEnum status, Pageable pageable) {
+        return studyRepository.findAllConflictedByFolderId(reviewId, folderId, requiredReviewers, status, pageable);
+    }
+
+    public Page<Study> getStudiesAwaitingByFolderId(Long reviewId, Long folderId, Long userId,
+                                                    int requiredReviewers, StatusEnum status, Pageable pageable) {
+        return studyRepository.findAllAwaitingByFolderId(reviewId, folderId, userId, requiredReviewers, status, pageable);
+    }
+
+    public Page<Study> getStudiesExcludedByFolderId(Long reviewId, Long folderId, int requiredReviewers,
+                                                    StatusEnum status, Pageable pageable) {
+        return studyRepository.findAllExcludedByFolderId(reviewId, folderId, requiredReviewers, status, pageable);
+    }
+
 }

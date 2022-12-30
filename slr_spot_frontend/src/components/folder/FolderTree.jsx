@@ -65,12 +65,14 @@ const FolderTree = (props) => {
             <tr key={folder.id}>
               <td>
                 <Folder 
-                  id={folder.id}
-                  name={folder.name}
-                  parentFolders={props.folders}
-                  children={folder.children} 
-                  triggerRemove={props.foldersChange}
-                  isScreening={props.isScreening}/>
+                  id={ folder.id }
+                  name={ folder.name }
+                  parentFolders={ props.folders }
+                  children={ folder.children } 
+                  triggerRemove={ props.foldersChange }
+                  isScreening={ props.isScreening }
+                  tab={ props.tab }
+                />
               </td>
             </tr>
           ))}

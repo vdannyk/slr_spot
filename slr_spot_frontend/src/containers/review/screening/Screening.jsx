@@ -194,7 +194,11 @@ const Screening = (props) => {
         </>
       ) : (
         <div className='slrspot__screening-studies-folders'>
-          <FolderTree folders={folders} isScreening={true}/>
+          <FolderTree 
+            folders={ folders } 
+            isScreening={ true }
+            tab={ tab }
+          />
         </div>
       )}
 

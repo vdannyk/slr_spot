@@ -250,4 +250,37 @@ public class StudyFacade {
         Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
         return studyService.getStudiesByFolderId(folderId, reviewId, pageRq);
     }
+
+    public Page<Study> getStudiesToBeReviewedByFolderId(Long reviewId, Long folderId, Long userId,
+                                                        StatusEnum status, int page, int size) {
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesToBeReviewedByFolderId(reviewId, folderId, userId, requiredReviewers, status, pageRq);
+    }
+
+    public Page<Study> getStudiesConflictedByFolderId(Long reviewId, Long folderId, StatusEnum status,
+                                                      int page, int size) {
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesConflictedByFolderId(reviewId, folderId, requiredReviewers, status, pageRq);
+    }
+
+    public Page<Study> getStudiesAwaitingByFolderId(Long reviewId, Long folderId, Long userId,
+                                                    StatusEnum status, int page, int size) {
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesAwaitingByFolderId(reviewId, folderId, userId, requiredReviewers, status, pageRq);
+    }
+
+    public Page<Study> getStudiesExcludedByFolderId(Long reviewId, Long folderId, StatusEnum status,
+                                                    int page, int size) {
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesExcludedByFolderId(reviewId, folderId, requiredReviewers, status, pageRq);
+    }
+
 }

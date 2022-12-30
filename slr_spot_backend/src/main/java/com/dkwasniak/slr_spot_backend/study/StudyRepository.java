@@ -38,6 +38,28 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                     @Param("size") long size,
                                     @Param("status") StatusEnum status);
 
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.folder.id = :folderId " +
+            "AND s.status = :status " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision <> 'UNCLEAR') < :size " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.user.id = :userId) = 0 ")
+    Page<Study> findAllToBeReviewedByFolderId(@Param("reviewId") long reviewId,
+                                              @Param("folderId") long folderId,
+                                              @Param("userId") long userId,
+                                              @Param("size") long size,
+                                              @Param("status") StatusEnum status,
+                                              Pageable pageable);
+
     @Query("SELECT s FROM Study s " +
             "LEFT OUTER JOIN Import i " +
             "ON s.studyImport.id = i.id " +
@@ -64,6 +86,27 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                 @Param("userId") long userId,
                                 @Param("size") long size,
                                 @Param("status") StatusEnum status);
+
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "LEFT OUTER JOIN ScreeningDecision sd " +
+            "ON sd.study.id = s.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.folder.id = :folderId " +
+            "AND s.status = :status " +
+            "AND sd.user.id = :userId " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision <> 'UNCLEAR') < :size ")
+    Page<Study> findAllAwaitingByFolderId(@Param("reviewId") long reviewId,
+                                          @Param("folderId") long folderId,
+                                          @Param("userId") long userId,
+                                          @Param("size") long size,
+                                          @Param("status") StatusEnum status,
+                                          Pageable pageable);
 
     @Query("SELECT s " +
             "FROM Study s " +
@@ -98,6 +141,23 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
             "LEFT OUTER JOIN Import i " +
             "ON s.studyImport.id = i.id " +
             "WHERE i.review.id = :reviewId " +
+            "AND s.folder.id = :folderId " +
+            "AND s.status = :status " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision = 'EXCLUDE') = :size ")
+    Page<Study> findAllExcludedByFolderId(@Param("reviewId") long reviewId,
+                                          @Param("folderId") long folderId,
+                                          @Param("size") long size,
+                                          @Param("status") StatusEnum status,
+                                          Pageable pageable);
+
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
             "AND s.status = :status " +
             "AND " +
             "(SELECT COUNT(sd) " +
@@ -114,6 +174,31 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     List<Study> findAllConflicted(@Param("reviewId") long reviewId,
                                   @Param("size") long size,
                                   @Param("status") StatusEnum status);
+
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.folder.id = :folderId " +
+            "AND s.status = :status " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision <> 'UNCLEAR') = :size " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision = 'INCLUDE') < :size " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision = 'EXCLUDE') < :size ")
+    Page<Study> findAllConflictedByFolderId(@Param("reviewId") long reviewId,
+                                            @Param("folderId") long folderId,
+                                            @Param("size") long size,
+                                            @Param("status") StatusEnum status,
+                                            Pageable pageable);
 
     @Query("SELECT s " +
             "FROM Study s " +
