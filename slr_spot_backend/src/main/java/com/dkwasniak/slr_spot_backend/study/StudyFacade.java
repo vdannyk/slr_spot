@@ -135,7 +135,6 @@ public class StudyFacade {
                 new Operation(String.format(OperationDescription.ADD_COMMENT.getDescription(), user.getEmail())));
     }
 
-    @Transactional
     public void addStudyScreeningDecision(Long studyId, ScreeningDecisionDto screeningDecisionDto) {
         Review review = reviewService.getReviewById(screeningDecisionDto.getReviewId());
         int requiredReviewers = review.getScreeningReviewers();

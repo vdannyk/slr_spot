@@ -54,7 +54,8 @@ const Excluded = (props) => {
           isShowAbstracts={props.showAbstracts} 
           triggerVote={ handleStudiesUpdate }   
           tab={EXCLUDED} 
-          isFullText={props.isFullText} 
+          isFullText={props.isFullText}
+          reviewTags={ props.reviewTags }  
           allowChanges={ allowChanges }
           showHighlights={ props.showHighlights } 
           highlights={ props.highlights } />

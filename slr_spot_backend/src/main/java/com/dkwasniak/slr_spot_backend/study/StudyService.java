@@ -102,6 +102,7 @@ public class StudyService {
         return StatusEnum.TITLE_ABSTRACT.equals(status) || StatusEnum.FULL_TEXT.equals(status);
     }
 
+    @Transactional
     public void addScreeningDecisionToStudy(Study study, ScreeningDecision screeningDecision) {
         study.addScreeningDecision(screeningDecision);
         studyRepository.save(study);
@@ -175,6 +176,7 @@ public class StudyService {
         return studiesWithBasicInfo.stream().map(s -> IdentificationDto.builder().title(s.getTitle()).authors(s.getAuthors()).publicationYear(s.getPublicationYear()).build()).collect(Collectors.toSet());
     }
 
+    @Transactional
     public void addOperation(Study study, Operation operation) {
         study.addOperation(operation);
         studyRepository.save(study);
