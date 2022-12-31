@@ -12,7 +12,8 @@
 .slrspot__screening-options-container-checks {
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
+  margin: 0 40px 5px;
+  justify-content: space-between;
 }
 
 .slrspot__screening-options-check {

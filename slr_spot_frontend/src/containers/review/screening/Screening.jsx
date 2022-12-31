@@ -112,7 +112,8 @@ const Screening = (props) => {
       return (
         <Conflicted 
           showAbstracts={showAbstracts} 
-          isFullText={props.state.isFullText} 
+          isFullText={props.state.isFullText}
+          reviewTags={ reviewTags }
           allowChanges={props.allowChanges}
           userRole={props.userRole}
           showHighlights={ showTeamHighlights || showPersonalHighlights } 
@@ -123,6 +124,7 @@ const Screening = (props) => {
         <Awaiting 
           showAbstracts={showAbstracts} 
           isFullText={props.state.isFullText} 
+          reviewTags={ reviewTags }
           allowChanges={props.allowChanges}
           userRole={props.userRole}
           showHighlights={ showTeamHighlights || showPersonalHighlights } 
@@ -132,7 +134,8 @@ const Screening = (props) => {
       return (
         <Excluded 
           showAbstracts={showAbstracts}
-          isFullText={props.state.isFullText} 
+          isFullText={props.state.isFullText}
+          reviewTags={ reviewTags }
           allowChanges={props.allowChanges}
           userRole={props.userRole}
           showHighlights={ showTeamHighlights || showPersonalHighlights } 
@@ -194,7 +197,16 @@ const Screening = (props) => {
         </>
       ) : (
         <div className='slrspot__screening-studies-folders'>
-          <FolderTree folders={folders} isScreening={true}/>
+          <FolderTree 
+            folders={ folders } 
+            isScreening={ true }
+            tab={ tab }
+            isFullText={ props.state.isFullText }
+            userRole={ props.userRole }
+            reviewTags={ reviewTags }
+            teamHighlights={ teamHighlights }
+            personalHighlights={ personalHighlights }
+          />
         </div>
       )}
 

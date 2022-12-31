@@ -39,7 +39,7 @@ public class FolderController {
     }
 
     @DeleteMapping("/{folderId}")
-    public ResponseEntity<Void> deleteImport(@PathVariable Long folderId) {
+    public ResponseEntity<Void> deleteFolder(@PathVariable Long folderId) {
         folderFacade.removeFolderById(folderId);
         return ResponseEntity.ok().build();
     }

@@ -44,6 +44,7 @@ public class Folder {
     private List<Folder> children;
 
     @OneToMany(mappedBy = "folder", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonIgnore
     private List<Study> studies;
 
     public Folder(String name) {

@@ -25,6 +25,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -131,7 +135,6 @@ public class StudyFacade {
                 new Operation(String.format(OperationDescription.ADD_COMMENT.getDescription(), user.getEmail())));
     }
 
-    @Transactional
     public void addStudyScreeningDecision(Long studyId, ScreeningDecisionDto screeningDecisionDto) {
         Review review = reviewService.getReviewById(screeningDecisionDto.getReviewId());
         int requiredReviewers = review.getScreeningReviewers();
@@ -241,4 +244,42 @@ public class StudyFacade {
         history.sort(Comparator.comparing(Operation::getDate));
         return history;
     }
+
+    public Page<Study> getStudiesByFolderId(Long folderId, Long reviewId, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesByFolderId(folderId, reviewId, pageRq);
+    }
+
+    public Page<Study> getStudiesToBeReviewedByFolderId(Long reviewId, Long folderId, Long userId,
+                                                        StatusEnum status, int page, int size) {
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesToBeReviewedByFolderId(reviewId, folderId, userId, requiredReviewers, status, pageRq);
+    }
+
+    public Page<Study> getStudiesConflictedByFolderId(Long reviewId, Long folderId, StatusEnum status,
+                                                      int page, int size) {
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesConflictedByFolderId(reviewId, folderId, requiredReviewers, status, pageRq);
+    }
+
+    public Page<Study> getStudiesAwaitingByFolderId(Long reviewId, Long folderId, Long userId,
+                                                    StatusEnum status, int page, int size) {
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesAwaitingByFolderId(reviewId, folderId, userId, requiredReviewers, status, pageRq);
+    }
+
+    public Page<Study> getStudiesExcludedByFolderId(Long reviewId, Long folderId, StatusEnum status,
+                                                    int page, int size) {
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesExcludedByFolderId(reviewId, folderId, requiredReviewers, status, pageRq);
+    }
+
 }
