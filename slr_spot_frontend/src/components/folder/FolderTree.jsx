@@ -73,6 +73,10 @@ const FolderTree = (props) => {
                   isScreening={ props.isScreening }
                   tab={ props.tab }
                   isFullText={ props.isFullText }
+                  userRole={ props.userRole }
+                  reviewTags={ props.reviewTags }
+                  teamHighlights={ props.teamHighlights }
+                  personalHighlights={ props.personalHighlights }
                 />
               </td>
             </tr>

@@ -225,6 +225,11 @@ const Folder = (props) => {
     setStudyToShow(study);
   }
 
+  const handleStudiesUpdate = (id) => {
+    setChildrenStudies(childrenStudies.filter(study => study.id !== id));
+    setShowStudy(false);
+  }
+
   return (
     <div>
       <div  className='slrspot__folder-item'>
@@ -279,6 +284,10 @@ const Folder = (props) => {
                     isScreening={props.isScreening}
                     tab={ props.tab }
                     isFullText={ props.isFullText }
+                    userRole={ props.userRole }
+                    reviewTags={ props.reviewTags }
+                    teamHighlights={ props.teamHighlights }
+                    personalHighlights={ props.personalHighlights }
                   />
                 </td>
               </tr>
@@ -296,8 +305,13 @@ const Folder = (props) => {
           content={ 
             <ScreeningStudyInFolder 
               study={ studyToShow }
+              triggerVote={ handleStudiesUpdate }
               tab={ props.tab }
               isFullText={ props.isFullText }
+              userRole={ props.userRole }
+              reviewTags={ props.reviewTags }
+              teamHighlights={ props.teamHighlights }
+              personalHighlights={ props.personalHighlights }
             /> 
           } 
           triggerExit={ () => setShowStudy(false) }/>

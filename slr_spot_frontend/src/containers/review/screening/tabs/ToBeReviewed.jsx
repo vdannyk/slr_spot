@@ -52,7 +52,7 @@ const ToBeReviewed = (props) => {
         <ScreeningStudy 
           study={ study } 
           isShowAbstracts={ props.showAbstracts } 
-          triggerVote={ handleStudiesUpdate } 
+          triggerVote={ handleStudiesUpdate }
           tab={ TO_BE_REVIEWED }
           isFullText={ props.isFullText } 
           reviewTags={ props.reviewTags } 

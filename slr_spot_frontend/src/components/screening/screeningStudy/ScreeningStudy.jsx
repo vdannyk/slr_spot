@@ -192,19 +192,28 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
 
   return (
     <div className='slrspot__screeningStudy'>
-      <h3>{ study.title }</h3>
+      { showHighlights 
+        ? <h3>
+            <KeyWordHighlight 
+              text={ study.title } 
+              inclusionWords={ inclusionHighlights } 
+              exclusionWords={ exclusionHighlights }/>
+          </h3> 
+        : <h3>{ study.title }</h3> }
+
       <button onClick={handleShowAbstract} className='slrspot__screeningStudy-showAbstract-button'>
         { showAbstract ? 'hide abstract' : 'show abstract'}
       </button>
+
       {showHighlights ? (
         <>
           { showAbstract && 
             <p>
               <label>abstract:</label>
               <KeyWordHighlight 
-              text={ study.documentAbstract }
-              inclusionWords={ inclusionHighlights } 
-              exclusionWords={ exclusionHighlights }/>
+                text={ study.documentAbstract }
+                inclusionWords={ inclusionHighlights } 
+                exclusionWords={ exclusionHighlights }/>
             </p> 
           }
           <p>

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { AiFillFileText } from 'react-icons/ai';
-import { ScreeningStudyInFolder } from '../..';
-import ContentPopup from '../../popups/contentPopup/ContentPopup';
 import './studyFolderItem.css';
 
 
