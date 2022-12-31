@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { AiFillFileText } from 'react-icons/ai';
+import { ScreeningStudyInFolder } from '../..';
+import ContentPopup from '../../popups/contentPopup/ContentPopup';
 import './studyFolderItem.css';
 
 
@@ -22,7 +24,7 @@ const StudyFolderItem = (props) => {
   }
 
   return (
-    <div className='slrspot__studyFolder'>
+    <div className='slrspot__studyFolder' onClick={ () => props.handleShowStudy(props.study)}>
       <p>
         <AiFillFileText style={{ "marginRight": '5px'}} />
       </p>
@@ -33,6 +35,7 @@ const StudyFolderItem = (props) => {
       { props.isScreening 
         ? <p className='slrspot__studyFolder-details'>screen</p> 
         : <p onClick={ () => setIsExpanded(!isExpanded) } className='slrspot__studyFolder-details'>expand</p>}
+
     </div>
   )
 }

@@ -11,6 +11,8 @@ import StudyFolderItem from '../study/studyFolderItem/StudyFolderItem';
 import ReactPaginate from 'react-paginate';
 import { AWAITING, CONFLICTED, EXCLUDED, TO_BE_REVIEWED } from '../../constants/tabs';
 import { useSelector } from "react-redux";
+import ScreeningStudyInFolder from '../screening/screeningStudy/ScreeningStudyInFolder';
+import ContentPopup from '../popups/contentPopup/ContentPopup';
 
 
 const Folder = (props) => {
@@ -27,6 +29,10 @@ const Folder = (props) => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
+
+  const [showStudy, setShowStudy] = useState(false);
+  const [studyToShow, setStudyToShow] = useState(false);
+
 
   function selectStudies() {
     var userId = currentUser.id;
@@ -214,6 +220,11 @@ const Folder = (props) => {
     )
   };
 
+  const handleShowStudy = (study) => {
+    setShowStudy(true);
+    setStudyToShow(study);
+  }
+
   return (
     <div>
       <div  className='slrspot__folder-item'>
@@ -240,7 +251,7 @@ const Folder = (props) => {
             { childrenStudies.length > 0 && childrenStudies.map((study, idx) => (
               <tr key={idx}>
                   <td>
-                    <StudyFolderItem study={study} />
+                    <StudyFolderItem study={study} handleShowStudy={ handleShowStudy } />
                   </td>
               </tr>
             ))}
@@ -279,6 +290,18 @@ const Folder = (props) => {
         </Table>
       )}
 
+      { showStudy &&
+        <ContentPopup
+          isWide={ true }
+          content={ 
+            <ScreeningStudyInFolder 
+              study={ studyToShow }
+              tab={ props.tab }
+              isFullText={ props.isFullText }
+            /> 
+          } 
+          triggerExit={ () => setShowStudy(false) }/>
+      }
     </div>
   )
 }
