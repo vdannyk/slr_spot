@@ -12,6 +12,7 @@ const StudiesView = ({allowChanges}) => {
   const [folders, setFolders] = useState([{'id':1, 'name':'test1'},{'id':2, 'name':'test2'}]);
   const [selected, setSelected] = useState([]);
   const [studies, setStudies] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
   const { reviewId } = useParams();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const StudiesView = ({allowChanges}) => {
       reviewId
     }})
     .then((response) => {
-      setStudies(response.data)
+      setStudies(response.data.content)
       setLoading(false);
     })
     .catch(() => {
@@ -61,6 +62,21 @@ const StudiesView = ({allowChanges}) => {
       </tr>
     </tbody>
   );
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  }
+
+  const handleSearch = () => {
+    axiosInstance.get("/studies/by-title", { params: {
+      reviewId, searchValue
+    }})
+    .then((response) => {
+      setStudies(response.data.content)
+    })
+    .catch(() => {
+    });
+  }
 
   const FoldersDropdown = () => {
     const [title, setTitle] = useState('Select folder');
@@ -105,8 +121,8 @@ const StudiesView = ({allowChanges}) => {
               </div>
             </div>
             <div className='slrspot__screening-options-search'>
-              <label>Search</label>
-              <input></input>
+              <label onClick={ handleSearch }>Search</label>
+              <input onChange={ handleSearchChange }/>
             </div>
           </div>
 

@@ -37,8 +37,10 @@ public class StudyController {
     private final StudyFacade studyFacade;
 
     @GetMapping
-    public ResponseEntity<List<Study>> getStudiesByReviewId(@RequestParam("reviewId") Long reviewId) {
-        return ResponseEntity.ok(studyFacade.getStudiesByReviewId(reviewId));
+    public ResponseEntity<Page<Study>> getStudiesByReviewId(@RequestParam("reviewId") Long reviewId,
+                                                            @RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(studyFacade.getStudiesByReviewId(reviewId, page, size));
     }
 
     @DeleteMapping("/{id}")
@@ -238,4 +240,13 @@ public class StudyController {
                                                                     @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(studyFacade.getStudiesExcludedByFolderId(reviewId, folderId, status, page, size));
     }
+
+    @GetMapping("/by-title")
+    public ResponseEntity<Page<Study>> searchByTitle(@RequestParam("reviewId") Long reviewId,
+                                                     @RequestParam("searchValue") String value,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(studyFacade.searchByTitle(reviewId, value, page, size));
+    }
+
 }

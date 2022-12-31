@@ -15,9 +15,62 @@ import java.util.Set;
 @Repository
 public interface StudyRepository extends JpaRepository<Study, Long> {
 
-    List<Study> findAllByStudyImport_Review(Review studyImport_review);
-    List<Study> findAllByStudyImport_Review_AndScreeningDecisions_Empty(Review studyImport_review);
+    Page<Study> findAllByStudyImport_Review_Id(long reviewId, Pageable pageable);
     Page<Study> findAllByStudyImport_Review_IdAndFolder_Id(long reviewId, long folderId, Pageable pageable);
+
+    // search methods
+    Page<Study> findByStudyImport_Review_IdAndTitleContaining(long reviewId, String value, Pageable pageable);
+    Page<Study> findByStudyImport_Review_IdAndAuthorsContaining(long reviewId, String value, Pageable pageable);
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND CAST(s.publicationYear as string) LIKE %:searchValue% ")
+    Page<Study> findByStudyImport_Review_IdAndPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                                        @Param("searchValue") String value,
+                                                                        Pageable pageable);
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.title LIKE %:searchValue% " +
+            "OR s.authors LIKE %:searchValue% ")
+    Page<Study> findByStudyImport_Review_IdAndTitleContainingOrAuthorsContaining(@Param("reviewId") long reviewId,
+                                                                                 @Param("searchValue") String value,
+                                                                                 Pageable pageable);
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.title LIKE %:searchValue% " +
+            "OR CAST(s.publicationYear as string) LIKE %:searchValue% ")
+    Page<Study> findByStudyImport_Review_IdAndTitleContainingPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                                                       @Param("searchValue") String value,
+                                                                                       Pageable pageable);
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.authors LIKE %:searchValue% " +
+            "OR CAST(s.publicationYear as string) LIKE %:searchValue% ")
+    Page<Study> findByStudyImport_Review_IdAndAuthorsContainingPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                                                         @Param("searchValue") String value,
+                                                                                         Pageable pageable);
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.title LIKE %:searchValue% " +
+            "OR s.authors LIKE %:searchValue% " +
+            "OR CAST(s.publicationYear as string) LIKE %:searchValue% ")
+    Page<Study> findByStudyImport_Review_IdAndTitleContainingAuthorsContainingPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                                                                        @Param("searchValue") String value,
+                                                                                                        Pageable pageable);
 
     @Query("SELECT s " +
             "FROM Study s " +
@@ -107,20 +160,6 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                           @Param("size") long size,
                                           @Param("status") StatusEnum status,
                                           Pageable pageable);
-
-    @Query("SELECT s " +
-            "FROM Study s " +
-            "LEFT OUTER JOIN Import i " +
-            "ON s.studyImport.id = i.id " +
-            "WHERE i.review.id = :reviewId " +
-            "AND s.status = :status " +
-            "AND " +
-            "(SELECT COUNT(sd) " +
-            "FROM ScreeningDecision sd " +
-            "WHERE sd.study.id = s.id AND sd.decision = 'INCLUDE') = :size ")
-    List<Study> findAllIncluded(@Param("reviewId") long reviewId,
-                                @Param("size") long size,
-                                @Param("status") StatusEnum status);
 
     @Query("SELECT s " +
             "FROM Study s " +
