@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Check from 'react-bootstrap/FormCheck';
 import './screeningOptions.css';
 
 
 const ScreeningOptions = (props) => {
+  const [searchValue, setSearchValue] = useState('');
 
   const handleShowTeamHighlightsChange = () => {
     if (props.showTeamHighlights) {
@@ -21,6 +22,10 @@ const ScreeningOptions = (props) => {
       props.triggerShowPersonalHighlights(true);
       props.triggerShowTeamHighlights(false);
     }
+  }
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
   }
 
   return (
@@ -55,8 +60,8 @@ const ScreeningOptions = (props) => {
         </div>
 
         <div className='slrspot__screening-options-search'>
-          <label>Search</label>
-          <input></input>
+          <label onClick={ () => props.handleSearch(searchValue) }>Search</label>
+          <input onChange={ handleSearchChange }/>
         </div>
 
       </div>

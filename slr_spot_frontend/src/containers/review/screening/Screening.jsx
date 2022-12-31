@@ -101,45 +101,45 @@ const Screening = (props) => {
     if (tab === TO_BE_REVIEWED) {
       return (
         <ToBeReviewed 
-          showAbstracts={ showAbstracts } 
           isFullText={ props.state.isFullText } 
           reviewTags={ reviewTags } 
-          userRole={ props.userRole }
-          showHighlights={ showTeamHighlights || showPersonalHighlights } 
-          highlights={ showTeamHighlights ? teamHighlights : personalHighlights } />
+          userRole={ props.userRole } 
+          teamHighlights={ teamHighlights }
+          personalHighlights={ personalHighlights } 
+        />
       )
     } else if (tab === CONFLICTED) {
       return (
         <Conflicted 
-          showAbstracts={showAbstracts} 
           isFullText={props.state.isFullText}
           reviewTags={ reviewTags }
           allowChanges={props.allowChanges}
           userRole={props.userRole}
-          showHighlights={ showTeamHighlights || showPersonalHighlights } 
-          highlights={ showTeamHighlights ? teamHighlights : personalHighlights } />
+          teamHighlights={ teamHighlights }
+          personalHighlights={ personalHighlights } 
+        />
       )
     } else if (tab === AWAITING) {
       return (
         <Awaiting 
-          showAbstracts={showAbstracts} 
           isFullText={props.state.isFullText} 
           reviewTags={ reviewTags }
           allowChanges={props.allowChanges}
           userRole={props.userRole}
-          showHighlights={ showTeamHighlights || showPersonalHighlights } 
-          highlights={ showTeamHighlights ? teamHighlights : personalHighlights } />
+          teamHighlights={ teamHighlights }
+          personalHighlights={ personalHighlights } 
+        />
       )
     } else {
       return (
         <Excluded 
-          showAbstracts={showAbstracts}
           isFullText={props.state.isFullText}
           reviewTags={ reviewTags }
           allowChanges={props.allowChanges}
           userRole={props.userRole}
-          showHighlights={ showTeamHighlights || showPersonalHighlights } 
-          highlights={ showTeamHighlights ? teamHighlights : personalHighlights } />
+          teamHighlights={ teamHighlights }
+          personalHighlights={ personalHighlights } 
+        />
       )
     }
   }
@@ -184,16 +184,7 @@ const Screening = (props) => {
 
       { isStudiesView ? (
         <>
-          <ScreeningOptions 
-            triggerShowAbstractsChange={setShowAbstracts}
-            showAbstracts={showAbstracts} 
-            triggerShowTeamHighlights={setShowTeamHighlights}
-            showTeamHighlights={showTeamHighlights} 
-            triggerShowPersonalHighlights={setShowPersonalHighlights}
-            showPersonalHighlights={showPersonalHighlights} />
-
           { tabContent() }
-
         </>
       ) : (
         <div className='slrspot__screening-studies-folders'>

@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import { ScreeningStudy, StudyDiscussion, StudyHistory,ContentPopup } from '../../../../components';
+import { ScreeningStudy, ScreeningOptions } from '../../../../components';
 import { TO_BE_REVIEWED } from '../../../../constants/tabs';
 import axiosInstance from '../../../../services/api';
 import { useSelector } from "react-redux";
 import { OWNER, MEMBER, COOWNER } from '../../../../constants/roles';
+import { FULL_TEXT, TITLE_ABSTRACT } from '../../../../constants/studyStatuses';
+import { TITLE_SEARCH } from '../../../../constants/searchTypes';
 import '../screening.css';
 
 const ToBeReviewed = (props) => {
+  const [showAbstracts, setShowAbstracts] = useState(true);
+  const [showTeamHighlights, setShowTeamHighlights] = useState(false);
+  const [showPersonalHighlights, setShowPersonalHighlights] = useState(false);
+  const [showHighlights, setShowHighlights] = useState(showTeamHighlights || showPersonalHighlights);
+
   const [studies, setStudies] = useState([]);
   const { reviewId } = useParams();
   const { user: currentUser } = useSelector((state) => state.auth);
@@ -42,23 +49,50 @@ const ToBeReviewed = (props) => {
     setStudies(studies.filter(study => study.id !== id));
   }
 
+  const handleSearch = (searchValue) => {
+    var userId = currentUser.id;
+    var status = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    var searchType = TITLE_SEARCH;
+    axiosInstance.get("/studies/state/" + TO_BE_REVIEWED + "/search", { params: {
+      reviewId, userId, status, searchType, searchValue 
+    }})
+    .then((response) => {
+      setStudies(response.data.content)
+    })
+    .catch(() => {
+    });
+  }
+
   useEffect(() => {
     getStudies()
   }, [props.isFullText]);
 
+  useEffect(() => {
+    setShowHighlights(showTeamHighlights || showPersonalHighlights);
+  }, [showTeamHighlights, showPersonalHighlights]);
+
   return (
     <div className='slrspot__screening-studies'>
+      <ScreeningOptions 
+        triggerShowAbstractsChange={setShowAbstracts}
+        showAbstracts={showAbstracts} 
+        triggerShowTeamHighlights={setShowTeamHighlights}
+        showTeamHighlights={showTeamHighlights} 
+        triggerShowPersonalHighlights={setShowPersonalHighlights}
+        showPersonalHighlights={showPersonalHighlights} 
+        handleSearch={ handleSearch } />
+
       { studies.map(study => (
         <ScreeningStudy 
           study={ study } 
-          isShowAbstracts={ props.showAbstracts } 
+          isShowAbstracts={ showAbstracts } 
           triggerVote={ handleStudiesUpdate }
           tab={ TO_BE_REVIEWED }
           isFullText={ props.isFullText } 
           reviewTags={ props.reviewTags } 
           allowChanges={ allowChanges } 
-          showHighlights={ props.showHighlights } 
-          highlights={ props.highlights } />
+          showHighlights={ showHighlights } 
+          highlights={ showTeamHighlights ? props.teamHighlights : props.personalHighlights } />
       ))}
 
     </div>

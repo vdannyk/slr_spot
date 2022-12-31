@@ -2,21 +2,15 @@ package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
-import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.dkwasniak.slr_spot_backend.study.dto.IdentificationDto;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyNotFoundException;
-import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
 import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.csv.CSVRecord;
-import org.jbibtex.BibTeXDatabase;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -205,35 +199,5 @@ public class StudyService {
                                                     StatusEnum status, Pageable pageable) {
         return studyRepository.findAllExcludedByFolderId(reviewId, folderId, requiredReviewers, status, pageable);
     }
-
-    public Page<Study> searchByTitle(Long reviewId, String searchValue, Pageable pageable) {
-        return studyRepository.findByStudyImport_Review_IdAndTitleContaining(reviewId, searchValue, pageable);
-    }
-
-    public Page<Study> searchByAuthors(Long reviewId, String searchValue, Pageable pageable) {
-        return studyRepository.findByStudyImport_Review_IdAndAuthorsContaining(reviewId, searchValue, pageable);
-    }
-
-    public Page<Study> searchByPublicationYear(Long reviewId, String searchValue, Pageable pageable) {
-        return studyRepository.findByStudyImport_Review_IdAndPublicationYearContaining(reviewId, searchValue, pageable);
-    }
-
-    public Page<Study> searchByTitleAndAuthors(Long reviewId, String searchValue, Pageable pageable) {
-        return studyRepository.findByStudyImport_Review_IdAndTitleContainingOrAuthorsContaining(reviewId, searchValue, pageable);
-    }
-
-    public Page<Study> searchByTitleAndPublicationYear(Long reviewId, String searchValue, Pageable pageable) {
-        return studyRepository.findByStudyImport_Review_IdAndTitleContainingPublicationYearContaining(reviewId, searchValue, pageable);
-    }
-
-    public Page<Study> searchByAuthorsAndPublicationYear(Long reviewId, String searchValue, Pageable pageable) {
-        return studyRepository.findByStudyImport_Review_IdAndAuthorsContainingPublicationYearContaining(reviewId, searchValue, pageable);
-    }
-
-    public Page<Study> searchByTitleAndAuthorsAndPublicationYear(Long reviewId, String searchValue, Pageable pageable) {
-        return studyRepository.findByStudyImport_Review_IdAndTitleContainingAuthorsContainingPublicationYearContaining(reviewId, searchValue, pageable);
-    }
-
-
 
 }

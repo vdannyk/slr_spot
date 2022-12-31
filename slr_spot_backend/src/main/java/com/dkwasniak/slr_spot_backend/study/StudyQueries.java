@@ -82,9 +82,9 @@ public class StudyQueries {
 
     // SEARCHING CONDITIONS
     public static final String BY_TITLE_CONDITION =
-            "AND CAST(s.publicationYear as string) LIKE %:searchValue% ";
+            "AND s.title LIKE %:searchValue% ";
     public static final String BY_AUTHORS_CONDITION =
-            "AND CAST(s.publicationYear as string) LIKE %:searchValue% ";
+            "AND s.authors LIKE %:searchValue% ";
     public static final String BY_PUBLICATION_YEAR_CONDITION =
             "AND CAST(s.publicationYear as string) LIKE %:searchValue% ";
     public static final String BY_TITLE_AND_AUTHORS_CONDITION =
