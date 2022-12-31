@@ -52,12 +52,12 @@ public class StudyFacade {
 
     private final StudyService studyService;
     private final FileService fileService;
-    private final ImportService importService;
     private final ReviewService reviewService;
     private final UserService userService;
     private final TagService tagService;
     private final CommentService commentService;
     private final ScreeningService screeningService;
+    private final SearchProcessor searchProcessor;
 
     public Page<Study> getStudiesByReviewId(Long reviewId, int page, int size) {
         Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
@@ -264,33 +264,20 @@ public class StudyFacade {
         return studyService.getStudiesExcludedByFolderId(reviewId, folderId, requiredReviewers, status, pageRq);
     }
 
-    public Page<Study> searchByTitle(Long reviewId, String searchValue, int page, int size) {
+    public Page<Study> searchStudiesByState(StudyState studyState, Long reviewId, Long userId,
+                                            StatusEnum status, StudySearchType searchType, String searchValue, int page, int size) {
         Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
 
-        var field = "XD";
-        switch (field) {
-            case "TITLE" -> {
-                return studyService.searchByTitle(reviewId, searchValue, pageRq);
-            }
-            case "AUTHORS" -> {
-                return studyService.searchByAuthors(reviewId, searchValue, pageRq);
-            }
-            case "YEAR" -> {
-                return studyService.searchByPublicationYear(reviewId, searchValue, pageRq);
-            }
-            case "TITLE_AUTHORS" -> {
-                return studyService.searchByTitleAndAuthors(reviewId, searchValue, pageRq);
-            }
-            case "TITLE_YEAR" -> {
-                return studyService.searchByTitleAndPublicationYear(reviewId, searchValue, pageRq);
-            }
-            case "AUTHORS_YEAR" -> {
-                return studyService.searchByAuthorsAndPublicationYear(reviewId, searchValue, pageRq);
-            }
-            default -> {
-                return studyService.searchByTitleAndAuthorsAndPublicationYear(reviewId, searchValue, pageRq);
-            }
-        }
+        Review review = reviewService.getReviewById(reviewId);
+        int requiredReviewers = review.getScreeningReviewers();
+
+        return searchProcessor.searchByState(studyState, searchType, reviewId, userId, requiredReviewers, status, searchValue, pageRq);
+    }
+
+    public Page<Study> searchStudies(Long reviewId, StudySearchType searchType, String searchValue, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+
+        return searchProcessor.searchAll(searchType, reviewId, searchValue, pageRq);
     }
 
 }

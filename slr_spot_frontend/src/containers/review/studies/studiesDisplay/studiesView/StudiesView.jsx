@@ -4,6 +4,7 @@ import { Table } from "react-bootstrap";
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import axiosInstance from '../../../../../services/api';
 import { useParams } from "react-router-dom";
+import { TITLE_SEARCH } from '../../../../../constants/searchTypes';
 import './studiesView.css';
 
 
@@ -68,8 +69,9 @@ const StudiesView = ({allowChanges}) => {
   }
 
   const handleSearch = () => {
-    axiosInstance.get("/studies/by-title", { params: {
-      reviewId, searchValue
+    var searchType = TITLE_SEARCH;
+    axiosInstance.get("/studies/search", { params: {
+      reviewId, searchType, searchValue
     }})
     .then((response) => {
       setStudies(response.data.content)

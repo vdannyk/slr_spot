@@ -225,12 +225,25 @@ public class StudyController {
         return ResponseEntity.ok(studyFacade.getStudiesExcludedByFolderId(reviewId, folderId, status, page, size));
     }
 
-    @GetMapping("/by-title")
-    public ResponseEntity<Page<Study>> searchByTitle(@RequestParam("reviewId") Long reviewId,
+    @GetMapping("/state/{state}/search")
+    public ResponseEntity<Page<Study>> searchStudiesByState(@PathVariable("state") StudyState studyState,
+                                                            @RequestParam("reviewId") Long reviewId,
+                                                            @RequestParam("userId") Long userId,
+                                                            @RequestParam("status") StatusEnum status,
+                                                            @RequestParam("searchType") StudySearchType searchType,
+                                                            @RequestParam("searchValue") String value,
+                                                            @RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(studyFacade.searchStudiesByState(studyState, reviewId, userId, status, searchType, value, page, size));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<Study>> searchStudies(@RequestParam("reviewId") Long reviewId,
+                                                     @RequestParam("searchType") StudySearchType searchType,
                                                      @RequestParam("searchValue") String value,
                                                      @RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchByTitle(reviewId, value, page, size));
+        return ResponseEntity.ok(studyFacade.searchStudies(reviewId, searchType, value, page, size));
     }
 
 }
