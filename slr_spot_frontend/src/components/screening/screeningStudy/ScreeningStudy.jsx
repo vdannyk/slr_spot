@@ -11,6 +11,7 @@ import axiosInstance from '../../../services/api';
 import FullTextField from './fullTextField/FullTextField';
 import KeyWordHighlight from '../../keyWordHighlight/KeyWordHighlight';
 import { INCLUSION_TYPE, EXCLUSION_TYPE } from '../criteria/CriteriaTypes';
+import ConflictedOptions from './tabSpecificOptions/ConflictedOptions';
 
 
 const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh, 
@@ -70,35 +71,6 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
 
   const handleShowAbstract = () => {
     setShowAbstract(!showAbstract);
-  }
-
-  const ConflictedOptions = () => {
-    // to do -> check role in useState
-    const [showOptions, setShowOptions] = useState(false);
-
-    return (
-      <div className='slrspot__screeningStudy-decision'>
-        { showOptions 
-        ? <>
-            <button 
-              className='slrspot__screeningStudy-decision-button'
-              onClick={ () => handleVote('EXCLUDE')}>
-                exclude
-            </button>
-            <button 
-              className='slrspot__screeningStudy-decision-button' 
-              onClick={ () => handleVote('INCLUDE')}>
-                include
-            </button>
-          </>
-        : <button 
-            className='slrspot__screeningStudy-decision-button' 
-            onClick={() => setShowOptions(true)}>
-              change decision
-          </button>
-        }
-      </div>
-    )
   }
 
   const AwaitingOptions = () => {
@@ -171,7 +143,9 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
       )
     } else if (tab === CONFLICTED) {
       return (
-        <ConflictedOptions />
+        <ConflictedOptions 
+          handleVote={ handleVote }
+        />
       )
     } else if (tab === AWAITING) {
       return (
