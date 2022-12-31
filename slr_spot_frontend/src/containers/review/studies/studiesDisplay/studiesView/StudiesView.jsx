@@ -97,10 +97,6 @@ const StudiesView = ({allowChanges}) => {
               </div>
               <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>
                 <Check />
-                <label>Abstract</label>
-              </div>
-              <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>
-                <Check />
                 <label>Authors</label>
               </div>
               <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>

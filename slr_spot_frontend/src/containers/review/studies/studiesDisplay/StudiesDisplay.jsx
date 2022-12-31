@@ -20,7 +20,9 @@ const StudiesDisplay = (props) => {
           : <span onClick={ () => setIsStudiesView(true) }>Switch to studies view</span> }
       </div>
       <div className='slrspot__review-studiesDisplay-container'>
-          { isStudiesView ? <StudiesView allowChanges={allowChanges}/> : <FoldersView allowChanges={allowChanges}/>}
+          { isStudiesView 
+            ? <StudiesView allowChanges={allowChanges}/> 
+            : <FoldersView allowChanges={allowChanges}/>}
       </div>
     </div>
   )

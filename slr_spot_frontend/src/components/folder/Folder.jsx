@@ -42,8 +42,7 @@ const Folder = (props) => {
     } else {
       status = "TITLE_ABSTRACT";
     }
-    var test = props.tab;
-    switch(test) {
+    switch(props.tab) {
       case TO_BE_REVIEWED:
         axiosInstance.get("/studies/to-review/by-folder/" + id, { params: {
           reviewId, userId, status
@@ -232,7 +231,7 @@ const Folder = (props) => {
 
   return (
     <div>
-      <div  className='slrspot__folder-item'>
+      <div className='slrspot__folder-item'>
         <p onClick={handleClick}>
           <AiFillFolder style={{ "marginRight": '5px'}}/>
           {name}

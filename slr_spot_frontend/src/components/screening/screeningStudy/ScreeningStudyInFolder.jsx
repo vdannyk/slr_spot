@@ -162,24 +162,26 @@ const ScreeningStudyInFolder = (props) => {
   else {
     return (
       <div>
-        <div className='slrspot__screening-options'>
-          <div className='slrspot__screening-options-container'>
-            <div className='slrspot__screening-options-container-checks'>
-              <div className='slrspot__screening-options-check'>
-                <Check 
-                  onChange={ handleShowTeamHighlightsChange } 
-                  checked={ showTeamHighlights } />
-                <label>team highlights</label>
-              </div>
-              <div className='slrspot__screening-options-check'>
-                <Check
-                  onChange={ handleShowPersonalHighlightsChange } 
-                  checked={ showPersonalHighlights } />
-                <label>personal highlights</label>
+        { props.tab && 
+          <div className='slrspot__screening-options'>
+            <div className='slrspot__screening-options-container'>
+              <div className='slrspot__screening-options-container-checks'>
+                <div className='slrspot__screening-options-check'>
+                  <Check 
+                    onChange={ handleShowTeamHighlightsChange } 
+                    checked={ showTeamHighlights } />
+                  <label>team highlights</label>
+                </div>
+                <div className='slrspot__screening-options-check'>
+                  <Check
+                    onChange={ handleShowPersonalHighlightsChange } 
+                    checked={ showPersonalHighlights } />
+                  <label>personal highlights</label>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        }
 
         <div className='slrspot__screeningStudyInFolder'>
 
