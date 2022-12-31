@@ -196,9 +196,17 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
       <button onClick={handleShowAbstract} className='slrspot__screeningStudy-showAbstract-button'>
         { showAbstract ? 'hide abstract' : 'show abstract'}
       </button>
-      { showAbstract && <p><label>abstract:</label> { study.documentAbstract }</p> }
       {showHighlights ? (
         <>
+          { showAbstract && 
+            <p>
+              <label>abstract:</label>
+              <KeyWordHighlight 
+              text={ study.documentAbstract }
+              inclusionWords={ inclusionHighlights } 
+              exclusionWords={ exclusionHighlights }/>
+            </p> 
+          }
           <p>
             <label>authors:</label><span> </span>
             <KeyWordHighlight 
@@ -244,6 +252,7 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
         </>
       ) : (
         <>
+          { showAbstract && <p><label>abstract:</label> { study.documentAbstract }</p> }
           <p><label>authors:</label> { study.authors }</p>
           <p><label>journal:</label> { study.journalTitle }</p>
           <p><label>publicationYear:</label> { study.publicationYear }</p>
