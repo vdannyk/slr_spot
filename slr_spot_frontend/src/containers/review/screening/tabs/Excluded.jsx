@@ -12,26 +12,28 @@ const Excluded = (props) => {
   const [studies, setStudies] = useState([]);
   const { reviewId } = useParams();
   var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
+  const { user: currentUser } = useSelector((state) => state.auth);
 
 
   function getStudies() {
+    var userId = currentUser.id;
     if (props.isFullText) {
       var status = 'FULL_TEXT';
-      axiosInstance.get("/studies/excluded", { params: {
-        reviewId, status
+      axiosInstance.get("/studies/state/" + EXCLUDED, { params: {
+        reviewId, userId, status
       }})
       .then((response) => {
-        setStudies(response.data)
+        setStudies(response.data.content)
       })
       .catch(() => {
       });
     } else {
       var status = 'TITLE_ABSTRACT';
-      axiosInstance.get("/studies/excluded", { params: {
-        reviewId, status
+      axiosInstance.get("/studies/state/" + EXCLUDED, { params: {
+        reviewId, userId, status
       }})
       .then((response) => {
-        setStudies(response.data)
+        setStudies(response.data.content)
       })
       .catch(() => {
       });

@@ -49,30 +49,14 @@ public class StudyController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/to-review")
-    public ResponseEntity<List<Study>> getStudiesToBeReviewed(@RequestParam("reviewId") Long reviewId,
-                                                              @RequestParam("userId") Long userId,
-                                                              @RequestParam("status") StatusEnum status) {
-        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewed(reviewId, userId, status));
-    }
-
-    @GetMapping("/conflicted")
-    public ResponseEntity<List<Study>> getStudiesConflicted(@RequestParam("reviewId") Long reviewId,
-                                                            @RequestParam("status") StatusEnum status) {
-        return ResponseEntity.ok(studyFacade.getStudiesConflicted(reviewId, status));
-    }
-
-    @GetMapping("/awaiting")
-    public ResponseEntity<List<Study>> getStudiesAwaiting(@RequestParam("reviewId") Long reviewId,
-                                                          @RequestParam("userId") Long userId,
-                                                          @RequestParam("status") StatusEnum status) {
-        return ResponseEntity.ok(studyFacade.getStudiesAwaiting(reviewId, userId, status));
-    }
-
-    @GetMapping("/excluded")
-    public ResponseEntity<List<Study>> getStudiesExcluded(@RequestParam("reviewId") Long reviewId,
-                                                          @RequestParam("status") StatusEnum status) {
-        return ResponseEntity.ok(studyFacade.getStudiesExcluded(reviewId, status));
+    @GetMapping("/state/{state}")
+    public ResponseEntity<Page<Study>> getStudiesByState(@PathVariable("state") StudyState studyState,
+                                                         @RequestParam("reviewId") Long reviewId,
+                                                         @RequestParam("userId") Long userId,
+                                                         @RequestParam("status") StatusEnum status,
+                                                         @RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(studyFacade.getStudiesByState(studyState, reviewId, userId, status, page, size));
     }
 
     @GetMapping("/{id}/tags")

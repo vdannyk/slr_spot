@@ -18,21 +18,21 @@ const Conflicted = (props) => {
     var userId = currentUser.id;
     if (props.isFullText) {
       var status = 'FULL_TEXT';
-      axiosInstance.get("/studies/conflicted", { params: {
+      axiosInstance.get("/studies/state/" + CONFLICTED, { params: {
         reviewId, userId, status
       }})
       .then((response) => {
-        setStudies(response.data)
+        setStudies(response.data.content)
       })
       .catch(() => {
       });
     } else {
       var status = 'TITLE_ABSTRACT';
-      axiosInstance.get("/studies/conflicted", { params: {
+      axiosInstance.get("/studies/state/" + CONFLICTED, { params: {
         reviewId, userId, status
       }})
       .then((response) => {
-        setStudies(response.data)
+        setStudies(response.data.content)
       })
       .catch(() => {
       });

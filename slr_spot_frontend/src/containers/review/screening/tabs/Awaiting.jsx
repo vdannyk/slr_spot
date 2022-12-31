@@ -20,21 +20,21 @@ const Awaiting = (props) => {
     var userId = currentUser.id;
     if (props.isFullText) {
       var status = 'FULL_TEXT';
-      axiosInstance.get("/studies/awaiting", { params: {
+      axiosInstance.get("/studies/state/" + AWAITING, { params: {
         reviewId, userId, status
       }})
       .then((response) => {
-        setStudies(response.data)
+        setStudies(response.data.content)
       })
       .catch(() => {
       });
     } else {
       var status = 'TITLE_ABSTRACT';
-      axiosInstance.get("/studies/awaiting", { params: {
+      axiosInstance.get("/studies/state/" + AWAITING, { params: {
         reviewId, userId, status
       }})
       .then((response) => {
-        setStudies(response.data)
+        setStudies(response.data.content)
       })
       .catch(() => {
       });

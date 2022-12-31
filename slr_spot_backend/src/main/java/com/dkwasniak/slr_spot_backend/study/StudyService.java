@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
+import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.dkwasniak.slr_spot_backend.study.dto.IdentificationDto;
@@ -13,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -46,20 +49,25 @@ public class StudyService {
         studyRepository.saveAll(studies);
     }
 
-    public List<Study> getStudiesToBeReviewed(Long reviewId, Long userId, int requiredReviewers, StatusEnum status) {
-        return studyRepository.findAllToBeReviewed(reviewId, userId, requiredReviewers, status);
-    }
-
-    public List<Study> getStudiesConflicted(Long reviewId, int requiredReviewers, StatusEnum status) {
-        return studyRepository.findAllConflicted(reviewId, requiredReviewers, status);
-    }
-
-    public List<Study> getStudiesAwaiting(Long reviewId, Long userId, int requiredReviewers, StatusEnum status) {
-        return studyRepository.findAllAwaiting(reviewId, userId, requiredReviewers, status);
-    }
-
-    public List<Study> getStudiesExcluded(Long reviewId, int requiredReviewers, StatusEnum status) {
-        return studyRepository.findAllExcluded(reviewId, requiredReviewers, status);
+    public Page<Study> getStudiesByState(StudyState studyState, Long reviewId, Long userId, int requiredReviewers,
+                                         StatusEnum status, Pageable pageable) {
+        switch (studyState) {
+            case TO_BE_REVIEWED -> {
+                return studyRepository.findAllToBeReviewed(reviewId, userId, requiredReviewers, status, pageable);
+            }
+            case CONFLICTED -> {
+                return studyRepository.findAllConflicted(reviewId, requiredReviewers, status, pageable);
+            }
+            case AWAITING -> {
+                return studyRepository.findAllAwaiting(reviewId, userId, requiredReviewers, status, pageable);
+            }
+            case EXCLUDED -> {
+                return studyRepository.findAllExcluded(reviewId, requiredReviewers, status, pageable);
+            }
+            default -> {
+                throw new IllegalStateException("Studies with given state not found");
+            }
+        }
     }
 
     public Set<Tag> getStudyTags(Study study) {

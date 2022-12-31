@@ -68,28 +68,14 @@ public class StudyFacade {
         studyService.removeStudyById(studyId);
     }
 
-    public List<Study> getStudiesToBeReviewed(Long reviewId, Long userId, StatusEnum status) {
-        Review review = reviewService.getReviewById(reviewId);
-        int requiredReviewers = review.getScreeningReviewers();
-        return studyService.getStudiesToBeReviewed(reviewId, userId, requiredReviewers, status);
-    }
+    public Page<Study> getStudiesByState(StudyState studyState, Long reviewId, Long userId,
+                                         StatusEnum status, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
 
-    public List<Study> getStudiesConflicted(Long reviewId, StatusEnum status) {
         Review review = reviewService.getReviewById(reviewId);
         int requiredReviewers = review.getScreeningReviewers();
-        return studyService.getStudiesConflicted(reviewId, requiredReviewers, status);
-    }
 
-    public List<Study> getStudiesAwaiting(Long reviewId, Long userId, StatusEnum status) {
-        Review review = reviewService.getReviewById(reviewId);
-        int requiredReviewers = review.getScreeningReviewers();
-        return studyService.getStudiesAwaiting(reviewId, userId, requiredReviewers, status);
-    }
-
-    public List<Study> getStudiesExcluded(Long reviewId, StatusEnum status) {
-        Review review = reviewService.getReviewById(reviewId);
-        int requiredReviewers = review.getScreeningReviewers();
-        return studyService.getStudiesExcluded(reviewId, requiredReviewers, status);
+        return studyService.getStudiesByState(studyState, reviewId, userId, requiredReviewers, status, pageRq);
     }
 
     public Set<Tag> getStudyTags(Long studyId) {
