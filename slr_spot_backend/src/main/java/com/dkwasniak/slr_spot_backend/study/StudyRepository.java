@@ -22,6 +22,8 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     List<Study> findAllByStudyImport_Review_IdAndStage(long reviewId, Stage stage);
     int countAllByStudyImport_Review_IdAndStage(long reviewId, Stage stage);
     int countAllByStudyImport_Review_IdAndState(long reviewId, StudyState state);
+    Page<Study> findAllByStudyImport_Review_IdAndFolder_IdAndStageAndState(long reviewId, long folderId, Stage stage, StudyState studyState, Pageable pageable);
+    Page<Study> findAllByStudyImport_Review_IdAndFolder_IdAndState(long reviewId, long folderId, StudyState studyState, Pageable pageable);
 
     @Query("SELECT s " +
             "FROM Study s " +
@@ -39,6 +41,24 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                     @Param("stage") Stage stage,
                                     @Param("state") StudyState state,
                                     Pageable pageable);
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.stage = :stage " +
+            "AND s.state = :state " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.stage = :stage AND sd.user.id = :userId) = 0 " +
+            "AND s.folder.id = :folderId ")
+    Page<Study> findAllToBeReviewedByFolderId(@Param("reviewId") long reviewId,
+                                              @Param("userId") long userId,
+                                              @Param("folderId") long folderId,
+                                              @Param("stage") Stage stage,
+                                              @Param("state") StudyState state,
+                                              Pageable pageable);
 
     @Query("SELECT s " +
             "FROM Study s " +
@@ -56,6 +76,24 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                 @Param("stage") Stage stage,
                                 @Param("state") StudyState state,
                                 Pageable pageable);
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.stage = :stage " +
+            "AND s.state = :state " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.stage = :stage AND sd.user.id = :userId) > 0 " +
+            "AND s.folder.id = :folderId ")
+    Page<Study> findAllAwaitingByFolderId(@Param("reviewId") long reviewId,
+                                          @Param("userId") long userId,
+                                          @Param("folderId") long folderId,
+                                          @Param("stage") Stage stage,
+                                          @Param("state") StudyState state,
+                                          Pageable pageable);
 
     // search methods
     Page<Study> findByStudyImport_Review_IdAndTitleContaining(long reviewId, String value, Pageable pageable);
@@ -80,13 +118,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     Page<Study> findByStudyImport_Review_IdAndTitleContainingAuthorsContainingPublicationYearContaining(@Param("reviewId") long reviewId,
                                                                                                         @Param("searchValue") String value,
                                                                                                         Pageable pageable);
-//
-//    @Query(StudyQueries.TO_BE_REVIEWED_QUERY)
-//    Page<Study> findAllToBeReviewed(@Param("reviewId") long reviewId,
-//                                    @Param("userId") long userId,
-//                                    @Param("size") long size,
-//                                    @Param("status") StatusEnum status,
-//                                    Pageable pageable);
+
 //    @Query(StudyQueries.TO_BE_REVIEWED_FOLDERS_QUERY)
 //    Page<Study> findAllToBeReviewedByFolderId(@Param("reviewId") long reviewId,
 //                                              @Param("folderId") long folderId,

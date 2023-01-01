@@ -216,43 +216,43 @@ public class StudyController {
         return ResponseEntity.ok(studyFacade.getStudiesByFolderId(folderId, reviewId, page, size));
     }
 
-//    @GetMapping("/to-review/by-folder/{folderId}")
-//    public ResponseEntity<Page<Study>> getStudiesToBeReviewedByFolderId(@PathVariable Long folderId,
-//                                                                        @RequestParam("reviewId") Long reviewId,
-//                                                                        @RequestParam("userId") Long userId,
-//                                                                        @RequestParam("status") StatusEnum status,
-//                                                                        @RequestParam(defaultValue = "0") int page,
-//                                                                        @RequestParam(defaultValue = "10") int size) {
-//        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewedByFolderId(reviewId, folderId, userId, status, page, size));
-//    }
+    @GetMapping("/to-be-reviewed/by-folder/{folderId}")
+    public ResponseEntity<Page<Study>> getStudiesToBeReviewedByFolderId(@PathVariable Long folderId,
+                                                                        @RequestParam("reviewId") Long reviewId,
+                                                                        @RequestParam("userId") Long userId,
+                                                                        @RequestParam("stage") Stage stage,
+                                                                        @RequestParam(defaultValue = "0") int page,
+                                                                        @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewedByFolderId(reviewId, folderId, userId, stage, page, size));
+    }
 
-//    @GetMapping("/conflicted/by-folder/{folderId}")
-//    public ResponseEntity<Page<Study>> getStudiesConflictedByFolderId(@PathVariable Long folderId,
-//                                                                      @RequestParam("reviewId") Long reviewId,
-//                                                                      @RequestParam("status") StatusEnum status,
-//                                                                      @RequestParam(defaultValue = "0") int page,
-//                                                                      @RequestParam(defaultValue = "10") int size) {
-//        return ResponseEntity.ok(studyFacade.getStudiesConflictedByFolderId(reviewId, folderId, status, page, size));
-//    }
-//
-//    @GetMapping("/awaiting/by-folder/{folderId}")
-//    public ResponseEntity<Page<Study>> getStudiesAwaitingByFolderId(@PathVariable Long folderId,
-//                                                                    @RequestParam("reviewId") Long reviewId,
-//                                                                    @RequestParam("userId") Long userId,
-//                                                                    @RequestParam("status") StatusEnum status,
-//                                                                    @RequestParam(defaultValue = "0") int page,
-//                                                                    @RequestParam(defaultValue = "10") int size) {
-//        return ResponseEntity.ok(studyFacade.getStudiesAwaitingByFolderId(reviewId, folderId, userId, status, page, size));
-//    }
-//
-//    @GetMapping("/excluded/by-folder/{folderId}")
-//    public ResponseEntity<Page<Study>> getStudiesExcludedByFolderId(@PathVariable Long folderId,
-//                                                                    @RequestParam("reviewId") Long reviewId,
-//                                                                    @RequestParam("status") StatusEnum status,
-//                                                                    @RequestParam(defaultValue = "0") int page,
-//                                                                    @RequestParam(defaultValue = "10") int size) {
-//        return ResponseEntity.ok(studyFacade.getStudiesExcludedByFolderId(reviewId, folderId, status, page, size));
-//    }
+    @GetMapping("/conflicted/by-folder/{folderId}")
+    public ResponseEntity<Page<Study>> getStudiesConflictedByFolderId(@PathVariable Long folderId,
+                                                                      @RequestParam("reviewId") Long reviewId,
+                                                                      @RequestParam("stage") Stage stage,
+                                                                      @RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(studyFacade.getStudiesConflictedByFolderId(reviewId, folderId, stage, page, size));
+    }
+
+    @GetMapping("/awaiting/by-folder/{folderId}")
+    public ResponseEntity<Page<Study>> getStudiesAwaitingByFolderId(@PathVariable Long folderId,
+                                                                    @RequestParam("reviewId") Long reviewId,
+                                                                    @RequestParam("userId") Long userId,
+                                                                    @RequestParam("stage") Stage stage,
+                                                                    @RequestParam(defaultValue = "0") int page,
+                                                                    @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(studyFacade.getStudiesAwaitingByFolderId(reviewId, folderId, userId, stage, page, size));
+    }
+
+    @GetMapping("/excluded/by-folder/{folderId}")
+    public ResponseEntity<Page<Study>> getStudiesExcludedByFolderId(@PathVariable Long folderId,
+                                                                    @RequestParam("reviewId") Long reviewId,
+                                                                    @RequestParam("stage") Stage stage,
+                                                                    @RequestParam(defaultValue = "0") int page,
+                                                                    @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(studyFacade.getStudiesExcludedByFolderId(reviewId, folderId, stage, page, size));
+    }
 
 //    @GetMapping("/state/{state}/search")
 //    public ResponseEntity<Page<Study>> searchStudiesByState(@PathVariable("state") StudyState studyState,

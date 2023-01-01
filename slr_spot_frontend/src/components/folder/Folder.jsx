@@ -36,16 +36,16 @@ const Folder = (props) => {
 
   function selectStudies() {
     var userId = currentUser.id;
-    var status;
+    var stage;
     if (props.isFullText) {
-      status = "FULL_TEXT";
+      stage = "FULL_TEXT";
     } else {
-      status = "TITLE_ABSTRACT";
+      stage = "TITLE_ABSTRACT";
     }
     switch(props.tab) {
       case TO_BE_REVIEWED:
-        axiosInstance.get("/studies/to-review/by-folder/" + id, { params: {
-          reviewId, userId, status
+        axiosInstance.get("/studies/to-be-reviewed/by-folder/" + id, { params: {
+          reviewId, userId, stage
         }})
         .then((response) => {
           setChildrenStudies(response.data.content);
@@ -54,7 +54,7 @@ const Folder = (props) => {
         return;
       case CONFLICTED:
         axiosInstance.get("/studies/conflicted/by-folder/" + id, { params: {
-          reviewId, status
+          reviewId, stage
         }})
         .then((response) => {
           setChildrenStudies(response.data.content);
@@ -63,7 +63,7 @@ const Folder = (props) => {
         return;
       case AWAITING:
         axiosInstance.get("/studies/awaiting/by-folder/" + id, { params: {
-          reviewId, userId, status
+          reviewId, userId, stage
         }})
         .then((response) => {
           setChildrenStudies(response.data.content);
@@ -72,7 +72,7 @@ const Folder = (props) => {
         return;
       case EXCLUDED:
         axiosInstance.get("/studies/excluded/by-folder/" + id, { params: {
-          reviewId, status
+          reviewId, stage
         }})
         .then((response) => {
           setChildrenStudies(response.data.content);
@@ -142,17 +142,16 @@ const Folder = (props) => {
     var page = studyPage.selected;
     setCurrentPage(page);
     var userId = currentUser.id;
-    var status;
+    var stage;
     if (props.isFullText) {
-      status = "FULL_TEXT";
+      stage = "FULL_TEXT";
     } else {
-      status = "TITLE_ABSTRACT";
+      stage = "TITLE_ABSTRACT";
     }
-    var test = props.tab;
-    switch(test) {
+    switch(props.tab) {
       case TO_BE_REVIEWED:
-        axiosInstance.get("/studies/to-review/by-folder/" + id, { params: {
-          reviewId, userId, status, page
+        axiosInstance.get("/studies/to-be-reviewed/by-folder/" + id, { params: {
+          reviewId, userId, stage, page
         }})
         .then((response) => {
           setChildrenStudies(response.data.content);
@@ -161,7 +160,7 @@ const Folder = (props) => {
         return;
       case CONFLICTED:
         axiosInstance.get("/studies/conflicted/by-folder/" + id, { params: {
-          reviewId, status, page
+          reviewId, stage, page
         }})
         .then((response) => {
           setChildrenStudies(response.data.content);
@@ -170,7 +169,7 @@ const Folder = (props) => {
         return;
       case AWAITING:
         axiosInstance.get("/studies/awaiting/by-folder/" + id, { params: {
-          reviewId, userId, status, page
+          reviewId, userId, stage, page
         }})
         .then((response) => {
           setChildrenStudies(response.data.content);
@@ -179,7 +178,7 @@ const Folder = (props) => {
         return;
       case EXCLUDED:
         axiosInstance.get("/studies/excluded/by-folder/" + id, { params: {
-          reviewId, status, page
+          reviewId, stage, page
         }})
         .then((response) => {
           setChildrenStudies(response.data.content);
