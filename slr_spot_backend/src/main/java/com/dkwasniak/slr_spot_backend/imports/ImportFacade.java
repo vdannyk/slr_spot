@@ -7,11 +7,12 @@ import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import com.dkwasniak.slr_spot_backend.study.OperationDescription;
+import com.dkwasniak.slr_spot_backend.study.Stage;
 import com.dkwasniak.slr_spot_backend.study.Study;
+import com.dkwasniak.slr_spot_backend.study.StudyState;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingException;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingInvalidHeadersException;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
-import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +65,8 @@ public class ImportFacade {
         studyImport.setStudies(studies);
         studies.forEach(s -> {
             s.setStudyImport(studyImport);
-            s.setStatus(StatusEnum.TITLE_ABSTRACT);
+            s.setStage(Stage.TITLE_ABSTRACT);
+            s.setState(StudyState.TO_BE_REVIEWED);
             var operation = new Operation(OperationDescription.IMPORT.getDescription());
             operation.setStudy(s);
             s.setOperations(new ArrayList<>() {{ add(operation); }});

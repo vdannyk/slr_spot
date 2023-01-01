@@ -29,7 +29,9 @@ const Screening = (props) => {
   const { user: currentUser } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    axiosInstance.get("/folders")
+    axiosInstance.get("/folders/tree", { params: {
+      reviewId
+    }})
     .then((response) => {
       setFolders(response.data)
     })

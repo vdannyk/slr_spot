@@ -12,7 +12,7 @@ import FullTextField from './fullTextField/FullTextField';
 import KeyWordHighlight from '../../keyWordHighlight/KeyWordHighlight';
 import { INCLUSION_TYPE, EXCLUSION_TYPE } from '../criteria/CriteriaTypes';
 import ConflictedOptions from './tabSpecificOptions/ConflictedOptions';
-
+import { FULL_TEXT, TITLE_ABSTRACT } from '../../../constants/studyStages';
 
 const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh, 
                           tab, isFullText, reviewTags, allowChanges, showHighlights, highlights }) => {
@@ -38,7 +38,8 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
     axiosInstance.post("/studies/" + study.id + "/screening_decisions", {
       reviewId: reviewId,
       userId: currentUser.id,
-      decision: vote
+      decision: vote,
+      stage: isFullText ? FULL_TEXT : TITLE_ABSTRACT
     })
     .then(() => {
       if (tab === AWAITING ) {

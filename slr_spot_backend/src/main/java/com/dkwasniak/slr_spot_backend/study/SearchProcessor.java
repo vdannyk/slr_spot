@@ -1,6 +1,5 @@
 package com.dkwasniak.slr_spot_backend.study;
 
-import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,131 +37,153 @@ public class SearchProcessor {
         }
     }
 
-    public Page<Study> searchByState(StudyState state, StudySearchType searchType, Long reviewId, Long userId,
-                                     int requiredReviewers, StatusEnum status, String searchValue, Pageable pageable) {
-        switch (state) {
-            case TO_BE_REVIEWED -> {
-                return searchToBeReviewed(searchType, reviewId, userId, requiredReviewers, status, searchValue, pageable);
+
+    public Page<Study> searchToBeReviewed(StudySearchType searchType, Long reviewId, Long userId,
+                                           Stage stage, StudyState state, String searchValue, Pageable pageable) {
+        switch (searchType) {
+            case TITLE -> {
+                return studyRepository.findToBeReviewedByTitleContaining(reviewId, userId, stage, state, searchValue, pageable);
             }
-            case CONFLICTED -> {
-                return searchConflicted(searchType, reviewId, requiredReviewers, status, searchValue, pageable);
+            case AUTHORS -> {
+                return studyRepository.findToBeReviewedByAuthorsContaining(reviewId, userId, stage, state, searchValue, pageable);
             }
-            case AWAITING -> {
-                return searchAwaiting(searchType, reviewId, userId, requiredReviewers, status, searchValue, pageable);
+            case YEAR -> {
+                return studyRepository.findToBeReviewedByPublicationYearContaining(reviewId, userId, stage, state, searchValue, pageable);
             }
-            case EXCLUDED -> {
-                return searchExcluded(searchType, reviewId, requiredReviewers, status, searchValue, pageable);
+            case TITLE_AUTHORS -> {
+                return studyRepository.findToBeReviewedByTitleAndAuthors(reviewId, userId, stage, state, searchValue, pageable);
+            }
+            case TITLE_YEAR -> {
+                return studyRepository.findToBeReviewedByTitleAndYear(reviewId, userId, stage, state, searchValue, pageable);
+            }
+            case AUTHORS_YEAR -> {
+                return studyRepository.findToBeReviewedByAuthorsAndYear(reviewId, userId, stage, state, searchValue, pageable);
+            }
+            case TITLE_AUTHORS_YEAR -> {
+                return studyRepository.findToBeReviewedByTitleAndAuthorsAndYear(reviewId, userId, stage, state, searchValue, pageable);
             }
             default -> {
-                throw new IllegalStateException("No studies found for given state");
+                return studyRepository.findToBeReviewedByEverything(reviewId, userId, stage, state, searchValue, pageable);
             }
         }
     }
 
-    private Page<Study> searchToBeReviewed(StudySearchType searchType, Long reviewId, Long userId, int requiredReviewers,
-                                           StatusEnum status, String searchValue, Pageable pageable) {
+    public Page<Study> searchConflicted(StudySearchType searchType, Long reviewId, Stage stage, StudyState state,
+                                         String searchValue, Pageable pageable) {
         switch (searchType) {
             case TITLE -> {
-                return studyRepository.findToBeReviewedByTitleContaining(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findConflictedByTitleContaining(reviewId, stage, state, searchValue, pageable);
             }
             case AUTHORS -> {
-                return studyRepository.findToBeReviewedByAuthorsContaining(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findConflictedByAuthorsContaining(reviewId, stage, state, searchValue, pageable);
             }
             case YEAR -> {
-                return studyRepository.findToBeReviewedByPublicationYearContaining(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findConflictedByPublicationYearContaining(reviewId, stage, state, searchValue, pageable);
             }
             case TITLE_AUTHORS -> {
-                return studyRepository.findToBeReviewedByTitleAndAuthors(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findConflictedByTitleAndAuthors(reviewId, stage, state, searchValue, pageable);
             }
             case TITLE_YEAR -> {
-                return studyRepository.findToBeReviewedByTitleAndYear(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findConflictedByTitleAndYear(reviewId, stage, state, searchValue, pageable);
             }
             case AUTHORS_YEAR -> {
-                return studyRepository.findToBeReviewedByAuthorsAndYear(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findConflictedByAuthorsAndYear(reviewId, stage, state, searchValue, pageable);
+            }
+            case TITLE_AUTHORS_YEAR -> {
+                return studyRepository.findConflictedByTitleAndAuthorsAndYear(reviewId, stage, state, searchValue, pageable);
             }
             default -> {
-                return studyRepository.findToBeReviewedByTitleAndAuthorsAndYear(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findConflictedByEverything(reviewId, stage, state, searchValue, pageable);
             }
         }
     }
 
-    private Page<Study> searchConflicted(StudySearchType searchType, Long reviewId, int requiredReviewers,
-                                           StatusEnum status, String searchValue, Pageable pageable) {
+    public Page<Study> searchAwaiting(StudySearchType searchType, Long reviewId, Long userId,
+                                      Stage stage, StudyState state, String searchValue, Pageable pageable) {
         switch (searchType) {
             case TITLE -> {
-                return studyRepository.findConflictedByTitleContaining(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findAwaitingByTitleContaining(reviewId, userId, stage, state, searchValue, pageable);
             }
             case AUTHORS -> {
-                return studyRepository.findConflictedByAuthorsContaining(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findAwaitingByAuthorsContaining(reviewId, userId, stage, state, searchValue, pageable);
             }
             case YEAR -> {
-                return studyRepository.findConflictedByPublicationYearContaining(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findAwaitingByPublicationYearContaining(reviewId, userId, stage, state, searchValue, pageable);
             }
             case TITLE_AUTHORS -> {
-                return studyRepository.findConflictedByTitleAndAuthors(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findAwaitingByTitleAndAuthors(reviewId, userId, stage, state, searchValue, pageable);
             }
             case TITLE_YEAR -> {
-                return studyRepository.findConflictedByTitleAndYear(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findAwaitingByTitleAndYear(reviewId, userId, stage, state, searchValue, pageable);
             }
             case AUTHORS_YEAR -> {
-                return studyRepository.findConflictedByAuthorsAndYear(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findAwaitingByAuthorsAndYear(reviewId, userId, stage, state, searchValue, pageable);
+            }
+            case TITLE_AUTHORS_YEAR -> {
+                return studyRepository.findAwaitingByTitleAndAuthorsAndYear(reviewId, userId, stage, state, searchValue, pageable);
             }
             default -> {
-                return studyRepository.findConflictedByTitleAndAuthorsAndYear(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findAwaitingByEverything(reviewId, userId, stage, state, searchValue, pageable);
             }
         }
     }
 
-    private Page<Study> searchAwaiting(StudySearchType searchType, Long reviewId, Long userId, int requiredReviewers,
-                                           StatusEnum status, String searchValue, Pageable pageable) {
+    public Page<Study> searchExcluded(StudySearchType searchType, Long reviewId, Stage stage, StudyState state,
+                                       String searchValue, Pageable pageable) {
         switch (searchType) {
             case TITLE -> {
-                return studyRepository.findAwaitingByTitleContaining(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findExcludedByTitleContaining(reviewId, stage, state, searchValue, pageable);
             }
             case AUTHORS -> {
-                return studyRepository.findAwaitingByAuthorsContaining(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findExcludedByAuthorsContaining(reviewId, stage, state, searchValue, pageable);
             }
             case YEAR -> {
-                return studyRepository.findAwaitingByPublicationYearContaining(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findExcludedByPublicationYearContaining(reviewId, stage, state, searchValue, pageable);
             }
             case TITLE_AUTHORS -> {
-                return studyRepository.findAwaitingByTitleAndAuthors(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findExcludedByTitleAndAuthors(reviewId, stage, state, searchValue, pageable);
             }
             case TITLE_YEAR -> {
-                return studyRepository.findAwaitingByTitleAndYear(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findExcludedByTitleAndYear(reviewId, stage, state, searchValue, pageable);
             }
             case AUTHORS_YEAR -> {
-                return studyRepository.findAwaitingByAuthorsAndYear(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findExcludedByAuthorsAndYear(reviewId, stage, state, searchValue, pageable);
+            }
+            case TITLE_AUTHORS_YEAR -> {
+                return studyRepository.findExcludedByTitleAndAuthorsAndYear(reviewId, stage, state, searchValue, pageable);
             }
             default -> {
-                return studyRepository.findAwaitingByTitleAndAuthorsAndYear(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findExcludedByEverything(reviewId, stage, state, searchValue, pageable);
             }
         }
     }
 
-    private Page<Study> searchExcluded(StudySearchType searchType, Long reviewId, int requiredReviewers,
-                                           StatusEnum status, String searchValue, Pageable pageable) {
+    public Page<Study> searchIncluded(StudySearchType searchType, Long reviewId, StudyState state,
+                                      String searchValue, Pageable pageable) {
         switch (searchType) {
             case TITLE -> {
-                return studyRepository.findExcludedByTitleContaining(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findIncludedByTitleContaining(reviewId, state, searchValue, pageable);
             }
             case AUTHORS -> {
-                return studyRepository.findExcludedByAuthorsContaining(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findIncludedByAuthorsContaining(reviewId, state, searchValue, pageable);
             }
             case YEAR -> {
-                return studyRepository.findExcludedByPublicationYearContaining(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findIncludedByPublicationYearContaining(reviewId, state, searchValue, pageable);
             }
             case TITLE_AUTHORS -> {
-                return studyRepository.findExcludedByTitleAndAuthors(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findIncludedByTitleAndAuthors(reviewId, state, searchValue, pageable);
             }
             case TITLE_YEAR -> {
-                return studyRepository.findExcludedByTitleAndYear(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findIncludedByTitleAndYear(reviewId, state, searchValue, pageable);
             }
             case AUTHORS_YEAR -> {
-                return studyRepository.findExcludedByAuthorsAndYear(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findIncludedByAuthorsAndYear(reviewId, state, searchValue, pageable);
+            }
+            case TITLE_AUTHORS_YEAR -> {
+                return studyRepository.findIncludedByTitleAndAuthorsAndYear(reviewId, state, searchValue, pageable);
             }
             default -> {
-                return studyRepository.findExcludedByTitleAndAuthorsAndYear(reviewId, requiredReviewers, status, searchValue, pageable);
+                return studyRepository.findIncludedByEverything(reviewId, state, searchValue, pageable);
             }
         }
     }

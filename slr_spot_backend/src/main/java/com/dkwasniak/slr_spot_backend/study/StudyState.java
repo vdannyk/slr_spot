@@ -4,5 +4,7 @@ public enum StudyState {
     TO_BE_REVIEWED,
     CONFLICTED,
     AWAITING,
-    EXCLUDED;
+    EXCLUDED,
+    INCLUDED,
+    DUPLICATES
 }

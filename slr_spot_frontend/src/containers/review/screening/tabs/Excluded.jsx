@@ -6,6 +6,7 @@ import axiosInstance from '../../../../services/api';
 import { useSelector } from "react-redux";
 import { OWNER, MEMBER, COOWNER } from '../../../../constants/roles';
 import { FULL_TEXT, TITLE_ABSTRACT } from '../../../../constants/studyStatuses';
+import { EVERYTHING_SEARCH } from '../../../../constants/searchTypes';
 import '../screening.css';
 
 
@@ -20,13 +21,14 @@ const Excluded = (props) => {
   var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
   const { user: currentUser } = useSelector((state) => state.auth);
 
+  const [searchType, setSearchType] = useState(EVERYTHING_SEARCH);
 
   function getStudies() {
     var userId = currentUser.id;
     if (props.isFullText) {
-      var status = 'FULL_TEXT';
-      axiosInstance.get("/studies/state/" + EXCLUDED, { params: {
-        reviewId, userId, status
+      var stage = 'FULL_TEXT';
+      axiosInstance.get("/studies/excluded", { params: {
+        reviewId, userId, stage
       }})
       .then((response) => {
         setStudies(response.data.content)
@@ -34,9 +36,9 @@ const Excluded = (props) => {
       .catch(() => {
       });
     } else {
-      var status = 'TITLE_ABSTRACT';
-      axiosInstance.get("/studies/state/" + EXCLUDED, { params: {
-        reviewId, userId, status
+      var stage = 'TITLE_ABSTRACT';
+      axiosInstance.get("/studies/excluded", { params: {
+        reviewId, userId, stage
       }})
       .then((response) => {
         setStudies(response.data.content)
@@ -55,17 +57,20 @@ const Excluded = (props) => {
   }
 
   const handleSearch = (searchValue) => {
-    console.log(searchValue);
     var userId = currentUser.id;
-    var status = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
-    axiosInstance.get("/studies/state/" + EXCLUDED + "/search", { params: {
-      reviewId, userId, status, searchValue 
-    }})
-    .then((response) => {
-      setStudies(response.data.content)
-    })
-    .catch(() => {
-    });
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    if (searchValue.trim().length > 0) {
+      axiosInstance.get("/studies/excluded/search", { params: {
+        reviewId, userId, stage, searchType, searchValue 
+      }})
+      .then((response) => {
+        setStudies(response.data.content)
+      })
+      .catch(() => {
+      });
+    } else {
+      getStudies();
+    }
   }
 
   useEffect(() => {
@@ -81,7 +86,8 @@ const Excluded = (props) => {
         showTeamHighlights={showTeamHighlights} 
         triggerShowPersonalHighlights={setShowPersonalHighlights}
         showPersonalHighlights={showPersonalHighlights} 
-        handleSearch={ handleSearch } />
+        handleSearch={ handleSearch }
+        setSearchType={ setSearchType }/>
 
       { studies.map(study => (
         <ScreeningStudy 

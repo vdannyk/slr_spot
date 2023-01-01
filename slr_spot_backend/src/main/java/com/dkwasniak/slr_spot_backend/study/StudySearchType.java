@@ -8,5 +8,6 @@ public enum StudySearchType {
     TITLE_AUTHORS,
     TITLE_YEAR,
     AUTHORS_YEAR,
-    TITLE_AUTHORS_YEAR;
+    TITLE_AUTHORS_YEAR,
+    EVERYTHING
 }

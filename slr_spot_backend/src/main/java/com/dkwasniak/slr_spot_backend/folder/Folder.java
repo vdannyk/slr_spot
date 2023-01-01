@@ -50,4 +50,9 @@ public class Folder {
     public Folder(String name) {
         this.name = name;
     }
+
+    public void addStudy(Study study) {
+        this.studies.add(study);
+        study.setFolder(this);
+    }
 }
