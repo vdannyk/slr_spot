@@ -39,7 +39,7 @@ const ResultStudy = ({ study, selected, handleSelect, allowChanges, reviewTags }
         isFullText={ true } 
         study={ study }
         allowChanges={ allowChanges } />
-      
+       
       <StudyTags 
         studyId={ study.id } 
         reviewTags={ reviewTags } 

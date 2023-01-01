@@ -70,3 +70,16 @@
 .slrspot__screening-options-search input {
 	padding: 2px 30px;
 }
+
+.slrspot__screening-options-container-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 40px 5px;
+}
+
+.slrspot__screening-options-container-buttons button {
+  padding: 5px;
+  margin: 0 40px 5px;
+  border-radius: 4px;
+}
