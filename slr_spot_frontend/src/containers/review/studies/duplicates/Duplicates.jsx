@@ -14,8 +14,7 @@ const Duplicates = (props) => {
       reviewId
     }})
     .then((response) => {
-      console.log(response.data);
-      setDuplicates(response.data);
+      setDuplicates(response.data.content);
     });
   }, []);
 
@@ -31,10 +30,7 @@ const Duplicates = (props) => {
     }
 
     const handleRestore = () => {
-      var status = 'TITLE_ABSTRACT';
-      axiosInstance.put("/studies/" + study.id + "/restore", null, { params: {
-        status
-      }})
+      axiosInstance.put("/studies/" + study.id + "/restore")
       .then(() => {
         handleStudiesUpdate(study.id);
       })

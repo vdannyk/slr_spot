@@ -156,6 +156,9 @@ public class FileService {
     }
 
     public InputStreamResource write(List<Study> studies, String format) {
+        if (studies.size() == 0) {
+            throw new IllegalStateException("No studies to export found");
+        }
         if (CSV_FORMAT.equals(format)) {
             return new CsvWriter().write(studies);
         } else if (BIB_FORMAT.equals(format)) {

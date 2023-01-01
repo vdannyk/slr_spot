@@ -25,9 +25,9 @@ const ToBeReviewed = (props) => {
   function getStudies() {
     var userId = currentUser.id;
     if (props.isFullText) {
-      var status = 'FULL_TEXT';
-      axiosInstance.get("/studies/state/" + TO_BE_REVIEWED, { params: {
-        reviewId, userId, status
+      var stage = 'FULL_TEXT';
+      axiosInstance.get("/studies/to-be-reviewed", { params: {
+        reviewId, userId, stage
       }})
       .then((response) => {
         setStudies(response.data.content)
@@ -35,9 +35,9 @@ const ToBeReviewed = (props) => {
       .catch(() => {
       });
     } else {
-      var status = 'TITLE_ABSTRACT';
-      axiosInstance.get("/studies/state/" + TO_BE_REVIEWED, { params: {
-        reviewId, userId, status
+      var stage = 'TITLE_ABSTRACT';
+      axiosInstance.get("/studies/to-be-reviewed", { params: {
+        reviewId, userId, stage
       }})
       .then((response) => {
         setStudies(response.data.content)

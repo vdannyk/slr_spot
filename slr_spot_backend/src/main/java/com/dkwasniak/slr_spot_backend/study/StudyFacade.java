@@ -6,8 +6,6 @@ import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
 import com.dkwasniak.slr_spot_backend.document.Document;
 import com.dkwasniak.slr_spot_backend.file.FileService;
-import com.dkwasniak.slr_spot_backend.imports.Import;
-import com.dkwasniak.slr_spot_backend.imports.ImportService;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
@@ -15,15 +13,12 @@ import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningService;
 import com.dkwasniak.slr_spot_backend.screeningDecision.dto.ScreeningDecisionDto;
-import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
-import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
+import com.dkwasniak.slr_spot_backend.study.dto.StatusDto;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.tag.TagService;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.csv.CSVRecord;
-import org.jbibtex.BibTeXDatabase;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,11 +27,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -68,14 +60,34 @@ public class StudyFacade {
         studyService.removeStudyById(studyId);
     }
 
-    public Page<Study> getStudiesByState(StudyState studyState, Long reviewId, Long userId,
-                                         StatusEnum status, int page, int size) {
+    public Page<Study> getStudiesToBeReviewed(Long reviewId, Long userId, Stage stage, int page, int size) {
         Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesToBeReviewed(reviewId, userId, stage, pageRq);
+    }
 
-        Review review = reviewService.getReviewById(reviewId);
-        int requiredReviewers = review.getScreeningReviewers();
+    public Page<Study> getStudiesAwaiting(Long reviewId, Long userId, Stage stage, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesAwaiting(reviewId, userId, stage, pageRq);
+    }
 
-        return studyService.getStudiesByState(studyState, reviewId, userId, requiredReviewers, status, pageRq);
+    public Page<Study> getStudiesConflicted(Long reviewId, Long userId, Stage stage, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesByStageAndState(reviewId, stage, StudyState.CONFLICTED, pageRq);
+    }
+
+    public Page<Study> getStudiesExcluded(Long reviewId, Long userId, Stage stage, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesByStageAndState(reviewId, stage, StudyState.EXCLUDED, pageRq);
+    }
+
+    public Page<Study> getDuplicates(Long reviewId, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesByState(reviewId, StudyState.DUPLICATES, pageRq);
+    }
+
+    public Page<Study> getIncludedStudies(Long reviewId, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return studyService.getStudiesByState(reviewId, StudyState.INCLUDED, pageRq);
     }
 
     public Set<Tag> getStudyTags(Long studyId) {
@@ -124,22 +136,28 @@ public class StudyFacade {
         if (studyService.isStudyScreeningAllowed(study)) {
             User user = userService.getUserById(screeningDecisionDto.getUserId());
 
-            Optional<ScreeningDecision> oldDecision = user.getScreeningDecisions().stream().filter(sd -> Objects.equals(sd.getStudy().getId(), studyId)).findFirst();
-            if (oldDecision.isPresent()) {
+            Optional<ScreeningDecision> oldDecision = user.getScreeningDecisions()
+                    .stream()
+                    .filter(sd -> Objects.equals(sd.getStudy().getId(), studyId)).findFirst();
+
+            if (oldDecision.isPresent() && oldDecision.get().getStage().equals(screeningDecisionDto.getStage())) {
                 screeningService.updateDecision(oldDecision.get(), screeningDecisionDto.getDecision());
                 studyService.addOperation(study,
                         new Operation(String.format(OperationDescription.CHANGE_VOTE.getDescription(), user.getEmail())));
             } else {
-                ScreeningDecision screeningDecision = new ScreeningDecision(user, study, screeningDecisionDto.getDecision());
+                ScreeningDecision screeningDecision = new ScreeningDecision(
+                        user, study, screeningDecisionDto.getDecision(), screeningDecisionDto.getStage()
+                );
                 studyService.addScreeningDecisionToStudy(study, screeningDecision);
                 studyService.addOperation(study,
                         new Operation(String.format(OperationDescription.VOTE.getDescription(), user.getEmail())));
             }
-            StatusEnum newStatus = studyService.verifyStudyStatus(study, requiredReviewers);
-            if (!newStatus.equals(study.getStatus())) {
+            StatusDto newStatus = studyService.verifyStudyStatus(study, requiredReviewers);
+            if (!newStatus.getStage().equals(study.getStage()) || !newStatus.getState().equals(study.getState())) {
                 studyService.updateStudyStatus(study, newStatus);
                 studyService.addOperation(study,
-                        new Operation(String.format(OperationDescription.CHANGE_STATUS.getDescription(), newStatus.name())));
+                        new Operation(String.format(OperationDescription.CHANGE_STATUS.getDescription(),
+                                newStatus.getStage().name() + " " + newStatus.getState().name())));
             }
         }
     }
@@ -148,28 +166,17 @@ public class StudyFacade {
         return screeningService.getScreeningDecisionByStudyIdAndUserId(studyId, userId).getDecision();
     }
 
-    public void restoreStudy(Long studyId, StatusEnum status) {
+    public void restoreStudy(Long studyId) {
         Study study = studyService.getStudyById(studyId);
-        if (status != null) {
-            studyService.updateStudyStatus(study, status);
-        } else {
-            studyService.clearDecisions(study);
-        }
+        studyService.updateStudyStatus(study, StatusDto.of(study.getStage(), StudyState.TO_BE_REVIEWED));
+        studyService.clearDecisions(study);
         studyService.addOperation(study, new Operation(OperationDescription.RESTORE_TO_SCREENING.getDescription()));
     }
 
     public void markStudyAsDuplicate(Long studyId) {
         Study study = studyService.getStudyById(studyId);
-        studyService.updateStudyStatus(study, StatusEnum.DUPLICATES);
+        studyService.updateStudyStatus(study, StatusDto.of(study.getStage(), StudyState.DUPLICATES));
         studyService.addOperation(study, new Operation(OperationDescription.MARK_DUPLICATE.getDescription()));
-    }
-
-    public List<Study> getDuplicates(Long reviewId) {
-        return studyService.getDuplicates(reviewId);
-    }
-
-    public List<Study> getIncludedStudies(Long reviewId) {
-        return studyService.getIncludedStudies(reviewId);
     }
 
     public Document getFullTextDocument(Long studyId) {
@@ -210,14 +217,36 @@ public class StudyFacade {
                 new Operation(OperationDescription.REMOVE_FULLTEXT.getDescription()));
     }
 
-    public int getStudiesCountByStatus(Long reviewId, StatusEnum statusEnum) {
-        return studyService.getStudiesCountByStatus(reviewId, statusEnum);
+    public int getStudiesCountByStatus(Long reviewId, String status) {
+        try {
+            Stage stage = Stage.valueOf(status);
+            return studyService.getStudiesCountByStage(reviewId, stage);
+        } catch (Exception e) {
+            try {
+                StudyState state = StudyState.valueOf(status);
+                return studyService.getStudiesCountByState(reviewId, state);
+            } catch (Exception ex) {
+                throw new IllegalStateException("Unsupported status type");
+            }
+        }
     }
 
-    public InputStreamResource exportStudiesByStatus(Long reviewId, StatusEnum statusEnum, String format) {
+    public InputStreamResource exportStudiesByStatus(Long reviewId, String status, String format) {
         fileService.checkIfExportFileFormatAllowed(format);
-        List<Study> studiesToExport = studyService.getStudiesByReviewIdAndStatus(reviewId, statusEnum);
-        return fileService.write(studiesToExport, format);
+        List<Study> studiesToExport;
+        try {
+            Stage stage = Stage.valueOf(status);
+            studiesToExport = studyService.getStudiesListByStage(reviewId, stage);
+            return fileService.write(studiesToExport, format);
+        } catch (Exception e) {
+            try {
+                StudyState state = StudyState.valueOf(status);
+                studiesToExport = studyService.getStudiesListByState(reviewId, state);
+                return fileService.write(studiesToExport, format);
+            } catch (Exception ex) {
+                throw new IllegalStateException("Unsupported status type");
+            }
+        }
     }
 
     public List<Operation> getStudyHistory(Long studyId) {
@@ -232,52 +261,52 @@ public class StudyFacade {
         return studyService.getStudiesByFolderId(folderId, reviewId, pageRq);
     }
 
-    public Page<Study> getStudiesToBeReviewedByFolderId(Long reviewId, Long folderId, Long userId,
-                                                        StatusEnum status, int page, int size) {
-        Review review = reviewService.getReviewById(reviewId);
-        int requiredReviewers = review.getScreeningReviewers();
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
-        return studyService.getStudiesToBeReviewedByFolderId(reviewId, folderId, userId, requiredReviewers, status, pageRq);
-    }
+//    public Page<Study> getStudiesToBeReviewedByFolderId(Long reviewId, Long folderId, Long userId,
+//                                                        StatusEnum status, int page, int size) {
+//        Review review = reviewService.getReviewById(reviewId);
+//        int requiredReviewers = review.getScreeningReviewers();
+//        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+//        return studyService.getStudiesToBeReviewedByFolderId(reviewId, folderId, userId, requiredReviewers, status, pageRq);
+//    }
+//
+//    public Page<Study> getStudiesConflictedByFolderId(Long reviewId, Long folderId, StatusEnum status,
+//                                                      int page, int size) {
+//        Review review = reviewService.getReviewById(reviewId);
+//        int requiredReviewers = review.getScreeningReviewers();
+//        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+//        return studyService.getStudiesConflictedByFolderId(reviewId, folderId, requiredReviewers, status, pageRq);
+//    }
+//
+//    public Page<Study> getStudiesAwaitingByFolderId(Long reviewId, Long folderId, Long userId,
+//                                                    StatusEnum status, int page, int size) {
+//        Review review = reviewService.getReviewById(reviewId);
+//        int requiredReviewers = review.getScreeningReviewers();
+//        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+//        return studyService.getStudiesAwaitingByFolderId(reviewId, folderId, userId, requiredReviewers, status, pageRq);
+//    }
+//
+//    public Page<Study> getStudiesExcludedByFolderId(Long reviewId, Long folderId, StatusEnum status,
+//                                                    int page, int size) {
+//        Review review = reviewService.getReviewById(reviewId);
+//        int requiredReviewers = review.getScreeningReviewers();
+//        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+//        return studyService.getStudiesExcludedByFolderId(reviewId, folderId, requiredReviewers, status, pageRq);
+//    }
 
-    public Page<Study> getStudiesConflictedByFolderId(Long reviewId, Long folderId, StatusEnum status,
-                                                      int page, int size) {
-        Review review = reviewService.getReviewById(reviewId);
-        int requiredReviewers = review.getScreeningReviewers();
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
-        return studyService.getStudiesConflictedByFolderId(reviewId, folderId, requiredReviewers, status, pageRq);
-    }
-
-    public Page<Study> getStudiesAwaitingByFolderId(Long reviewId, Long folderId, Long userId,
-                                                    StatusEnum status, int page, int size) {
-        Review review = reviewService.getReviewById(reviewId);
-        int requiredReviewers = review.getScreeningReviewers();
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
-        return studyService.getStudiesAwaitingByFolderId(reviewId, folderId, userId, requiredReviewers, status, pageRq);
-    }
-
-    public Page<Study> getStudiesExcludedByFolderId(Long reviewId, Long folderId, StatusEnum status,
-                                                    int page, int size) {
-        Review review = reviewService.getReviewById(reviewId);
-        int requiredReviewers = review.getScreeningReviewers();
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
-        return studyService.getStudiesExcludedByFolderId(reviewId, folderId, requiredReviewers, status, pageRq);
-    }
-
-    public Page<Study> searchStudiesByState(StudyState studyState, Long reviewId, Long userId,
-                                            StatusEnum status, StudySearchType searchType, String searchValue, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
-
-        Review review = reviewService.getReviewById(reviewId);
-        int requiredReviewers = review.getScreeningReviewers();
-
-        return searchProcessor.searchByState(studyState, searchType, reviewId, userId, requiredReviewers, status, searchValue, pageRq);
-    }
-
-    public Page<Study> searchStudies(Long reviewId, StudySearchType searchType, String searchValue, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
-
-        return searchProcessor.searchAll(searchType, reviewId, searchValue, pageRq);
-    }
+//    public Page<Study> searchStudiesByState(StudyState studyState, Long reviewId, Long userId,
+//                                            StatusEnum status, StudySearchType searchType, String searchValue, int page, int size) {
+//        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+//
+//        Review review = reviewService.getReviewById(reviewId);
+//        int requiredReviewers = review.getScreeningReviewers();
+//
+//        return searchProcessor.searchByState(studyState, searchType, reviewId, userId, requiredReviewers, status, searchValue, pageRq);
+//    }
+//
+//    public Page<Study> searchStudies(Long reviewId, StudySearchType searchType, String searchValue, int page, int size) {
+//        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+//
+//        return searchProcessor.searchAll(searchType, reviewId, searchValue, pageRq);
+//    }
 
 }

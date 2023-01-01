@@ -13,6 +13,7 @@ import { INCLUSION_TYPE, EXCLUSION_TYPE } from '../criteria/CriteriaTypes';
 import { OWNER, MEMBER, COOWNER } from '../../../constants/roles';
 import AwaitingOptions from './tabSpecificOptions/AwaitingOptions';
 import ConflictedOptions from './tabSpecificOptions/ConflictedOptions';
+import { FULL_TEXT, TITLE_ABSTRACT } from '../../../constants/studyStages';
 import './screeningStudy.css';
 
 
@@ -51,7 +52,8 @@ const ScreeningStudyInFolder = (props) => {
     axiosInstance.post("/studies/" + props.study.id + "/screening_decisions", {
       reviewId: reviewId,
       userId: currentUser.id,
-      decision: vote
+      decision: vote,
+      stage: props.isFullText ? FULL_TEXT : TITLE_ABSTRACT
     })
     .then(() => {
       // if (props.tab === AWAITING ) {

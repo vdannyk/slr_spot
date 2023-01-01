@@ -4,11 +4,8 @@ import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.document.Document;
 import com.dkwasniak.slr_spot_backend.folder.Folder;
 import com.dkwasniak.slr_spot_backend.imports.Import;
-import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
-import com.dkwasniak.slr_spot_backend.study.status.Status;
-import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -73,7 +70,10 @@ public class Study {
     private Import studyImport;
 
     @Enumerated(EnumType.STRING)
-    private StatusEnum status;
+    private Stage stage;
+
+    @Enumerated(EnumType.STRING)
+    private StudyState state;
 
     @ManyToOne
     @JoinColumn(name = "folder_id")

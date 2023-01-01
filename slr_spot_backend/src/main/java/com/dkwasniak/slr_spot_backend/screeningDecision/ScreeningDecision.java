@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.screeningDecision;
 
+import com.dkwasniak.slr_spot_backend.study.Stage;
 import com.dkwasniak.slr_spot_backend.study.Study;
 import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.Getter;
@@ -34,10 +35,14 @@ public class ScreeningDecision {
     @Enumerated(EnumType.STRING)
     private Decision decision;
 
-    public ScreeningDecision(User user, Study study, Decision decision) {
+    @Enumerated(EnumType.STRING)
+    private Stage stage;
+
+    public ScreeningDecision(User user, Study study, Decision decision, Stage stage) {
         this.id = new ScreeningDecisionId(user.getId(), study.getId());
         this.user = user;
         this.study = study;
         this.decision = decision;
+        this.stage = stage;
     }
 }

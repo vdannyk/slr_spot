@@ -26,9 +26,9 @@ const Excluded = (props) => {
   function getStudies() {
     var userId = currentUser.id;
     if (props.isFullText) {
-      var status = 'FULL_TEXT';
-      axiosInstance.get("/studies/state/" + EXCLUDED, { params: {
-        reviewId, userId, status
+      var stage = 'FULL_TEXT';
+      axiosInstance.get("/studies/excluded", { params: {
+        reviewId, userId, stage
       }})
       .then((response) => {
         setStudies(response.data.content)
@@ -36,9 +36,9 @@ const Excluded = (props) => {
       .catch(() => {
       });
     } else {
-      var status = 'TITLE_ABSTRACT';
-      axiosInstance.get("/studies/state/" + EXCLUDED, { params: {
-        reviewId, userId, status
+      var stage = 'TITLE_ABSTRACT';
+      axiosInstance.get("/studies/excluded", { params: {
+        reviewId, userId, stage
       }})
       .then((response) => {
         setStudies(response.data.content)

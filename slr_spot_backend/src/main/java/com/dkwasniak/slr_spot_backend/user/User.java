@@ -2,11 +2,9 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
-import com.dkwasniak.slr_spot_backend.review.Review;
-import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
-import com.dkwasniak.slr_spot_backend.screeningDecision.Stage;
+import com.dkwasniak.slr_spot_backend.study.Stage;
 import com.dkwasniak.slr_spot_backend.study.Study;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,15 +17,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 

@@ -35,7 +35,7 @@ const Results = (props) => {
     }})
     .then((response) => {
       console.log(response.data);
-      setIncludedStudies(response.data);
+      setIncludedStudies(response.data.content);
     });
   }, []);
 
@@ -49,6 +49,10 @@ const Results = (props) => {
     .catch(() => {
     });
   }, []);
+
+  const handleStudiesUpdate = (id) => {
+    setIncludedStudies(includedStudies.filter(study => study.id !== id));
+  }
 
   const handleSelectAll = (event) => {
     if (event.target.checked) {
@@ -210,7 +214,8 @@ const Results = (props) => {
             selected={ selected }
             handleSelect= { () => handleSelect(study) }
             allowChanges={ allowChanges } 
-            reviewTags={ reviewTags }/>
+            reviewTags={ reviewTags } 
+            triggerStudiesUpdate={ handleStudiesUpdate }/>
         ))}
       </div>
       { showExtractMenu && <ContentPopup content={<ExtractData selectedStudies={selected} />} triggerExit={ () => setShowExtractMenu(false)} /> }

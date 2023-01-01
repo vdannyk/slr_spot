@@ -4,9 +4,10 @@ import { ContentPopup, StudyDiscussion, StudyHistory } from '../../../components
 import Check from 'react-bootstrap/FormCheck';
 import StudyTags from '../../../components/screening/screeningStudy/studyTags/StudyTags';
 import FullTextField from '../../../components/screening/screeningStudy/fullTextField/FullTextField';
+import axiosInstance from '../../../services/api';
 
 
-const ResultStudy = ({ study, selected, handleSelect, allowChanges, reviewTags }) => {
+const ResultStudy = ({ study, selected, handleSelect, allowChanges, reviewTags, triggerStudiesUpdate }) => {
   const [showAbstract, setShowAbstract] = useState(false);
   const [showDiscussion, setShowDiscussion] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -14,6 +15,15 @@ const ResultStudy = ({ study, selected, handleSelect, allowChanges, reviewTags }
 
   const handleShowAbstract = () => {
     setShowAbstract(!showAbstract);
+  }
+
+  const handleRestore = () => {
+    axiosInstance.put("/studies/" + study.id + "/restore")
+    .then(() => {
+      triggerStudiesUpdate(study.id);
+    })
+    .catch(() => {
+    });
   }
 
   return (
@@ -49,7 +59,7 @@ const ResultStudy = ({ study, selected, handleSelect, allowChanges, reviewTags }
         <button onClick={ () => setShowDiscussion(true)}>discussion</button>
         <button onClick={ () => setShowHistory(true) }>history</button>
         { allowChanges && 
-          <button>Restore to full text</button> 
+          <button onClick={ handleRestore }>Restore to full text</button> 
         }
       </div>
 
