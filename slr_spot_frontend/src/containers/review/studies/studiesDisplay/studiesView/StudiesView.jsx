@@ -13,7 +13,8 @@ import './studiesView.css';
 
 const StudiesView = ({allowChanges}) => {
   const [loading, setLoading] = useState(false);
-  const [folders, setFolders] = useState([{'id':1, 'name':'test1'},{'id':2, 'name':'test2'}]);
+  const [folders, setFolders] = useState([]);
+  const [selectedFolderId, setSelectedFolderId] = useState();
   const [selected, setSelected] = useState([]);
   const [studies, setStudies] = useState([]);
   const [searchValue, setSearchValue] = useState('');
@@ -81,6 +82,15 @@ const StudiesView = ({allowChanges}) => {
     })
     .catch(() => {
     });
+
+    axiosInstance.get("/folders", { params: {
+      reviewId
+    }})
+    .then((response) => {
+      setFolders(response.data);
+    })
+    .catch(() => {
+    });
   }, []);
 
 
@@ -115,7 +125,9 @@ const StudiesView = ({allowChanges}) => {
         <td>{item.title}</td>
         <td>{item.authors}</td>
         <td>{item.publicationYear}</td>
-        <td>not assigned</td>
+        { item.folder
+          ? <td>{item.folder.name}</td> 
+          : <td>--</td> }
       </tr>
     </tbody>
   );
@@ -140,26 +152,11 @@ const StudiesView = ({allowChanges}) => {
     });
   }
 
-  const FoldersDropdown = () => {
-    const [title, setTitle] = useState('Select folder');
+  const [title, setTitle] = useState('Select folder');
 
-    const handleSelectFolder = (event) => {
-      setTitle(event)
-    }
-
-    return (
-      <DropdownButton
-        id="slrspot__dropdown-folders"
-        title={title} onSelect={ handleSelectFolder }>
-        { folders.map(item => (
-          <Dropdown.Item 
-            key={item.id} 
-            eventKey={item.name}>
-            {item.name}
-          </Dropdown.Item>
-        ))}
-      </DropdownButton>
-    )
+  const handleSelectFolder = (event) => {
+    setTitle(folders.filter(item => item.id === parseInt(event))[0].name);
+    setSelectedFolderId(parseInt(event));
   }
 
   const handleTitleCheck = () => {
@@ -239,8 +236,18 @@ const StudiesView = ({allowChanges}) => {
   }, [pageSize]);
 
   const handleMarkDuplicates = () => {
-    console.log(selected.map(s => s.id))
     axiosInstance.post("/studies/duplicate", {
+      studiesId: selected.map(s => s.id)
+    })
+    .then(() => {
+      window.location.reload();
+    })
+    .catch(() => {
+    });
+  }
+
+  const handleAssignFolder = () => {
+    axiosInstance.post("/folders/" + selectedFolderId + "/studies", {
       studiesId: selected.map(s => s.id)
     })
     .then(() => {
@@ -284,15 +291,25 @@ const StudiesView = ({allowChanges}) => {
 
           <div className='slrspot__studiesView-folders'>
             <div className='slrspot__screening-options-container-checks'>
-              <div className='slrspot__screening-options-check'>
+              {/* <div className='slrspot__screening-options-check'>
                 <Check />
                 <label>Show only not assigned studies</label>
-              </div>
+              </div> */}
             </div>
             { allowChanges &&
               <div className='slrspot__studiesView-folders-select'>
-                <FoldersDropdown />
-                <label>Assign</label>
+                <DropdownButton
+                  id="slrspot__dropdown-folders"
+                  title={title} onSelect={ handleSelectFolder }>
+                  { folders.map(item => (
+                    <Dropdown.Item 
+                      key={item.name} 
+                      eventKey={item.id}>
+                      {item.name}
+                    </Dropdown.Item>
+                  ))}
+                </DropdownButton>
+                <label onClick={ handleAssignFolder }>Assign</label>
               </div>
             }
           </div>

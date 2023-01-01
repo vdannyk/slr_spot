@@ -77,7 +77,6 @@ public class Study {
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
-    @JsonIgnore
     private Folder folder;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
