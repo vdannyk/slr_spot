@@ -12,18 +12,15 @@ import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleEnum;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleService;
 import com.dkwasniak.slr_spot_backend.study.StudyService;
-import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
+import com.dkwasniak.slr_spot_backend.study.StudyState;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
-import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.dkwasniak.slr_spot_backend.userReview.UserReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -123,7 +120,7 @@ public class ReviewFacade {
                                 .filter(u -> !ReviewRoleEnum.OWNER.name().equals(u.getRole().getName())).map(u -> u.getUser().getFirstName() + " " + u.getUser().getLastName() + " - " + u.getRole().getName()).collect(Collectors.toList()))
                         .totalStudiesImported(0)
                         .removedDuplicates(review.getNumOfRemovedDuplicates())
-                        .selectedStudies(studyService.getStudiesCountByStatus(reviewId, StatusEnum.INCLUDED))
+                        .selectedStudies(studyService.getStudiesCountByState(reviewId, StudyState.INCLUDED))
                 .build());
     }
 

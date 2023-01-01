@@ -7,5 +7,7 @@ import java.util.List;
 
 @Repository
 public interface FolderRepository extends JpaRepository<Folder, Long> {
-    List<Folder> findByParentIsNull();
+
+    List<Folder> findByReview_IdAndParentIsNull(long reviewId);
+    List<Folder> findAllByReview_Id(long reviewId);
 }

@@ -11,7 +11,8 @@ import axiosInstance from '../../../services/api';
 import FullTextField from './fullTextField/FullTextField';
 import KeyWordHighlight from '../../keyWordHighlight/KeyWordHighlight';
 import { INCLUSION_TYPE, EXCLUSION_TYPE } from '../criteria/CriteriaTypes';
-
+import ConflictedOptions from './tabSpecificOptions/ConflictedOptions';
+import { FULL_TEXT, TITLE_ABSTRACT } from '../../../constants/studyStages';
 
 const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh, 
                           tab, isFullText, reviewTags, allowChanges, showHighlights, highlights }) => {
@@ -37,7 +38,8 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
     axiosInstance.post("/studies/" + study.id + "/screening_decisions", {
       reviewId: reviewId,
       userId: currentUser.id,
-      decision: vote
+      decision: vote,
+      stage: isFullText ? FULL_TEXT : TITLE_ABSTRACT
     })
     .then(() => {
       if (tab === AWAITING ) {
@@ -70,35 +72,6 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
 
   const handleShowAbstract = () => {
     setShowAbstract(!showAbstract);
-  }
-
-  const ConflictedOptions = () => {
-    // to do -> check role in useState
-    const [showOptions, setShowOptions] = useState(false);
-
-    return (
-      <div className='slrspot__screeningStudy-decision'>
-        { showOptions 
-        ? <>
-            <button 
-              className='slrspot__screeningStudy-decision-button'
-              onClick={ () => handleVote('EXCLUDE')}>
-                exclude
-            </button>
-            <button 
-              className='slrspot__screeningStudy-decision-button' 
-              onClick={ () => handleVote('INCLUDE')}>
-                include
-            </button>
-          </>
-        : <button 
-            className='slrspot__screeningStudy-decision-button' 
-            onClick={() => setShowOptions(true)}>
-              change decision
-          </button>
-        }
-      </div>
-    )
   }
 
   const AwaitingOptions = () => {
@@ -171,7 +144,9 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
       )
     } else if (tab === CONFLICTED) {
       return (
-        <ConflictedOptions />
+        <ConflictedOptions 
+          handleVote={ handleVote }
+        />
       )
     } else if (tab === AWAITING) {
       return (
@@ -192,13 +167,30 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
 
   return (
     <div className='slrspot__screeningStudy'>
-      <h3>{ study.title }</h3>
+      { showHighlights 
+        ? <h3>
+            <KeyWordHighlight 
+              text={ study.title } 
+              inclusionWords={ inclusionHighlights } 
+              exclusionWords={ exclusionHighlights }/>
+          </h3> 
+        : <h3>{ study.title }</h3> }
+
       <button onClick={handleShowAbstract} className='slrspot__screeningStudy-showAbstract-button'>
         { showAbstract ? 'hide abstract' : 'show abstract'}
       </button>
-      { showAbstract && <p><label>abstract:</label> { study.documentAbstract }</p> }
+
       {showHighlights ? (
         <>
+          { showAbstract && 
+            <p>
+              <label>abstract:</label>
+              <KeyWordHighlight 
+                text={ study.documentAbstract }
+                inclusionWords={ inclusionHighlights } 
+                exclusionWords={ exclusionHighlights }/>
+            </p> 
+          }
           <p>
             <label>authors:</label><span> </span>
             <KeyWordHighlight 
@@ -244,6 +236,7 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
         </>
       ) : (
         <>
+          { showAbstract && <p><label>abstract:</label> { study.documentAbstract }</p> }
           <p><label>authors:</label> { study.authors }</p>
           <p><label>journal:</label> { study.journalTitle }</p>
           <p><label>publicationYear:</label> { study.publicationYear }</p>

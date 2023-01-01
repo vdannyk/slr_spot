@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+.slrspot__studyFolder:hover {
+  cursor: pointer;
+  background-color: rgb(216, 216, 216);
+}
+
 .slrspot__studyFolder p { 
   margin: 0;
   font-size: 20px;

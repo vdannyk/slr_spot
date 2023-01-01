@@ -22,9 +22,9 @@ const StudyFolderItem = (props) => {
   }
 
   return (
-    <div className='slrspot__studyFolder'>
+    <div className='slrspot__studyFolder' onClick={ () => props.handleShowStudy(props.study)}>
       <p>
-        <AiFillFileText style={{ "margin-right": '5px'}} />
+        <AiFillFileText style={{ "marginRight": '5px'}} />
       </p>
       <b>{shortenText(props.study.title)}</b>
       {shortenText(props.study.authors)}
@@ -33,6 +33,7 @@ const StudyFolderItem = (props) => {
       { props.isScreening 
         ? <p className='slrspot__studyFolder-details'>screen</p> 
         : <p onClick={ () => setIsExpanded(!isExpanded) } className='slrspot__studyFolder-details'>expand</p>}
+
     </div>
   )
 }

@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.folder;
 
+import com.dkwasniak.slr_spot_backend.folder.dto.FolderAssignDto;
 import com.dkwasniak.slr_spot_backend.folder.dto.FolderRequest;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,13 @@ public class FolderController {
     private final FolderFacade folderFacade;
 
     @GetMapping
-    public ResponseEntity<List<Folder>> getFolderTree() {
-        return ResponseEntity.ok().body(folderService.getRootFolders());
+    public ResponseEntity<List<Folder>> getFolders(@RequestParam Long reviewId) {
+        return ResponseEntity.ok().body(folderService.getAllFoldersByReviewId(reviewId));
+    }
+
+    @GetMapping("/tree")
+    public ResponseEntity<List<Folder>> getFolderTree(@RequestParam Long reviewId) {
+        return ResponseEntity.ok().body(folderService.getRootFolders(reviewId));
     }
 
     @PostMapping
@@ -38,8 +44,15 @@ public class FolderController {
         return ResponseEntity.created(uri).body(id);
     }
 
+    @PostMapping("/{id}/studies")
+    public ResponseEntity<Long> addStudies(@PathVariable Long id,
+                                           @RequestBody FolderAssignDto folderAssignDto) {
+        folderService.addStudies(id, folderAssignDto.getStudiesId());
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{folderId}")
-    public ResponseEntity<Void> deleteImport(@PathVariable Long folderId) {
+    public ResponseEntity<Void> deleteFolder(@PathVariable Long folderId) {
         folderFacade.removeFolderById(folderId);
         return ResponseEntity.ok().build();
     }

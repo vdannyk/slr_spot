@@ -5,7 +5,7 @@ import { AiOutlineClose } from "react-icons/ai";
 const ContentPopup = (props) => {
   return (
     <div className='slrspot__contentPopup'>
-      <div className='slrspot__contentPopup-container'>
+      <div className='slrspot__contentPopup-container' style={{ width: props.isWide ? '720px' : '480px' }}>
         <div className="slrspot__contentPopup-closeBtn_container">
           <AiOutlineClose size={25} onClick={ props.triggerExit } />
         </div>

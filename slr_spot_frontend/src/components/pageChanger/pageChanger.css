@@ -1,0 +1,11 @@
+.slrspot__page-changer-option {
+  margin-left: 2px;
+  background-color: rgb(225, 225, 225);
+  padding: 2px;
+  border: thin solid #c0c0c0;
+  cursor: pointer;
+}
+
+.slrspot__page-changer-option#selected {
+  background-color: rgb(245, 178, 255);
+}

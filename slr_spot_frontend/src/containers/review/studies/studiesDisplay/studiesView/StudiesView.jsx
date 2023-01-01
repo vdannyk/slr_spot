@@ -4,25 +4,90 @@ import { Table } from "react-bootstrap";
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import axiosInstance from '../../../../../services/api';
 import { useParams } from "react-router-dom";
+import { AUTHORS_SEARCH, AUTHORS_YEAR_SEARCH, TITLE_AUTHORS_SEARCH, TITLE_AUTHORS_YEAR_SEARCH, TITLE_SEARCH, TITLE_YEAR_SEARCH, YEAR_SEARCH } from '../../../../../constants/searchTypes';
+import ReactPaginate from 'react-paginate';
+import { PageChanger } from '../../../../../components';
+import { CgDuplicate } from "react-icons/cg";
 import './studiesView.css';
 
 
 const StudiesView = ({allowChanges}) => {
   const [loading, setLoading] = useState(false);
-  const [folders, setFolders] = useState([{'id':1, 'name':'test1'},{'id':2, 'name':'test2'}]);
+  const [folders, setFolders] = useState([]);
+  const [selectedFolderId, setSelectedFolderId] = useState();
   const [selected, setSelected] = useState([]);
   const [studies, setStudies] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
   const { reviewId } = useParams();
+  const [searchType, setSearchType] = useState(TITLE_SEARCH);
+  const [searchPlaceholder, setSearchPlaceholder] = useState("Title");
+  const [titleCheck, setTitleCheck] = useState(true);
+  const [authorsCheck, setAuthorsCheck] = useState(false);
+  const [yearCheck, setYearCheck] = useState(false);
+  
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
+  const [pageCount, setPageCount] = useState(0);
+  const [searchPerformed, setSearchPerformed] = useState(false);
+
+
+  useEffect(() => {
+    if (titleCheck && authorsCheck && yearCheck) {
+      setSearchType(TITLE_AUTHORS_YEAR_SEARCH);
+      setSearchPlaceholder('Title, Authors, Year...')
+    }
+    else if (titleCheck && authorsCheck) {
+      setSearchType(TITLE_AUTHORS_SEARCH);
+      setSearchPlaceholder('Title, Authors...')
+    }
+    else if (titleCheck && yearCheck) {
+      setSearchType(TITLE_YEAR_SEARCH);
+      setSearchPlaceholder('Title, Year...')
+    }
+    else if (authorsCheck && yearCheck) {
+      setSearchType(AUTHORS_YEAR_SEARCH);
+      setSearchPlaceholder('Authors, Year...')
+    }
+    else if (titleCheck) {
+      setSearchType(TITLE_SEARCH);
+      setSearchPlaceholder('Title...')
+    }
+    else if (authorsCheck) {
+      setSearchType(AUTHORS_SEARCH);
+      setSearchPlaceholder('Authors...')
+    } else if (yearCheck) {
+      setSearchType(YEAR_SEARCH);
+      setSearchPlaceholder('Year...')
+    } else {
+      setSearchType(TITLE_SEARCH);
+      setSearchPlaceholder('Title...')
+      setTitleCheck(true);
+    }
+  }, [titleCheck, authorsCheck, yearCheck]);
 
   useEffect(() => {
     setLoading(true);
+    var page = currentPage;
+    var size = pageSize;
     axiosInstance.get("/studies", { params: {
+      reviewId, page, size
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(false);
+      setLoading(false);
+      setCurrentPage(response.number);
+    })
+    .catch(() => {
+    });
+
+    axiosInstance.get("/folders", { params: {
       reviewId
     }})
     .then((response) => {
-      console.log(response.data);
-      setStudies(response.data)
-      setLoading(false);
+      setFolders(response.data);
     })
     .catch(() => {
     });
@@ -45,7 +110,7 @@ const StudiesView = ({allowChanges}) => {
       }
   }
 
-  const listTestData = studies.map((item, id) => 
+  const listStudies = studies.map((item, id) => 
     <tbody key={id}>
       <tr>
         <td>
@@ -54,35 +119,142 @@ const StudiesView = ({allowChanges}) => {
             checked={ selected.includes(item) }
             onChange={ () => handleSelect(item) } />
         </td>
-        <td>{id + 1}</td>
+        { item.state === "DUPLICATES" 
+          ? <><td>{id + 1}<CgDuplicate color='orange'/></td></> 
+          : <td>{id + 1}</td> }
         <td>{item.title}</td>
         <td>{item.authors}</td>
         <td>{item.publicationYear}</td>
-        <td>not assigned</td>
+        { item.folder
+          ? <td>{item.folder.name}</td> 
+          : <td>--</td> }
       </tr>
     </tbody>
   );
 
-  const FoldersDropdown = () => {
-    const [title, setTitle] = useState('Select folder');
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  }
 
-    const handleSelectFolder = (event) => {
-      setTitle(event)
+  const handleSearch = () => {
+    var page = currentPage;
+    var size = pageSize;
+    axiosInstance.get("/studies/search", { params: {
+      reviewId, searchType, searchValue, page, size
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(true);
+      setCurrentPage(response.number);
+    })
+    .catch(() => {
+    });
+  }
+
+  const [title, setTitle] = useState('Select folder');
+
+  const handleSelectFolder = (event) => {
+    setTitle(folders.filter(item => item.id === parseInt(event))[0].name);
+    setSelectedFolderId(parseInt(event));
+  }
+
+  const handleTitleCheck = () => {
+    setTitleCheck(!titleCheck);
+  }
+
+  const handleAuthorsCheck = () => {
+    setAuthorsCheck(!authorsCheck);
+  }
+
+  const handleYearCheck = () => {
+    setYearCheck(!yearCheck);
+  }
+
+  const handlePageChange = (studyPage) => {
+    var page = studyPage.selected;
+    var size = pageSize;
+    if (searchPerformed) {
+      axiosInstance.get("/studies/search", { params: {
+        reviewId, searchType, searchValue, page, size
+      }})
+      .then((response) => {
+        setStudies(response.data.content);
+        setPageCount(response.data.totalPages);
+        setSearchPerformed(true);
+        setCurrentPage(response.number);
+      })
+      .catch(() => {
+      });
+    } else {
+      setLoading(true);
+      axiosInstance.get("/studies", { params: {
+        reviewId, page, size
+      }})
+      .then((response) => {
+        setStudies(response.data.content);
+        setPageCount(response.data.totalPages);
+        setSearchPerformed(false);
+        setLoading(false);
+        setCurrentPage(response.number);
+      })
+      .catch(() => {
+      });
     }
+  }
 
-    return (
-      <DropdownButton
-        id="slrspot__dropdown-folders"
-        title={title} onSelect={ handleSelectFolder }>
-        { folders.map(item => (
-          <Dropdown.Item 
-            key={item.id} 
-            eventKey={item.name}>
-            {item.name}
-          </Dropdown.Item>
-        ))}
-      </DropdownButton>
-    )
+  useEffect(() => {
+    var page = currentPage;
+    var size = pageSize;
+    if (searchPerformed) {
+      axiosInstance.get("/studies/search", { params: {
+        reviewId, searchType, searchValue, page, size
+      }})
+      .then((response) => {
+        setStudies(response.data.content);
+        setPageCount(response.data.totalPages);
+        setSearchPerformed(true);
+        setCurrentPage(response.number);
+      })
+      .catch(() => {
+      });
+    } else {
+      setLoading(true);
+      axiosInstance.get("/studies", { params: {
+        reviewId, page, size
+      }})
+      .then((response) => {
+        setStudies(response.data.content);
+        setPageCount(response.data.totalPages);
+        setSearchPerformed(false);
+        setLoading(false);
+        setCurrentPage(response.number);
+      })
+      .catch(() => {
+      });
+    }
+  }, [pageSize]);
+
+  const handleMarkDuplicates = () => {
+    axiosInstance.post("/studies/duplicate", {
+      studiesId: selected.map(s => s.id)
+    })
+    .then(() => {
+      window.location.reload();
+    })
+    .catch(() => {
+    });
+  }
+
+  const handleAssignFolder = () => {
+    axiosInstance.post("/folders/" + selectedFolderId + "/studies", {
+      studiesId: selected.map(s => s.id)
+    })
+    .then(() => {
+      window.location.reload();
+    })
+    .catch(() => {
+    });
   }
 
   return (
@@ -92,39 +264,75 @@ const StudiesView = ({allowChanges}) => {
 
           <div className='slrspot__studiesView-search'>
             <div className='slrspot__screening-options-container-checks'>
-              <div className='slrspot__screening-options-check'>
-                <Check />
+              <div className='slrspot__screening-options-check' style={{ marginLeft: '20px' }}>
+                <Check
+                  checked={ titleCheck } 
+                  onChange={ handleTitleCheck }/>
                 <label>Title</label>
               </div>
-              {/* <a>switch to review mode</a> */}
-              <div className='slrspot__screening-options-check'>
-                <Check />
-                <label>authors</label>
+              <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>
+                <Check
+                  checked={ authorsCheck } 
+                  onChange={ handleAuthorsCheck }/>
+                <label>Authors</label>
+              </div>
+              <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>
+                <Check
+                  checked={ yearCheck } 
+                  onChange={ handleYearCheck }/>
+                <label>Year</label>
               </div>
             </div>
-            <div className='slrspot__screening-options-search'>
-              <label>Search</label>
-              <input></input>
+            <div className='slrspot__screening-options-search' style={{ flexDirection: 'row' }}>
+              <label onClick={ handleSearch }>Search</label>
+              <input onChange={ handleSearchChange } placeholder={ searchPlaceholder }/>
             </div>
           </div>
 
           <div className='slrspot__studiesView-folders'>
             <div className='slrspot__screening-options-container-checks'>
-              <div className='slrspot__screening-options-check'>
+              {/* <div className='slrspot__screening-options-check'>
                 <Check />
                 <label>Show only not assigned studies</label>
-              </div>
+              </div> */}
             </div>
             { allowChanges &&
               <div className='slrspot__studiesView-folders-select'>
-                <FoldersDropdown />
-                <label>Assign</label>
+                <DropdownButton
+                  id="slrspot__dropdown-folders"
+                  title={title} onSelect={ handleSelectFolder }>
+                  { folders.map(item => (
+                    <Dropdown.Item 
+                      key={item.name} 
+                      eventKey={item.id}>
+                      {item.name}
+                    </Dropdown.Item>
+                  ))}
+                </DropdownButton>
+                <label onClick={ handleAssignFolder }>Assign</label>
+              </div>
+            }
+          </div>
+
+          <div className='slrspot__studiesView-duplicate'>
+            { allowChanges &&
+              <div className='slrspot__studiesView-duplicate-option'>
+                <label onClick={ handleMarkDuplicates }>Mark as duplicate</label>
               </div>
             }
           </div>
 
         </div>
       </div>
+
+      <div style={{ textAlign: 'right' }}>
+        <PageChanger 
+          defaultSelected={pageSize}
+          options={[5,10,25]}
+          changePageSize={setPageSize}
+        />
+      </div>
+
       <Table>
         <thead>
           <tr>
@@ -143,8 +351,20 @@ const StudiesView = ({allowChanges}) => {
             <th>Folder</th>
           </tr>
         </thead>
-        { listTestData }
+        { listStudies }
       </Table>
+
+      { studies.length > 0 && pageCount > 1 &&
+        <ReactPaginate
+          pageCount={pageCount}
+          pageRangeDisplayed={5}
+          marginPagesDisplayed={2}
+          onPageChange={handlePageChange}
+          forcePage={currentPage}
+          containerClassName="slrspot__folder-pagination"
+          activeClassName="slrspot__folder-pagination-active"
+        />
+      }
     </div>
   )
 }

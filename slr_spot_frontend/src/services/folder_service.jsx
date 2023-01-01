@@ -1,7 +1,9 @@
 import axiosInstance from "./api";
 
-const getFolderTree = (firstName, lastName, username, password) => {
-  return axiosInstance.get("/folders")
+const getFolderTree = (reviewId) => {
+  return axiosInstance.get("/folders/tree", { params: {
+    reviewId
+  }})
   .then((response) => {
     return response;
   })

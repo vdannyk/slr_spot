@@ -5,15 +5,13 @@ import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.ScreeningDecision;
 import com.dkwasniak.slr_spot_backend.study.dto.IdentificationDto;
+import com.dkwasniak.slr_spot_backend.study.dto.StatusDto;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyNotFoundException;
-import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
-import com.dkwasniak.slr_spot_backend.study.status.StatusEnum;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.csv.CSVRecord;
-import org.jbibtex.BibTeXDatabase;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -32,6 +30,10 @@ public class StudyService {
                 .orElseThrow(() -> new StudyNotFoundException("Study not found"));
     }
 
+    public Page<Study> getStudiesByReviewId(Long reviewId, Pageable pageable) {
+        return studyRepository.findAllByStudyImport_Review_Id(reviewId, pageable);
+    }
+
     public void removeStudyById(Long studyId) {
         studyRepository.deleteById(studyId);
     }
@@ -40,36 +42,28 @@ public class StudyService {
         studyRepository.saveAll(studies);
     }
 
-    public List<Study> saveStudiesFromCsv(List<CSVRecord> records, String source) {
-        List<Study> studies = StudyMapper.csvToStudies(records, source);
-        saveAll(studies);
-        return studies;
+    public Page<Study> getStudiesToBeReviewed(Long reviewId, Long userId, Stage stage, Pageable pageable) {
+        return studyRepository.findAllToBeReviewed(reviewId, userId, stage, StudyState.TO_BE_REVIEWED, pageable);
     }
 
-    public List<Study> saveStudiesFromBib(BibTeXDatabase records) {
-        List<Study> studies = StudyMapper.bibToStudies(records);
-        saveAll(studies);
-        return studies;
+    public Page<Study> getStudiesAwaiting(Long reviewId, Long userId, Stage stage, Pageable pageable) {
+        return studyRepository.findAllAwaiting(reviewId, userId, stage, StudyState.TO_BE_REVIEWED, pageable);
     }
 
-    public List<Study> getStudiesToBeReviewed(Long reviewId, Long userId, int requiredReviewers, StatusEnum status) {
-        return studyRepository.findAllToBeReviewed(reviewId, userId, requiredReviewers, status);
+    public Page<Study> getStudiesByState(Long reviewId, StudyState state, Pageable pageable) {
+        return studyRepository.findAllByStudyImport_Review_IdAndState(reviewId, state, pageable);
     }
 
-    public List<Study> getStudiesReviewedByUserId(Long reviewId, Long userId) {
-        return studyRepository.findAllReviewedByUserId(reviewId, userId);
+    public List<Study> getStudiesListByState(Long reviewId, StudyState state) {
+        return studyRepository.findAllByStudyImport_Review_IdAndState(reviewId, state);
     }
 
-    public List<Study> getStudiesConflicted(Long reviewId, int requiredReviewers, StatusEnum status) {
-        return studyRepository.findAllConflicted(reviewId, requiredReviewers, status);
+    public List<Study> getStudiesListByStage(Long reviewId, Stage stage) {
+        return studyRepository.findAllByStudyImport_Review_IdAndStage(reviewId, stage);
     }
 
-    public List<Study> getStudiesAwaiting(Long reviewId, Long userId, int requiredReviewers, StatusEnum status) {
-        return studyRepository.findAllAwaiting(reviewId, userId, requiredReviewers, status);
-    }
-
-    public List<Study> getStudiesExcluded(Long reviewId, int requiredReviewers, StatusEnum status) {
-        return studyRepository.findAllExcluded(reviewId, requiredReviewers, status);
+    public Page<Study> getStudiesByStageAndState(Long reviewId, Stage stage, StudyState state, Pageable pageable) {
+        return studyRepository.findAllByStudyImport_Review_IdAndStageAndState(reviewId, stage, state, pageable);
     }
 
     public Set<Tag> getStudyTags(Study study) {
@@ -96,72 +90,77 @@ public class StudyService {
     }
 
     public boolean isStudyScreeningAllowed(Study study) {
-        StatusEnum status = study.getStatus();
-        return StatusEnum.TITLE_ABSTRACT.equals(status) || StatusEnum.FULL_TEXT.equals(status);
+        Stage stage = study.getStage();
+        StudyState state = study.getState();
+        return Stage.TITLE_ABSTRACT.equals(stage)
+                || Stage.FULL_TEXT.equals(stage)
+                && !StudyState.DUPLICATES.equals(state)
+                && !StudyState.EXCLUDED.equals(state);
     }
 
+    @Transactional
     public void addScreeningDecisionToStudy(Study study, ScreeningDecision screeningDecision) {
         study.addScreeningDecision(screeningDecision);
         studyRepository.save(study);
     }
 
-    public StatusEnum verifyStudyStatus(Study study, int requiredReviewers) {
-        StatusEnum currentStatus = study.getStatus();
+    public StatusDto verifyStudyStatus(Study study, int requiredReviewers) {
+        StudyState currentState = study.getState();
+        Stage stage = study.getStage();
         List<ScreeningDecision> screeningDecisions = study.getScreeningDecisions();
+
         if (screeningDecisions.stream().filter(sd -> Decision.INCLUDE.equals(sd.getDecision())).count() >= requiredReviewers) {
-            if (StatusEnum.TITLE_ABSTRACT.equals(currentStatus)) {
-                return StatusEnum.FULL_TEXT;
-            } else if (StatusEnum.FULL_TEXT.equals(currentStatus)) {
-                return StatusEnum.INCLUDED;
+            if (Stage.TITLE_ABSTRACT.equals(stage)) {
+                return StatusDto.of(Stage.FULL_TEXT, StudyState.TO_BE_REVIEWED);
             } else {
-                return currentStatus;
+                return StatusDto.of(Stage.FULL_TEXT, StudyState.INCLUDED);
             }
+        } else if (screeningDecisions.stream().filter(sd -> Decision.EXCLUDE.equals(sd.getDecision())).count() >= requiredReviewers) {
+            return StatusDto.of(stage, StudyState.EXCLUDED);
+        } else if (screeningDecisions.size() >= requiredReviewers) {
+            return StatusDto.of(stage, StudyState.CONFLICTED);
         } else {
-            return currentStatus;
+            return StatusDto.of(stage, currentState);
         }
     }
 
     @Transactional
-    public void updateStudyStatus(Study study, StatusEnum statusEnum) {
-        study.setStatus(statusEnum);
-        study.getScreeningDecisions().clear();
+    public void updateStudyStatus(Study study, StatusDto statusDto) {
+        if (!study.getStage().equals(statusDto.getStage())) {
+            study.setStage(statusDto.getStage());
+        }
+        if (!study.getState().equals(statusDto.getState())) {
+            study.setState(statusDto.getState());
+        }
         studyRepository.save(study);
     }
 
     @Transactional
     public void clearDecisions(Study study) {
-        study.getScreeningDecisions().clear();
+        List<ScreeningDecision> toRemove = new ArrayList<>();
+        if (Stage.TITLE_ABSTRACT.equals(study.getStage())) {
+            study.getScreeningDecisions().stream()
+                    .filter(sd -> Stage.TITLE_ABSTRACT.equals(sd.getStage()))
+                    .forEach(toRemove::add);
+        } else {
+            study.getScreeningDecisions().stream()
+                    .filter(sd -> Stage.FULL_TEXT.equals(sd.getStage()))
+                    .forEach(toRemove::add);
+        }
+        study.getScreeningDecisions().removeAll(toRemove);
         studyRepository.save(study);
-    }
-
-    public List<Study> getDuplicates(Long reviewId) {
-        return studyRepository.findAllDuplicates(reviewId);
-    }
-
-    public List<Study> getIncludedStudies(Long reviewId) {
-        return studyRepository.findAllIncluded(reviewId);
     }
 
     public Study updateStudy(Study study) {
         return studyRepository.save(study);
     }
 
-    public int getStudiesCountByStatus(long reviewId, StatusEnum status) {
-        if (StatusEnum.EXCLUDED.equals(status)) {
-            return 0;
-        }
-        return studyRepository.findStudiesCountByStatus(reviewId, status);
+    public int getStudiesCountByStage(long reviewId, Stage stage) {
+        return studyRepository.countAllByStudyImport_Review_IdAndStage(reviewId, stage);
     }
 
-    public List<Study> getStudiesByReviewIdAndStatus(long reviewId, StatusEnum status) {
-        if (StatusEnum.EXCLUDED.equals(status)) {
-            return new ArrayList<>();
-        }
-        List<Study> studies = studyRepository.findStudiesByReviewIdAndStatus(reviewId, status);
-        if (CollectionUtils.isEmpty(studies)) {
-            throw new IllegalStateException("No studies to export");
-        }
-        return studies;
+    public int getStudiesCountByState(long reviewId, StudyState state) {
+        return studyRepository.countAllByStudyImport_Review_IdAndState(reviewId, state);
     }
 
     public Set<String> getStudiesDoiByReviewId(Long reviewId) {
@@ -173,6 +172,7 @@ public class StudyService {
         return studiesWithBasicInfo.stream().map(s -> IdentificationDto.builder().title(s.getTitle()).authors(s.getAuthors()).publicationYear(s.getPublicationYear()).build()).collect(Collectors.toSet());
     }
 
+    @Transactional
     public void addOperation(Study study, Operation operation) {
         study.addOperation(operation);
         studyRepository.save(study);
@@ -180,6 +180,23 @@ public class StudyService {
 
     public List<Operation> getStudyHistory(Study study) {
         return study.getOperations();
+    }
+
+    public Page<Study> getStudiesByFolderId(Long folderId, Long reviewId, Pageable pageable) {
+        return studyRepository.findAllByStudyImport_Review_IdAndFolder_Id(reviewId, folderId, pageable);
+    }
+
+    public Page<Study> getStudiesToBeReviewedByFolderId(Long reviewId, Long folderId, Long userId,
+                                                        Stage stage, Pageable pageable) {
+        return studyRepository.findAllToBeReviewedByFolderId(reviewId, userId, folderId, stage, StudyState.TO_BE_REVIEWED, pageable);
+    }
+
+    public Page<Study> getStudiesByFolderIdAndStageAndState(Long reviewId, Long folderId, Stage stage, StudyState state, Pageable pageable) {
+        return studyRepository.findAllByStudyImport_Review_IdAndFolder_IdAndStageAndState(reviewId, folderId, stage, state, pageable);
+    }
+
+    public Page<Study> getStudiesAwaitingByFolderId(Long reviewId, Long folderId, Long userId, Stage stage, Pageable pageable) {
+        return studyRepository.findAllAwaitingByFolderId(reviewId, userId, folderId, stage, StudyState.TO_BE_REVIEWED, pageable);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.screeningDecision.dto;
 
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
+import com.dkwasniak.slr_spot_backend.study.Stage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,4 +16,5 @@ public class ScreeningDecisionDto {
     private Long reviewId;
     private Long userId;
     private Decision decision;
+    private Stage stage;
 }
