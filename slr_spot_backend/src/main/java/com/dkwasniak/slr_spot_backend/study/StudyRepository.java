@@ -332,6 +332,47 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                            @Param("state") StudyState state,
                                            @Param("searchValue") String value,
                                            Pageable pageable);
+
+    @Query(StudyQueries.INCLUDED_QUERY + StudyQueries.BY_TITLE_CONDITION)
+    Page<Study> findIncludedByTitleContaining(@Param("reviewId") long reviewId,
+                                              @Param("state") StudyState state,
+                                              @Param("searchValue") String value,
+                                              Pageable pageable);
+    @Query(StudyQueries.INCLUDED_QUERY + StudyQueries.BY_AUTHORS_CONDITION)
+    Page<Study> findIncludedByAuthorsContaining(@Param("reviewId") long reviewId,
+                                                @Param("state") StudyState state,
+                                                @Param("searchValue") String value,
+                                                Pageable pageable);
+    @Query(StudyQueries.INCLUDED_QUERY + StudyQueries.BY_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findIncludedByPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                        @Param("state") StudyState state,
+                                                        @Param("searchValue") String value,
+                                                        Pageable pageable);
+    @Query(StudyQueries.INCLUDED_QUERY + StudyQueries.BY_TITLE_AND_AUTHORS_CONDITION)
+    Page<Study> findIncludedByTitleAndAuthors(@Param("reviewId") long reviewId,
+                                              @Param("state") StudyState state,
+                                              @Param("searchValue") String value,
+                                              Pageable pageable);
+    @Query(StudyQueries.INCLUDED_QUERY + StudyQueries.BY_TITLE_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findIncludedByTitleAndYear(@Param("reviewId") long reviewId,
+                                           @Param("state") StudyState state,
+                                           @Param("searchValue") String value,
+                                           Pageable pageable);
+    @Query(StudyQueries.INCLUDED_QUERY + StudyQueries.BY_AUTHORS_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findIncludedByAuthorsAndYear(@Param("reviewId") long reviewId,
+                                             @Param("state") StudyState state,
+                                             @Param("searchValue") String value,
+                                             Pageable pageable);
+    @Query(StudyQueries.INCLUDED_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findIncludedByTitleAndAuthorsAndYear(@Param("reviewId") long reviewId,
+                                                     @Param("state") StudyState state,
+                                                     @Param("searchValue") String value,
+                                                     Pageable pageable);
+    @Query(StudyQueries.INCLUDED_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
+    Page<Study> findIncludedByEverything(@Param("reviewId") long reviewId,
+                                         @Param("state") StudyState state,
+                                         @Param("searchValue") String value,
+                                         Pageable pageable);
 //
 //    @Query("SELECT s " +
 //            "FROM Study s " +

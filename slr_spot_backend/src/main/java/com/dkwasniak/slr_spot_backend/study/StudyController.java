@@ -296,6 +296,15 @@ public class StudyController {
         return ResponseEntity.ok(studyFacade.searchStudiesExcluded(reviewId, stage, searchType, value, page, size));
     }
 
+    @GetMapping("/included/search")
+    public ResponseEntity<Page<Study>> searchStudiesIncluded(@RequestParam("reviewId") Long reviewId,
+                                                             @RequestParam("searchType") StudySearchType searchType,
+                                                             @RequestParam("searchValue") String value,
+                                                             @RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(studyFacade.searchStudiesIncluded(reviewId, searchType, value, page, size));
+    }
+
     @GetMapping("/search")
     public ResponseEntity<Page<Study>> searchStudies(@RequestParam("reviewId") Long reviewId,
                                                      @RequestParam("searchType") StudySearchType searchType,

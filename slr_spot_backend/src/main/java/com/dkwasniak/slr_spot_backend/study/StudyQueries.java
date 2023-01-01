@@ -101,6 +101,21 @@ public class StudyQueries {
     public static final String EXCLUDED_FOLDERS_QUERY = EXCLUDED_QUERY +
             "AND s.folder.id = :folderId ";
 
+    // INCLUDED
+    public static final String INCLUDED_QUERY = "SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.state = :state ";
+    public static final String INCLUDED_TAGS_QUERY = "SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "LEFT OUTER JOIN s.tags st " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.state = :state ";
+
     // SEARCHING CONDITIONS
     public static final String BY_TITLE_CONDITION =
             "AND s.title LIKE %:searchValue% ";

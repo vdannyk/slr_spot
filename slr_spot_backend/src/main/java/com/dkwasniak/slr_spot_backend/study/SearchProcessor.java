@@ -157,4 +157,34 @@ public class SearchProcessor {
             }
         }
     }
+
+    public Page<Study> searchIncluded(StudySearchType searchType, Long reviewId, StudyState state,
+                                      String searchValue, Pageable pageable) {
+        switch (searchType) {
+            case TITLE -> {
+                return studyRepository.findIncludedByTitleContaining(reviewId, state, searchValue, pageable);
+            }
+            case AUTHORS -> {
+                return studyRepository.findIncludedByAuthorsContaining(reviewId, state, searchValue, pageable);
+            }
+            case YEAR -> {
+                return studyRepository.findIncludedByPublicationYearContaining(reviewId, state, searchValue, pageable);
+            }
+            case TITLE_AUTHORS -> {
+                return studyRepository.findIncludedByTitleAndAuthors(reviewId, state, searchValue, pageable);
+            }
+            case TITLE_YEAR -> {
+                return studyRepository.findIncludedByTitleAndYear(reviewId, state, searchValue, pageable);
+            }
+            case AUTHORS_YEAR -> {
+                return studyRepository.findIncludedByAuthorsAndYear(reviewId, state, searchValue, pageable);
+            }
+            case TITLE_AUTHORS_YEAR -> {
+                return studyRepository.findIncludedByTitleAndAuthorsAndYear(reviewId, state, searchValue, pageable);
+            }
+            default -> {
+                return studyRepository.findIncludedByEverything(reviewId, state, searchValue, pageable);
+            }
+        }
+    }
 }

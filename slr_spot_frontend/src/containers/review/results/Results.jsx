@@ -29,7 +29,7 @@ const Results = (props) => {
   const [yearCheck, setYearCheck] = useState(false);
   const [everythingCheck, setEverythingCheck] = useState(true);
 
-  useEffect(() => {
+  function getStudies() {
     axiosInstance.get("/studies/included", { params: {
       reviewId
     }})
@@ -37,6 +37,10 @@ const Results = (props) => {
       console.log(response.data);
       setIncludedStudies(response.data.content);
     });
+  }
+
+  useEffect(() => {
+    getStudies();
   }, []);
 
   useEffect(() => {
@@ -144,6 +148,21 @@ const Results = (props) => {
     }
   }
 
+  const handleSearch = (searchValue) => {
+    if (searchValue.trim().length > 0) {
+      axiosInstance.get("/studies/included/search", { params: {
+        reviewId, searchType, searchValue 
+      }})
+      .then((response) => {
+        setIncludedStudies(response.data.content)
+      })
+      .catch(() => {
+      });
+    } else {
+      getStudies();
+    }
+  }
+
   return (
     <div className='slrspot__review-results'>
       <div className='slrspot__review-header'>
@@ -156,7 +175,7 @@ const Results = (props) => {
           <div className='slrspot__screening-options-search'>
 
             <div className='slrspot__screening-options-search-term'>
-              <label onClick={ () => props.handleSearch(searchValue) }>Search</label>
+              <label onClick={ () => handleSearch(searchValue) }>Search</label>
               <input onChange={ handleSearchChange } placeholder={searchPlaceholder} />
             </div>
 

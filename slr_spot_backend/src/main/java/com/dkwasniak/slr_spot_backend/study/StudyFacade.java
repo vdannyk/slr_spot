@@ -310,6 +310,12 @@ public class StudyFacade {
         return searchProcessor.searchExcluded(searchType, reviewId, stage, StudyState.EXCLUDED, searchValue, pageRq);
     }
 
+    public Page<Study> searchStudiesIncluded(Long reviewId, StudySearchType searchType,
+                                             String searchValue, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return searchProcessor.searchIncluded(searchType, reviewId, StudyState.INCLUDED, searchValue, pageRq);
+    }
+
     public Page<Study> searchStudies(Long reviewId, StudySearchType searchType, String searchValue, int page, int size) {
         Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
 
