@@ -38,3 +38,5 @@ export { default as FolderTree } from './folder/FolderTree';
 export { default as StudyFolderItem } from './study/studyFolderItem/StudyFolderItem';
 
 export { default as PdfUploader } from './pdfUploader/PdfUploader';
+
+export { default as PageChanger } from './pageChanger/PageChanger';

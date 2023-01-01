@@ -6,6 +6,7 @@ import axiosInstance from '../../../../../services/api';
 import { useParams } from "react-router-dom";
 import { AUTHORS_SEARCH, AUTHORS_YEAR_SEARCH, TITLE_AUTHORS_SEARCH, TITLE_AUTHORS_YEAR_SEARCH, TITLE_SEARCH, TITLE_YEAR_SEARCH, YEAR_SEARCH } from '../../../../../constants/searchTypes';
 import ReactPaginate from 'react-paginate';
+import { PageChanger } from '../../../../../components';
 import './studiesView.css';
 
 
@@ -23,6 +24,7 @@ const StudiesView = ({allowChanges}) => {
   const [yearCheck, setYearCheck] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
   const [pageCount, setPageCount] = useState(0);
   const [searchPerformed, setSearchPerformed] = useState(false);
 
@@ -63,8 +65,10 @@ const StudiesView = ({allowChanges}) => {
 
   useEffect(() => {
     setLoading(true);
+    var page = currentPage;
+    var size = pageSize;
     axiosInstance.get("/studies", { params: {
-      reviewId
+      reviewId, page, size
     }})
     .then((response) => {
       setStudies(response.data.content);
@@ -74,7 +78,7 @@ const StudiesView = ({allowChanges}) => {
     })
     .catch(() => {
     });
-  }, []);
+  }, [pageSize]);
 
 
   const handleSelect = (study) => {
@@ -164,9 +168,10 @@ const StudiesView = ({allowChanges}) => {
 
   const handlePageChange = (studyPage) => {
     var page = studyPage.selected;
+    var size = pageSize;
     if (searchPerformed) {
       axiosInstance.get("/studies/search", { params: {
-        reviewId, searchType, searchValue, page
+        reviewId, searchType, searchValue, page, size
       }})
       .then((response) => {
         setStudies(response.data.content);
@@ -178,7 +183,7 @@ const StudiesView = ({allowChanges}) => {
     } else {
       setLoading(true);
       axiosInstance.get("/studies", { params: {
-        reviewId, page
+        reviewId, page, size
       }})
       .then((response) => {
         setStudies(response.data.content);
@@ -248,6 +253,15 @@ const StudiesView = ({allowChanges}) => {
 
         </div>
       </div>
+
+      <div style={{ textAlign: 'right' }}>
+        <PageChanger 
+          defaultSelected={pageSize}
+          options={[5,10,25]}
+          changePageSize={setPageSize}
+        />
+      </div>
+
       <Table>
         <thead>
           <tr>
