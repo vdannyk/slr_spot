@@ -27,6 +27,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
@@ -198,6 +199,7 @@ public class StudyFacade {
         }
         return document.getName();
     }
+
 
     public Document addFullTextDocument(Long studyId, MultipartFile file) {
         Study study = studyService.getStudyById(studyId);
