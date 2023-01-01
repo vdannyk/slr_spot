@@ -165,14 +165,14 @@ const ScreeningStudyInFolder = (props) => {
         { props.tab && 
           <div className='slrspot__screening-options'>
             <div className='slrspot__screening-options-container'>
-              <div className='slrspot__screening-options-container-checks'>
-                <div className='slrspot__screening-options-check'>
+              <div className='slrspot__screeningStudy-options-container-checks'>
+                <div className='slrspot__screeningStudy-options-check'>
                   <Check 
                     onChange={ handleShowTeamHighlightsChange } 
                     checked={ showTeamHighlights } />
                   <label>team highlights</label>
                 </div>
-                <div className='slrspot__screening-options-check'>
+                <div className='slrspot__screeningStudy-options-check'>
                   <Check
                     onChange={ handleShowPersonalHighlightsChange } 
                     checked={ showPersonalHighlights } />

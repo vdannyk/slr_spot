@@ -217,7 +217,7 @@ const StudiesView = ({allowChanges}) => {
                 <label>Year</label>
               </div>
             </div>
-            <div className='slrspot__screening-options-search'>
+            <div className='slrspot__screening-options-search' style={{ flexDirection: 'row' }}>
               <label onClick={ handleSearch }>Search</label>
               <input onChange={ handleSearchChange } placeholder={ searchPlaceholder }/>
             </div>

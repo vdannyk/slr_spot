@@ -108,3 +108,20 @@
 .slrspot__screeningStudy-votes p {
   text-transform: capitalize;
 }
+
+.slrspot__screeningStudy-options-container-checks {
+  display: flex;
+  align-items: center;
+  margin: 0 40px 5px;
+  justify-content: space-between;
+}
+
+.slrspot__screeningStudy-options-check {
+  display: flex;
+  margin-left: 20px;
+}
+
+.slrspot__screeningStudy-options-check label {
+  margin-left: 5px;
+  text-transform: capitalize;
+}

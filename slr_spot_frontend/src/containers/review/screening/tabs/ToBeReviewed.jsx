@@ -6,7 +6,7 @@ import axiosInstance from '../../../../services/api';
 import { useSelector } from "react-redux";
 import { OWNER, MEMBER, COOWNER } from '../../../../constants/roles';
 import { FULL_TEXT, TITLE_ABSTRACT } from '../../../../constants/studyStatuses';
-import { TITLE_SEARCH } from '../../../../constants/searchTypes';
+import { EVERYTHING_SEARCH, TITLE_SEARCH } from '../../../../constants/searchTypes';
 import '../screening.css';
 
 const ToBeReviewed = (props) => {
@@ -19,6 +19,8 @@ const ToBeReviewed = (props) => {
   const { reviewId } = useParams();
   const { user: currentUser } = useSelector((state) => state.auth);
   var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
+
+  const [searchType, setSearchType] = useState(EVERYTHING_SEARCH);
 
   function getStudies() {
     var userId = currentUser.id;
@@ -52,7 +54,6 @@ const ToBeReviewed = (props) => {
   const handleSearch = (searchValue) => {
     var userId = currentUser.id;
     var status = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
-    var searchType = TITLE_SEARCH;
     axiosInstance.get("/studies/state/" + TO_BE_REVIEWED + "/search", { params: {
       reviewId, userId, status, searchType, searchValue 
     }})
@@ -80,7 +81,8 @@ const ToBeReviewed = (props) => {
         showTeamHighlights={showTeamHighlights} 
         triggerShowPersonalHighlights={setShowPersonalHighlights}
         showPersonalHighlights={showPersonalHighlights} 
-        handleSearch={ handleSearch } />
+        handleSearch={ handleSearch } 
+        setSearchType={ setSearchType }/>
 
       { studies.map(study => (
         <ScreeningStudy 
