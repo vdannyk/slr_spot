@@ -6,6 +6,7 @@ import com.dkwasniak.slr_spot_backend.document.Document;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.dto.ScreeningDecisionDto;
+import com.dkwasniak.slr_spot_backend.study.dto.DuplicatesDto;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
@@ -142,14 +143,20 @@ public class StudyController {
     }
 
     @PutMapping("/{id}/restore")
-    public ResponseEntity<Decision> restoreStudy(@PathVariable Long id) {
+    public ResponseEntity<Void> restoreStudy(@PathVariable Long id) {
         studyFacade.restoreStudy(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}/duplicate")
-    public ResponseEntity<Decision> markStudyAsDuplicate(@PathVariable Long id) {
+    public ResponseEntity<Void> markStudyAsDuplicate(@PathVariable Long id) {
         studyFacade.markStudyAsDuplicate(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/duplicate")
+    public ResponseEntity<Void> markStudiesAsDuplicate(@RequestBody DuplicatesDto duplicatesDto) {
+        studyFacade.markStudiesAsDuplicate(duplicatesDto.getStudiesId());
         return ResponseEntity.ok().build();
     }
 

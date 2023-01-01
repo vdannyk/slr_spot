@@ -179,6 +179,12 @@ public class StudyFacade {
         studyService.addOperation(study, new Operation(OperationDescription.MARK_DUPLICATE.getDescription()));
     }
 
+    public void markStudiesAsDuplicate(List<Long> studiesId) {
+        for (var id : studiesId) {
+            markStudyAsDuplicate(id);
+        }
+    }
+
     public Document getFullTextDocument(Long studyId) {
         Study study = studyService.getStudyById(studyId);
         return study.getFullText();

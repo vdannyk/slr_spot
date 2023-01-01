@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { AUTHORS_SEARCH, AUTHORS_YEAR_SEARCH, TITLE_AUTHORS_SEARCH, TITLE_AUTHORS_YEAR_SEARCH, TITLE_SEARCH, TITLE_YEAR_SEARCH, YEAR_SEARCH } from '../../../../../constants/searchTypes';
 import ReactPaginate from 'react-paginate';
 import { PageChanger } from '../../../../../components';
+import { CgDuplicate } from "react-icons/cg";
 import './studiesView.css';
 
 
@@ -22,6 +23,7 @@ const StudiesView = ({allowChanges}) => {
   const [titleCheck, setTitleCheck] = useState(true);
   const [authorsCheck, setAuthorsCheck] = useState(false);
   const [yearCheck, setYearCheck] = useState(false);
+  
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
@@ -98,7 +100,7 @@ const StudiesView = ({allowChanges}) => {
       }
   }
 
-  const listTestData = studies.map((item, id) => 
+  const listStudies = studies.map((item, id) => 
     <tbody key={id}>
       <tr>
         <td>
@@ -107,7 +109,9 @@ const StudiesView = ({allowChanges}) => {
             checked={ selected.includes(item) }
             onChange={ () => handleSelect(item) } />
         </td>
-        <td>{id + 1}</td>
+        { item.state === "DUPLICATES" 
+          ? <><td>{id + 1}<CgDuplicate color='orange'/></td></> 
+          : <td>{id + 1}</td> }
         <td>{item.title}</td>
         <td>{item.authors}</td>
         <td>{item.publicationYear}</td>
@@ -234,6 +238,18 @@ const StudiesView = ({allowChanges}) => {
     }
   }, [pageSize]);
 
+  const handleMarkDuplicates = () => {
+    console.log(selected.map(s => s.id))
+    axiosInstance.post("/studies/duplicate", {
+      studiesId: selected.map(s => s.id)
+    })
+    .then(() => {
+      window.location.reload();
+    })
+    .catch(() => {
+    });
+  }
+
   return (
     <div>
       <div className='slrspot__screening-options'>
@@ -284,7 +300,7 @@ const StudiesView = ({allowChanges}) => {
           <div className='slrspot__studiesView-duplicate'>
             { allowChanges &&
               <div className='slrspot__studiesView-duplicate-option'>
-                <label>Mark as duplicate</label>
+                <label onClick={ handleMarkDuplicates }>Mark as duplicate</label>
               </div>
             }
           </div>
@@ -318,7 +334,7 @@ const StudiesView = ({allowChanges}) => {
             <th>Folder</th>
           </tr>
         </thead>
-        { listTestData }
+        { listStudies }
       </Table>
 
       { studies.length > 0 && pageCount > 1 &&
