@@ -75,10 +75,11 @@ const StudiesView = ({allowChanges}) => {
       setPageCount(response.data.totalPages);
       setSearchPerformed(false);
       setLoading(false);
+      setCurrentPage(response.number);
     })
     .catch(() => {
     });
-  }, [pageSize]);
+  }, []);
 
 
   const handleSelect = (study) => {
@@ -120,13 +121,16 @@ const StudiesView = ({allowChanges}) => {
   }
 
   const handleSearch = () => {
+    var page = currentPage;
+    var size = pageSize;
     axiosInstance.get("/studies/search", { params: {
-      reviewId, searchType, searchValue
+      reviewId, searchType, searchValue, page, size
     }})
     .then((response) => {
       setStudies(response.data.content);
       setPageCount(response.data.totalPages);
       setSearchPerformed(true);
+      setCurrentPage(response.number);
     })
     .catch(() => {
     });
@@ -177,6 +181,7 @@ const StudiesView = ({allowChanges}) => {
         setStudies(response.data.content);
         setPageCount(response.data.totalPages);
         setSearchPerformed(true);
+        setCurrentPage(response.number);
       })
       .catch(() => {
       });
@@ -190,11 +195,44 @@ const StudiesView = ({allowChanges}) => {
         setPageCount(response.data.totalPages);
         setSearchPerformed(false);
         setLoading(false);
+        setCurrentPage(response.number);
       })
       .catch(() => {
       });
     }
   }
+
+  useEffect(() => {
+    var page = currentPage;
+    var size = pageSize;
+    if (searchPerformed) {
+      axiosInstance.get("/studies/search", { params: {
+        reviewId, searchType, searchValue, page, size
+      }})
+      .then((response) => {
+        setStudies(response.data.content);
+        setPageCount(response.data.totalPages);
+        setSearchPerformed(true);
+        setCurrentPage(response.number);
+      })
+      .catch(() => {
+      });
+    } else {
+      setLoading(true);
+      axiosInstance.get("/studies", { params: {
+        reviewId, page, size
+      }})
+      .then((response) => {
+        setStudies(response.data.content);
+        setPageCount(response.data.totalPages);
+        setSearchPerformed(false);
+        setLoading(false);
+        setCurrentPage(response.number);
+      })
+      .catch(() => {
+      });
+    }
+  }, [pageSize]);
 
   return (
     <div>

@@ -58,28 +58,28 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                 Pageable pageable);
 
     // search methods
-//    Page<Study> findByStudyImport_Review_IdAndTitleContaining(long reviewId, String value, Pageable pageable);
-//    Page<Study> findByStudyImport_Review_IdAndAuthorsContaining(long reviewId, String value, Pageable pageable);
-//    @Query(StudyQueries.STUDIES_BY_REVIEW_ID_QUERY + StudyQueries.BY_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findByStudyImport_Review_IdAndPublicationYearContaining(@Param("reviewId") long reviewId,
-//                                                                        @Param("searchValue") String value,
-//                                                                        Pageable pageable);
-//    @Query(StudyQueries.STUDIES_BY_REVIEW_ID_QUERY + StudyQueries.BY_TITLE_AND_AUTHORS_CONDITION)
-//    Page<Study> findByStudyImport_Review_IdAndTitleContainingOrAuthorsContaining(@Param("reviewId") long reviewId,
-//                                                                                 @Param("searchValue") String value,
-//                                                                                 Pageable pageable);
-//    @Query(StudyQueries.STUDIES_BY_REVIEW_ID_QUERY + StudyQueries.BY_TITLE_AND_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findByStudyImport_Review_IdAndTitleContainingPublicationYearContaining(@Param("reviewId") long reviewId,
-//                                                                                       @Param("searchValue") String value,
-//                                                                                       Pageable pageable);
-//    @Query(StudyQueries.STUDIES_BY_REVIEW_ID_QUERY + StudyQueries.BY_AUTHORS_AND_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findByStudyImport_Review_IdAndAuthorsContainingPublicationYearContaining(@Param("reviewId") long reviewId,
-//                                                                                         @Param("searchValue") String value,
-//                                                                                         Pageable pageable);
-//    @Query(StudyQueries.STUDIES_BY_REVIEW_ID_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findByStudyImport_Review_IdAndTitleContainingAuthorsContainingPublicationYearContaining(@Param("reviewId") long reviewId,
-//                                                                                                        @Param("searchValue") String value,
-//                                                                                                        Pageable pageable);
+    Page<Study> findByStudyImport_Review_IdAndTitleContaining(long reviewId, String value, Pageable pageable);
+    Page<Study> findByStudyImport_Review_IdAndAuthorsContaining(long reviewId, String value, Pageable pageable);
+    @Query(StudyQueries.STUDIES_BY_REVIEW_ID_QUERY + StudyQueries.BY_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findByStudyImport_Review_IdAndPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                                        @Param("searchValue") String value,
+                                                                        Pageable pageable);
+    @Query(StudyQueries.STUDIES_BY_REVIEW_ID_QUERY + StudyQueries.BY_TITLE_AND_AUTHORS_CONDITION)
+    Page<Study> findByStudyImport_Review_IdAndTitleContainingOrAuthorsContaining(@Param("reviewId") long reviewId,
+                                                                                 @Param("searchValue") String value,
+                                                                                 Pageable pageable);
+    @Query(StudyQueries.STUDIES_BY_REVIEW_ID_QUERY + StudyQueries.BY_TITLE_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findByStudyImport_Review_IdAndTitleContainingPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                                                       @Param("searchValue") String value,
+                                                                                       Pageable pageable);
+    @Query(StudyQueries.STUDIES_BY_REVIEW_ID_QUERY + StudyQueries.BY_AUTHORS_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findByStudyImport_Review_IdAndAuthorsContainingPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                                                         @Param("searchValue") String value,
+                                                                                         Pageable pageable);
+    @Query(StudyQueries.STUDIES_BY_REVIEW_ID_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findByStudyImport_Review_IdAndTitleContainingAuthorsContainingPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                                                                        @Param("searchValue") String value,
+                                                                                                        Pageable pageable);
 //
 //    @Query(StudyQueries.TO_BE_REVIEWED_QUERY)
 //    Page<Study> findAllToBeReviewed(@Param("reviewId") long reviewId,

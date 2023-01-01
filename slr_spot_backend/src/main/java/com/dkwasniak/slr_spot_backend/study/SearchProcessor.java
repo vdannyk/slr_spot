@@ -1,6 +1,8 @@
 package com.dkwasniak.slr_spot_backend.study;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,31 +11,31 @@ public class SearchProcessor {
 
     private final StudyRepository studyRepository;
 
-//    public Page<Study> searchAll(StudySearchType searchType, Long reviewId, String searchValue, Pageable pageable) {
-//        switch (searchType) {
-//            case TITLE -> {
-//                return studyRepository.findByStudyImport_Review_IdAndTitleContaining(reviewId, searchValue, pageable);
-//            }
-//            case AUTHORS -> {
-//                return studyRepository.findByStudyImport_Review_IdAndAuthorsContaining(reviewId, searchValue, pageable);
-//            }
-//            case YEAR -> {
-//                return studyRepository.findByStudyImport_Review_IdAndPublicationYearContaining(reviewId, searchValue, pageable);
-//            }
-//            case TITLE_AUTHORS -> {
-//                return studyRepository.findByStudyImport_Review_IdAndTitleContainingOrAuthorsContaining(reviewId, searchValue, pageable);
-//            }
-//            case TITLE_YEAR -> {
-//                return studyRepository.findByStudyImport_Review_IdAndTitleContainingPublicationYearContaining(reviewId, searchValue, pageable);
-//            }
-//            case AUTHORS_YEAR -> {
-//                return studyRepository.findByStudyImport_Review_IdAndAuthorsContainingPublicationYearContaining(reviewId, searchValue, pageable);
-//            }
-//            default -> {
-//                return studyRepository.findByStudyImport_Review_IdAndTitleContainingAuthorsContainingPublicationYearContaining(reviewId, searchValue, pageable);
-//            }
-//        }
-//    }
+    public Page<Study> searchAll(StudySearchType searchType, Long reviewId, String searchValue, Pageable pageable) {
+        switch (searchType) {
+            case TITLE -> {
+                return studyRepository.findByStudyImport_Review_IdAndTitleContaining(reviewId, searchValue, pageable);
+            }
+            case AUTHORS -> {
+                return studyRepository.findByStudyImport_Review_IdAndAuthorsContaining(reviewId, searchValue, pageable);
+            }
+            case YEAR -> {
+                return studyRepository.findByStudyImport_Review_IdAndPublicationYearContaining(reviewId, searchValue, pageable);
+            }
+            case TITLE_AUTHORS -> {
+                return studyRepository.findByStudyImport_Review_IdAndTitleContainingOrAuthorsContaining(reviewId, searchValue, pageable);
+            }
+            case TITLE_YEAR -> {
+                return studyRepository.findByStudyImport_Review_IdAndTitleContainingPublicationYearContaining(reviewId, searchValue, pageable);
+            }
+            case AUTHORS_YEAR -> {
+                return studyRepository.findByStudyImport_Review_IdAndAuthorsContainingPublicationYearContaining(reviewId, searchValue, pageable);
+            }
+            default -> {
+                return studyRepository.findByStudyImport_Review_IdAndTitleContainingAuthorsContainingPublicationYearContaining(reviewId, searchValue, pageable);
+            }
+        }
+    }
 //
 //    public Page<Study> searchByState(StudyState state, StudySearchType searchType, Long reviewId, Long userId,
 //                                     int requiredReviewers, StatusEnum status, String searchValue, Pageable pageable) {

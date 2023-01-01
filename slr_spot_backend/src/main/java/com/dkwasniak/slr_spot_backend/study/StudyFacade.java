@@ -303,10 +303,10 @@ public class StudyFacade {
 //        return searchProcessor.searchByState(studyState, searchType, reviewId, userId, requiredReviewers, status, searchValue, pageRq);
 //    }
 //
-//    public Page<Study> searchStudies(Long reviewId, StudySearchType searchType, String searchValue, int page, int size) {
-//        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
-//
-//        return searchProcessor.searchAll(searchType, reviewId, searchValue, pageRq);
-//    }
+    public Page<Study> searchStudies(Long reviewId, StudySearchType searchType, String searchValue, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+
+        return searchProcessor.searchAll(searchType, reviewId, searchValue, pageRq);
+    }
 
 }

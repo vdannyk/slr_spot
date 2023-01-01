@@ -266,13 +266,13 @@ public class StudyController {
 //        return ResponseEntity.ok(studyFacade.searchStudiesByState(studyState, reviewId, userId, status, searchType, value, page, size));
 //    }
 //
-//    @GetMapping("/search")
-//    public ResponseEntity<Page<Study>> searchStudies(@RequestParam("reviewId") Long reviewId,
-//                                                     @RequestParam("searchType") StudySearchType searchType,
-//                                                     @RequestParam("searchValue") String value,
-//                                                     @RequestParam(defaultValue = "0") int page,
-//                                                     @RequestParam(defaultValue = "10") int size) {
-//        return ResponseEntity.ok(studyFacade.searchStudies(reviewId, searchType, value, page, size));
-//    }
+    @GetMapping("/search")
+    public ResponseEntity<Page<Study>> searchStudies(@RequestParam("reviewId") Long reviewId,
+                                                     @RequestParam("searchType") StudySearchType searchType,
+                                                     @RequestParam("searchValue") String value,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(studyFacade.searchStudies(reviewId, searchType, value, page, size));
+    }
 
 }
