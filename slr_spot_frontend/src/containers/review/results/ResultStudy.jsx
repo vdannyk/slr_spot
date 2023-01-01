@@ -48,7 +48,9 @@ const ResultStudy = ({ study, selected, handleSelect, allowChanges, reviewTags }
       <div className='slrspot__screeningStudy-options'>
         <button onClick={ () => setShowDiscussion(true)}>discussion</button>
         <button onClick={ () => setShowHistory(true) }>history</button>
-        { allowChanges && <button>Restore to full text</button> }
+        { allowChanges && 
+          <button>Restore to full text</button> 
+        }
       </div>
 
       { showDiscussion && 

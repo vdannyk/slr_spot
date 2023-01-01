@@ -17,6 +17,14 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     Page<Study> findAllByStudyImport_Review_Id(long reviewId, Pageable pageable);
     Page<Study> findAllByStudyImport_Review_IdAndFolder_Id(long reviewId, long folderId, Pageable pageable);
 
+    @Query("SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "LEFT OUTER JOIN s.tags st " +
+            "WHERE i.review.id = :reviewId " )
+    Study findByPage();
+
     // search methods
     Page<Study> findByStudyImport_Review_IdAndTitleContaining(long reviewId, String value, Pageable pageable);
     Page<Study> findByStudyImport_Review_IdAndAuthorsContaining(long reviewId, String value, Pageable pageable);
@@ -103,7 +111,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                                          @Param("status") StatusEnum status,
                                                          @Param("searchValue") String value,
                                                          Pageable pageable);
-    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
+    @Query(StudyQueries.TO_BE_REVIEWED_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
     Page<Study> findToBeReviewedByEverything(@Param("reviewId") long reviewId,
                                              @Param("userId") long userId,
                                              @Param("size") long size,
@@ -173,7 +181,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                                          @Param("status") StatusEnum status,
                                                          @Param("searchValue") String value,
                                                          Pageable pageable);
-    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
+    @Query(StudyQueries.AWAITING_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
     Page<Study> findAwaitingByEverything(@Param("reviewId") long reviewId,
                                              @Param("userId") long userId,
                                              @Param("size") long size,
@@ -234,7 +242,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                                      @Param("status") StatusEnum status,
                                                      @Param("searchValue") String value,
                                                      Pageable pageable);
-    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
+    @Query(StudyQueries.EXCLUDED_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
     Page<Study> findExcludedByEverything(@Param("reviewId") long reviewId,
                                          @Param("size") long size,
                                          @Param("status") StatusEnum status,
@@ -294,7 +302,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                                      @Param("status") StatusEnum status,
                                                      @Param("searchValue") String value,
                                                      Pageable pageable);
-    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
+    @Query(StudyQueries.CONFLICTED_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
     Page<Study> findConflictedByEverything(@Param("reviewId") long reviewId,
                                          @Param("size") long size,
                                          @Param("status") StatusEnum status,

@@ -6,7 +6,7 @@ import axiosInstance from '../../../../services/api';
 import { useSelector } from "react-redux";
 import { OWNER, MEMBER, COOWNER } from '../../../../constants/roles';
 import { FULL_TEXT, TITLE_ABSTRACT } from '../../../../constants/studyStatuses';
-import { EVERYTHING_SEARCH, TITLE_SEARCH } from '../../../../constants/searchTypes';
+import { EVERYTHING_SEARCH } from '../../../../constants/searchTypes';
 import '../screening.css';
 
 const ToBeReviewed = (props) => {
@@ -54,14 +54,18 @@ const ToBeReviewed = (props) => {
   const handleSearch = (searchValue) => {
     var userId = currentUser.id;
     var status = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
-    axiosInstance.get("/studies/state/" + TO_BE_REVIEWED + "/search", { params: {
-      reviewId, userId, status, searchType, searchValue 
-    }})
-    .then((response) => {
-      setStudies(response.data.content)
-    })
-    .catch(() => {
-    });
+    if (searchValue.trim().length > 0) {
+      axiosInstance.get("/studies/state/" + TO_BE_REVIEWED + "/search", { params: {
+        reviewId, userId, status, searchType, searchValue 
+      }})
+      .then((response) => {
+        setStudies(response.data.content)
+      })
+      .catch(() => {
+      });
+    } else {
+      getStudies();
+    }
   }
 
   useEffect(() => {

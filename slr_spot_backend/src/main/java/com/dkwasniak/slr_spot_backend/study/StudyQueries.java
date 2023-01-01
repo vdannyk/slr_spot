@@ -23,6 +23,21 @@ public class StudyQueries {
             "(SELECT COUNT(sd) " +
             "FROM ScreeningDecision sd " +
             "WHERE sd.study.id = s.id AND sd.user.id = :userId) = 0 ";
+    public static final String TO_BE_REVIEWED_TAGS_QUERY = "SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "LEFT OUTER JOIN s.tags st " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.status = :status " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision <> 'UNCLEAR') < :size " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.user.id = :userId) = 0 ";
     public static final String TO_BE_REVIEWED_FOLDERS_QUERY = TO_BE_REVIEWED_QUERY +
             "AND s.folder.id = :folderId ";
 
@@ -32,6 +47,20 @@ public class StudyQueries {
             "FROM Study s " +
             "LEFT OUTER JOIN Import i " +
             "ON s.studyImport.id = i.id " +
+            "LEFT OUTER JOIN ScreeningDecision sd " +
+            "ON sd.study.id = s.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.status = :status " +
+            "AND sd.user.id = :userId " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision <> 'UNCLEAR') < :size ";
+    public static final String AWAITING_TAGS_QUERY = "SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "LEFT OUTER JOIN s.tags st " +
             "LEFT OUTER JOIN ScreeningDecision sd " +
             "ON sd.study.id = s.id " +
             "WHERE i.review.id = :reviewId " +
@@ -63,6 +92,25 @@ public class StudyQueries {
             "(SELECT COUNT(sd) " +
             "FROM ScreeningDecision sd " +
             "WHERE sd.study.id = s.id AND sd.decision = 'EXCLUDE') < :size ";
+    public static final String CONFLICTED_TAGS_QUERY = "SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "LEFT OUTER JOIN s.tags st " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.status = :status " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision <> 'UNCLEAR') = :size " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision = 'INCLUDE') < :size " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision = 'EXCLUDE') < :size ";
     public static final String CONFLICTED_FOLDERS_QUERY = CONFLICTED_QUERY +
             "AND s.folder.id = :folderId ";
 
@@ -71,6 +119,17 @@ public class StudyQueries {
             "FROM Study s " +
             "LEFT OUTER JOIN Import i " +
             "ON s.studyImport.id = i.id " +
+            "WHERE i.review.id = :reviewId " +
+            "AND s.status = :status " +
+            "AND " +
+            "(SELECT COUNT(sd) " +
+            "FROM ScreeningDecision sd " +
+            "WHERE sd.study.id = s.id AND sd.decision = 'EXCLUDE') = :size ";
+    public static final String EXCLUDED_TAGS_QUERY = "SELECT s " +
+            "FROM Study s " +
+            "LEFT OUTER JOIN Import i " +
+            "ON s.studyImport.id = i.id " +
+            "LEFT OUTER JOIN s.tags st " +
             "WHERE i.review.id = :reviewId " +
             "AND s.status = :status " +
             "AND " +
@@ -96,5 +155,17 @@ public class StudyQueries {
     public static final String BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION = "AND s.title LIKE %:searchValue% " +
             "OR s.authors LIKE %:searchValue% " +
             "OR CAST(s.publicationYear as string) LIKE %:searchValue% ";
+    public static final String BY_EVERYTHING_CONDITION = "AND s.title LIKE %:searchValue% " +
+            "OR s.authors LIKE %:searchValue% " +
+            "OR s.journalTitle LIKE %:searchValue% " +
+            "OR CAST(s.publicationYear as string) LIKE %:searchValue% " +
+            "OR s.volume LIKE %:searchValue% " +
+            "OR s.doi LIKE %:searchValue% " +
+            "OR s.url LIKE %:searchValue% " +
+            "OR s.documentAbstract LIKE %:searchValue% " +
+            "OR s.issn LIKE %:searchValue% " +
+            "OR s.language LIKE %:searchValue% " +
+            "OR st.name IS NOT NULL AND st.name LIKE %:searchValue% " +
+            "GROUP BY s";
 
 }

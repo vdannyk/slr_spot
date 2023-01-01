@@ -6,6 +6,7 @@ import axiosInstance from '../../../../services/api';
 import { useSelector } from "react-redux";
 import { OWNER, MEMBER, COOWNER } from '../../../../constants/roles';
 import { FULL_TEXT, TITLE_ABSTRACT } from '../../../../constants/studyStatuses';
+import { EVERYTHING_SEARCH } from '../../../../constants/searchTypes';
 import '../screening.css';
 
 
@@ -20,6 +21,8 @@ const Awaiting = (props) => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const [refreshStudies, setRefreshStudies] = useState(false);
   var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
+
+  const [searchType, setSearchType] = useState(EVERYTHING_SEARCH);
 
 
   function getStudies() {
@@ -56,17 +59,20 @@ const Awaiting = (props) => {
   }
 
   const handleSearch = (searchValue) => {
-    console.log(searchValue);
     var userId = currentUser.id;
     var status = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
-    axiosInstance.get("/studies/state/" + AWAITING + "/search", { params: {
-      reviewId, userId, status, searchValue 
-    }})
-    .then((response) => {
-      setStudies(response.data.content)
-    })
-    .catch(() => {
-    });
+    if (searchValue.trim().length > 0) {
+      axiosInstance.get("/studies/state/" + AWAITING + "/search", { params: {
+        reviewId, userId, status, searchType, searchValue 
+      }})
+      .then((response) => {
+        setStudies(response.data.content)
+      })
+      .catch(() => {
+      });
+    } else {
+      getStudies();
+    }
   }
 
   useEffect(() => {
@@ -82,7 +88,8 @@ const Awaiting = (props) => {
         showTeamHighlights={showTeamHighlights} 
         triggerShowPersonalHighlights={setShowPersonalHighlights}
         showPersonalHighlights={showPersonalHighlights} 
-        handleSearch={ handleSearch } />
+        handleSearch={ handleSearch }
+        setSearchType={ setSearchType }/>
 
       { studies.map(study => (
         <ScreeningStudy 

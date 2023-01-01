@@ -80,8 +80,11 @@ public class SearchProcessor {
             case AUTHORS_YEAR -> {
                 return studyRepository.findToBeReviewedByAuthorsAndYear(reviewId, userId, requiredReviewers, status, searchValue, pageable);
             }
-            default -> {
+            case TITLE_AUTHORS_YEAR -> {
                 return studyRepository.findToBeReviewedByTitleAndAuthorsAndYear(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+            }
+            default -> {
+                return studyRepository.findToBeReviewedByEverything(reviewId, userId, requiredReviewers, status, searchValue, pageable);
             }
         }
     }
@@ -107,8 +110,11 @@ public class SearchProcessor {
             case AUTHORS_YEAR -> {
                 return studyRepository.findConflictedByAuthorsAndYear(reviewId, requiredReviewers, status, searchValue, pageable);
             }
-            default -> {
+            case TITLE_AUTHORS_YEAR -> {
                 return studyRepository.findConflictedByTitleAndAuthorsAndYear(reviewId, requiredReviewers, status, searchValue, pageable);
+            }
+            default -> {
+                return studyRepository.findConflictedByEverything(reviewId, requiredReviewers, status, searchValue, pageable);
             }
         }
     }
@@ -134,8 +140,11 @@ public class SearchProcessor {
             case AUTHORS_YEAR -> {
                 return studyRepository.findAwaitingByAuthorsAndYear(reviewId, userId, requiredReviewers, status, searchValue, pageable);
             }
-            default -> {
+            case TITLE_AUTHORS_YEAR -> {
                 return studyRepository.findAwaitingByTitleAndAuthorsAndYear(reviewId, userId, requiredReviewers, status, searchValue, pageable);
+            }
+            default -> {
+                return studyRepository.findAwaitingByEverything(reviewId, userId, requiredReviewers, status, searchValue, pageable);
             }
         }
     }
@@ -161,8 +170,11 @@ public class SearchProcessor {
             case AUTHORS_YEAR -> {
                 return studyRepository.findExcludedByAuthorsAndYear(reviewId, requiredReviewers, status, searchValue, pageable);
             }
-            default -> {
+            case TITLE_AUTHORS_YEAR -> {
                 return studyRepository.findExcludedByTitleAndAuthorsAndYear(reviewId, requiredReviewers, status, searchValue, pageable);
+            }
+            default -> {
+                return studyRepository.findExcludedByEverything(reviewId, requiredReviewers, status, searchValue, pageable);
             }
         }
     }
