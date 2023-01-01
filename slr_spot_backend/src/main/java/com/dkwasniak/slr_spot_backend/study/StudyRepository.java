@@ -23,7 +23,8 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     int countAllByStudyImport_Review_IdAndStage(long reviewId, Stage stage);
     int countAllByStudyImport_Review_IdAndState(long reviewId, StudyState state);
     Page<Study> findAllByStudyImport_Review_IdAndFolder_IdAndStageAndState(long reviewId, long folderId, Stage stage, StudyState studyState, Pageable pageable);
-    Page<Study> findAllByStudyImport_Review_IdAndFolder_IdAndState(long reviewId, long folderId, StudyState studyState, Pageable pageable);
+
+//    Page<Study> findAllByStudyImport_Review_IdAndTags_
 
     @Query("SELECT s " +
             "FROM Study s " +
@@ -119,259 +120,218 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                                                                                                         @Param("searchValue") String value,
                                                                                                         Pageable pageable);
 
-//    @Query(StudyQueries.TO_BE_REVIEWED_FOLDERS_QUERY)
-//    Page<Study> findAllToBeReviewedByFolderId(@Param("reviewId") long reviewId,
-//                                              @Param("folderId") long folderId,
-//                                              @Param("userId") long userId,
-//                                              @Param("size") long size,
-//                                              @Param("status") StatusEnum status,
-//                                              Pageable pageable);
-//    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_TITLE_CONDITION)
-//    Page<Study> findToBeReviewedByTitleContaining(@Param("reviewId") long reviewId,
-//                                                  @Param("userId") long userId,
-//                                                  @Param("size") long size,
-//                                                  @Param("status") StatusEnum status,
-//                                                  @Param("searchValue") String value,
-//                                                  Pageable pageable);
-//    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_AUTHORS_CONDITION)
-//    Page<Study> findToBeReviewedByAuthorsContaining(@Param("reviewId") long reviewId,
-//                                                  @Param("userId") long userId,
-//                                                  @Param("size") long size,
-//                                                  @Param("status") StatusEnum status,
-//                                                  @Param("searchValue") String value,
-//                                                  Pageable pageable);
-//    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findToBeReviewedByPublicationYearContaining(@Param("reviewId") long reviewId,
-//                                                  @Param("userId") long userId,
-//                                                  @Param("size") long size,
-//                                                  @Param("status") StatusEnum status,
-//                                                  @Param("searchValue") String value,
-//                                                  Pageable pageable);
-//    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_TITLE_AND_AUTHORS_CONDITION)
-//    Page<Study> findToBeReviewedByTitleAndAuthors(@Param("reviewId") long reviewId,
-//                                                @Param("userId") long userId,
-//                                                @Param("size") long size,
-//                                                @Param("status") StatusEnum status,
-//                                                @Param("searchValue") String value,
-//                                                Pageable pageable);
-//    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_TITLE_AND_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findToBeReviewedByTitleAndYear(@Param("reviewId") long reviewId,
-//                                                  @Param("userId") long userId,
-//                                                  @Param("size") long size,
-//                                                  @Param("status") StatusEnum status,
-//                                                  @Param("searchValue") String value,
-//                                                  Pageable pageable);
-//    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_AUTHORS_AND_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findToBeReviewedByAuthorsAndYear(@Param("reviewId") long reviewId,
-//                                               @Param("userId") long userId,
-//                                               @Param("size") long size,
-//                                               @Param("status") StatusEnum status,
-//                                               @Param("searchValue") String value,
-//                                               Pageable pageable);
-//    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findToBeReviewedByTitleAndAuthorsAndYear(@Param("reviewId") long reviewId,
-//                                                         @Param("userId") long userId,
-//                                                         @Param("size") long size,
-//                                                         @Param("status") StatusEnum status,
-//                                                         @Param("searchValue") String value,
-//                                                         Pageable pageable);
-//    @Query(StudyQueries.TO_BE_REVIEWED_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
-//    Page<Study> findToBeReviewedByEverything(@Param("reviewId") long reviewId,
-//                                             @Param("userId") long userId,
-//                                             @Param("size") long size,
-//                                             @Param("status") StatusEnum status,
-//                                             @Param("searchValue") String value,
-//                                             Pageable pageable);
-//
-//    @Query(StudyQueries.AWAITING_QUERY)
-//    Page<Study> findAllAwaiting(@Param("reviewId") long reviewId,
-//                                @Param("userId") long userId,
-//                                @Param("size") long size,
-//                                @Param("status") StatusEnum status,
-//                                Pageable pageable);
-//    @Query(StudyQueries.AWAITING_FOLDERS_QUERY)
-//    Page<Study> findAllAwaitingByFolderId(@Param("reviewId") long reviewId,
-//                                          @Param("folderId") long folderId,
-//                                          @Param("userId") long userId,
-//                                          @Param("size") long size,
-//                                          @Param("status") StatusEnum status,
-//                                          Pageable pageable);
-//    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_TITLE_CONDITION)
-//    Page<Study> findAwaitingByTitleContaining(@Param("reviewId") long reviewId,
-//                                                  @Param("userId") long userId,
-//                                                  @Param("size") long size,
-//                                                  @Param("status") StatusEnum status,
-//                                                  @Param("searchValue") String value,
-//                                                  Pageable pageable);
-//    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_AUTHORS_CONDITION)
-//    Page<Study> findAwaitingByAuthorsContaining(@Param("reviewId") long reviewId,
-//                                                    @Param("userId") long userId,
-//                                                    @Param("size") long size,
-//                                                    @Param("status") StatusEnum status,
-//                                                    @Param("searchValue") String value,
-//                                                    Pageable pageable);
-//    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findAwaitingByPublicationYearContaining(@Param("reviewId") long reviewId,
-//                                                            @Param("userId") long userId,
-//                                                            @Param("size") long size,
-//                                                            @Param("status") StatusEnum status,
-//                                                            @Param("searchValue") String value,
-//                                                            Pageable pageable);
-//    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_TITLE_AND_AUTHORS_CONDITION)
-//    Page<Study> findAwaitingByTitleAndAuthors(@Param("reviewId") long reviewId,
-//                                                  @Param("userId") long userId,
-//                                                  @Param("size") long size,
-//                                                  @Param("status") StatusEnum status,
-//                                                  @Param("searchValue") String value,
-//                                                  Pageable pageable);
-//    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_TITLE_AND_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findAwaitingByTitleAndYear(@Param("reviewId") long reviewId,
-//                                               @Param("userId") long userId,
-//                                               @Param("size") long size,
-//                                               @Param("status") StatusEnum status,
-//                                               @Param("searchValue") String value,
-//                                               Pageable pageable);
-//    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_AUTHORS_AND_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findAwaitingByAuthorsAndYear(@Param("reviewId") long reviewId,
-//                                                 @Param("userId") long userId,
-//                                                 @Param("size") long size,
-//                                                 @Param("status") StatusEnum status,
-//                                                 @Param("searchValue") String value,
-//                                                 Pageable pageable);
-//    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findAwaitingByTitleAndAuthorsAndYear(@Param("reviewId") long reviewId,
-//                                                         @Param("userId") long userId,
-//                                                         @Param("size") long size,
-//                                                         @Param("status") StatusEnum status,
-//                                                         @Param("searchValue") String value,
-//                                                         Pageable pageable);
-//    @Query(StudyQueries.AWAITING_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
-//    Page<Study> findAwaitingByEverything(@Param("reviewId") long reviewId,
-//                                             @Param("userId") long userId,
-//                                             @Param("size") long size,
-//                                             @Param("status") StatusEnum status,
-//                                             @Param("searchValue") String value,
-//                                             Pageable pageable);
-//
-//    @Query(StudyQueries.EXCLUDED_QUERY)
-//    Page<Study> findAllExcluded(@Param("reviewId") long reviewId,
-//                                @Param("size") long size,
-//                                @Param("status") StatusEnum status,
-//                                Pageable pageable);
-//    @Query(StudyQueries.EXCLUDED_FOLDERS_QUERY)
-//    Page<Study> findAllExcludedByFolderId(@Param("reviewId") long reviewId,
-//                                          @Param("folderId") long folderId,
-//                                          @Param("size") long size,
-//                                          @Param("status") StatusEnum status,
-//                                          Pageable pageable);
-//    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_TITLE_CONDITION)
-//    Page<Study> findExcludedByTitleContaining(@Param("reviewId") long reviewId,
-//                                              @Param("size") long size,
-//                                              @Param("status") StatusEnum status,
-//                                              @Param("searchValue") String value,
-//                                              Pageable pageable);
-//    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_AUTHORS_CONDITION)
-//    Page<Study> findExcludedByAuthorsContaining(@Param("reviewId") long reviewId,
-//                                                @Param("size") long size,
-//                                                @Param("status") StatusEnum status,
-//                                                @Param("searchValue") String value,
-//                                                Pageable pageable);
-//    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findExcludedByPublicationYearContaining(@Param("reviewId") long reviewId,
-//                                                        @Param("size") long size,
-//                                                        @Param("status") StatusEnum status,
-//                                                        @Param("searchValue") String value,
-//                                                        Pageable pageable);
-//    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_TITLE_AND_AUTHORS_CONDITION)
-//    Page<Study> findExcludedByTitleAndAuthors(@Param("reviewId") long reviewId,
-//                                              @Param("size") long size,
-//                                              @Param("status") StatusEnum status,
-//                                              @Param("searchValue") String value,
-//                                              Pageable pageable);
-//    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_TITLE_AND_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findExcludedByTitleAndYear(@Param("reviewId") long reviewId,
-//                                           @Param("size") long size,
-//                                           @Param("status") StatusEnum status,
-//                                           @Param("searchValue") String value,
-//                                           Pageable pageable);
-//    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_AUTHORS_AND_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findExcludedByAuthorsAndYear(@Param("reviewId") long reviewId,
-//                                             @Param("size") long size,
-//                                             @Param("status") StatusEnum status,
-//                                             @Param("searchValue") String value,
-//                                             Pageable pageable);
-//    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findExcludedByTitleAndAuthorsAndYear(@Param("reviewId") long reviewId,
-//                                                     @Param("size") long size,
-//                                                     @Param("status") StatusEnum status,
-//                                                     @Param("searchValue") String value,
-//                                                     Pageable pageable);
-//    @Query(StudyQueries.EXCLUDED_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
-//    Page<Study> findExcludedByEverything(@Param("reviewId") long reviewId,
-//                                         @Param("size") long size,
-//                                         @Param("status") StatusEnum status,
-//                                         @Param("searchValue") String value,
-//                                         Pageable pageable);
-//
-//    @Query(StudyQueries.CONFLICTED_QUERY)
-//    Page<Study> findAllConflicted(@Param("reviewId") long reviewId,
-//                                  @Param("size") long size,
-//                                  @Param("status") StatusEnum status,
-//                                  Pageable pageable);
-//    @Query(StudyQueries.CONFLICTED_FOLDERS_QUERY)
-//    Page<Study> findAllConflictedByFolderId(@Param("reviewId") long reviewId,
-//                                            @Param("folderId") long folderId,
-//                                            @Param("size") long size,
-//                                            @Param("status") StatusEnum status,
-//                                            Pageable pageable);
-//    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_TITLE_CONDITION)
-//    Page<Study> findConflictedByTitleContaining(@Param("reviewId") long reviewId,
-//                                              @Param("size") long size,
-//                                              @Param("status") StatusEnum status,
-//                                              @Param("searchValue") String value,
-//                                              Pageable pageable);
-//    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_AUTHORS_CONDITION)
-//    Page<Study> findConflictedByAuthorsContaining(@Param("reviewId") long reviewId,
-//                                                @Param("size") long size,
-//                                                @Param("status") StatusEnum status,
-//                                                @Param("searchValue") String value,
-//                                                Pageable pageable);
-//    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findConflictedByPublicationYearContaining(@Param("reviewId") long reviewId,
-//                                                        @Param("size") long size,
-//                                                        @Param("status") StatusEnum status,
-//                                                        @Param("searchValue") String value,
-//                                                        Pageable pageable);
-//    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_TITLE_AND_AUTHORS_CONDITION)
-//    Page<Study> findConflictedByTitleAndAuthors(@Param("reviewId") long reviewId,
-//                                              @Param("size") long size,
-//                                              @Param("status") StatusEnum status,
-//                                              @Param("searchValue") String value,
-//                                              Pageable pageable);
-//    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_TITLE_AND_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findConflictedByTitleAndYear(@Param("reviewId") long reviewId,
-//                                           @Param("size") long size,
-//                                           @Param("status") StatusEnum status,
-//                                           @Param("searchValue") String value,
-//                                           Pageable pageable);
-//    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_AUTHORS_AND_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findConflictedByAuthorsAndYear(@Param("reviewId") long reviewId,
-//                                             @Param("size") long size,
-//                                             @Param("status") StatusEnum status,
-//                                             @Param("searchValue") String value,
-//                                             Pageable pageable);
-//    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
-//    Page<Study> findConflictedByTitleAndAuthorsAndYear(@Param("reviewId") long reviewId,
-//                                                     @Param("size") long size,
-//                                                     @Param("status") StatusEnum status,
-//                                                     @Param("searchValue") String value,
-//                                                     Pageable pageable);
-//    @Query(StudyQueries.CONFLICTED_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
-//    Page<Study> findConflictedByEverything(@Param("reviewId") long reviewId,
-//                                         @Param("size") long size,
-//                                         @Param("status") StatusEnum status,
-//                                         @Param("searchValue") String value,
-//                                         Pageable pageable);
+
+    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_TITLE_CONDITION)
+    Page<Study> findToBeReviewedByTitleContaining(@Param("reviewId") long reviewId,
+                                                  @Param("userId") long userId,
+                                                  @Param("stage") Stage stage,
+                                                  @Param("state") StudyState state,
+                                                  @Param("searchValue") String value,
+                                                  Pageable pageable);
+    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_AUTHORS_CONDITION)
+    Page<Study> findToBeReviewedByAuthorsContaining(@Param("reviewId") long reviewId,
+                                                  @Param("userId") long userId,
+                                                  @Param("stage") Stage stage,
+                                                    @Param("state") StudyState state,
+                                                  @Param("searchValue") String value,
+                                                  Pageable pageable);
+    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findToBeReviewedByPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                  @Param("userId") long userId,
+                                                  @Param("stage") Stage stage,
+                                                @Param("state") StudyState state,
+                                                  @Param("searchValue") String value,
+                                                  Pageable pageable);
+    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_TITLE_AND_AUTHORS_CONDITION)
+    Page<Study> findToBeReviewedByTitleAndAuthors(@Param("reviewId") long reviewId,
+                                                @Param("userId") long userId,
+                                                @Param("stage") Stage stage,
+                                                  @Param("state") StudyState state,
+                                                @Param("searchValue") String value,
+                                                Pageable pageable);
+    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_TITLE_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findToBeReviewedByTitleAndYear(@Param("reviewId") long reviewId,
+                                                  @Param("userId") long userId,
+                                                  @Param("stage") Stage stage,
+                                               @Param("state") StudyState state,
+                                                  @Param("searchValue") String value,
+                                                  Pageable pageable);
+    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_AUTHORS_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findToBeReviewedByAuthorsAndYear(@Param("reviewId") long reviewId,
+                                               @Param("userId") long userId,
+                                               @Param("stage") Stage stage,
+                                                 @Param("state") StudyState state,
+                                               @Param("searchValue") String value,
+                                               Pageable pageable);
+    @Query(StudyQueries.TO_BE_REVIEWED_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findToBeReviewedByTitleAndAuthorsAndYear(@Param("reviewId") long reviewId,
+                                                         @Param("userId") long userId,
+                                                         @Param("stage") Stage stage,
+                                                         @Param("state") StudyState state,
+                                                         @Param("searchValue") String value,
+                                                         Pageable pageable);
+    @Query(StudyQueries.TO_BE_REVIEWED_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
+    Page<Study> findToBeReviewedByEverything(@Param("reviewId") long reviewId,
+                                             @Param("userId") long userId,
+                                             @Param("stage") Stage stage,
+                                             @Param("state") StudyState state,
+                                             @Param("searchValue") String value,
+                                             Pageable pageable);
+
+    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_TITLE_CONDITION)
+    Page<Study> findAwaitingByTitleContaining(@Param("reviewId") long reviewId,
+                                              @Param("userId") long userId,
+                                              @Param("stage") Stage stage,
+                                              @Param("state") StudyState state,
+                                              @Param("searchValue") String value,
+                                              Pageable pageable);
+    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_AUTHORS_CONDITION)
+    Page<Study> findAwaitingByAuthorsContaining(@Param("reviewId") long reviewId,
+                                                @Param("userId") long userId,
+                                                @Param("stage") Stage stage,
+                                                @Param("state") StudyState state,
+                                                @Param("searchValue") String value,
+                                                Pageable pageable);
+    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findAwaitingByPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                        @Param("userId") long userId,
+                                                        @Param("stage") Stage stage,
+                                                        @Param("state") StudyState state,
+                                                        @Param("searchValue") String value,
+                                                        Pageable pageable);
+    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_TITLE_AND_AUTHORS_CONDITION)
+    Page<Study> findAwaitingByTitleAndAuthors(@Param("reviewId") long reviewId,
+                                              @Param("userId") long userId,
+                                              @Param("stage") Stage stage,
+                                              @Param("state") StudyState state,
+                                              @Param("searchValue") String value,
+                                              Pageable pageable);
+    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_TITLE_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findAwaitingByTitleAndYear(@Param("reviewId") long reviewId,
+                                           @Param("userId") long userId,
+                                           @Param("stage") Stage stage,
+                                           @Param("state") StudyState state,
+                                           @Param("searchValue") String value,
+                                           Pageable pageable);
+    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_AUTHORS_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findAwaitingByAuthorsAndYear(@Param("reviewId") long reviewId,
+                                             @Param("userId") long userId,
+                                             @Param("stage") Stage stage,
+                                             @Param("state") StudyState state,
+                                             @Param("searchValue") String value,
+                                             Pageable pageable);
+    @Query(StudyQueries.AWAITING_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findAwaitingByTitleAndAuthorsAndYear(@Param("reviewId") long reviewId,
+                                                     @Param("userId") long userId,
+                                                     @Param("stage") Stage stage,
+                                                     @Param("state") StudyState state,
+                                                     @Param("searchValue") String value,
+                                                     Pageable pageable);
+    @Query(StudyQueries.AWAITING_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
+    Page<Study> findAwaitingByEverything(@Param("reviewId") long reviewId,
+                                         @Param("userId") long userId,
+                                         @Param("stage") Stage stage,
+                                         @Param("state") StudyState state,
+                                         @Param("searchValue") String value,
+                                         Pageable pageable);
+
+    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_TITLE_CONDITION)
+    Page<Study> findExcludedByTitleContaining(@Param("reviewId") long reviewId,
+                                              @Param("stage") Stage stage,
+                                              @Param("state") StudyState state,
+                                              @Param("searchValue") String value,
+                                              Pageable pageable);
+    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_AUTHORS_CONDITION)
+    Page<Study> findExcludedByAuthorsContaining(@Param("reviewId") long reviewId,
+                                                @Param("stage") Stage stage,
+                                                @Param("state") StudyState state,
+                                                @Param("searchValue") String value,
+                                                Pageable pageable);
+    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findExcludedByPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                        @Param("stage") Stage stage,
+                                                        @Param("state") StudyState state,
+                                                        @Param("searchValue") String value,
+                                                        Pageable pageable);
+    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_TITLE_AND_AUTHORS_CONDITION)
+    Page<Study> findExcludedByTitleAndAuthors(@Param("reviewId") long reviewId,
+                                              @Param("stage") Stage stage,
+                                              @Param("state") StudyState state,
+                                              @Param("searchValue") String value,
+                                              Pageable pageable);
+    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_TITLE_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findExcludedByTitleAndYear(@Param("reviewId") long reviewId,
+                                           @Param("stage") Stage stage,
+                                           @Param("state") StudyState state,
+                                           @Param("searchValue") String value,
+                                           Pageable pageable);
+    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_AUTHORS_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findExcludedByAuthorsAndYear(@Param("reviewId") long reviewId,
+                                             @Param("stage") Stage stage,
+                                             @Param("state") StudyState state,
+                                             @Param("searchValue") String value,
+                                             Pageable pageable);
+    @Query(StudyQueries.EXCLUDED_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findExcludedByTitleAndAuthorsAndYear(@Param("reviewId") long reviewId,
+                                                     @Param("stage") Stage stage,
+                                                     @Param("state") StudyState state,
+                                                     @Param("searchValue") String value,
+                                                     Pageable pageable);
+    @Query(StudyQueries.EXCLUDED_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
+    Page<Study> findExcludedByEverything(@Param("reviewId") long reviewId,
+                                         @Param("stage") Stage stage,
+                                         @Param("state") StudyState state,
+                                         @Param("searchValue") String value,
+                                         Pageable pageable);
+
+    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_TITLE_CONDITION)
+    Page<Study> findConflictedByTitleContaining(@Param("reviewId") long reviewId,
+                                                @Param("stage") Stage stage,
+                                                @Param("state") StudyState state,
+                                                @Param("searchValue") String value,
+                                                Pageable pageable);
+    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_AUTHORS_CONDITION)
+    Page<Study> findConflictedByAuthorsContaining(@Param("reviewId") long reviewId,
+                                                  @Param("stage") Stage stage,
+                                                  @Param("state") StudyState state,
+                                                  @Param("searchValue") String value,
+                                                  Pageable pageable);
+    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findConflictedByPublicationYearContaining(@Param("reviewId") long reviewId,
+                                                          @Param("stage") Stage stage,
+                                                          @Param("state") StudyState state,
+                                                          @Param("searchValue") String value,
+                                                          Pageable pageable);
+    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_TITLE_AND_AUTHORS_CONDITION)
+    Page<Study> findConflictedByTitleAndAuthors(@Param("reviewId") long reviewId,
+                                                @Param("stage") Stage stage,
+                                                @Param("state") StudyState state,
+                                                @Param("searchValue") String value,
+                                                Pageable pageable);
+    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_TITLE_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findConflictedByTitleAndYear(@Param("reviewId") long reviewId,
+                                             @Param("stage") Stage stage,
+                                             @Param("state") StudyState state,
+                                             @Param("searchValue") String value,
+                                             Pageable pageable);
+    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_AUTHORS_AND_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findConflictedByAuthorsAndYear(@Param("reviewId") long reviewId,
+                                               @Param("stage") Stage stage,
+                                               @Param("state") StudyState state,
+                                               @Param("searchValue") String value,
+                                               Pageable pageable);
+    @Query(StudyQueries.CONFLICTED_QUERY + StudyQueries.BY_TITLE_AUTHORS_PUBLICATION_YEAR_CONDITION)
+    Page<Study> findConflictedByTitleAndAuthorsAndYear(@Param("reviewId") long reviewId,
+                                                       @Param("stage") Stage stage,
+                                                       @Param("state") StudyState state,
+                                                       @Param("searchValue") String value,
+                                                       Pageable pageable);
+    @Query(StudyQueries.CONFLICTED_TAGS_QUERY + StudyQueries.BY_EVERYTHING_CONDITION)
+    Page<Study> findConflictedByEverything(@Param("reviewId") long reviewId,
+                                           @Param("stage") Stage stage,
+                                           @Param("state") StudyState state,
+                                           @Param("searchValue") String value,
+                                           Pageable pageable);
 //
 //    @Query("SELECT s " +
 //            "FROM Study s " +

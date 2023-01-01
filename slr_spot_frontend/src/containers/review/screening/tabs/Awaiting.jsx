@@ -60,10 +60,10 @@ const Awaiting = (props) => {
 
   const handleSearch = (searchValue) => {
     var userId = currentUser.id;
-    var status = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     if (searchValue.trim().length > 0) {
-      axiosInstance.get("/studies/state/" + AWAITING + "/search", { params: {
-        reviewId, userId, status, searchType, searchValue 
+      axiosInstance.get("/studies/awaiting/search", { params: {
+        reviewId, userId, stage, searchType, searchValue 
       }})
       .then((response) => {
         setStudies(response.data.content)

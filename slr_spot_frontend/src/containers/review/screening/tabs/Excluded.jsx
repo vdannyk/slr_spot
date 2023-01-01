@@ -58,10 +58,10 @@ const Excluded = (props) => {
 
   const handleSearch = (searchValue) => {
     var userId = currentUser.id;
-    var status = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     if (searchValue.trim().length > 0) {
-      axiosInstance.get("/studies/state/" + EXCLUDED + "/search", { params: {
-        reviewId, userId, status, searchType, searchValue 
+      axiosInstance.get("/studies/excluded/search", { params: {
+        reviewId, userId, stage, searchType, searchValue 
       }})
       .then((response) => {
         setStudies(response.data.content)

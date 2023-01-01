@@ -286,16 +286,30 @@ public class StudyFacade {
     }
 
 
-//    public Page<Study> searchStudiesByState(StudyState studyState, Long reviewId, Long userId,
-//                                            StatusEnum status, StudySearchType searchType, String searchValue, int page, int size) {
-//        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
-//
-//        Review review = reviewService.getReviewById(reviewId);
-//        int requiredReviewers = review.getScreeningReviewers();
-//
-//        return searchProcessor.searchByState(studyState, searchType, reviewId, userId, requiredReviewers, status, searchValue, pageRq);
-//    }
-//
+    public Page<Study> searchStudiesToBeReviewed(Long reviewId, Long userId, Stage stage, StudySearchType searchType,
+                                                 String searchValue, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return searchProcessor.searchToBeReviewed(searchType, reviewId, userId, stage, StudyState.TO_BE_REVIEWED, searchValue, pageRq);
+    }
+
+    public Page<Study> searchStudiesConflicted(Long reviewId, Stage stage, StudySearchType searchType,
+                                               String searchValue, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return searchProcessor.searchConflicted(searchType, reviewId, stage, StudyState.CONFLICTED, searchValue, pageRq);
+    }
+
+    public Page<Study> searchStudiesAwaiting(Long reviewId, Long userId, Stage stage, StudySearchType searchType,
+                                                 String searchValue, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return searchProcessor.searchAwaiting(searchType, reviewId, userId, stage, StudyState.TO_BE_REVIEWED, searchValue, pageRq);
+    }
+
+    public Page<Study> searchStudiesExcluded(Long reviewId, Stage stage, StudySearchType searchType,
+                                               String searchValue, int page, int size) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+        return searchProcessor.searchExcluded(searchType, reviewId, stage, StudyState.EXCLUDED, searchValue, pageRq);
+    }
+
     public Page<Study> searchStudies(Long reviewId, StudySearchType searchType, String searchValue, int page, int size) {
         Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
 

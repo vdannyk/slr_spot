@@ -57,11 +57,10 @@ const Conflicted = (props) => {
   }
 
   const handleSearch = (searchValue) => {
-    var userId = currentUser.id;
-    var status = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     if (searchValue.trim().length > 0) {
-      axiosInstance.get("/studies/state/" + CONFLICTED + "/search", { params: {
-        reviewId, userId, status, searchType, searchValue 
+      axiosInstance.get("/studies/conflicted/search", { params: {
+        reviewId, stage, searchType, searchValue 
       }})
       .then((response) => {
         setStudies(response.data.content)
