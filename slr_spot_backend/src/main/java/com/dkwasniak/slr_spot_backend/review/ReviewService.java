@@ -79,7 +79,7 @@ public class ReviewService {
 
     public void updateReview(long id, ReviewDto reviewDto) {
         Review currentReview = getReviewById(id);
-        currentReview.setTitle(reviewDto.getName() == null
+        currentReview.setTitle(reviewDto.getName() == null || reviewDto.getName().isEmpty()
                 ? currentReview.getTitle() : reviewDto.getName());
         currentReview.setResearchArea(reviewDto.getResearchArea() == null
                 ? currentReview.getResearchArea() : reviewDto.getResearchArea());

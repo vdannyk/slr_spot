@@ -12,7 +12,8 @@ const ReviewSettings = (props) => {
   const [loading, setLoading] = useState(false);
   const [reviewData, setReviewData] = useState([]);
   const { reviewId } = useParams();
-  const {register, handleSubmit, formState: { errors }} = useForm();
+  const {register, handleSubmit, watch, formState: { errors }} = useForm();
+  var allowChanges = props.userRole && [OWNER, COOWNER].includes(props.userRole);
 
   const [researchQuestions, setResearchQuestions] = useState([]);
   const [question, setQuestion] = useState('');
@@ -29,7 +30,6 @@ const ReviewSettings = (props) => {
   ));
 
   useEffect(() => {
-    console.log(reviewId);
     axiosInstance.get("/reviews/" + reviewId)
     .then((response) => {
       setReviewData(response.data.review);
@@ -69,7 +69,7 @@ const ReviewSettings = (props) => {
     });
   };
 
-  if (!props.isPublic || !(props.userRole && [OWNER, COOWNER].includes(props.userRole))) {
+  if (!allowChanges) {
     return <p>ACCESS NOT ALLOWED</p>
   }
 
@@ -82,27 +82,20 @@ const ReviewSettings = (props) => {
 
         <label>Review name</label>
         <input  
-          {...register("name", { 
-            required: true,
-          })}
+          {...register("name", { defaultValue:reviewData.title })}
           name='name'
           defaultValue={reviewData.title}
         />
-        {/* {errors.name && errors.name.type=== "required" && 
-          <p className="slrspot__newReview-error">This field is required</p>
-        } */}
+        {errors.name && errors.name.type === "validate" &&  
+          <p className="slrspot__signIn-error">Review name can't be empty</p>
+        }
 
         <label>Area of research</label>
         <input  
-          {...register("researchArea", { 
-            required: true,
-          })}
+          {...register("researchArea")}
           name='researchArea'
           defaultValue={reviewData.researchArea}
         />
-        {/* {errors.researchArea && errors.researchArea.type=== "required" && 
-          <p className="slrspot__newReview-error">This field is required</p>
-        } */}
 
         <label>Research question</label>
         { researchQuestions.length > 0 && listQuestions }
@@ -115,7 +108,7 @@ const ReviewSettings = (props) => {
 
         <label>Description</label>
         <textarea  
-          {...register("description")}
+          {...register("description", { defaultValue: reviewData.description })}
           name='description'
           defaultValue={reviewData.description}
         />
@@ -123,8 +116,8 @@ const ReviewSettings = (props) => {
         <label>Public review</label>
         <Check {...register("isPublic")} defaultChecked={reviewData.isPublic}/>
 
-        <label>Show votes on conflicts</label>
-        <Check {...register("isPublic")} defaultChecked={reviewData.isPublic}/>
+        <label hidden>Show votes on conflicts</label>
+        <Check {...register("isPublic")} defaultChecked={reviewData.isPublic} hidden/>
 
         <label>Reviewers required for screening</label>
         <input
