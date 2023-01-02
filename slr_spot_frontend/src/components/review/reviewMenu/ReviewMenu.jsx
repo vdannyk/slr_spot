@@ -12,6 +12,9 @@ const ReviewMenu = (props) => {
   const [showStudiesMenu, setShowStudiesMenu] = useState(false);
   const { reviewId } = useParams();
   const navigate = useNavigate();
+  var allowChanges = props.userRole && [OWNER, COOWNER].includes(props.userRole);
+
+  console.log(props.userRole)
 
   const onItemClick = (props) => {
     if (props.setShowTrigger) {
@@ -61,7 +64,7 @@ const ReviewMenu = (props) => {
           <MenuItem name='Review' setShowTrigger={setShowReviewMenu} showTrigger={showReviewMenu}/>
           { showReviewMenu && (
             <div className='slrspot__review-submenu-options'>
-              { !props.isPublic || props.userRole && [OWNER, COOWNER].includes(props.userRole) && <SubMenuItem name='Settings' redirect='/settings'/> }
+              { allowChanges && <SubMenuItem name='Settings' redirect='/settings'/> }
               <SubMenuItem name='Team' redirect='/team'/>
             </div>
           )}
