@@ -14,6 +14,7 @@ const ReviewHome = (props) => {
   const { reviewId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  var allowChanges = props.userRole && [OWNER, COOWNER].includes(props.userRole);
 
   useEffect(() => {
     console.log(reviewId);
@@ -32,7 +33,7 @@ const ReviewHome = (props) => {
       <div className='slrspot__review-home-title'>
         <h1>
           { reviewData.title }
-          { !props.isPublic || props.userRole && [OWNER, COOWNER].includes(props.userRole) && <CgPen size={25} onClick={ () => navigate(location.pathname + "/settings") } cursor='pointer' /> }
+          { allowChanges && <CgPen size={25} onClick={ () => navigate(location.pathname + "/settings") } cursor='pointer' /> }
         </h1>
       </div>
       <Table>
