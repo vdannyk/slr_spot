@@ -1,11 +1,11 @@
 package com.dkwasniak.slr_spot_backend.imports;
 
-import com.dkwasniak.slr_spot_backend.study.Study;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +17,9 @@ public class ImportService {
         importRepository.save(studyImport);
     }
 
-    public Set<Import> getImportsByReviewId(long reviewId) {
-        return importRepository.findByReview_Id(reviewId);
+    public Page<Import> getImportsByReviewId(long reviewId, int page, int size) {
+        PageRequest pageRq = PageRequest.of(page, size, Sort.by("date"));
+        return importRepository.findByReview_Id(reviewId, pageRq);
     }
 
     public void deleteImportById(Long id) {
