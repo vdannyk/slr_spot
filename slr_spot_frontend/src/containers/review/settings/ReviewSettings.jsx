@@ -12,7 +12,7 @@ const ReviewSettings = (props) => {
   const [loading, setLoading] = useState(false);
   const [reviewData, setReviewData] = useState([]);
   const { reviewId } = useParams();
-  const {register, handleSubmit, watch, formState: { errors }} = useForm();
+  const {register, handleSubmit, watch, formState: { errors }, reset} = useForm();
   var allowChanges = props.userRole && [OWNER, COOWNER].includes(props.userRole);
 
   const [researchQuestions, setResearchQuestions] = useState([]);
@@ -34,6 +34,7 @@ const ReviewSettings = (props) => {
     .then((response) => {
       setReviewData(response.data.review);
       setResearchQuestions(response.data.review.researchQuestions.map(q => q.name));
+      reset();
     });
   }, []);
 
@@ -54,11 +55,11 @@ const ReviewSettings = (props) => {
 
   const onSubmit = (formData) => {
     setLoading(true);
-    const name = formData.name;
-    const researchArea = formData.researchArea;
-    const description = formData.description;
-    const isPublic = formData.isPublic;
-    const screeningReviewers = formData.screeningReviewers;
+    var name = formData.name;
+    var researchArea = formData.researchArea;
+    var description = formData.description;
+    var isPublic = formData.isPublic;
+    var screeningReviewers = formData.screeningReviewers;
     console.log(formData);
     axiosInstance.put("/reviews/" + reviewId, {
       name, researchArea, description, isPublic, screeningReviewers, researchQuestions
@@ -81,18 +82,24 @@ const ReviewSettings = (props) => {
       <form className='slrspot__review-settings-container' onSubmit={handleSubmit(onSubmit)}>
 
         <label>Review name</label>
+        {errors.name && errors.name.type === "validate" &&  
+          <p className="slrspot__input-error">Review name can't be empty</p>
+        }
         <input  
-          {...register("name", { defaultValue:reviewData.title })}
+          {...register("name", { 
+            defaultValue:reviewData.title, 
+            validate: () => {
+              return watch('name').trim().length !== 0;}   
+            })
+          }
           name='name'
           defaultValue={reviewData.title}
+          
         />
-        {errors.name && errors.name.type === "validate" &&  
-          <p className="slrspot__signIn-error">Review name can't be empty</p>
-        }
 
         <label>Area of research</label>
         <input  
-          {...register("researchArea")}
+          {...register("researchArea", { defaultValue:reviewData.researchArea })}
           name='researchArea'
           defaultValue={reviewData.researchArea}
         />
@@ -114,10 +121,10 @@ const ReviewSettings = (props) => {
         />
 
         <label>Public review</label>
-        <Check {...register("isPublic")} defaultChecked={reviewData.isPublic}/>
+        <Check {...register("isPublic", { defaultValue: reviewData.isPublic })} defaultChecked={reviewData.isPublic}/>
 
         <label hidden>Show votes on conflicts</label>
-        <Check {...register("isPublic")} defaultChecked={reviewData.isPublic} hidden/>
+        <Check {...register("showConflictVotes")} defaultChecked={reviewData.isPublic} hidden/>
 
         <label>Reviewers required for screening</label>
         <input

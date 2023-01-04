@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVRecord;
 import org.jbibtex.BibTeXDatabase;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -118,7 +119,7 @@ public class ImportFacade {
         importService.deleteImportById(importId);
     }
 
-    public Set<Import> getImportsByReviewId(Long reviewId) {
-        return reviewService.getReviewById(reviewId).getImports();
+    public Page<Import> getImportsByReviewId(Long reviewId, int page, int size) {
+        return importService.getImportsByReviewId(reviewId, page, size);
     }
 }

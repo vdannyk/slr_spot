@@ -5,12 +5,50 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import './reviews.css'
 import EventBus from '../../common/EventBus';
+import ReactPaginate from 'react-paginate';
+
 
 const Reviews = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const [isShowAll, setIsShowAll] = useState(false);
   const { user: currentUser } = useSelector((state) => state.auth);
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
+  const [pageCount, setPageCount] = useState(0);
+
+  const handlePageChange = (studyPage) => {
+    var page = studyPage.selected;
+    if (isShowAll) {
+      axiosInstance.get("/reviews/public", { params: {
+        page
+      }})
+      .then((response) => {
+        setData(response.data.reviews);
+        setPageCount(response.data.totalPagesNum);
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 403) {
+          EventBus.dispatch('expirationLogout');
+        }
+      });
+    } else {
+      var userId = currentUser.id;
+      axiosInstance.get("/reviews", { params: {
+        userId, page
+      }})
+      .then((response) => {
+        setData(response.data.reviews);
+        setPageCount(response.data.totalPagesNum);
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 403) {
+          EventBus.dispatch('expirationLogout');
+        }
+      });
+    }
+  }
 
   const onClick = () => {
     navigate('/reviews/new');
@@ -25,7 +63,7 @@ const Reviews = () => {
       axiosInstance.get("/reviews/public")
       .then((response) => {
         setData(response.data.reviews);
-        console.log(response.data);
+        setPageCount(response.data.totalPagesNum);
       })
       .catch((error) => {
         if (error.response && error.response.status === 403) {
@@ -39,7 +77,7 @@ const Reviews = () => {
       }})
       .then((response) => {
         setData(response.data.reviews);
-        console.log(response.data);
+        setPageCount(response.data.totalPagesNum);
       })
       .catch((error) => {
         if (error.response && error.response.status === 403) {
@@ -109,6 +147,17 @@ const Reviews = () => {
           <a onClick={() => setIsShowAll(true)}>Public reviews</a>
         </div>
         <ReviewsTable />
+        { data.length > 0 && pageCount > 1 &&
+        <ReactPaginate
+          pageCount={pageCount}
+          pageRangeDisplayed={5}
+          marginPagesDisplayed={2}
+          onPageChange={handlePageChange}
+          forcePage={currentPage}
+          containerClassName="slrspot__folder-pagination"
+          activeClassName="slrspot__folder-pagination-active"
+        />
+      }
         
       </div>
     </div>
