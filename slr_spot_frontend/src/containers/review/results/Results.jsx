@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../services/api';
 import { useParams } from 'react-router-dom';
 import Check from 'react-bootstrap/FormCheck';
-import { ContentPopup } from '../../../components'
+import { ContentPopup, PageChanger } from '../../../components'
 import './results.css';
 import ExtractData from './ExtractData';
 import GenerateRaport from './GenerateRaport';
@@ -10,6 +10,7 @@ import ExportStudies from './ExportStudies';
 import ResultStudy from './ResultStudy';
 import { OWNER, MEMBER, COOWNER } from '../../../constants/roles';
 import { AUTHORS_SEARCH, AUTHORS_YEAR_SEARCH, TITLE_AUTHORS_SEARCH, TITLE_AUTHORS_YEAR_SEARCH, TITLE_SEARCH, TITLE_YEAR_SEARCH, YEAR_SEARCH, EVERYTHING_SEARCH } from '../../../constants/searchTypes';
+import ReactPaginate from 'react-paginate';
 
 const Results = (props) => {
   const [includedStudies, setIncludedStudies] = useState([]);
@@ -29,9 +30,16 @@ const Results = (props) => {
   const [yearCheck, setYearCheck] = useState(false);
   const [everythingCheck, setEverythingCheck] = useState(true);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
+  const [pageCount, setPageCount] = useState(0);
+  const [searchPerformed, setSearchPerformed] = useState(false);
+
   function getStudies() {
+    var page = currentPage;
+    var size = pageSize;
     axiosInstance.get("/studies/included", { params: {
-      reviewId
+      reviewId, page, size
     }})
     .then((response) => {
       console.log(response.data);
@@ -163,6 +171,62 @@ const Results = (props) => {
     }
   }
 
+  const handlePageChange = (studyPage) => {
+    var page = studyPage.selected;
+    var size = pageSize;
+    if (searchPerformed) {
+      axiosInstance.get("/studies/included/search", { params: {
+        reviewId, searchType, searchValue, page, size 
+      }})
+      .then((response) => {
+        setIncludedStudies(response.data.content);
+        setPageCount(response.data.totalPages);
+        setSearchPerformed(true);
+        setCurrentPage(response.number);
+      })
+      .catch(() => {
+      });
+    } else {
+      axiosInstance.get("/studies/included", { params: {
+        reviewId, page, size
+      }})
+      .then((response) => {
+        setIncludedStudies(response.data.content);
+        setPageCount(response.data.totalPages);
+        setSearchPerformed(false);
+        setCurrentPage(response.number);
+      });
+    }
+  }
+
+  useEffect(() => {
+    var page = currentPage;
+    var size = pageSize;
+    if (searchPerformed) {
+      axiosInstance.get("/studies/included/search", { params: {
+        reviewId, searchType, searchValue, page, size 
+      }})
+      .then((response) => {
+        setIncludedStudies(response.data.content);
+        setPageCount(response.data.totalPages);
+        setSearchPerformed(true);
+        setCurrentPage(response.number);
+      })
+      .catch(() => {
+      });
+    } else {
+      axiosInstance.get("/studies/included", { params: {
+        reviewId, page, size
+      }})
+      .then((response) => {
+        setIncludedStudies(response.data.content);
+        setPageCount(response.data.totalPages);
+        setSearchPerformed(false);
+        setCurrentPage(response.number);
+      });
+    }
+  }, [pageSize]);
+
   return (
     <div className='slrspot__review-results'>
       <div className='slrspot__review-header'>
@@ -220,12 +284,19 @@ const Results = (props) => {
       </div>
 
       <div className='slrspot__review-results-list'>
+        <div style={{ textAlign: 'right' }}>
+          <PageChanger 
+            defaultSelected={pageSize}
+            options={[5,10,25]}
+            changePageSize={setPageSize}
+          />
+        </div>
         <div className='slrspot__review-list-selectAll'>
           <Check 
             type='checkbox'
             checked={ selected.length === includedStudies.length } 
             onChange={ handleSelectAll }/>
-            <p>Select all</p>
+          <p>Select all</p>
         </div>
         { includedStudies.map(study => (
           <ResultStudy 
@@ -236,6 +307,17 @@ const Results = (props) => {
             reviewTags={ reviewTags } 
             triggerStudiesUpdate={ handleStudiesUpdate }/>
         ))}
+        { includedStudies.length > 0 && pageCount > 1 &&
+          <ReactPaginate
+            pageCount={pageCount}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            onPageChange={handlePageChange}
+            forcePage={currentPage}
+            containerClassName="slrspot__folder-pagination"
+            activeClassName="slrspot__folder-pagination-active"
+          />
+      }
       </div>
       { showExtractMenu && <ContentPopup content={<ExtractData selectedStudies={selected} />} triggerExit={ () => setShowExtractMenu(false)} /> }
       { showExportMenu && <ContentPopup content={<ExportStudies />} triggerExit={ () => setShowExportMenu(false)} /> }

@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend.imports;
 
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +36,9 @@ public class ImportController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<Import>> getImportsByReviewId(@RequestParam Long reviewId) {
-        return ResponseEntity.ok().body(importFacade.getImportsByReviewId(reviewId));
+    public ResponseEntity<Page<Import>> getImportsByReviewId(@RequestParam Long reviewId,
+                                                             @RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok().body(importFacade.getImportsByReviewId(reviewId, page, size));
     }
 }

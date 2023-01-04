@@ -8,6 +8,7 @@ import './studiesSearch.css';
 import { ConfirmationPopup, ImportDetails, StudiesImport } from '../../../../components';
 import EventBus from '../../../../common/EventBus';
 import { OWNER, COOWNER, MEMBER } from '../../../../constants/roles';
+import ReactPaginate from 'react-paginate';
 
 
 const StudiesSearch = (props) => {
@@ -21,12 +22,17 @@ const StudiesSearch = (props) => {
   const [importDetails, setImportDetails] = useState();
   var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
+  const [pageCount, setPageCount] = useState(0);
+
   useEffect(() => {
     axiosInstance.get("/imports", { params: {
       reviewId
     }})
     .then((response) => {
-      setImports(response.data);
+      setImports(response.data.content);
+      setPageCount(response.data.totalPages);
     })
     .catch((error) => {
       if (error.response && error.response.status === 403) {
@@ -34,6 +40,22 @@ const StudiesSearch = (props) => {
       }
     });
   }, []);
+
+  const handlePageChange = (studyPage) => {
+    var page = studyPage.selected;
+    axiosInstance.get("/imports", { params: {
+      reviewId, page
+    }})
+    .then((response) => {
+      setImports(response.data.content);
+      setPageCount(response.data.totalPages);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+  }
 
   const helperContent = () => {
     return (
@@ -146,6 +168,17 @@ const StudiesSearch = (props) => {
               { listTestData }
             </Table>}
 
+        { imports.length > 0 && pageCount > 1 &&
+          <ReactPaginate
+            pageCount={pageCount}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            onPageChange={handlePageChange}
+            forcePage={currentPage}
+            containerClassName="slrspot__folder-pagination"
+            activeClassName="slrspot__folder-pagination-active"
+          />
+        }
         <button onClick={ () => navigate("/reviews/" + reviewId + "/studies/display") }>Show all studies</button>
       </div>
       { showImportRemoveConfirmation && 
