@@ -27,6 +27,7 @@ export { default as ScreeningMenu } from './screening/screeningMenu/ScreeningMen
 export { default as ScreeningCriteria } from './screening/screeningCriteria/ScreeningCriteria';
 export { default as ScreeningStudy } from './screening/screeningStudy/ScreeningStudy';
 export { default as ScreeningStudyInFolder } from './screening/screeningStudy/ScreeningStudyInFolder';
+export { default as ScreeningStudyFullText } from './screening/screeningStudy/ScreeningStudyFullText';
 export { default as ScreeningOptions } from './screening/screeningOptions/ScreeningOptions';
 export { default as StudyHistory } from './screening/screeningStudy/studyHistory/StudyHistory';
 export { default as StudyDiscussion } from './screening/screeningStudy/studyDiscussion/StudyDiscussion';

@@ -140,7 +140,7 @@ const StudiesImport = (props) => {
               <Check
                 onChange={ handleCheck } 
                 checked={ checkOther } />
-              <span>TILE, AUTHORS, YEAR</span>
+              <span>TITLE, AUTHORS, YEAR</span>
             </div>
           </div>
 

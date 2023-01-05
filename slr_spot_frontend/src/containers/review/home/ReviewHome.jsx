@@ -17,7 +17,6 @@ const ReviewHome = (props) => {
   var allowChanges = props.userRole && [OWNER, COOWNER].includes(props.userRole);
 
   useEffect(() => {
-    console.log(reviewId);
     axiosInstance.get("/reviews/" + reviewId)
     .then((response) => {
       setReviewData(response.data.review);

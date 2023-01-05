@@ -52,6 +52,10 @@ public class StudyFacade {
     private final ScreeningService screeningService;
     private final SearchProcessor searchProcessor;
 
+    public Study getStudyById(Long studyId) {
+        return studyService.getStudyById(studyId);
+    }
+
     public Page<Study> getStudiesByReviewId(Long reviewId, int page, int size) {
         Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
         return studyService.getStudiesByReviewId(reviewId, pageRq);
