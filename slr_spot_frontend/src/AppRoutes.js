@@ -34,7 +34,7 @@ const AppRoutes = () => {
       <Route path="reviews/:reviewId/screening/title_abstract" element={isLoggedIn ? <Review page={ Screening } props={ {isFullText: false} } /> : <Navigate to='/' />} />
       <Route path="reviews/:reviewId/screening/full-text" element={isLoggedIn ? <Review page={ Screening } props={ {isFullText: true} } /> : <Navigate to='/' />} />
 
-      <Route path="reviews/:reviewId/studies/:studyId/full-text" element={isLoggedIn ? <Review page={ FullTextStudy } /> : <Navigate to='/' />} />
+      <Route path="reviews/:reviewId/studies/:studyId/full-text/:state" element={isLoggedIn ? <Review page={ FullTextStudy } /> : <Navigate to='/' />} />
 
       <Route path="reviews/:reviewId/studies/search" element={isLoggedIn ? <Review page={ StudiesSearch } /> : <Navigate to='/' />} /> // done
       <Route path="reviews/:reviewId/studies/display" element={isLoggedIn ? <Review page={ StudiesDisplay } /> : <Navigate to='/' />} /> // done

@@ -9,7 +9,7 @@ import { ScreeningStudyFullText } from '../../components';
 import { TO_BE_REVIEWED } from '../../constants/tabs';
 
 const FullTextStudy = () => {
-  const { reviewId, studyId } = useParams();
+  const { reviewId, studyId, state } = useParams();
   const [pdfUrl, setPdfUrl] = useState(null);
 
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const FullTextStudy = () => {
         <ScreeningStudyFullText 
           studyId={ studyId }
           reviewId={ reviewId }
-          tab={ TO_BE_REVIEWED }
+          tab={ state }
         />
 
         <div className='all-page-container'>

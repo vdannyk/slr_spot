@@ -134,6 +134,7 @@ public class StudyFacade {
                 new Operation(String.format(OperationDescription.ADD_COMMENT.getDescription(), user.getEmail())));
     }
 
+    @Transactional
     public void addStudyScreeningDecision(Long studyId, ScreeningDecisionDto screeningDecisionDto) {
         Review review = reviewService.getReviewById(screeningDecisionDto.getReviewId());
         int requiredReviewers = review.getScreeningReviewers();
@@ -171,17 +172,18 @@ public class StudyFacade {
         return screeningService.getScreeningDecisionByStudyIdAndUserId(studyId, userId).getDecision();
     }
 
+    @Transactional
     public void restoreStudy(Long studyId) {
         Study study = studyService.getStudyById(studyId);
+        studyService.addOperation(study, new Operation(OperationDescription.RESTORE_TO_SCREENING.getDescription()));
         studyService.updateStudyStatus(study, StatusDto.of(study.getStage(), StudyState.TO_BE_REVIEWED));
         studyService.clearDecisions(study);
-        studyService.addOperation(study, new Operation(OperationDescription.RESTORE_TO_SCREENING.getDescription()));
     }
 
     public void markStudyAsDuplicate(Long studyId) {
         Study study = studyService.getStudyById(studyId);
-        studyService.updateStudyStatus(study, StatusDto.of(study.getStage(), StudyState.DUPLICATES));
         studyService.addOperation(study, new Operation(OperationDescription.MARK_DUPLICATE.getDescription()));
+        studyService.updateStudyStatus(study, StatusDto.of(study.getStage(), StudyState.DUPLICATES));
     }
 
     public void markStudiesAsDuplicate(List<Long> studiesId) {

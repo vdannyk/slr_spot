@@ -11,10 +11,12 @@ import AwaitingOptions from './tabSpecificOptions/AwaitingOptions';
 import ConflictedOptions from './tabSpecificOptions/ConflictedOptions';
 import { useSelector } from 'react-redux';
 import { FULL_TEXT } from '../../../constants/studyStages';
-
+import { useNavigate } from 'react-router-dom';
+import EventBus from '../../../common/EventBus';
 
 
 const ScreeningStudyFullText = (props) => {
+  const navigate = useNavigate();
   const [study, setStudy] = useState();
   const [highlights, setHighlights] = useState([]);
   const [reviewTags, setReviewTags] = useState([]);
@@ -40,12 +42,25 @@ const ScreeningStudyFullText = (props) => {
     .then((response) => {
       setStudy(response.data);
     })
+
+    var reviewId = props.reviewId;
+    axiosInstance.get("/tags", { params: {
+      reviewId
+    }})
+    .then((response) => {
+      setReviewTags(response.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
   }, []);
 
   const handleDuplicate = () => {
     axiosInstance.put("/studies/" + props.studyId + "/duplicate")
     .then(() => {
-      // go to somewhere
+      navigate('/reviews/' + props.reviewId + '/studies/duplicates');
     })
     .catch(() => {
     });
@@ -59,11 +74,7 @@ const ScreeningStudyFullText = (props) => {
       stage: FULL_TEXT
     })
     .then(() => {
-      if (props.tab === AWAITING ) {
-        // triggerRefresh();
-      } else {
-        // triggerVote(study.id);
-      }
+      navigate('/reviews/' + props.reviewId + '/screening/full-text');
     })
     .catch(() => {
     });
@@ -72,7 +83,7 @@ const ScreeningStudyFullText = (props) => {
   const handleRestore = () => {
     axiosInstance.put("/studies/" + props.studyId + "/restore")
     .then(() => {
-      // triggerVote(study.id);
+      navigate('/reviews/' + props.reviewId + '/screening/full-text');
     })
     .catch(() => {
     });
@@ -107,7 +118,10 @@ const ScreeningStudyFullText = (props) => {
       )
     } else if (props.tab === AWAITING) {
       return (
-        <AwaitingOptions />
+        <AwaitingOptions 
+          handleVote={ handleVote }
+          study={ study }
+        />
       )
     } else {
       return (
@@ -127,7 +141,7 @@ const ScreeningStudyFullText = (props) => {
 
       <div className='slrspot__screeningStudy-state'>
         <h3>Current state: </h3>
-        <span>{ study.state }</span> 
+        <span>{ props.tab }</span> 
       </div>
 
       { showHighlights 

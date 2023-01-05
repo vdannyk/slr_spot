@@ -6,7 +6,7 @@ import axiosInstance from '../../../../services/api';
 import './fullTextField.css';
 
 
-const FullTextField = ({ study, isFullText, allowChanges }) => {
+const FullTextField = ({ study, isFullText, allowChanges, tab }) => {
   const navigate = useNavigate();
   const [fullTextFilename, setFulltextFilename] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,7 +29,7 @@ const FullTextField = ({ study, isFullText, allowChanges }) => {
       <div className='slrspot__fullTextField'>
         <label>full text:</label>
         { fullTextFilename
-          ? <button onClick={() => navigate('/reviews/' + reviewId + '/studies/' + study.id + '/full-text')}>{ fullTextFilename }</button> 
+          ? <button onClick={() => navigate('/reviews/' + reviewId + '/studies/' + study.id + '/full-text/' + tab)}>{ fullTextFilename }</button> 
           : <PdfUploader studyId={study.id} setIsLoaded={setIsLoaded}/> }
       </div>
     )
@@ -38,7 +38,7 @@ const FullTextField = ({ study, isFullText, allowChanges }) => {
       <div className='slrspot__fullTextField'>
         <label>full text:</label>
         { fullTextFilename 
-            ? <button onClick={() => navigate('/reviews/' + reviewId + '/studies/' + study.id + '/full-text')}>{ fullTextFilename }</button> 
+            ? <button onClick={() => navigate('/reviews/' + reviewId + '/studies/' + study.id + '/full-text/' + tab)}>{ fullTextFilename }</button> 
             : <p>not available</p> }
       </div> 
     )
