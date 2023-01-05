@@ -6,13 +6,24 @@ import { useNavigate, useParams } from 'react-router-dom';
 import EventBus from '../../common/EventBus';
 import './fullTextStudy.css';
 import { ScreeningStudyFullText } from '../../components';
-import { TO_BE_REVIEWED } from '../../constants/tabs';
+import { useSelector } from 'react-redux';
+import Check from 'react-bootstrap/FormCheck';
+
 
 const FullTextStudy = () => {
   const { reviewId, studyId, state } = useParams();
   const [pdfUrl, setPdfUrl] = useState(null);
+  const [highlights, setHighlights] = useState([]);
+  const [teamHighlights, setTeamHighlights] = useState([]);
+  const [personalHighlights, setPersonalHighlights] = useState([]);
+
+  const { user: currentUser } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
+
+  const [showTeamHighlights, setShowTeamHighlights] = useState(false);
+  const [showPersonalHighlights, setShowPersonalHighlights] = useState(false);
+  const [showHighlights, setShowHighlights] = useState(false);
 
   useEffect(() => {
     axiosInstance.get('/studies/' + studyId + "/full-text", {
@@ -29,6 +40,53 @@ const FullTextStudy = () => {
     });
   }, []);
 
+  useEffect(() => {
+    axiosInstance.get("/keywords", { params: {
+      reviewId
+    }})
+    .then((response) => {
+      console.log(response.data);
+      setTeamHighlights(response.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+
+    var userId = currentUser.id;
+    axiosInstance.get("/keywords/personal", { params: {
+      reviewId, userId
+    }})
+      .then((response) => {
+        console.log(response.data);
+        setPersonalHighlights(response.data);
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 403) {
+          EventBus.dispatch('expirationLogout');
+        }
+    });
+  }, []);
+
+  const handleShowTeamHighlightsChange = () => {
+    if (showTeamHighlights) {
+      setShowTeamHighlights(false);
+    } else {
+      setShowTeamHighlights(true);
+      setShowPersonalHighlights(false);
+    }
+  }
+
+  const handleShowPersonalHighlightsChange = () => {
+    if (showPersonalHighlights) {
+      setShowPersonalHighlights(false);
+    } else {
+      setShowPersonalHighlights(true);
+      setShowTeamHighlights(false);
+    }
+  }
+
   return (
     <div className='slrspot__fullTextStudy'>
 
@@ -36,10 +94,31 @@ const FullTextStudy = () => {
 
       <div className='slrspot__fullTextStudy-container'>
 
+        <div className='slrspot__screening-options'>
+          <div className='slrspot__screening-options-container'>
+            <div className='slrspot__screeningStudy-options-container-checks'>
+              <div className='slrspot__screeningStudy-options-check'>
+                <Check 
+                  onChange={ handleShowTeamHighlightsChange } 
+                  checked={ showTeamHighlights } />
+                <label>team highlights</label>
+              </div>
+              <div className='slrspot__screeningStudy-options-check'>
+                <Check
+                  onChange={ handleShowPersonalHighlightsChange } 
+                  checked={ showPersonalHighlights } />
+                <label>personal highlights</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <ScreeningStudyFullText 
           studyId={ studyId }
           reviewId={ reviewId }
           tab={ state }
+          showHighlights={ showTeamHighlights || showPersonalHighlights }
+          highlights={ showTeamHighlights ? teamHighlights : personalHighlights }
         />
 
         <div className='all-page-container'>

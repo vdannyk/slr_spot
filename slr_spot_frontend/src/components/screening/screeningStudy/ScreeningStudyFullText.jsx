@@ -18,9 +18,7 @@ import EventBus from '../../../common/EventBus';
 const ScreeningStudyFullText = (props) => {
   const navigate = useNavigate();
   const [study, setStudy] = useState();
-  const [highlights, setHighlights] = useState([]);
   const [reviewTags, setReviewTags] = useState([]);
-  const [showHighlights, setShowHighlights] = useState(false);
   const [showAbstract, setShowAbstract] = useState(false);
 
   const [showDiscussion, setShowDiscussion] = useState(false);
@@ -28,13 +26,13 @@ const ScreeningStudyFullText = (props) => {
 
   const { user: currentUser } = useSelector((state) => state.auth);
 
-  var allowChanges = true;;
+  var allowChanges = true;
+  console.log(props.highlights)
 
-
-  const inclusionHighlights = highlights.filter((highlight) => highlight.type === INCLUSION_TYPE)
+  const inclusionHighlights = props.highlights.filter((highlight) => highlight.type === INCLUSION_TYPE)
     .map((highlight) => highlight.name);
 
-  const exclusionHighlights = highlights.filter((highlight) => highlight.type === EXCLUSION_TYPE)
+  const exclusionHighlights = props.highlights.filter((highlight) => highlight.type === EXCLUSION_TYPE)
     .map((highlight) => highlight.name);
 
   useEffect(() => {
@@ -144,7 +142,7 @@ const ScreeningStudyFullText = (props) => {
         <span>{ props.tab }</span> 
       </div>
 
-      { showHighlights 
+      { props.showHighlights 
         ? <h3>
             <KeyWordHighlight 
               text={ study.title } 
@@ -158,7 +156,7 @@ const ScreeningStudyFullText = (props) => {
         { showAbstract ? 'hide abstract' : 'show abstract'}
       </button>
 
-      {showHighlights ? (
+      {props.showHighlights ? (
         <>
           { showAbstract && 
             <p>
