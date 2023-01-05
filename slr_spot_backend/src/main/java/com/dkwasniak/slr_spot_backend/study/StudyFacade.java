@@ -226,9 +226,9 @@ public class StudyFacade {
     public void deleteFullTextDocument(Long studyId) {
         Study study = studyService.getStudyById(studyId);
         study.setFullText(null);
-        studyService.updateStudy(study);
         studyService.addOperation(study,
                 new Operation(OperationDescription.REMOVE_FULLTEXT.getDescription()));
+        studyService.updateStudy(study);
     }
 
     public int getStudiesCountByStatus(Long reviewId, String status) {

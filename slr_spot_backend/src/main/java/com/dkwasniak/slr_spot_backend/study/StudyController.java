@@ -193,6 +193,7 @@ public class StudyController {
     @DeleteMapping("/{id}/full-text")
     @Transactional
     public ResponseEntity<Void> deleteFullTextDocument(@PathVariable Long id) {
+        studyFacade.deleteFullTextDocument(id);
         return ResponseEntity.ok().build();
     }
 
