@@ -73,17 +73,21 @@ const Profile = () => {
 
   return (
     <div className='slrspot__profile'>
+
       <div className='slrspot__profile-header'>
         <h1>Settings</h1>
       </div>
+
       <div className='slrspot__profile-container'>
+
         <div className='slrspot__profile-menu'>
           <p>Profile</p>
         </div>
+        
         <div className='slrspot__profile-profileSettings'>
 
           <div className='slrspot__profile-baseInfo'>
-            <div className='slrspot__profile-avatar'>
+            <div className='slrspot__profile-avatar' hidden>
               <p>Your Avatar</p>
               <CgProfile size={100}></CgProfile>
               <button>Change avatar</button>
