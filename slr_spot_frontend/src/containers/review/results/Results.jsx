@@ -285,7 +285,7 @@ const Results = (props) => {
       <div className='slrspot__review-results-list'>
         
         <div style={{ textAlign: 'right' }}>
-          { includedStudies.length > 0 && pageCount > 1 &&
+          { includedStudies.length > 0 &&
             <PageChanger 
               defaultSelected={pageSize}
               options={[5,10,25]}

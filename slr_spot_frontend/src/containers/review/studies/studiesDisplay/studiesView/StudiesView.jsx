@@ -27,7 +27,7 @@ const StudiesView = ({allowChanges}) => {
   
 
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [pageCount, setPageCount] = useState(0);
   const [searchPerformed, setSearchPerformed] = useState(false);
 
@@ -326,7 +326,7 @@ const StudiesView = ({allowChanges}) => {
       </div>
 
       <div style={{ textAlign: 'right' }}>
-        { studies.length > 0 && pageCount > 1 &&
+        { studies.length > 0 &&
           <PageChanger 
             defaultSelected={pageSize}
             options={[10,25,50]}

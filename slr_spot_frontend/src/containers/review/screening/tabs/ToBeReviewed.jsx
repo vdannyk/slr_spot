@@ -98,7 +98,7 @@ const ToBeReviewed = (props) => {
         setSearchType={ setSearchType }/>
 
       <div style={{ textAlign: 'right' }}>
-        { studies.length > 0 && pageCount > 1 &&
+        { studies.length > 0 &&
           <PageChanger 
             defaultSelected={pageSize}
             options={[5,10,25]}
