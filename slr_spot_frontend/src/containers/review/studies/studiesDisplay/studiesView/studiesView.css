@@ -51,3 +51,8 @@
   max-height: 200px;
   overflow-y: auto;
 }
+
+.slrspot__studiesView-hover:hover {
+  background-color: rgb(219, 219, 219);
+  cursor: pointer;
+}

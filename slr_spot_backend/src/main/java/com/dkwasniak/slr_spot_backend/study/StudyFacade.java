@@ -56,8 +56,9 @@ public class StudyFacade {
         return studyService.getStudyById(studyId);
     }
 
-    public Page<Study> getStudiesByReviewId(Long reviewId, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+    public Page<Study> getStudiesByReviewId(Long reviewId, int page, int size,
+                                            SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return studyService.getStudiesByReviewId(reviewId, pageRq);
     }
 
@@ -340,9 +341,9 @@ public class StudyFacade {
         return searchProcessor.searchIncluded(searchType, reviewId, StudyState.INCLUDED, searchValue, pageRq);
     }
 
-    public Page<Study> searchStudies(Long reviewId, StudySearchType searchType, String searchValue, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
-
+    public Page<Study> searchStudies(Long reviewId, StudySearchType searchType, String searchValue, int page, int size,
+                                     SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return searchProcessor.searchAll(searchType, reviewId, searchValue, pageRq);
     }
 

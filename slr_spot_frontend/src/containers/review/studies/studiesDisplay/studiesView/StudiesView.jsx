@@ -8,7 +8,10 @@ import { AUTHORS_SEARCH, AUTHORS_YEAR_SEARCH, TITLE_AUTHORS_SEARCH, TITLE_AUTHOR
 import ReactPaginate from 'react-paginate';
 import { PageChanger } from '../../../../../components';
 import { CgDuplicate } from "react-icons/cg";
+import { AiOutlineSortAscending, AiOutlineSortDescending } from "react-icons/ai";
+import { TITLE, AUTHORS, YEAR } from '../../../../../components/sortField/sortProperties';
 import './studiesView.css';
+import { ASCENDING, DESCENDING } from '../../../../../components/sortField/sortDirections';
 
 
 const StudiesView = ({allowChanges}) => {
@@ -18,6 +21,7 @@ const StudiesView = ({allowChanges}) => {
   const [selected, setSelected] = useState([]);
   const [studies, setStudies] = useState([]);
   const { reviewId } = useParams();
+  const [title, setTitle] = useState('Select folder');
 
   const [searchPlaceholder, setSearchPlaceholder] = useState("Title");
   const [titleCheck, setTitleCheck] = useState(true);
@@ -31,6 +35,13 @@ const StudiesView = ({allowChanges}) => {
   const [pageSize, setPageSize] = useState(10);
   const [pageCount, setPageCount] = useState(0);
   const [searchPerformed, setSearchPerformed] = useState(false);
+
+  const [sortProperty, setSortProperty] = useState('TITLE');
+  const [sortDirection, setSortDirection] = useState('ASC');
+
+  const [sortTitleDirection, setSortTitleDirection] = useState('ASC');
+  const [sortAuthorsDirection, setSortAuthorsDirection] = useState('ASC');
+  const [sortYearDirection, setSortYearDirection] = useState('ASC');
 
 
   useEffect(() => {
@@ -69,14 +80,15 @@ const StudiesView = ({allowChanges}) => {
 
   function getStudies(page, size) {
     axiosInstance.get("/studies", { params: {
-      reviewId, page, size
+      reviewId, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
+      console.log(response.data)
       setStudies(response.data.content);
       setPageCount(response.data.totalPages);
       setSearchPerformed(false);
       setLoading(false);
-      setCurrentPage(response.number);
+      setCurrentPage(response.data.number);
     })
     .catch(() => {
     });
@@ -84,13 +96,13 @@ const StudiesView = ({allowChanges}) => {
 
   function getStudiesSearch(page, size) {
     axiosInstance.get("/studies/search", { params: {
-      reviewId, searchType, searchValue, page, size
+      reviewId, searchType, searchValue, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setStudies(response.data.content);
       setPageCount(response.data.totalPages);
       setSearchPerformed(true);
-      setCurrentPage(response.number);
+      setCurrentPage(response.data.number);
     })
     .catch(() => {
     });
@@ -165,8 +177,6 @@ const StudiesView = ({allowChanges}) => {
     }
   }
 
-  const [title, setTitle] = useState('Select folder');
-
   const handleSelectFolder = (event) => {
     setTitle(folders.filter(item => item.id === parseInt(event))[0].name);
     setSelectedFolderId(parseInt(event));
@@ -189,14 +199,6 @@ const StudiesView = ({allowChanges}) => {
     setCurrentPage(page);
   }
 
-  useEffect(() => {
-    if (searchPerformed) {
-      getStudiesSearch(currentPage, pageSize);
-    } else {
-      getStudies(currentPage, pageSize);
-    }
-  }, [currentPage, pageSize]);
-
   const handleMarkDuplicates = () => {
     axiosInstance.post("/studies/duplicate", {
       studiesId: selected.map(s => s.id)
@@ -218,6 +220,47 @@ const StudiesView = ({allowChanges}) => {
     .catch(() => {
     });
   }
+
+  const handleAuthorsSort = () => {
+    setSortProperty(AUTHORS);
+    if (sortAuthorsDirection === ASCENDING) {
+      setSortAuthorsDirection(DESCENDING);
+      setSortDirection(DESCENDING);
+    } else {
+      setSortAuthorsDirection(ASCENDING);
+      setSortDirection(ASCENDING);
+    }
+  }
+
+  const handleYearSort = () => {
+    setSortProperty(YEAR);
+    if (sortYearDirection === ASCENDING) {
+      setSortYearDirection(DESCENDING);
+      setSortDirection(DESCENDING);
+    } else {
+      setSortYearDirection(ASCENDING);
+      setSortDirection(ASCENDING);
+    }
+  }
+
+  const handleTitleSort = () => {
+    setSortProperty(TITLE);
+    if (sortTitleDirection === ASCENDING) {
+      setSortTitleDirection(DESCENDING);
+      setSortDirection(DESCENDING);
+    } else {
+      setSortTitleDirection(ASCENDING);
+      setSortDirection(ASCENDING);
+    }
+  }
+
+  useEffect(() => {
+    if (searchPerformed) {
+      getStudiesSearch(currentPage, pageSize);
+    } else {
+      getStudies(currentPage, pageSize);
+    }
+  }, [currentPage, pageSize, sortProperty, sortDirection]);
 
   return (
     <div>
@@ -246,9 +289,9 @@ const StudiesView = ({allowChanges}) => {
                 <span>Year</span>
               </div>
             </div>
-            
+
             <div className='slrspot__screening-options-search-term' style={{ flexDirection: 'row' }}>
-              <label style={{ cursor: 'pointer' }} onClick={ handleSearch }>Search</label>
+              <label style={{ cursor: 'pointer' }} onClick={ () => handleSearch() }>Search</label>
               <input onChange={ handleSearchChange } placeholder={ searchPlaceholder }/>
             </div>
 
@@ -294,7 +337,7 @@ const StudiesView = ({allowChanges}) => {
         }
       </div>
 
-      <Table sortable>
+      <Table>
         { studies.length > 0 ?
         <>
         <thead>
@@ -308,9 +351,15 @@ const StudiesView = ({allowChanges}) => {
               </div>
             </th>
             <th>#</th>
-            <th>Title</th>
-            <th>Authors</th>
-            <th>Year</th>
+            <th onClick={ handleTitleSort } className='slrspot__studiesView-hover'>
+              Title{ sortTitleDirection === ASCENDING ? <AiOutlineSortAscending size={24}/> : <AiOutlineSortDescending size={24}/>}
+            </th>
+            <th onClick={ handleAuthorsSort } className='slrspot__studiesView-hover'>
+              Authors{ sortAuthorsDirection === ASCENDING ? <AiOutlineSortAscending size={24}/> : <AiOutlineSortDescending size={24}/>}
+            </th>
+            <th onClick={ handleYearSort } className='slrspot__studiesView-hover'>
+              Year{ sortYearDirection === ASCENDING ? <AiOutlineSortAscending size={24}/> : <AiOutlineSortDescending size={24}/>}
+            </th>
             <th>Folder</th>
           </tr>
         </thead>

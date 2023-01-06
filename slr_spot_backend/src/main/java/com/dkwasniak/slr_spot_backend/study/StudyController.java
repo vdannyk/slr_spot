@@ -46,8 +46,10 @@ public class StudyController {
     @GetMapping
     public ResponseEntity<Page<Study>> getStudiesByReviewId(@RequestParam("reviewId") Long reviewId,
                                                             @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.getStudiesByReviewId(reviewId, page, size));
+                                                            @RequestParam(defaultValue = "10") int size,
+                                                            @RequestParam("sortProperty") SortProperty sortProperty,
+                                                            @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.getStudiesByReviewId(reviewId, page, size, sortProperty, sortDirection));
     }
 
     @GetMapping("/to-be-reviewed")
@@ -347,8 +349,10 @@ public class StudyController {
                                                      @RequestParam("searchType") StudySearchType searchType,
                                                      @RequestParam("searchValue") String value,
                                                      @RequestParam(defaultValue = "0") int page,
-                                                     @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudies(reviewId, searchType, value, page, size));
+                                                     @RequestParam(defaultValue = "10") int size,
+                                                     @RequestParam("sortProperty") SortProperty sortProperty,
+                                                     @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudies(reviewId, searchType, value, page, size, sortProperty, sortDirection));
     }
 
 }
