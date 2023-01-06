@@ -24,7 +24,6 @@ const PdfUploader = (props) => {
       }
     })
     .then(response => {
-      console.log(response.data);
       props.setIsLoaded(true);
     })
   }

@@ -3,6 +3,7 @@ package com.dkwasniak.slr_spot_backend.userReview;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class UserReview implements Serializable {
     private User user;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @MapsId("reviewId")
+    @JsonIgnore
     private Review review;
 
     @ManyToOne

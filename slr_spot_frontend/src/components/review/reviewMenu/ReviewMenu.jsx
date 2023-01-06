@@ -14,8 +14,6 @@ const ReviewMenu = (props) => {
   const navigate = useNavigate();
   var allowChanges = props.userRole && [OWNER, COOWNER].includes(props.userRole);
 
-  console.log(props.userRole)
-
   const onItemClick = (props) => {
     if (props.setShowTrigger) {
       props.setShowTrigger(!props.showTrigger);

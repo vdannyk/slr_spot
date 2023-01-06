@@ -12,6 +12,7 @@ import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.dkwasniak.slr_spot_backend.userReview.UserReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -46,9 +47,8 @@ public class UserFacade {
         return savedUser.getId();
     }
 
-    public List<UserDto> getUsersByReviewId(Long reviewId) {
-        List<UserReview> users = userReviewService.getUserReviewByReviewId(reviewId);
-        return users.stream().map(userService::toUserDto).collect(Collectors.toList());
+    public Page<UserReview> getUsersByReviewId(Long reviewId, int page, int size) {
+        return userReviewService.getUserReviewByReviewId(reviewId, page, size);
     }
 
     @Transactional

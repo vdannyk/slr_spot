@@ -45,7 +45,6 @@ const FullTextStudy = () => {
       reviewId
     }})
     .then((response) => {
-      console.log(response.data);
       setTeamHighlights(response.data);
     })
     .catch((error) => {
@@ -59,7 +58,6 @@ const FullTextStudy = () => {
       reviewId, userId
     }})
       .then((response) => {
-        console.log(response.data);
         setPersonalHighlights(response.data);
       })
       .catch((error) => {

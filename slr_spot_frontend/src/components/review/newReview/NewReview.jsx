@@ -23,7 +23,6 @@ const NewReview = () => {
   useEffect(() => {
     axiosInstance.get("/users/emails")
     .then((response) => {
-      console.log(response.data);
       setSearchedUsers(response.data);
     })
     .catch((error) => {
@@ -49,7 +48,6 @@ const NewReview = () => {
     })
     .then((response) => {
       setLoading(false);
-      console.log(response.data)
       navigate("/reviews/" + response.data);
     });
   };

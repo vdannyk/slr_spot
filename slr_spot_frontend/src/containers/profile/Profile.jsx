@@ -30,7 +30,6 @@ const Profile = () => {
   
 
   const onEmailSubmit = (formData) => {
-    console.log(formData);
     axiosInstance.post("/users/email/update", {
       email: formData.email
     })
@@ -38,7 +37,6 @@ const Profile = () => {
       setIsEmailChangeSuccessful(true);
     })
     .catch((response) => {
-      console.log(response);
     });
   };
 
@@ -53,7 +51,6 @@ const Profile = () => {
       window.location.reload();
     })
     .catch((response) => {
-      console.log(response);
     });
   };
 
@@ -67,7 +64,6 @@ const Profile = () => {
       setIsPasswordChangeSuccessful(true);
     })
     .catch((response) => {
-      console.log(response);
     });
   };
 

@@ -42,7 +42,6 @@ const Results = (props) => {
       reviewId, page, size
     }})
     .then((response) => {
-      console.log(response.data);
       setIncludedStudies(response.data.content);
     });
   }

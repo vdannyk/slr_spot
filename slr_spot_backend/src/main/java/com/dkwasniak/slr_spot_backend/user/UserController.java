@@ -2,8 +2,10 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
+import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,8 +39,10 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getUsersByReviewId(@RequestParam Long reviewId) {
-        return ResponseEntity.ok().body(userFacade.getUsersByReviewId(reviewId));
+    public ResponseEntity<Page<UserReview>> getUsersByReviewId(@RequestParam Long reviewId,
+                                                               @RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok().body(userFacade.getUsersByReviewId(reviewId, page, size));
     }
 
     @GetMapping("/emails")

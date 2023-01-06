@@ -32,11 +32,9 @@ const StudiesImport = (props) => {
     data.append("file", currentFile[0]);
     data.append("reviewId", reviewId);
     data.append("searchValue", searchValue);
-    console.log(source);
     if (source === "OTHER") {
       data.append("source", otherSource);
     } else if (source.length === 0) {
-      console.log(source);
       setErrorMsg("Source not selected");
       return;
     } else {
@@ -81,7 +79,6 @@ const StudiesImport = (props) => {
   }
 
   const handleCheck = () => {
-    console.log(selectDeduplicationType);
     if (checkOther) {
       setCheckOther(false);
       setSelectDeduplicationType(DOI)

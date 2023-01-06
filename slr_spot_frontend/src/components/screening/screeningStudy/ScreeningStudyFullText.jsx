@@ -27,7 +27,6 @@ const ScreeningStudyFullText = (props) => {
   const { user: currentUser } = useSelector((state) => state.auth);
 
   var allowChanges = true;
-  console.log(props.highlights)
 
   const inclusionHighlights = props.highlights.filter((highlight) => highlight.type === INCLUSION_TYPE)
     .map((highlight) => highlight.name);

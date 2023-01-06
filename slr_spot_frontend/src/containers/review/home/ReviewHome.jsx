@@ -26,7 +26,6 @@ const ReviewHome = (props) => {
   }, []);
 
 
-  console.log(props.userRole)
   return (
     <div className='slrspot__review-home'>
       <div className='slrspot__review-home-title'>
