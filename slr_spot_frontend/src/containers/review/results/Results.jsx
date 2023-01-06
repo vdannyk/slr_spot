@@ -31,7 +31,7 @@ const Results = (props) => {
   const [everythingCheck, setEverythingCheck] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [pageCount, setPageCount] = useState(0);
   const [searchPerformed, setSearchPerformed] = useState(false);
 
@@ -265,7 +265,7 @@ const Results = (props) => {
           { includedStudies.length > 0 &&
             <PageChanger 
               defaultSelected={pageSize}
-              options={[5,10,25]}
+              options={[10,25,50]}
               changePageSize={setPageSize}
             />
           }
