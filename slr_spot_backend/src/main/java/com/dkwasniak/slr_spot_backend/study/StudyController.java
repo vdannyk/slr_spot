@@ -63,11 +63,12 @@ public class StudyController {
 
     @GetMapping("/conflicted")
     public ResponseEntity<Page<Study>> getStudiesConflicted(@RequestParam("reviewId") Long reviewId,
-                                                            @RequestParam("userId") Long userId,
                                                             @RequestParam Stage stage,
                                                             @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.getStudiesConflicted(reviewId, userId, stage, page, size));
+                                                            @RequestParam(defaultValue = "10") int size,
+                                                            @RequestParam("sortProperty") SortProperty sortProperty,
+                                                            @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.getStudiesConflicted(reviewId, stage, page, size, sortProperty, sortDirection));
     }
 
     @GetMapping("/awaiting")
@@ -75,17 +76,20 @@ public class StudyController {
                                                             @RequestParam("userId") Long userId,
                                                             @RequestParam Stage stage,
                                                             @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.getStudiesAwaiting(reviewId, userId, stage, page, size));
+                                                            @RequestParam(defaultValue = "10") int size,
+                                                          @RequestParam("sortProperty") SortProperty sortProperty,
+                                                          @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.getStudiesAwaiting(reviewId, userId, stage, page, size, sortProperty, sortDirection));
     }
 
     @GetMapping("/excluded")
     public ResponseEntity<Page<Study>> getStudiesExcluded(@RequestParam("reviewId") Long reviewId,
-                                                          @RequestParam("userId") Long userId,
                                                           @RequestParam Stage stage,
                                                           @RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.getStudiesExcluded(reviewId, userId, stage, page, size));
+                                                          @RequestParam(defaultValue = "10") int size,
+                                                          @RequestParam("sortProperty") SortProperty sortProperty,
+                                                          @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.getStudiesExcluded(reviewId, stage, page, size, sortProperty, sortDirection));
     }
 
     @DeleteMapping("/{id}")
@@ -104,8 +108,10 @@ public class StudyController {
     @GetMapping("/included")
     public ResponseEntity<Page<Study>> getIncludedStudies(@RequestParam Long reviewId,
                                                           @RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok().body(studyFacade.getIncludedStudies(reviewId, page, size));
+                                                          @RequestParam(defaultValue = "10") int size,
+                                                          @RequestParam("sortProperty") SortProperty sortProperty,
+                                                          @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok().body(studyFacade.getIncludedStudies(reviewId, page, size, sortProperty, sortDirection));
     }
 
     @GetMapping("/{id}/tags")
@@ -282,8 +288,10 @@ public class StudyController {
                                                             @RequestParam("searchType") StudySearchType searchType,
                                                             @RequestParam("searchValue") String value,
                                                             @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudiesToBeReviewed(reviewId, userId, stage, searchType, value, page, size));
+                                                            @RequestParam(defaultValue = "10") int size,
+                                                             @RequestParam("sortProperty") SortProperty sortProperty,
+                                                             @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudiesToBeReviewed(reviewId, userId, stage, searchType, value, page, size, sortProperty, sortDirection));
     }
 
     @GetMapping("/conflicted/search")
@@ -292,19 +300,23 @@ public class StudyController {
                                                             @RequestParam("searchType") StudySearchType searchType,
                                                             @RequestParam("searchValue") String value,
                                                             @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudiesConflicted(reviewId, stage, searchType, value, page, size));
+                                                            @RequestParam(defaultValue = "10") int size,
+                                                            @RequestParam("sortProperty") SortProperty sortProperty,
+                                                            @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudiesConflicted(reviewId, stage, searchType, value, page, size, sortProperty, sortDirection));
     }
 
     @GetMapping("/awaiting/search")
     public ResponseEntity<Page<Study>> searchStudiesAwaiting(@RequestParam("reviewId") Long reviewId,
-                                                                 @RequestParam("userId") Long userId,
-                                                                 @RequestParam("stage") Stage stage,
-                                                                 @RequestParam("searchType") StudySearchType searchType,
-                                                                 @RequestParam("searchValue") String value,
-                                                                 @RequestParam(defaultValue = "0") int page,
-                                                                 @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudiesAwaiting(reviewId, userId, stage, searchType, value, page, size));
+                                                             @RequestParam("userId") Long userId,
+                                                             @RequestParam("stage") Stage stage,
+                                                             @RequestParam("searchType") StudySearchType searchType,
+                                                             @RequestParam("searchValue") String value,
+                                                             @RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "10") int size,
+                                                             @RequestParam("sortProperty") SortProperty sortProperty,
+                                                             @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudiesAwaiting(reviewId, userId, stage, searchType, value, page, size, sortProperty, sortDirection));
     }
 
     @GetMapping("/excluded/search")
@@ -313,8 +325,10 @@ public class StudyController {
                                                                @RequestParam("searchType") StudySearchType searchType,
                                                                @RequestParam("searchValue") String value,
                                                                @RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudiesExcluded(reviewId, stage, searchType, value, page, size));
+                                                               @RequestParam(defaultValue = "10") int size,
+                                                               @RequestParam("sortProperty") SortProperty sortProperty,
+                                                               @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudiesExcluded(reviewId, stage, searchType, value, page, size, sortProperty, sortDirection));
     }
 
     @GetMapping("/included/search")
@@ -322,8 +336,10 @@ public class StudyController {
                                                              @RequestParam("searchType") StudySearchType searchType,
                                                              @RequestParam("searchValue") String value,
                                                              @RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudiesIncluded(reviewId, searchType, value, page, size));
+                                                             @RequestParam(defaultValue = "10") int size,
+                                                             @RequestParam("sortProperty") SortProperty sortProperty,
+                                                             @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudiesIncluded(reviewId, searchType, value, page, size, sortProperty, sortDirection));
     }
 
     @GetMapping("/search")

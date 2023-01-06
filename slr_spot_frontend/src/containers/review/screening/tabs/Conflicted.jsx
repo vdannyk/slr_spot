@@ -34,10 +34,9 @@ const Conflicted = (props) => {
   const [sortDirection, setSortDirection] = useState('ASC');
 
   function getStudies(page, size) {
-    var userId = currentUser.id;
     var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     axiosInstance.get("/studies/conflicted", { params: {
-      reviewId, userId, stage, page, size, sortProperty, sortDirection
+      reviewId, stage, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setStudies(response.data.content);

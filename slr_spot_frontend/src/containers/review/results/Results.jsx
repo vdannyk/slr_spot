@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../services/api';
 import { useParams } from 'react-router-dom';
 import Check from 'react-bootstrap/FormCheck';
-import { ContentPopup, PageChanger } from '../../../components'
+import { ContentPopup, PageChanger, SortOption } from '../../../components'
 import './results.css';
 import ExtractData from './ExtractData';
 import GenerateRaport from './GenerateRaport';
@@ -11,6 +11,7 @@ import ResultStudy from './ResultStudy';
 import { OWNER, MEMBER, COOWNER } from '../../../constants/roles';
 import { AUTHORS_SEARCH, AUTHORS_YEAR_SEARCH, TITLE_AUTHORS_SEARCH, TITLE_AUTHORS_YEAR_SEARCH, TITLE_SEARCH, TITLE_YEAR_SEARCH, YEAR_SEARCH, EVERYTHING_SEARCH } from '../../../constants/searchTypes';
 import ReactPaginate from 'react-paginate';
+
 
 const Results = (props) => {
   const [includedStudies, setIncludedStudies] = useState([]);
@@ -35,9 +36,12 @@ const Results = (props) => {
   const [pageCount, setPageCount] = useState(0);
   const [searchPerformed, setSearchPerformed] = useState(false);
 
+  const [sortProperty, setSortProperty] = useState('TITLE');
+  const [sortDirection, setSortDirection] = useState('ASC');
+
   function getStudies(page, size) {
     axiosInstance.get("/studies/included", { params: {
-      reviewId, page, size
+      reviewId, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setIncludedStudies(response.data.content);
@@ -49,7 +53,7 @@ const Results = (props) => {
 
   function getStudiesSearch(page, size) {
     axiosInstance.get("/studies/included/search", { params: {
-      reviewId, searchType, searchValue, page, size
+      reviewId, searchType, searchValue, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setIncludedStudies(response.data.content);
@@ -189,7 +193,7 @@ const Results = (props) => {
     } else {
       getStudies(currentPage, pageSize);
     }
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, sortProperty, sortDirection]);
 
   return (
     <div className='slrspot__review-results'>
@@ -235,6 +239,11 @@ const Results = (props) => {
 
             </div>
           </div>
+
+          <SortOption 
+            setProperty={ setSortProperty }
+            setDirection={ setSortDirection }
+          />
 
           { allowChanges && 
             <div className='slrspot__screening-options-container-buttons'>
