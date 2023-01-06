@@ -224,40 +224,37 @@ const StudiesView = ({allowChanges}) => {
       <div className='slrspot__screening-options'>
         <div className='slrspot__studiesView-container'>
 
-          <div className='slrspot__studiesView-search'>
-            <div className='slrspot__screening-options-container-checks'>
-              <div className='slrspot__screening-options-check' style={{ marginLeft: '20px' }}>
+          <div className='slrspot__screening-options-search'>
+
+            <div className='slrspot__screening-options-search-checks-container'>
+              <div className='slrspot__screening-options-check'>
                 <Check
                   checked={ titleCheck } 
                   onChange={ handleTitleCheck }/>
-                <label>Title</label>
+                <span>Title</span>
               </div>
               <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>
                 <Check
                   checked={ authorsCheck } 
                   onChange={ handleAuthorsCheck }/>
-                <label>Authors</label>
+                <span>Authors</span>
               </div>
               <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>
                 <Check
                   checked={ yearCheck } 
                   onChange={ handleYearCheck }/>
-                <label>Year</label>
+                <span>Year</span>
               </div>
             </div>
-            <div className='slrspot__screening-options-search' style={{ flexDirection: 'row' }}>
+            
+            <div className='slrspot__screening-options-search-term' style={{ flexDirection: 'row' }}>
               <label style={{ cursor: 'pointer' }} onClick={ handleSearch }>Search</label>
               <input onChange={ handleSearchChange } placeholder={ searchPlaceholder }/>
             </div>
+
           </div>
 
           <div className='slrspot__studiesView-folders'>
-            <div className='slrspot__screening-options-container-checks'>
-              {/* <div className='slrspot__screening-options-check'>
-                <Check />
-                <label>Show only not assigned studies</label>
-              </div> */}
-            </div>
             { allowChanges &&
               <div className='slrspot__studiesView-folders-select'>
                 <DropdownButton
