@@ -297,7 +297,7 @@ const StudiesView = ({allowChanges}) => {
         }
       </div>
 
-      <Table>
+      <Table sortable>
         { studies.length > 0 ?
         <>
         <thead>

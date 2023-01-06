@@ -65,8 +65,8 @@ public class StudyFacade {
         studyService.removeStudyById(studyId);
     }
 
-    public Page<Study> getStudiesToBeReviewed(Long reviewId, Long userId, Stage stage, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+    public Page<Study> getStudiesToBeReviewed(Long reviewId, Long userId, Stage stage, int page, int size, SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return studyService.getStudiesToBeReviewed(reviewId, userId, stage, pageRq);
     }
 

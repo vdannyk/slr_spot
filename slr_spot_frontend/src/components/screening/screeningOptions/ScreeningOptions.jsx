@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Check from 'react-bootstrap/FormCheck';
 import { AUTHORS_SEARCH, AUTHORS_YEAR_SEARCH, TITLE_AUTHORS_SEARCH, TITLE_AUTHORS_YEAR_SEARCH, TITLE_SEARCH, TITLE_YEAR_SEARCH, YEAR_SEARCH, EVERYTHING_SEARCH } from '../../../constants/searchTypes';
+import SortOption from '../../sortField/SortOption';
 import './screeningOptions.css';
 
 
@@ -119,27 +120,35 @@ const ScreeningOptions = (props) => {
           <div className='slrspot__screening-options-search-checks'>
             
             <div className='slrspot__screening-options-search-checks-container'>
-              <Check 
-                onChange={ handleTitleCheck } 
-                checked={ titleCheck } />
-              <span>Title</span>
-              <Check 
-                onChange={ handleAuthorsCheck } 
-                checked={ authorsCheck } 
-                style={{ marginLeft: '40px' }}/>
-              <span>Authors</span>
+              <div className='slrspot__screening-options-check' style={{ width: '50%' }}>
+                <Check 
+                  onChange={ handleTitleCheck } 
+                  checked={ titleCheck } />
+                <span>Title</span>
+              </div>
+              <div className='slrspot__screening-options-check'>
+                <Check 
+                  onChange={ handleAuthorsCheck } 
+                  checked={ authorsCheck } 
+                  style={{ marginLeft: '40px' }}/>
+                <span>Authors</span>
+              </div>
             </div>
 
             <div className='slrspot__screening-options-search-checks-container'>
-              <Check 
-                onChange={ handleYearCheck } 
-                checked={ yearCheck } />
-              <span>Year</span>
-              <Check 
-                onChange={ handleEverythingCheck } 
-                checked={ everythingCheck } 
-                style={{ marginLeft: '40px' }}/>
-              <span>Everything</span>
+              <div className='slrspot__screening-options-check' style={{ width: '50%' }}>
+                <Check 
+                  onChange={ handleYearCheck } 
+                  checked={ yearCheck } />
+                <span>Year</span>
+              </div>
+              <div className='slrspot__screening-options-check'>
+                <Check 
+                  onChange={ handleEverythingCheck } 
+                  checked={ everythingCheck } 
+                  style={{ marginLeft: '40px' }}/>
+                <span>Everything</span>
+              </div>
             </div>
 
           </div>
@@ -150,14 +159,13 @@ const ScreeningOptions = (props) => {
           <div className='slrspot__screening-options-check'>
             <Check 
               onChange={ () => props.triggerShowAbstractsChange(!props.showAbstracts) } 
-              defaultChecked={ props.showAbstracts } />
+              checked={ props.showAbstracts } />
             <label>show abstracts</label>
           </div>
 
           <div className='slrspot__screening-options-check'>
             <Check 
               onChange={ handleShowTeamHighlightsChange } 
-              defaultChecked={ props.showTeamHighlights } 
               checked={ props.showTeamHighlights } />
             <label>team highlights</label>
           </div>
@@ -165,12 +173,16 @@ const ScreeningOptions = (props) => {
           <div className='slrspot__screening-options-check'>
             <Check 
               onChange={ handleShowPersonalHighlightsChange } 
-              defaultChecked={ props.showPersonalHighlights } 
               checked={ props.showPersonalHighlights } />
             <label>personal highlights</label>
           </div>
 
         </div>
+
+        <SortOption 
+          setProperty={ props.setSortProperty }
+          setDirection={ props.setSortDirection }
+        />
 
       </div>
     </div>

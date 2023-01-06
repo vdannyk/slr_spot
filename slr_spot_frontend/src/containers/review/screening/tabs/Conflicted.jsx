@@ -30,11 +30,14 @@ const Conflicted = (props) => {
   const [pageCount, setPageCount] = useState(0);
   const [searchPerformed, setSearchPerformed] = useState(false);
 
+  const [sortProperty, setSortProperty] = useState('TITLE');
+  const [sortDirection, setSortDirection] = useState('ASC');
+
   function getStudies(page, size) {
     var userId = currentUser.id;
     var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     axiosInstance.get("/studies/conflicted", { params: {
-      reviewId, userId, stage, page, size
+      reviewId, userId, stage, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setStudies(response.data.content);
@@ -49,7 +52,7 @@ const Conflicted = (props) => {
   function getStudiesSearch(searchValue, page, size) {
     var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     axiosInstance.get("/studies/conflicted/search", { params: {
-      reviewId, stage, searchType, searchValue, page, size
+      reviewId, stage, searchType, searchValue, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setStudies(response.data.content);
@@ -93,7 +96,7 @@ const Conflicted = (props) => {
     } else {
       getStudies(currentPage, pageSize);
     }
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, sortDirection, sortProperty]);
 
   return (
     <div className='slrspot__screening-studies'>

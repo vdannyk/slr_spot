@@ -12,6 +12,7 @@ import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,8 +55,10 @@ public class StudyController {
                                                               @RequestParam("userId") Long userId,
                                                               @RequestParam Stage stage,
                                                               @RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewed(reviewId, userId, stage, page, size));
+                                                              @RequestParam(defaultValue = "10") int size,
+                                                              @RequestParam("sortProperty") SortProperty sortProperty,
+                                                              @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewed(reviewId, userId, stage, page, size, sortProperty, sortDirection));
     }
 
     @GetMapping("/conflicted")

@@ -29,11 +29,14 @@ const ToBeReviewed = (props) => {
   const [pageCount, setPageCount] = useState(0);
   const [searchPerformed, setSearchPerformed] = useState(false);
 
+  const [sortProperty, setSortProperty] = useState('TITLE');
+  const [sortDirection, setSortDirection] = useState('ASC');
+
   function getStudies(page, size) {
     var userId = currentUser.id;
     var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     axiosInstance.get("/studies/to-be-reviewed", { params: {
-      reviewId, userId, stage, page, size
+      reviewId, userId, stage, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setStudies(response.data.content);
@@ -49,7 +52,7 @@ const ToBeReviewed = (props) => {
     var userId = currentUser.id;
     var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     axiosInstance.get("/studies/to-be-reviewed/search", { params: {
-      reviewId, userId, stage, searchType, searchValue, page, size
+      reviewId, userId, stage, searchType, searchValue, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setStudies(response.data.content);
@@ -93,7 +96,7 @@ const ToBeReviewed = (props) => {
     } else {
       getStudies(currentPage, pageSize);
     }
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, sortDirection, sortProperty]);
 
   return (
     <div className='slrspot__screening-studies'>
@@ -105,7 +108,10 @@ const ToBeReviewed = (props) => {
         triggerShowPersonalHighlights={setShowPersonalHighlights}
         showPersonalHighlights={showPersonalHighlights} 
         handleSearch={ handleSearch } 
-        setSearchType={ setSearchType }/>
+        setSearchType={ setSearchType }
+        setSortProperty={ setSortProperty }
+        setSortDirection={ setSortDirection } 
+      />
 
       <div style={{ textAlign: 'right' }}>
         { studies.length > 0 &&
@@ -118,8 +124,9 @@ const ToBeReviewed = (props) => {
       </div>
 
       { studies.length > 0 
-        ? studies.map(study => (
+        ? studies.map((study, idx) => (
           <ScreeningStudy 
+            key={ idx }
             study={ study } 
             isShowAbstracts={ showAbstracts } 
             triggerVote={ handleStudiesUpdate }

@@ -31,11 +31,14 @@ const Awaiting = (props) => {
   const [pageCount, setPageCount] = useState(0);
   const [searchPerformed, setSearchPerformed] = useState(false);
 
-  function getStudies() {
+  const [sortProperty, setSortProperty] = useState('TITLE');
+  const [sortDirection, setSortDirection] = useState('ASC');
+
+  function getStudies(page, size) {
     var userId = currentUser.id;
     var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     axiosInstance.get("/studies/awaiting", { params: {
-      reviewId, userId, stage
+      reviewId, userId, stage, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setStudies(response.data.content);
@@ -49,7 +52,7 @@ const Awaiting = (props) => {
     var userId = currentUser.id;
     var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     axiosInstance.get("/studies/awaiting/search", { params: {
-      reviewId, userId, stage, searchType, searchValue, page, size
+      reviewId, userId, stage, searchType, searchValue, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setStudies(response.data.content);
@@ -91,7 +94,7 @@ const Awaiting = (props) => {
     } else {
       getStudies(currentPage, pageSize);
     }
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, sortDirection, sortProperty]);
 
   return (
     <div className='slrspot__screening-studies'>
