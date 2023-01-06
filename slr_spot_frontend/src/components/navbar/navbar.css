@@ -165,12 +165,12 @@
 }
 
 .slrspot__navbar-link#reviews {
-    background-color: #a654fd;
+    background-color: #AE67FA;
     border-radius: 5px;
 }
 
 .slrspot__navbar-link#reviews:hover {
-    background-color: #AE67FA;
+    background-color: #a653fe;
 }
 
 .slrspot__navbar-link#reviews a {

@@ -27,12 +27,19 @@
 .slrspot__reviews-select {
   display: flex;
   margin: 10px 0;
+  border-radius: 5px;
+  border: thin solid #ae67faa9;
+  background-color: #ae67fa6a;
 }
 
 .slrspot__reviews-select a {
   padding: 0 20px;
   font-size: 20px;
   cursor: pointer;
+}
+
+.slrspot__reviews-select a:hover {
+  background-color: #ae67faa9;
 }
 
 .slrspot__reviews-container thead {
