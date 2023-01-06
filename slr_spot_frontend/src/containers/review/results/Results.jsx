@@ -205,7 +205,7 @@ const Results = (props) => {
           <div className='slrspot__screening-options-search'>
 
             <div className='slrspot__screening-options-search-term'>
-              <label onClick={ handleSearch }>Search</label>
+              <label style={{ cursor: 'pointer' }} onClick={ handleSearch }>Search</label>
               <input onChange={ handleSearchChange } placeholder={searchPlaceholder} />
             </div>
 

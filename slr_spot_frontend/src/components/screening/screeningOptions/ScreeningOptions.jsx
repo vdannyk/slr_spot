@@ -112,7 +112,7 @@ const ScreeningOptions = (props) => {
         <div className='slrspot__screening-options-search'>
 
           <div className='slrspot__screening-options-search-term'>
-            <label onClick={ () => props.handleSearch(searchValue) }>Search</label>
+            <label style={{ cursor: 'pointer' }} onClick={ () => props.handleSearch(searchValue) }>Search</label>
             <input onChange={ handleSearchChange } placeholder={searchPlaceholder} />
           </div>
 

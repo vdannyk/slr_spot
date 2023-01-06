@@ -284,7 +284,7 @@ const StudiesView = ({allowChanges}) => {
               </div>
             </div>
             <div className='slrspot__screening-options-search' style={{ flexDirection: 'row' }}>
-              <label onClick={ handleSearch }>Search</label>
+              <label style={{ cursor: 'pointer' }} onClick={ handleSearch }>Search</label>
               <input onChange={ handleSearchChange } placeholder={ searchPlaceholder }/>
             </div>
           </div>
