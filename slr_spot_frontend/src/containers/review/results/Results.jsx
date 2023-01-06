@@ -36,8 +36,6 @@ const Results = (props) => {
   const [searchPerformed, setSearchPerformed] = useState(false);
 
   function getStudies(page, size) {
-    var page = currentPage;
-    var size = pageSize;
     axiosInstance.get("/studies/included", { params: {
       reviewId, page, size
     }})

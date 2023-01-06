@@ -17,14 +17,15 @@ const StudiesView = ({allowChanges}) => {
   const [selectedFolderId, setSelectedFolderId] = useState();
   const [selected, setSelected] = useState([]);
   const [studies, setStudies] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
   const { reviewId } = useParams();
-  const [searchType, setSearchType] = useState(TITLE_SEARCH);
+
   const [searchPlaceholder, setSearchPlaceholder] = useState("Title");
   const [titleCheck, setTitleCheck] = useState(true);
   const [authorsCheck, setAuthorsCheck] = useState(false);
   const [yearCheck, setYearCheck] = useState(false);
-  
+
+  const [searchValue, setSearchValue] = useState('');
+  const [searchType, setSearchType] = useState(TITLE_SEARCH);
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -66,10 +67,7 @@ const StudiesView = ({allowChanges}) => {
     }
   }, [titleCheck, authorsCheck, yearCheck]);
 
-  useEffect(() => {
-    setLoading(true);
-    var page = currentPage;
-    var size = pageSize;
+  function getStudies(page, size) {
     axiosInstance.get("/studies", { params: {
       reviewId, page, size
     }})
@@ -82,7 +80,23 @@ const StudiesView = ({allowChanges}) => {
     })
     .catch(() => {
     });
+  }
 
+  function getStudiesSearch(page, size) {
+    axiosInstance.get("/studies/search", { params: {
+      reviewId, searchType, searchValue, page, size
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(true);
+      setCurrentPage(response.number);
+    })
+    .catch(() => {
+    });
+  }
+
+  function getFolders() {
     axiosInstance.get("/folders", { params: {
       reviewId
     }})
@@ -91,6 +105,13 @@ const StudiesView = ({allowChanges}) => {
     })
     .catch(() => {
     });
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    getStudies(0, pageSize);
+
+    getFolders();
   }, []);
 
 
@@ -137,19 +158,11 @@ const StudiesView = ({allowChanges}) => {
   }
 
   const handleSearch = () => {
-    var page = currentPage;
-    var size = pageSize;
-    axiosInstance.get("/studies/search", { params: {
-      reviewId, searchType, searchValue, page, size
-    }})
-    .then((response) => {
-      setStudies(response.data.content);
-      setPageCount(response.data.totalPages);
-      setSearchPerformed(true);
-      setCurrentPage(response.number);
-    })
-    .catch(() => {
-    });
+    if (searchValue.trim().length > 0) {
+      getStudiesSearch(0, pageSize);
+    } else {
+      getStudies(0, pageSize);
+    }
   }
 
   const [title, setTitle] = useState('Select folder');
@@ -173,67 +186,16 @@ const StudiesView = ({allowChanges}) => {
 
   const handlePageChange = (studyPage) => {
     var page = studyPage.selected;
-    var size = pageSize;
-    if (searchPerformed) {
-      axiosInstance.get("/studies/search", { params: {
-        reviewId, searchType, searchValue, page, size
-      }})
-      .then((response) => {
-        setStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(true);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
-    } else {
-      setLoading(true);
-      axiosInstance.get("/studies", { params: {
-        reviewId, page, size
-      }})
-      .then((response) => {
-        setStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(false);
-        setLoading(false);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
-    }
+    setCurrentPage(page);
   }
 
   useEffect(() => {
-    var page = currentPage;
-    var size = pageSize;
     if (searchPerformed) {
-      axiosInstance.get("/studies/search", { params: {
-        reviewId, searchType, searchValue, page, size
-      }})
-      .then((response) => {
-        setStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(true);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
+      getStudiesSearch(currentPage, pageSize);
     } else {
-      setLoading(true);
-      axiosInstance.get("/studies", { params: {
-        reviewId, page, size
-      }})
-      .then((response) => {
-        setStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(false);
-        setLoading(false);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
+      getStudies(currentPage, pageSize);
     }
-  }, [pageSize]);
+  }, [currentPage, pageSize]);
 
   const handleMarkDuplicates = () => {
     axiosInstance.post("/studies/duplicate", {
