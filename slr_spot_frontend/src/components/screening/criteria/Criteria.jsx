@@ -82,7 +82,6 @@ const Criteria = (props) => {
   }
 
   const confirmRemoveCriterion = () => {
-    console.log(criterionToRemove)
     axiosInstance.delete("/criteria/" + criterionToRemove.id)
     .then(() => {
       setShowCriterionRemoveConfirmation(false);
@@ -91,7 +90,6 @@ const Criteria = (props) => {
   }
 
   const onSubmitNewInclusionCriterion = (formData) => {
-    console.log(formData);
     onSubmitNewCriterion(formData.inclusionCriterion, INCLUSION_TYPE);
   }
 
@@ -108,7 +106,6 @@ const Criteria = (props) => {
     .then(() => {
       window.location.reload();
     });
-    console.log(name);
   }
 
   return (

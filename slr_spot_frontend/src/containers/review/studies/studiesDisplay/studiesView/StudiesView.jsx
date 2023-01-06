@@ -326,14 +326,18 @@ const StudiesView = ({allowChanges}) => {
       </div>
 
       <div style={{ textAlign: 'right' }}>
-        <PageChanger 
-          defaultSelected={pageSize}
-          options={[5,10,25]}
-          changePageSize={setPageSize}
-        />
+        { studies.length > 0 && pageCount > 1 &&
+          <PageChanger 
+            defaultSelected={pageSize}
+            options={[10,25,50]}
+            changePageSize={setPageSize}
+          />
+        }
       </div>
 
       <Table>
+        { studies.length > 0 ?
+        <>
         <thead>
           <tr>
             <th>
@@ -351,7 +355,13 @@ const StudiesView = ({allowChanges}) => {
             <th>Folder</th>
           </tr>
         </thead>
-        { listStudies }
+        {listStudies}
+        </>
+        : 
+        <div style={{ display: 'flex', flex:'1', alignItems: 'center', justifyContent: 'center', marginTop: '50px'}}>
+          <h1 style={{ textTransform: 'uppercase' }}>Studies not found</h1>
+        </div>
+        }
       </Table>
 
       { studies.length > 0 && pageCount > 1 &&

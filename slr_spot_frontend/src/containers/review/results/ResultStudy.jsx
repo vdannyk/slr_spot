@@ -5,6 +5,7 @@ import Check from 'react-bootstrap/FormCheck';
 import StudyTags from '../../../components/screening/screeningStudy/studyTags/StudyTags';
 import FullTextField from '../../../components/screening/screeningStudy/fullTextField/FullTextField';
 import axiosInstance from '../../../services/api';
+import { RESULTS } from '../../../constants/tabs';
 
 
 const ResultStudy = ({ study, selected, handleSelect, allowChanges, reviewTags, triggerStudiesUpdate }) => {
@@ -48,7 +49,8 @@ const ResultStudy = ({ study, selected, handleSelect, allowChanges, reviewTags, 
       <FullTextField 
         isFullText={ true } 
         study={ study }
-        allowChanges={ allowChanges } />
+        allowChanges={ allowChanges } 
+        tab={ RESULTS }/>
        
       <StudyTags 
         studyId={ study.id } 

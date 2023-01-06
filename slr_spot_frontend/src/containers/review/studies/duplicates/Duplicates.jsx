@@ -79,6 +79,14 @@ const Duplicates = (props) => {
     )
   }
 
+  if (duplicates.length === 0) {
+    return (
+      <div style={{ display: 'flex', flex:'1', alignItems: 'center', justifyContent: 'center'}}>
+        <h1 style={{ textTransform: 'uppercase' }}>no duplicates marked</h1>
+      </div>
+    )
+  }
+
   return (
     <div className='slrspot__review-duplicates'>
       <div className='slrspot__review-studiesDisplay-header'>

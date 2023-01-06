@@ -27,7 +27,6 @@ const Review = (props) => {
 
       axiosInstance.get('/reviews/' + reviewId + '/members/' + currentUser.id + "/role")
       .then(response => {
-        console.log(response.data);
         setUserRole(response.data);
       })
       .catch(error => {

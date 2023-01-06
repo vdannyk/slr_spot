@@ -67,12 +67,4 @@ public class User {
         this.password = password;
     }
 
-    public void addDecision(Study study, Stage stage, Decision decision) {
-//        ScreeningDecision screeningDecision = new ScreeningDecision(this, study, decision);
-//        this.screeningDecisions.add(screeningDecision);
-    }
-
-    public void removeDecision(Study study, Stage stage, Decision decision) {
-        // TODO add if needed undo decisions
-    }
 }

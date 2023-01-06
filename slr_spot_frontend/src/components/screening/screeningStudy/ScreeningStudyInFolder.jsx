@@ -269,7 +269,8 @@ const ScreeningStudyInFolder = (props) => {
           <FullTextField 
             isFullText={ props.isFullText } 
             study={ props.study }
-            allowChanges={ allowChanges } />
+            allowChanges={ allowChanges }
+            tab={ props.tab } />
           
           <StudyTags 
             studyId={ props.study.id } 

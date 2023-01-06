@@ -60,7 +60,6 @@ const ReviewSettings = (props) => {
     var description = formData.description;
     var isPublic = formData.isPublic;
     var screeningReviewers = formData.screeningReviewers;
-    console.log(formData);
     axiosInstance.put("/reviews/" + reviewId, {
       name, researchArea, description, isPublic, screeningReviewers, researchQuestions
     })

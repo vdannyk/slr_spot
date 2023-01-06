@@ -37,6 +37,11 @@ public class StudyController {
 
     private final StudyFacade studyFacade;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Study> getStudiesByReviewId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(studyFacade.getStudyById(id));
+    }
+
     @GetMapping
     public ResponseEntity<Page<Study>> getStudiesByReviewId(@RequestParam("reviewId") Long reviewId,
                                                             @RequestParam(defaultValue = "0") int page,
@@ -188,6 +193,7 @@ public class StudyController {
     @DeleteMapping("/{id}/full-text")
     @Transactional
     public ResponseEntity<Void> deleteFullTextDocument(@PathVariable Long id) {
+        studyFacade.deleteFullTextDocument(id);
         return ResponseEntity.ok().build();
     }
 

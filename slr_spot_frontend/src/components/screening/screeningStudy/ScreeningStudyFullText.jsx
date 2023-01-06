@@ -1,128 +1,93 @@
 import React, { useState, useEffect } from 'react';
-import { AWAITING, CONFLICTED, EXCLUDED, TO_BE_REVIEWED } from '../../../constants/tabs';
-import './screeningStudy.css';
+import axiosInstance from '../../../services/api';
+import { INCLUSION_TYPE, EXCLUSION_TYPE } from '../criteria/CriteriaTypes';
+import KeyWordHighlight from '../../keyWordHighlight/KeyWordHighlight';
 import StudyTags from './studyTags/StudyTags';
-import { useNavigate, useParams } from "react-router-dom";
+import { AWAITING, CONFLICTED, EXCLUDED, TO_BE_REVIEWED } from '../../../constants/tabs';
 import ContentPopup from '../../popups/contentPopup/ContentPopup';
 import StudyHistory from './studyHistory/StudyHistory';
 import StudyDiscussion from './studyDiscussion/StudyDiscussion';
-import { useSelector } from 'react-redux';
-import axiosInstance from '../../../services/api';
-import FullTextField from './fullTextField/FullTextField';
-import KeyWordHighlight from '../../keyWordHighlight/KeyWordHighlight';
-import { INCLUSION_TYPE, EXCLUSION_TYPE } from '../criteria/CriteriaTypes';
+import AwaitingOptions from './tabSpecificOptions/AwaitingOptions';
 import ConflictedOptions from './tabSpecificOptions/ConflictedOptions';
-import { FULL_TEXT, TITLE_ABSTRACT } from '../../../constants/studyStages';
+import { useSelector } from 'react-redux';
+import { FULL_TEXT } from '../../../constants/studyStages';
+import { useNavigate } from 'react-router-dom';
+import EventBus from '../../../common/EventBus';
 
-const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh, 
-                          tab, isFullText, reviewTags, allowChanges, showHighlights, highlights }) => {
-  const [showAbstract, setShowAbstract] = useState(isShowAbstracts);
+
+const ScreeningStudyFullText = (props) => {
+  const navigate = useNavigate();
+  const [study, setStudy] = useState();
+  const [reviewTags, setReviewTags] = useState([]);
+  const [showAbstract, setShowAbstract] = useState(false);
+
   const [showDiscussion, setShowDiscussion] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  const { reviewId } = useParams();
+
   const { user: currentUser } = useSelector((state) => state.auth);
 
-  const inclusionHighlights = highlights.filter((highlight) => highlight.type === INCLUSION_TYPE)
+  var allowChanges = true;
+
+  const inclusionHighlights = props.highlights.filter((highlight) => highlight.type === INCLUSION_TYPE)
     .map((highlight) => highlight.name);
 
-  const exclusionHighlights = highlights.filter((highlight) => highlight.type === EXCLUSION_TYPE)
+  const exclusionHighlights = props.highlights.filter((highlight) => highlight.type === EXCLUSION_TYPE)
     .map((highlight) => highlight.name);
 
   useEffect(() => {
-    if (showAbstract !== isShowAbstracts) {
-      setShowAbstract(!showAbstract)
-    }
-  }, [isShowAbstracts]);
+    axiosInstance.get('/studies/' + props.studyId)
+    .then((response) => {
+      setStudy(response.data);
+    })
+
+    var reviewId = props.reviewId;
+    axiosInstance.get("/tags", { params: {
+      reviewId
+    }})
+    .then((response) => {
+      setReviewTags(response.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 403) {
+        EventBus.dispatch('expirationLogout');
+      }
+    });
+  }, []);
+
+  const handleDuplicate = () => {
+    axiosInstance.put("/studies/" + props.studyId + "/duplicate")
+    .then(() => {
+      navigate('/reviews/' + props.reviewId + '/studies/duplicates');
+    })
+    .catch(() => {
+    });
+  }
 
   const handleVote = (vote) => {
-    axiosInstance.post("/studies/" + study.id + "/screening_decisions", {
-      reviewId: reviewId,
+    axiosInstance.post("/studies/" + props.studyId + "/screening_decisions", {
+      reviewId: props.reviewId,
       userId: currentUser.id,
       decision: vote,
-      stage: isFullText ? FULL_TEXT : TITLE_ABSTRACT
+      stage: FULL_TEXT
     })
     .then(() => {
-      if (tab === AWAITING ) {
-        triggerRefresh();
-      } else {
-        triggerVote(study.id);
-      }
+      navigate('/reviews/' + props.reviewId + '/screening/full-text');
     })
     .catch(() => {
     });
   }
 
   const handleRestore = () => {
-    axiosInstance.put("/studies/" + study.id + "/restore")
+    axiosInstance.put("/studies/" + props.studyId + "/restore")
     .then(() => {
-      triggerVote(study.id);
+      navigate('/reviews/' + props.reviewId + '/screening/full-text');
     })
     .catch(() => {
     });
-  }
-
-  const handleDuplicate = () => {
-    axiosInstance.put("/studies/" + study.id + "/duplicate")
-    .then(() => {
-      triggerVote(study.id);
-    })
-    .catch(() => {
-    });
-  }
-
-  const handleShowAbstract = () => {
-    setShowAbstract(!showAbstract);
-  }
-
-  const AwaitingOptions = () => {
-    const [showOptions, setShowOptions] = useState(false);
-    const [currentVote, setCurrentVote] = useState('');
-
-    useEffect(() => {
-      var userId = currentUser.id;
-      axiosInstance.get("/studies/" + study.id + "/screening_decision", { params: {
-        userId
-      }})
-      .then((response) => {
-        setCurrentVote(response.data);
-      })
-    }, []);
-
-    return (
-      <div className='slrspot__screeningStudy-awaiting'>
-        <div className='slrspot__screeningStudy-votes'>
-          <p>current vote: <span><b>{currentVote}</b></span></p>
-        </div>
-        { showOptions 
-        ? <div className='slrspot__screeningStudy-awaiting-decision'>
-            <button 
-              className='slrspot__screeningStudy-decision-button'
-              onClick={ () => handleVote('EXCLUDE')}>
-                exclude
-            </button>
-            <button 
-              className='slrspot__screeningStudy-decision-button' 
-              onClick={ () => handleVote('UNCLEAR')}>
-                unclear
-            </button>
-            <button 
-              className='slrspot__screeningStudy-decision-button' 
-              onClick={ () => handleVote('INCLUDE')}>
-                include
-            </button>
-          </div>
-        : <button 
-            className='slrspot__screeningStudy-decision-button' 
-            onClick={() => setShowOptions(true)}>
-              change decision
-          </button>
-        }
-      </div>
-    )
   }
 
   function tabSpecificContent() {
-    if (tab === TO_BE_REVIEWED) {
+    if (props.tab === TO_BE_REVIEWED) {
       return (
         <div className='slrspot__screeningStudy-decision'>
           <button 
@@ -142,15 +107,18 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
           </button>
         </div>
       )
-    } else if (tab === CONFLICTED) {
+    } else if (props.tab === CONFLICTED) {
       return (
         <ConflictedOptions 
           handleVote={ handleVote }
         />
       )
-    } else if (tab === AWAITING) {
+    } else if (props.tab === AWAITING) {
       return (
-        <AwaitingOptions />
+        <AwaitingOptions 
+          handleVote={ handleVote }
+          study={ study }
+        />
       )
     } else {
       return (
@@ -165,22 +133,29 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
     }
   }
 
-  return (
+  return study && (
     <div className='slrspot__screeningStudy'>
-      { showHighlights 
+
+      <div className='slrspot__screeningStudy-state'>
+        <h3>Current state: </h3>
+        <span>{ props.tab }</span> 
+      </div>
+
+      { props.showHighlights 
         ? <h3>
             <KeyWordHighlight 
               text={ study.title } 
               inclusionWords={ inclusionHighlights } 
               exclusionWords={ exclusionHighlights }/>
           </h3> 
-        : <h3>{ study.title }</h3> }
+        : <h3>{ study.title }</h3> 
+      }
 
-      <button onClick={handleShowAbstract} className='slrspot__screeningStudy-showAbstract-button'>
+      <button onClick={ () => setShowAbstract(!showAbstract) } className='slrspot__screeningStudy-showAbstract-button'>
         { showAbstract ? 'hide abstract' : 'show abstract'}
       </button>
 
-      {showHighlights ? (
+      {props.showHighlights ? (
         <>
           { showAbstract && 
             <p>
@@ -246,22 +221,17 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
         </>
       )}
 
-      <FullTextField 
-        isFullText={ isFullText } 
-        study={ study }
-        allowChanges={ allowChanges } 
-        tab={ tab } />
-      
       <StudyTags 
         studyId={ study.id } 
         reviewTags={ reviewTags } 
-        allowChanges={ allowChanges }/>
-        
+        allowChanges={ true }/>
+
       <div className='slrspot__screeningStudy-options'>
         <button onClick={ () => setShowDiscussion(true)}>discussion</button>
         <button onClick={ () => setShowHistory(true) }>history</button>
-        { !(tab === EXCLUDED) && allowChanges && <button onClick={ handleDuplicate }>mark as duplicate</button>}
+        { !(props.tab === EXCLUDED) && allowChanges && <button onClick={ handleDuplicate }>mark as duplicate</button>}
       </div>
+
       { allowChanges && tabSpecificContent() }
       { showDiscussion && 
         <ContentPopup 
@@ -278,4 +248,4 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
   )
 }
 
-export default ScreeningStudy
+export default ScreeningStudyFullText
