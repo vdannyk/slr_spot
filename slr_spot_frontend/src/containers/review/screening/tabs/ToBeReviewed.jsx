@@ -22,74 +22,78 @@ const ToBeReviewed = (props) => {
   var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
   const [searchType, setSearchType] = useState(EVERYTHING_SEARCH);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [pageCount, setPageCount] = useState(0);
+  const [searchPerformed, setSearchPerformed] = useState(false);
 
-  function getStudies() {
+  function getStudies(page, size) {
     var userId = currentUser.id;
-    var page = currentPage;
-    var size = pageSize;
-    if (props.isFullText) {
-      var stage = 'FULL_TEXT';
-      axiosInstance.get("/studies/to-be-reviewed", { params: {
-        reviewId, userId, stage, page, size
-      }})
-      .then((response) => {
-        setStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
-    } else {
-      var stage = 'TITLE_ABSTRACT';
-      axiosInstance.get("/studies/to-be-reviewed", { params: {
-        reviewId, userId, stage, page, size
-      }})
-      .then((response) => {
-        setStudies(response.data.content)
-        setPageCount(response.data.totalPages);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
-    }
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    axiosInstance.get("/studies/to-be-reviewed", { params: {
+      reviewId, userId, stage, page, size
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(false);
+      setCurrentPage(response.data.number);
+    })
+    .catch(() => {
+    });
   }
+
+  function getStudiesSearch(searchValue, page, size) {
+    var userId = currentUser.id;
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    axiosInstance.get("/studies/to-be-reviewed/search", { params: {
+      reviewId, userId, stage, searchType, searchValue, page, size
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(true);
+      setCurrentPage(response.data.number);
+    })
+    .catch(() => {
+    });
+  }
+
+  useEffect(() => {
+    getStudies(0, pageSize);
+  }, [props.isFullText]);
 
   const handleStudiesUpdate = (id) => {
     setStudies(studies.filter(study => study.id !== id));
   }
 
   const handleSearch = (searchValue) => {
-    var userId = currentUser.id;
-    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     if (searchValue.trim().length > 0) {
-      axiosInstance.get("/studies/to-be-reviewed/search", { params: {
-        reviewId, userId, stage, searchType, searchValue 
-      }})
-      .then((response) => {
-        setStudies(response.data.content)
-      })
-      .catch(() => {
-      });
+      getStudiesSearch(searchValue, 0, pageSize);
+      setSearchTerm(searchValue);
     } else {
-      getStudies();
+      getStudies(0, pageSize);
     }
   }
-
-  useEffect(() => {
-    getStudies()
-  }, [props.isFullText]);
 
   useEffect(() => {
     setShowHighlights(showTeamHighlights || showPersonalHighlights);
   }, [showTeamHighlights, showPersonalHighlights]);
 
   const handlePageChange = (studyPage) => {
-
+    var page = studyPage.selected;
+    setCurrentPage(page);
   }
+
+  useEffect(() => {
+    if (searchPerformed) {
+      getStudiesSearch(searchTerm, currentPage, pageSize);
+    } else {
+      getStudies(currentPage, pageSize);
+    }
+  }, [currentPage, pageSize]);
 
   return (
     <div className='slrspot__screening-studies'>

@@ -31,11 +31,11 @@ const Results = (props) => {
   const [everythingCheck, setEverythingCheck] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [pageCount, setPageCount] = useState(0);
   const [searchPerformed, setSearchPerformed] = useState(false);
 
-  function getStudies() {
+  function getStudies(page, size) {
     var page = currentPage;
     var size = pageSize;
     axiosInstance.get("/studies/included", { params: {
@@ -43,12 +43,28 @@ const Results = (props) => {
     }})
     .then((response) => {
       setIncludedStudies(response.data.content);
+      setPageCount(response.data.totalPages);
       setSearchPerformed(false);
+      setCurrentPage(response.data.number);
+    });
+  }
+
+  function getStudiesSearch(page, size) {
+    axiosInstance.get("/studies/included/search", { params: {
+      reviewId, searchType, searchValue, page, size
+    }})
+    .then((response) => {
+      setIncludedStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(true);
+      setCurrentPage(response.data.number);
+    })
+    .catch(() => {
     });
   }
 
   useEffect(() => {
-    getStudies();
+    getStudies(0, pageSize);
   }, []);
 
   useEffect(() => {
@@ -156,19 +172,11 @@ const Results = (props) => {
     }
   }
 
-  const handleSearch = (searchValue) => {
+  const handleSearch = () => {
     if (searchValue.trim().length > 0) {
-      axiosInstance.get("/studies/included/search", { params: {
-        reviewId, searchType, searchValue 
-      }})
-      .then((response) => {
-        setIncludedStudies(response.data.content)
-        setSearchPerformed(true);
-      })
-      .catch(() => {
-      });
+      getStudiesSearch(0, pageSize);
     } else {
-      getStudies();
+      getStudies(0, pageSize);
     }
   }
 
@@ -178,28 +186,10 @@ const Results = (props) => {
   }
 
   useEffect(() => {
-    var page = currentPage;
-    var size = pageSize;
     if (searchPerformed) {
-      axiosInstance.get("/studies/included/search", { params: {
-        reviewId, searchType, searchValue, page, size 
-      }})
-      .then((response) => {
-        setIncludedStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(true);
-      })
-      .catch(() => {
-      });
+      getStudiesSearch(currentPage, pageSize);
     } else {
-      axiosInstance.get("/studies/included", { params: {
-        reviewId, page, size
-      }})
-      .then((response) => {
-        setIncludedStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(false);
-      });
+      getStudies(currentPage, pageSize);
     }
   }, [currentPage, pageSize]);
 
@@ -215,7 +205,7 @@ const Results = (props) => {
           <div className='slrspot__screening-options-search'>
 
             <div className='slrspot__screening-options-search-term'>
-              <label onClick={ () => handleSearch(searchValue) }>Search</label>
+              <label onClick={ handleSearch }>Search</label>
               <input onChange={ handleSearchChange } placeholder={searchPlaceholder} />
             </div>
 
@@ -265,7 +255,7 @@ const Results = (props) => {
           { includedStudies.length > 0 &&
             <PageChanger 
               defaultSelected={pageSize}
-              options={[10,25,50]}
+              options={[5,10,25]}
               changePageSize={setPageSize}
             />
           }
