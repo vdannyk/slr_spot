@@ -283,29 +283,42 @@ const Results = (props) => {
       </div>
 
       <div className='slrspot__review-results-list'>
+        
         <div style={{ textAlign: 'right' }}>
-          <PageChanger 
-            defaultSelected={pageSize}
-            options={[5,10,25]}
-            changePageSize={setPageSize}
-          />
+          { includedStudies.length > 0 && pageCount > 1 &&
+            <PageChanger 
+              defaultSelected={pageSize}
+              options={[5,10,25]}
+              changePageSize={setPageSize}
+            />
+          }
         </div>
-        <div className='slrspot__review-list-selectAll'>
-          <Check 
-            type='checkbox'
-            checked={ selected.length === includedStudies.length } 
-            onChange={ handleSelectAll }/>
-          <p>Select all</p>
-        </div>
-        { includedStudies.map(study => (
-          <ResultStudy 
-            study={ study } 
-            selected={ selected }
-            handleSelect= { () => handleSelect(study) }
-            allowChanges={ allowChanges } 
-            reviewTags={ reviewTags } 
-            triggerStudiesUpdate={ handleStudiesUpdate }/>
-        ))}
+
+        { includedStudies.length > 0 
+          ? <>
+            <div className='slrspot__review-list-selectAll'>
+              <Check 
+                type='checkbox'
+                checked={ selected.length === includedStudies.length } 
+                onChange={ handleSelectAll }/>
+              <p>Select all</p>
+            </div>
+            {includedStudies.map(study => (
+              <ResultStudy 
+                study={ study } 
+                selected={ selected }
+                handleSelect= { () => handleSelect(study) }
+                allowChanges={ allowChanges } 
+                reviewTags={ reviewTags } 
+                triggerStudiesUpdate={ handleStudiesUpdate }/>
+            ))}
+            </>
+          : 
+          <div style={{ display: 'flex', flex:'1', alignItems: 'center', justifyContent: 'center', marginTop: '50px'}}>
+            <h1 style={{ textTransform: 'uppercase' }}>Studies not found</h1>
+          </div>
+        }
+
         { includedStudies.length > 0 && pageCount > 1 &&
           <ReactPaginate
             pageCount={pageCount}
@@ -313,11 +326,13 @@ const Results = (props) => {
             marginPagesDisplayed={2}
             onPageChange={handlePageChange}
             forcePage={currentPage}
-            containerClassName="slrspot__folder-pagination"
-            activeClassName="slrspot__folder-pagination-active"
+            containerClassName="slrspot__pagination"
+            activeClassName="slrspot__pagination-active"
           />
-      }
+        }
+
       </div>
+
       { showExtractMenu && <ContentPopup content={<ExtractData selectedStudies={selected} />} triggerExit={ () => setShowExtractMenu(false)} /> }
       { showExportMenu && <ContentPopup content={<ExportStudies />} triggerExit={ () => setShowExportMenu(false)} /> }
       { showRaportMenu && <ContentPopup content={<GenerateRaport />} triggerExit={ () => setShowRaportMenu(false)} /> }
