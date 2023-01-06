@@ -29,23 +29,29 @@ const ToBeReviewed = (props) => {
 
   function getStudies() {
     var userId = currentUser.id;
+    var page = currentPage;
+    var size = pageSize;
     if (props.isFullText) {
       var stage = 'FULL_TEXT';
       axiosInstance.get("/studies/to-be-reviewed", { params: {
-        reviewId, userId, stage
+        reviewId, userId, stage, page, size
       }})
       .then((response) => {
-        setStudies(response.data.content)
+        setStudies(response.data.content);
+        setPageCount(response.data.totalPages);
+        setCurrentPage(response.number);
       })
       .catch(() => {
       });
     } else {
       var stage = 'TITLE_ABSTRACT';
       axiosInstance.get("/studies/to-be-reviewed", { params: {
-        reviewId, userId, stage
+        reviewId, userId, stage, page, size
       }})
       .then((response) => {
         setStudies(response.data.content)
+        setPageCount(response.data.totalPages);
+        setCurrentPage(response.number);
       })
       .catch(() => {
       });

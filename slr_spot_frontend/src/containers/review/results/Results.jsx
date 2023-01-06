@@ -43,6 +43,7 @@ const Results = (props) => {
     }})
     .then((response) => {
       setIncludedStudies(response.data.content);
+      setSearchPerformed(false);
     });
   }
 
@@ -162,6 +163,7 @@ const Results = (props) => {
       }})
       .then((response) => {
         setIncludedStudies(response.data.content)
+        setSearchPerformed(true);
       })
       .catch(() => {
       });
@@ -172,30 +174,7 @@ const Results = (props) => {
 
   const handlePageChange = (studyPage) => {
     var page = studyPage.selected;
-    var size = pageSize;
-    if (searchPerformed) {
-      axiosInstance.get("/studies/included/search", { params: {
-        reviewId, searchType, searchValue, page, size 
-      }})
-      .then((response) => {
-        setIncludedStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(true);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
-    } else {
-      axiosInstance.get("/studies/included", { params: {
-        reviewId, page, size
-      }})
-      .then((response) => {
-        setIncludedStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(false);
-        setCurrentPage(response.number);
-      });
-    }
+    setCurrentPage(page);
   }
 
   useEffect(() => {
@@ -209,7 +188,6 @@ const Results = (props) => {
         setIncludedStudies(response.data.content);
         setPageCount(response.data.totalPages);
         setSearchPerformed(true);
-        setCurrentPage(response.number);
       })
       .catch(() => {
       });
@@ -221,10 +199,9 @@ const Results = (props) => {
         setIncludedStudies(response.data.content);
         setPageCount(response.data.totalPages);
         setSearchPerformed(false);
-        setCurrentPage(response.number);
       });
     }
-  }, [pageSize]);
+  }, [currentPage, pageSize]);
 
   return (
     <div className='slrspot__review-results'>
