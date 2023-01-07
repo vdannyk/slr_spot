@@ -3,6 +3,7 @@ package com.dkwasniak.slr_spot_backend.imports;
 import com.dkwasniak.slr_spot_backend.deduplication.DeduplicationService;
 import com.dkwasniak.slr_spot_backend.deduplication.dto.DeduplicationDto;
 import com.dkwasniak.slr_spot_backend.file.FileService;
+import com.dkwasniak.slr_spot_backend.imports.excception.NothingToImportException;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
@@ -89,6 +90,9 @@ public class ImportFacade {
             studies = new ArrayList<>();
         } else {
             throw new IllegalStateException();
+        }
+        if (studies.size() == 0) {
+            throw new NothingToImportException();
         }
         return studies;
     }

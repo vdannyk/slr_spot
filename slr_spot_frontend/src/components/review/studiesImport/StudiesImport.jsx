@@ -6,6 +6,7 @@ import Check from 'react-bootstrap/FormCheck';
 import { DOI, BASIC_INFORMATION } from '../../../constants/deduplicationTypes';
 import { useSelector } from 'react-redux';
 import './studiesImport.css';
+import Helper from '../../helper/Helper';
 
 
 const StudiesImport = (props) => {
@@ -33,6 +34,10 @@ const StudiesImport = (props) => {
     data.append("reviewId", reviewId);
     data.append("searchValue", searchValue);
     if (source === "OTHER") {
+      if (otherSource.trim().length === 0) {
+        setErrorMsg("Source not defined");
+        return;
+      }
       data.append("source", otherSource);
     } else if (source.length === 0) {
       setErrorMsg("Source not selected");
@@ -90,12 +95,94 @@ const StudiesImport = (props) => {
     }
   }
 
+  const headers = () => {
+    if (source === "OTHER") {
+      return (
+        <div>
+          <b><label>Supported csv headers:</label></b><span style={{ marginLeft: '2px', color: 'green' }}>(Required)</span><br />
+          <span>
+            <span style={{ color: 'green' }}>title</span>, 
+            <span style={{ color: 'green' }}>authors</span>, 
+            journal title, 
+            <span style={{ color: 'green' }}>publication year</span>, 
+            volume, doi, url, abstract, issn, language</span>
+        </div>
+      )
+    } else if (source === "SCOPUS") {
+      return (
+        <div>
+          <b><label>Supported csv headers:</label></b><span style={{ marginLeft: '2px', color: 'green' }}>(Required)</span><br />
+          <span>
+            <span style={{ color: 'green' }}>Title</span>, 
+            <span style={{ color: 'green' }}>Authors</span>, 
+            Source title, 
+            <span style={{ color: 'green' }}>Year</span>, 
+            Volume, DOI, Link, Abstract, ISSN, Language of Original Document</span>
+        </div>
+      )
+    } else if (source === "IEEE") {
+      return (
+        <div>
+          <b><label>Supported csv headers:</label></b><span style={{ marginLeft: '2px', color: 'green' }}>(Required)</span><br />
+          <span>
+            <span style={{ color: 'green' }}>Document Title</span>, 
+            <span style={{ color: 'green' }}>Authors</span>, 
+            Publication Title, 
+            <span style={{ color: 'green' }}>Publication Year</span>, 
+            Volume, DOI, Abstract, ISSN</span>
+        </div>
+      )
+    } else if (source === "SPRINGERLINK") {
+      return (
+        <div>
+          <b><label>Supported csv headers:</label></b><span style={{ marginLeft: '2px', color: 'green' }}>(Required)</span><br />
+          <span>
+            <span style={{ color: 'green' }}>Item Title</span>, 
+            <span style={{ color: 'green' }}>Authors</span>, 
+            Publication Title, 
+            <span style={{ color: 'green' }}>Publication Year</span>, 
+            Journal Volume, Item DOI, URL</span>
+        </div>
+      )
+    } else if (source === "WEB OF SCIENCE") {
+      return (
+        <div>
+          <b><label>Supported csv headers:</label></b><span style={{ marginLeft: '2px', color: 'green' }}>(Required)</span><br />
+          <span>
+            <span style={{ color: 'green' }}>Article Title</span>, 
+            <span style={{ color: 'green' }}>Authors</span>, 
+            Source Title, 
+            <span style={{ color: 'green' }}>Publication Year</span>, 
+            Volume, DOI, DOI Link, Language, Abstract, ISSN</span>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <b><label>Supported csv headers:</label></b><span style={{ marginLeft: '2px', color: 'green' }}>(Required)</span><br />
+          <span>
+            <span style={{ color: 'green' }}>title</span>, 
+            <span style={{ color: 'green' }}>authors</span>, 
+            journal title, 
+            <span style={{ color: 'green' }}>publication year</span>, 
+            volume, doi, url, abstract, issn, language</span>
+        </div>
+      )
+    }
+  }
+
   return (
     <div className='slrspot__studiesImport'>
+
       <div className='slrspot__studiesImport-container'>
+
         <div className='slrspot__studiesImport-container-fields'>
+
           <h1>IMPORT STUDIES</h1>
-          { errorMsg && <p className='slrspot__input-error'>{ errorMsg }</p> }
+
+          <Helper content={ headers() } show={true}/>
+
+          { errorMsg && <p className='slrspot__input-error' style={{ marginTop: '5px' }}>{ errorMsg }</p> }
           <input 
             onChange={ handleSearchValueChange }
             placeholder='Search value' 
