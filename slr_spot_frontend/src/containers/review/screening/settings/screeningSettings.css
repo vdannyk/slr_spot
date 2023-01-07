@@ -12,15 +12,19 @@
 .slrspot__review-screening-menu-options {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  margin: 20px 40px;
+  padding: 10px 20px;
+  margin: 0px 40px;
+  border-radius: 5px;
+  border: thin solid #ae67faa9;
+  background-color: #ae67fa6a;
+  text-align: left;
 }
 
 .slrspot__review-screening-menu-options li {
-  font-size: 24px;
+  font-size: 26px;
   cursor: pointer;
 }
 
 .slrspot__review-screening-menu-options li:hover {
-  color: blue;
+  color: #a453faf5;
 }
