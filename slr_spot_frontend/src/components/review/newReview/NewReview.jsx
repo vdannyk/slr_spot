@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import axiosInstance from "../../../services/api";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import EventBus from '../../../common/EventBus';
 import ReviewInfo from './reviewInfo/ReviewInfo';
 import UsersBrowser from '../usersBrowser/UsersBrowser';
 import './newReview.css'
@@ -26,9 +25,6 @@ const NewReview = () => {
       setSearchedUsers(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, []);
 

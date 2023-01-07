@@ -3,7 +3,6 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import OptionHeader from '../optionHeader/OptionHeader';
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
-import EventBus from '../../../common/EventBus';
 import axiosInstance from '../../../services/api';
 import { EXCLUSION_TYPE, INCLUSION_TYPE } from '../criteria/CriteriaTypes';
 import { useForm } from "react-hook-form";
@@ -59,9 +58,6 @@ const Keywords = (props) => {
         setKeywords(response.data);
       })
       .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          EventBus.dispatch('expirationLogout');
-        }
       });
     } else {
       var userId = currentUser.id;
@@ -72,9 +68,6 @@ const Keywords = (props) => {
         setKeywords(response.data);
       })
       .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          EventBus.dispatch('expirationLogout');
-        }
       });
     }
   }, [props.state.showAll]);

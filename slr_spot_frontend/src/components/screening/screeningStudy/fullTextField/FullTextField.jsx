@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import PdfUploader from '../../../pdfUploader/PdfUploader';
-import EventBus from '../../../../common/EventBus';
 import axiosInstance from '../../../../services/api';
 import { AiFillCloseSquare } from "react-icons/ai";
 import './fullTextField.css';
@@ -19,9 +18,6 @@ const FullTextField = ({ study, isFullText, allowChanges, tab }) => {
       setFulltextFilename(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, [isLoaded]);
 
@@ -31,9 +27,6 @@ const FullTextField = ({ study, isFullText, allowChanges, tab }) => {
         setIsLoaded(!isLoaded);
       })
       .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          EventBus.dispatch('expirationLogout');
-        }
       });
   }
 

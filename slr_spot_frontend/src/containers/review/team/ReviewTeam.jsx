@@ -3,7 +3,6 @@ import { Table } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../../services/api";
 import { AiOutlineClose, AiFillEdit, AiFillCheckSquare, AiFillCloseSquare } from "react-icons/ai";
-import EventBus from '../../../common/EventBus';
 import { UsersBrowser, ConfirmationPopup, DropdownSelect } from '../../../components';
 import { OWNER, ROLES, COOWNER } from '../../../constants/roles';
 import ReactPaginate from 'react-paginate';
@@ -31,9 +30,6 @@ const ReviewTeam = (props) => {
       setSearchedUsers(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, []);
 

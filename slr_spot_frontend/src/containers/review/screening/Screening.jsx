@@ -8,7 +8,6 @@ import Conflicted from './tabs/Conflicted';
 import Awaiting from './tabs/Awaiting';
 import Excluded from './tabs/Excluded';
 import { useParams } from 'react-router-dom';
-import EventBus from '../../../common/EventBus';
 import { INCLUSION_TYPE, EXCLUSION_TYPE } from '../../../components/screening/criteria/CriteriaTypes';
 import { useSelector } from "react-redux";
 
@@ -81,9 +80,6 @@ const Screening = (props) => {
       setCriteria(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, []);
 

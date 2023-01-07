@@ -3,7 +3,6 @@ import PdfReader from '../../components/pdfReader/PdfReader';
 import OptionHeader from '../../components/screening/optionHeader/OptionHeader';
 import axiosInstance from '../../services/api';
 import { useNavigate, useParams } from 'react-router-dom';
-import EventBus from '../../common/EventBus';
 import './fullTextStudy.css';
 import { ScreeningStudyFullText } from '../../components';
 import { useSelector } from 'react-redux';
@@ -34,9 +33,6 @@ const FullTextStudy = () => {
       setPdfUrl(url);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, []);
 
@@ -48,9 +44,6 @@ const FullTextStudy = () => {
       setTeamHighlights(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
 
     var userId = currentUser.id;
@@ -61,10 +54,7 @@ const FullTextStudy = () => {
         setPersonalHighlights(response.data);
       })
       .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          EventBus.dispatch('expirationLogout');
-        }
-    });
+      });
   }, []);
 
   const handleShowTeamHighlightsChange = () => {

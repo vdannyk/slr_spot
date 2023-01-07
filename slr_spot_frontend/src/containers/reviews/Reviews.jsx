@@ -4,7 +4,6 @@ import axiosInstance from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import './reviews.css'
-import EventBus from '../../common/EventBus';
 import ReactPaginate from 'react-paginate';
 
 
@@ -33,9 +32,6 @@ const Reviews = () => {
         setPageCount(response.data.totalPagesNum);
       })
       .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          EventBus.dispatch('expirationLogout');
-        }
       });
     } else {
       var userId = currentUser.id;
@@ -47,9 +43,7 @@ const Reviews = () => {
         setPageCount(response.data.totalPagesNum);
       })
       .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          EventBus.dispatch('expirationLogout');
-        }
+        console.log(error);
       });
     }
   }, [isShowAll, currentPage]);

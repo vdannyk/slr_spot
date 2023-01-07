@@ -3,7 +3,6 @@ import { ReviewMenu } from '../../components';
 import { useParams } from "react-router-dom";
 import axiosInstance from '../../services/api';
 import { useSelector } from 'react-redux';
-import EventBus from '../../common/EventBus';
 import './review.css'
 
 
@@ -30,9 +29,6 @@ const Review = (props) => {
         setUserRole(response.data);
       })
       .catch(error => {
-        if (error.response && error.response.status === 403) {
-          EventBus.dispatch('expirationLogout');
-        }
       });
   }, []);
 

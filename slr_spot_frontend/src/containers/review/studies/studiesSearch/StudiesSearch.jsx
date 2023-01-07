@@ -6,7 +6,6 @@ import { AiOutlineClose } from "react-icons/ai";
 import Helper from '../../../../components/helper/Helper';
 import './studiesSearch.css';
 import { ConfirmationPopup, ImportDetails, StudiesImport } from '../../../../components';
-import EventBus from '../../../../common/EventBus';
 import { OWNER, COOWNER, MEMBER } from '../../../../constants/roles';
 import ReactPaginate from 'react-paginate';
 
@@ -35,9 +34,6 @@ const StudiesSearch = (props) => {
       setPageCount(response.data.totalPages);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, []);
 
@@ -51,9 +47,6 @@ const StudiesSearch = (props) => {
       setPageCount(response.data.totalPages);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }
 
@@ -88,9 +81,6 @@ const StudiesSearch = (props) => {
       window.location.reload();
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }
 

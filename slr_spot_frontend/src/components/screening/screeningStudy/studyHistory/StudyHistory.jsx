@@ -1,7 +1,6 @@
 import React,{ useState, useEffect } from 'react';
 import { Table } from "react-bootstrap";
 import axiosInstance from '../../../../services/api';
-import EventBus from '../../../../common/EventBus';
 import './studyHistory.css';
 
 
@@ -14,9 +13,6 @@ const StudyHistory = (props) => {
       setHistory(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, []);
 

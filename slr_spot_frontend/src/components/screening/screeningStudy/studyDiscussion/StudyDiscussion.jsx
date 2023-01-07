@@ -1,53 +1,13 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Table } from "react-bootstrap";
-import EventBus from '../../../../common/EventBus';
 import axiosInstance from '../../../../services/api';
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import './studyDiscussion.css'
 
-
-const testNotes = [
-  {
-    "date": "xxxx/xx/xx",
-    "author": "author",
-    "comment": "comment"
-  },
-  {
-    "date": "xxxx/xx/xx",
-    "author": "Daniel Kwasniak",
-    "comment": "comment"
-  },
-  {
-    "date": "xxxx/xx/xx",
-    "author": "author",
-    "comment": "comment"
-  },
-  {
-    "date": "xxxx/xx/xx",
-    "author": "author",
-    "comment": "comment"
-  },
-  {
-    "date": "xxxx/xx/xx",
-    "author": "author",
-    "comment": "comment"
-  },
-  {
-    "date": "xxxx/xx/xx",
-    "author": "author",
-    "comment": "comment comment comment commentcomment comment comment comment"
-  },
-  {
-    "date": "xxxx/xx/xx",
-    "author": "author",
-    "comment": "comment"
-  }
-]
-
 const StudyDiscussion = (props) => {
-  const [comments, setComments] = useState(testNotes);
+  const [comments, setComments] = useState([]);
   const {register, handleSubmit, formState: { errors }} = useForm();
   const { user: currentUser } = useSelector((state) => state.auth);
   const [triggerUpdate, setTriggerUpdate] = useState(false);
@@ -58,9 +18,6 @@ const StudyDiscussion = (props) => {
       setComments(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, [triggerUpdate]);
 

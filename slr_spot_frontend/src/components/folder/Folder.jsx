@@ -5,7 +5,6 @@ import { AiFillFolder, AiFillFileText } from 'react-icons/ai';
 import { AiOutlineCheck, AiOutlineClose, AiFillPlusSquare } from 'react-icons/ai';
 import axiosInstance from '../../services/api';
 import { useParams } from "react-router-dom";
-import EventBus from '../../common/EventBus';
 import './folder.css';
 import StudyFolderItem from '../study/studyFolderItem/StudyFolderItem';
 import ReactPaginate from 'react-paginate';
@@ -125,9 +124,6 @@ const Folder = (props) => {
       props.triggerRemove(props.parentFolders.filter(item => item.id !== folderId));
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }
 
