@@ -139,13 +139,20 @@ const Keywords = (props) => {
 
   return (
     <div className='slrspot__screening-keywords'>
+
       <OptionHeader 
         content='Manage keywords'
         backward={ () => navigate('/reviews/' + reviewId + '/screening') }/>
+
       <div className='slrspot__screening-keywords-assignment-container'>
-        <h2 onClick={ () => navigate("/reviews/" + reviewId + "/screening/keywords") }>Shared with team</h2>
-        <h2 onClick={ () => navigate("/reviews/" + reviewId + "/screening/keywords/personal") }>Personal keywords</h2>
+
+        <div className='slrspot__screening-keywords-types'>
+          <h2 onClick={ () => navigate("/reviews/" + reviewId + "/screening/keywords") }>Shared with team</h2>
+          <h2 onClick={ () => navigate("/reviews/" + reviewId + "/screening/keywords/personal") }>Personal keywords</h2>
+        </div>
+
         <div className='slrspot__screening-keywords-container'>
+
           <div className='slrspot__screening-keywords-table'>
             <div className='slrspot__screening-keywords-table-header'>
               <div className='slrspot__screening-keywords-table-header-title'>
@@ -167,10 +174,12 @@ const Keywords = (props) => {
               { inclusionKeywords }
             </div>
           </div>
+
           <div className='slrspot__screening-keywords-table-delimiter'>
           </div>
+
           <div className='slrspot__screening-keywords-table'>
-          <div className='slrspot__screening-keywords-table-header'>
+            <div className='slrspot__screening-keywords-table-header'>
               <div className='slrspot__screening-keywords-table-header-title'>
                 <h2>{ EXCLUSION_TYPE }</h2>
                 { allowChanges && !showAddExclusion && 
@@ -190,7 +199,9 @@ const Keywords = (props) => {
               { exclusionKeywords }
             </div>
           </div>
+
         </div>
+
         { showKeywordRemoveConfirmation && 
           <ConfirmationPopup 
             title="remove keyword"
