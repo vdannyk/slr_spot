@@ -70,7 +70,11 @@ const ReviewSettings = (props) => {
   };
 
   if (!allowChanges) {
-    return <p>ACCESS NOT ALLOWED</p>
+    return (
+      <div className='slrspot__review-unauthorized'>
+        <h1>Access not allowed</h1>
+      </div>
+    )
   }
 
   return (
