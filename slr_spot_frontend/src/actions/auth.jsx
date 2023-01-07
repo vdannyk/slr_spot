@@ -25,10 +25,7 @@ export const register = (firstName, lastName, email, password) => (dispatch) => 
             return Promise.resolve();
         },
         (error) => {
-            const message =
-                (error.response &&
-                error.response.data &&
-                error.response.data.message);
+            const message = error.response.data.message;
 
             dispatch({
                 type: REGISTER_FAIL,

@@ -3,6 +3,7 @@ package com.dkwasniak.slr_spot_backend.tag;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +24,13 @@ public class TagController {
 
     private final TagFacade tagFacade;
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping
     public ResponseEntity<Set<Tag>> getTags(@RequestParam Long reviewId) {
         return ResponseEntity.ok().body(tagFacade.getTagsByReviewId(reviewId));
     }
 
+    @PostAuthorize("hasScreeningAccess(#reviewId)")
     @PostMapping
     public ResponseEntity<Long> addTag(@RequestParam Long reviewId, @RequestParam String name) {
         long id = tagFacade.addTag(reviewId, name);
