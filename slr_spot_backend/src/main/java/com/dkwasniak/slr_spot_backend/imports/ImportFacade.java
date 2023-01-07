@@ -14,6 +14,7 @@ import com.dkwasniak.slr_spot_backend.study.StudyState;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingException;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyMappingInvalidHeadersException;
 import com.dkwasniak.slr_spot_backend.study.mapper.StudyMapper;
+import com.dkwasniak.slr_spot_backend.study.reader.RisReader;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -41,6 +43,7 @@ public class ImportFacade {
     private final ImportRepository importRepository;
     private final DeduplicationService deduplicationService;
     private final UserService userService;
+    private final RisReader risReader;
 
     @Transactional
     public void importStudies(ImportContext importContext) {
@@ -85,7 +88,7 @@ public class ImportFacade {
         } else if (fileService.isBibtexFile(contentType)) {
             studies = loadStudiesFromBib(file);
         } else if (fileService.isRisFile(contentType)){
-            studies = new ArrayList<>();
+            studies = loadStudiesFromRis(file);
         } else if (fileService.isXlsFile(contentType)) {
             studies = new ArrayList<>();
         } else {
@@ -105,7 +108,7 @@ public class ImportFacade {
             log.error("Exception while mapping studies", e);
             throw new StudyMappingInvalidHeadersException(file.getName(), e);
         } catch (Exception e) {
-            throw new StudyMappingException(file.getName(), e);
+            throw new StudyMappingException(file.getResource().getFilename(), e);
         }
     }
 
@@ -115,7 +118,17 @@ public class ImportFacade {
             return StudyMapper.bibToStudies(records);
         } catch (Exception e) {
             log.error("Exception while mapping studies", e);
-            throw new StudyMappingException(file.getName(), e);
+            throw new StudyMappingException(file.getResource().getFilename(), e);
+        }
+    }
+
+    private List<Study> loadStudiesFromRis(MultipartFile file) {
+        try {
+            List<Map<String, String>> records = risReader.read(file);
+            return StudyMapper.risToStudies(records);
+        } catch (Exception e) {
+            log.error("Exception while mapping studies", e);
+            throw new StudyMappingException(file.getResource().getFilename(), e);
         }
     }
 

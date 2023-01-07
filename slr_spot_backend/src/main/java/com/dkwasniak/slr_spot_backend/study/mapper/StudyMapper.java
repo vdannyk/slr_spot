@@ -108,6 +108,31 @@ public class StudyMapper {
         return studies;
     }
 
+    public static List<Study> risToStudies(List<Map<String, String>> risReferences) {
+        List<Study> studies = new ArrayList<>();
+        String[] headers = DEFAULT_RIS_HEADERS;
+
+        for (var reference : risReferences) {
+            Study study = Study.builder()
+                    .title(reference.get(headers[0]))
+                    .authors(reference.get(headers[1]))
+                    .journalTitle(reference.get(headers[2]))
+                    .publicationYear(Integer.valueOf(reference.get(headers[3])))
+                    .volume(reference.get(headers[4]))
+                    .doi(reference.get(headers[5]))
+                    .url(reference.get(headers[6]))
+                    .documentAbstract(reference.get(headers[7]))
+                    .issn(reference.get(headers[8]))
+                    .language(reference.get(headers[9]))
+                    .build();
+
+            if (!hasMissingRequiredFields(study)) {
+                studies.add(study);
+            }
+        }
+        return studies;
+    }
+
     private static boolean hasMissingRequiredFields(Study study) {
         return isNull(study.getTitle()) ||
                 isNull(study.getAuthors()) ||
