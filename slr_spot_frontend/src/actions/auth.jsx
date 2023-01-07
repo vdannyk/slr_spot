@@ -28,9 +28,7 @@ export const register = (firstName, lastName, email, password) => (dispatch) => 
             const message =
                 (error.response &&
                 error.response.data &&
-                error.response.data.message) ||
-                error.message ||
-                error.toString();
+                error.response.data.message);
 
             dispatch({
                 type: REGISTER_FAIL,
@@ -57,12 +55,11 @@ export const login = (username, password) => (dispatch) => {
             return Promise.resolve();
         },
         (error) => {
+            console.log(error);
             const message =
                 (error.response &&
                 error.response.data &&
-                error.response.data.message) ||
-                error.message ||
-                error.toString();
+                error.response.data.message);
             dispatch({
                 type: LOGIN_FAIL,
             });
