@@ -235,7 +235,7 @@ const Folder = (props) => {
           <AiFillFolder style={{ "marginRight": '5px'}}/>
           {name}
         </p>
-        { !props.isScreening && (
+        { !props.isScreening && props.allowChanges && (
           <p>
             <AiFillPlusSquare 
               className='slrspot__folder-option' 
@@ -286,6 +286,7 @@ const Folder = (props) => {
                     reviewTags={ props.reviewTags }
                     teamHighlights={ props.teamHighlights }
                     personalHighlights={ props.personalHighlights }
+                    allowChanges={ props.allowChanges }
                   />
                 </td>
               </tr>

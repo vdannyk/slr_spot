@@ -136,7 +136,7 @@ const ReviewTeam = (props) => {
           : 
             <>
               {item.role.name}
-              {item.role.name !== OWNER && 
+              {item.role.name !== OWNER && allowChanges &&
                 <AiFillEdit 
                   onClick={ () => showRoleDropdown(item) } />
               }
