@@ -14,7 +14,7 @@ public class FileExceptionHandler extends CommonExceptionHandler {
 
     @ExceptionHandler(NotAllowedFileContentTypeException.class)
     ResponseEntity<ErrorResponse> handleNotAllowedContentTypeException(NotAllowedFileContentTypeException ex, HttpServletRequest req) {
-        return createResponse(req, ex, HttpStatus.BAD_REQUEST);
+        return createResponse(req, ex, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
     @ExceptionHandler(FileLoadingException.class)

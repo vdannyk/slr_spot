@@ -6,6 +6,7 @@ import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
 import com.dkwasniak.slr_spot_backend.document.Document;
 import com.dkwasniak.slr_spot_backend.file.FileService;
+import com.dkwasniak.slr_spot_backend.file.exception.NotAllowedFileContentTypeException;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -214,6 +216,9 @@ public class StudyFacade {
 
 
     public Document addFullTextDocument(Long studyId, MultipartFile file) {
+        if (!fileService.isPdfFile(file.getContentType())) {
+            throw new NotAllowedFileContentTypeException();
+        }
         Study study = studyService.getStudyById(studyId);
         Document document = new Document();
         document.setName(file.getOriginalFilename());
@@ -346,5 +351,4 @@ public class StudyFacade {
         Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return searchProcessor.searchAll(searchType, reviewId, searchValue, pageRq);
     }
-
 }
