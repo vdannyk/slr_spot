@@ -1,11 +1,5 @@
 FROM openjdk:17-oracle
-WORKDIR /app
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-Dspring.profiles.active=prod","-jar","/app.jar"]
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
-
-COPY src ./src
-EXPOSE 8080
-
-CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=docker"]
