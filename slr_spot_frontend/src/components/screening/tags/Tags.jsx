@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import OptionHeader from '../optionHeader/OptionHeader';
 import { AiFillMinusCircle, AiFillPlusCircle, AiFillCheckSquare, AiFillCloseSquare } from "react-icons/ai";
-import EventBus from '../../../common/EventBus';
 import axiosInstance from '../../../services/api';
 import { useForm } from "react-hook-form";
 import ConfirmationPopup from '../../popups/confirmationPopup/ConfirmationPopup';
@@ -31,9 +30,6 @@ const Tags = (props) => {
       setTags(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, []);
 

@@ -40,3 +40,8 @@ export { default as StudyFolderItem } from './study/studyFolderItem/StudyFolderI
 export { default as PdfUploader } from './pdfUploader/PdfUploader';
 
 export { default as PageChanger } from './pageChanger/PageChanger';
+
+export { default as SortField } from './sortField/SortField';
+export { default as SortOption } from './sortField/SortOption';
+
+export { default as AuthorizationCheck } from './authorizationCheck/AuthorizationCheck';

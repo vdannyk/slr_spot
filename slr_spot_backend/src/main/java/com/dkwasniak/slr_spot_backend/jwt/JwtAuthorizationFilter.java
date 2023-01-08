@@ -1,11 +1,16 @@
 package com.dkwasniak.slr_spot_backend.jwt;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.dkwasniak.slr_spot_backend.exception.ErrorResponse;
+import com.dkwasniak.slr_spot_backend.user.UserPrincipal;
+import com.dkwasniak.slr_spot_backend.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -29,11 +34,13 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
+@RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private static final String SIGN_IN_PATH = API_PATH + AUTH_PATH;
     private static final String REFRESH_JWT_TOKEN_PATH = API_PATH + "/auth/refresh";
 
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -48,12 +55,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     DecodedJWT decodedJWT = validateJwt(jwtToken);
 
                     String username = getUsername(decodedJWT);
+                    UserPrincipal userPrincipal = (UserPrincipal) userService.loadUserByUsername(username);
 
                     UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(username, null, new HashSet<>());
+                            new UsernamePasswordAuthenticationToken(userPrincipal, null, new HashSet<>());
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
-                } catch (Exception exception) {
+                } catch (JWTVerificationException exception) {
                     log.error("Error in JwtAuthorizationFilter: {}", exception.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);
                     response.setStatus(UNAUTHORIZED.value());

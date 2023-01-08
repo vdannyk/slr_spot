@@ -5,6 +5,7 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.review.exception.ReviewNotFoundException;
+import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleEnum;
 import com.dkwasniak.slr_spot_backend.user.User;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import com.dkwasniak.slr_spot_backend.userReview.UserReview;
@@ -57,7 +58,7 @@ public class ReviewService {
 
     protected ReviewWithOwnerDto boundWithOwner(Review review) {
         User owner = review.getUsers().stream()
-                .filter(user -> "OWNER".equals(user.getRole().getName())).findFirst().get().getUser();
+                .filter(user -> ReviewRoleEnum.OWNER.name().equals(user.getRole().getName())).findFirst().get().getUser();
         return ReviewWithOwnerDto.of(owner.getFirstName(), owner.getLastName(), review);
     }
 

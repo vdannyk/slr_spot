@@ -12,7 +12,6 @@ import ConflictedOptions from './tabSpecificOptions/ConflictedOptions';
 import { useSelector } from 'react-redux';
 import { FULL_TEXT } from '../../../constants/studyStages';
 import { useNavigate } from 'react-router-dom';
-import EventBus from '../../../common/EventBus';
 
 
 const ScreeningStudyFullText = (props) => {
@@ -48,9 +47,6 @@ const ScreeningStudyFullText = (props) => {
       setReviewTags(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, []);
 

@@ -159,3 +159,20 @@
         display: block;
     }
 }
+
+.slrspot__navbar-link {
+    padding: 5px;
+}
+
+.slrspot__navbar-link#reviews {
+    background-color: #AE67FA;
+    border-radius: 5px;
+}
+
+.slrspot__navbar-link#reviews:hover {
+    background-color: #a653fe;
+}
+
+.slrspot__navbar-link#reviews a {
+    color: white;
+}

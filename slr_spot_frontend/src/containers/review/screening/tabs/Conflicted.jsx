@@ -23,38 +23,48 @@ const Conflicted = (props) => {
   var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
   const [searchType, setSearchType] = useState(EVERYTHING_SEARCH);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [pageCount, setPageCount] = useState(0);
+  const [searchPerformed, setSearchPerformed] = useState(false);
 
-  function getStudies() {
-    var userId = currentUser.id;
-    if (props.isFullText) {
-      var stage = 'FULL_TEXT';
-      axiosInstance.get("/studies/conflicted", { params: {
-        reviewId, userId, stage
-      }})
-      .then((response) => {
-        setStudies(response.data.content)
-      })
-      .catch(() => {
-      });
-    } else {
-      var stage = 'TITLE_ABSTRACT';
-      axiosInstance.get("/studies/conflicted", { params: {
-        reviewId, userId, stage
-      }})
-      .then((response) => {
-        setStudies(response.data.content)
-      })
-      .catch(() => {
-      });
-    }
+  const [sortProperty, setSortProperty] = useState('TITLE');
+  const [sortDirection, setSortDirection] = useState('ASC');
+
+  function getStudies(page, size) {
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    axiosInstance.get("/studies/conflicted", { params: {
+      reviewId, stage, page, size, sortProperty, sortDirection
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(false);
+      setCurrentPage(response.data.number);
+    })
+    .catch(() => {
+    });
+  }
+
+  function getStudiesSearch(searchValue, page, size) {
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    axiosInstance.get("/studies/conflicted/search", { params: {
+      reviewId, stage, searchType, searchValue, page, size, sortProperty, sortDirection
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(true);
+      setCurrentPage(response.data.number);
+    })
+    .catch(() => {
+    });
   }
 
   useEffect(() => {
-    getStudies()
+    getStudies(0, pageSize)
   }, [props.isFullText]);
 
   const handleStudiesUpdate = (id) => {
@@ -62,18 +72,11 @@ const Conflicted = (props) => {
   }
 
   const handleSearch = (searchValue) => {
-    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     if (searchValue.trim().length > 0) {
-      axiosInstance.get("/studies/conflicted/search", { params: {
-        reviewId, stage, searchType, searchValue 
-      }})
-      .then((response) => {
-        setStudies(response.data.content)
-      })
-      .catch(() => {
-      });
+      getStudiesSearch(searchValue, 0, pageSize);
+      setSearchTerm(searchValue);
     } else {
-      getStudies();
+      getStudies(0, pageSize);
     }
   }
 
@@ -82,8 +85,17 @@ const Conflicted = (props) => {
   }, [showTeamHighlights, showPersonalHighlights]);
 
   const handlePageChange = (studyPage) => {
-
+    var page = studyPage.selected;
+    setCurrentPage(page);
   }
+
+  useEffect(() => {
+    if (searchPerformed) {
+      getStudiesSearch(searchTerm, currentPage, pageSize);
+    } else {
+      getStudies(currentPage, pageSize);
+    }
+  }, [currentPage, pageSize, sortDirection, sortProperty]);
 
   return (
     <div className='slrspot__screening-studies'>
@@ -98,7 +110,7 @@ const Conflicted = (props) => {
         setSearchType={ setSearchType }/>
 
       <div style={{ textAlign: 'right' }}>
-        { studies.length > 0 && pageCount > 1 &&
+        { studies.length > 0 &&
           <PageChanger 
             defaultSelected={pageSize}
             options={[5,10,25]}

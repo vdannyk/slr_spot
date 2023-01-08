@@ -1,0 +1,25 @@
+.slrspot__sortField {
+  display: flex;
+  padding: 2px 4px;
+  border-radius: 5px;
+  margin-left: 2px;
+  background: grey;
+  color: white;
+
+	font-size: 16px;
+	text-transform: uppercase;
+  cursor: pointer;
+}
+
+.slrspot__sortField#selected {
+  display: flex;
+  padding: 2px 4px;
+  border-radius: 5px;
+  margin-left: 2px;
+  background: #AE67FA;
+  cursor: pointer;
+}
+
+.slrspot__sortField label {
+  cursor: pointer;
+}

@@ -37,7 +37,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
                 "   \"timestamp\": \"" + LocalDateTime.ofInstant(now(), ZoneId.systemDefault()) + "\",\n" +
                 "   \"path\": \"%s\"\n" +
                 "}",
-                response.getStatus(), msg, "/api/auth/signin/");
+                response.getStatus(), msg, "/api/v1/auth/signin/");
         try (PrintWriter out = response.getWriter()) {
             out.write(errorBody);
         }

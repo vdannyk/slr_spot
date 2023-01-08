@@ -14,4 +14,10 @@ public class CommonExceptionHandler {
         var path = req.getServletPath();
         return new ResponseEntity<>(new ErrorResponse(httpStatus, msg, path), httpStatus);
     }
+
+    protected ResponseEntity<ErrorResponse> createResponseWithMessage(HttpServletRequest req, Exception ex,
+                                                                      HttpStatus httpStatus, String message) {
+        var path = req.getServletPath();
+        return new ResponseEntity<>(new ErrorResponse(httpStatus, message, path), httpStatus);
+    }
 }

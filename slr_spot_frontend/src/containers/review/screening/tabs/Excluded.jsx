@@ -23,38 +23,50 @@ const Excluded = (props) => {
   const { user: currentUser } = useSelector((state) => state.auth);
 
   const [searchType, setSearchType] = useState(EVERYTHING_SEARCH);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [pageCount, setPageCount] = useState(0);
+  const [searchPerformed, setSearchPerformed] = useState(false);
 
-  function getStudies() {
+  const [sortProperty, setSortProperty] = useState('TITLE');
+  const [sortDirection, setSortDirection] = useState('ASC');
+
+  function getStudies(page, size) {
     var userId = currentUser.id;
-    if (props.isFullText) {
-      var stage = 'FULL_TEXT';
-      axiosInstance.get("/studies/excluded", { params: {
-        reviewId, userId, stage
-      }})
-      .then((response) => {
-        setStudies(response.data.content)
-      })
-      .catch(() => {
-      });
-    } else {
-      var stage = 'TITLE_ABSTRACT';
-      axiosInstance.get("/studies/excluded", { params: {
-        reviewId, userId, stage
-      }})
-      .then((response) => {
-        setStudies(response.data.content)
-      })
-      .catch(() => {
-      });
-    }
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    axiosInstance.get("/studies/excluded", { params: {
+      reviewId, userId, stage, page, size, sortProperty, sortDirection
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(false);
+      setCurrentPage(response.data.number);
+    })
+    .catch(() => {
+    });
+  }
+
+  function getStudiesSearch(searchValue, page, size) {
+    var userId = currentUser.id;
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    axiosInstance.get("/studies/excluded/search", { params: {
+      reviewId, userId, stage, searchType, searchValue, page, size, sortProperty, sortDirection
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(true);
+      setCurrentPage(response.data.number);
+    })
+    .catch(() => {
+    });
   }
 
   useEffect(() => {
-    getStudies()
+    getStudies(0, pageSize)
   }, [props.isFullText]);
 
   const handleStudiesUpdate = (id) => {
@@ -62,19 +74,11 @@ const Excluded = (props) => {
   }
 
   const handleSearch = (searchValue) => {
-    var userId = currentUser.id;
-    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     if (searchValue.trim().length > 0) {
-      axiosInstance.get("/studies/excluded/search", { params: {
-        reviewId, userId, stage, searchType, searchValue 
-      }})
-      .then((response) => {
-        setStudies(response.data.content)
-      })
-      .catch(() => {
-      });
+      getStudiesSearch(searchValue, 0, pageSize);
+      setSearchTerm(searchValue);
     } else {
-      getStudies();
+      getStudies(0, pageSize);
     }
   }
 
@@ -83,8 +87,17 @@ const Excluded = (props) => {
   }, [showTeamHighlights, showPersonalHighlights]);
 
   const handlePageChange = (studyPage) => {
-
+    var page = studyPage.selected;
+    setCurrentPage(page);
   }
+
+  useEffect(() => {
+    if (searchPerformed) {
+      getStudiesSearch(searchTerm, currentPage, pageSize);
+    } else {
+      getStudies(currentPage, pageSize);
+    }
+  }, [currentPage, pageSize, sortDirection, sortProperty]);
 
   return (
     <div className='slrspot__screening-studies'>
@@ -99,7 +112,7 @@ const Excluded = (props) => {
         setSearchType={ setSearchType }/>
 
       <div style={{ textAlign: 'right' }}>
-        { studies.length > 0 && pageCount > 1 &&
+        { studies.length > 0 &&
           <PageChanger 
             defaultSelected={pageSize}
             options={[5,10,25]}

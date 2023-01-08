@@ -1,0 +1,11 @@
+.slrspot__screening-sort {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slrspot__screening-sort-options {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2px;
+}

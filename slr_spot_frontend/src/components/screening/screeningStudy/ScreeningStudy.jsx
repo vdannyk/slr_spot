@@ -184,7 +184,7 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
         <>
           { showAbstract && 
             <p>
-              <label>abstract:</label>
+              <label>abstract:</label><span> </span>
               <KeyWordHighlight 
                 text={ study.documentAbstract }
                 inclusionWords={ inclusionHighlights } 

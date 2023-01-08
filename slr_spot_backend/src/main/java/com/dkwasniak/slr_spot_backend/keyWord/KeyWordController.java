@@ -4,6 +4,7 @@ import com.dkwasniak.slr_spot_backend.keyWord.dto.KeyWordDto;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,11 +25,13 @@ public class KeyWordController {
 
     private final KeyWordFacade keyWordFacade;
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping
     public ResponseEntity<Set<KeyWord>> getKeywords(@RequestParam Long reviewId) {
         return ResponseEntity.ok().body(keyWordFacade.getKeyWords(reviewId));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/personal")
     public ResponseEntity<Set<KeyWord>> getUserKeywords(@RequestParam Long reviewId,
                                                     @RequestParam Long userId) {

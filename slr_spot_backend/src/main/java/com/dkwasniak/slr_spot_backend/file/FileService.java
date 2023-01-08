@@ -15,6 +15,7 @@ import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXParser;
 import org.jbibtex.ParseException;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -72,6 +73,10 @@ public class FileService {
 
     public boolean isXlsFile(String contentType) {
         return XLS_MEDIA_TYPE.equals(contentType);
+    }
+
+    public boolean isPdfFile(String contentType) {
+        return MediaType.APPLICATION_PDF_VALUE.equals(contentType);
     }
 
      public List<CSVRecord> loadFromCsv(MultipartFile multipartFile) {

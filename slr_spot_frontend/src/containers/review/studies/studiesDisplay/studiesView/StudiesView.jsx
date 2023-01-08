@@ -8,7 +8,10 @@ import { AUTHORS_SEARCH, AUTHORS_YEAR_SEARCH, TITLE_AUTHORS_SEARCH, TITLE_AUTHOR
 import ReactPaginate from 'react-paginate';
 import { PageChanger } from '../../../../../components';
 import { CgDuplicate } from "react-icons/cg";
+import { AiOutlineSortAscending, AiOutlineSortDescending } from "react-icons/ai";
+import { TITLE, AUTHORS, YEAR } from '../../../../../components/sortField/sortProperties';
 import './studiesView.css';
+import { ASCENDING, DESCENDING } from '../../../../../components/sortField/sortDirections';
 
 
 const StudiesView = ({allowChanges}) => {
@@ -17,19 +20,28 @@ const StudiesView = ({allowChanges}) => {
   const [selectedFolderId, setSelectedFolderId] = useState();
   const [selected, setSelected] = useState([]);
   const [studies, setStudies] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
   const { reviewId } = useParams();
-  const [searchType, setSearchType] = useState(TITLE_SEARCH);
+  const [title, setTitle] = useState('Select folder');
+
   const [searchPlaceholder, setSearchPlaceholder] = useState("Title");
   const [titleCheck, setTitleCheck] = useState(true);
   const [authorsCheck, setAuthorsCheck] = useState(false);
   const [yearCheck, setYearCheck] = useState(false);
-  
+
+  const [searchValue, setSearchValue] = useState('');
+  const [searchType, setSearchType] = useState(TITLE_SEARCH);
 
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [pageCount, setPageCount] = useState(0);
   const [searchPerformed, setSearchPerformed] = useState(false);
+
+  const [sortProperty, setSortProperty] = useState('TITLE');
+  const [sortDirection, setSortDirection] = useState('ASC');
+
+  const [sortTitleDirection, setSortTitleDirection] = useState('ASC');
+  const [sortAuthorsDirection, setSortAuthorsDirection] = useState('ASC');
+  const [sortYearDirection, setSortYearDirection] = useState('ASC');
 
 
   useEffect(() => {
@@ -66,23 +78,37 @@ const StudiesView = ({allowChanges}) => {
     }
   }, [titleCheck, authorsCheck, yearCheck]);
 
-  useEffect(() => {
-    setLoading(true);
-    var page = currentPage;
-    var size = pageSize;
+  function getStudies(page, size) {
     axiosInstance.get("/studies", { params: {
-      reviewId, page, size
+      reviewId, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
+      console.log(response.data)
       setStudies(response.data.content);
       setPageCount(response.data.totalPages);
       setSearchPerformed(false);
       setLoading(false);
-      setCurrentPage(response.number);
+      setCurrentPage(response.data.number);
     })
     .catch(() => {
     });
+  }
 
+  function getStudiesSearch(page, size) {
+    axiosInstance.get("/studies/search", { params: {
+      reviewId, searchType, searchValue, page, size, sortProperty, sortDirection
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(true);
+      setCurrentPage(response.data.number);
+    })
+    .catch(() => {
+    });
+  }
+
+  function getFolders() {
     axiosInstance.get("/folders", { params: {
       reviewId
     }})
@@ -91,6 +117,13 @@ const StudiesView = ({allowChanges}) => {
     })
     .catch(() => {
     });
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    getStudies(0, pageSize);
+
+    getFolders();
   }, []);
 
 
@@ -137,22 +170,12 @@ const StudiesView = ({allowChanges}) => {
   }
 
   const handleSearch = () => {
-    var page = currentPage;
-    var size = pageSize;
-    axiosInstance.get("/studies/search", { params: {
-      reviewId, searchType, searchValue, page, size
-    }})
-    .then((response) => {
-      setStudies(response.data.content);
-      setPageCount(response.data.totalPages);
-      setSearchPerformed(true);
-      setCurrentPage(response.number);
-    })
-    .catch(() => {
-    });
+    if (searchValue.trim().length > 0) {
+      getStudiesSearch(0, pageSize);
+    } else {
+      getStudies(0, pageSize);
+    }
   }
-
-  const [title, setTitle] = useState('Select folder');
 
   const handleSelectFolder = (event) => {
     setTitle(folders.filter(item => item.id === parseInt(event))[0].name);
@@ -173,67 +196,8 @@ const StudiesView = ({allowChanges}) => {
 
   const handlePageChange = (studyPage) => {
     var page = studyPage.selected;
-    var size = pageSize;
-    if (searchPerformed) {
-      axiosInstance.get("/studies/search", { params: {
-        reviewId, searchType, searchValue, page, size
-      }})
-      .then((response) => {
-        setStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(true);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
-    } else {
-      setLoading(true);
-      axiosInstance.get("/studies", { params: {
-        reviewId, page, size
-      }})
-      .then((response) => {
-        setStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(false);
-        setLoading(false);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
-    }
+    setCurrentPage(page);
   }
-
-  useEffect(() => {
-    var page = currentPage;
-    var size = pageSize;
-    if (searchPerformed) {
-      axiosInstance.get("/studies/search", { params: {
-        reviewId, searchType, searchValue, page, size
-      }})
-      .then((response) => {
-        setStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(true);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
-    } else {
-      setLoading(true);
-      axiosInstance.get("/studies", { params: {
-        reviewId, page, size
-      }})
-      .then((response) => {
-        setStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(false);
-        setLoading(false);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
-    }
-  }, [pageSize]);
 
   const handleMarkDuplicates = () => {
     axiosInstance.post("/studies/duplicate", {
@@ -257,45 +221,83 @@ const StudiesView = ({allowChanges}) => {
     });
   }
 
+  const handleAuthorsSort = () => {
+    setSortProperty(AUTHORS);
+    if (sortAuthorsDirection === ASCENDING) {
+      setSortAuthorsDirection(DESCENDING);
+      setSortDirection(DESCENDING);
+    } else {
+      setSortAuthorsDirection(ASCENDING);
+      setSortDirection(ASCENDING);
+    }
+  }
+
+  const handleYearSort = () => {
+    setSortProperty(YEAR);
+    if (sortYearDirection === ASCENDING) {
+      setSortYearDirection(DESCENDING);
+      setSortDirection(DESCENDING);
+    } else {
+      setSortYearDirection(ASCENDING);
+      setSortDirection(ASCENDING);
+    }
+  }
+
+  const handleTitleSort = () => {
+    setSortProperty(TITLE);
+    if (sortTitleDirection === ASCENDING) {
+      setSortTitleDirection(DESCENDING);
+      setSortDirection(DESCENDING);
+    } else {
+      setSortTitleDirection(ASCENDING);
+      setSortDirection(ASCENDING);
+    }
+  }
+
+  useEffect(() => {
+    if (searchPerformed) {
+      getStudiesSearch(currentPage, pageSize);
+    } else {
+      getStudies(currentPage, pageSize);
+    }
+  }, [currentPage, pageSize, sortProperty, sortDirection]);
+
   return (
     <div>
       <div className='slrspot__screening-options'>
         <div className='slrspot__studiesView-container'>
 
-          <div className='slrspot__studiesView-search'>
-            <div className='slrspot__screening-options-container-checks'>
-              <div className='slrspot__screening-options-check' style={{ marginLeft: '20px' }}>
+          <div className='slrspot__screening-options-search'>
+
+            <div className='slrspot__screening-options-search-checks-container'>
+              <div className='slrspot__screening-options-check'>
                 <Check
                   checked={ titleCheck } 
                   onChange={ handleTitleCheck }/>
-                <label>Title</label>
+                <span>Title</span>
               </div>
               <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>
                 <Check
                   checked={ authorsCheck } 
                   onChange={ handleAuthorsCheck }/>
-                <label>Authors</label>
+                <span>Authors</span>
               </div>
               <div className='slrspot__screening-options-check' style={{ marginLeft: '4px' }}>
                 <Check
                   checked={ yearCheck } 
                   onChange={ handleYearCheck }/>
-                <label>Year</label>
+                <span>Year</span>
               </div>
             </div>
-            <div className='slrspot__screening-options-search' style={{ flexDirection: 'row' }}>
-              <label onClick={ handleSearch }>Search</label>
+
+            <div className='slrspot__screening-options-search-term' style={{ flexDirection: 'row' }}>
+              <label style={{ cursor: 'pointer' }} onClick={ () => handleSearch() }>Search</label>
               <input onChange={ handleSearchChange } placeholder={ searchPlaceholder }/>
             </div>
+
           </div>
 
           <div className='slrspot__studiesView-folders'>
-            <div className='slrspot__screening-options-container-checks'>
-              {/* <div className='slrspot__screening-options-check'>
-                <Check />
-                <label>Show only not assigned studies</label>
-              </div> */}
-            </div>
             { allowChanges &&
               <div className='slrspot__studiesView-folders-select'>
                 <DropdownButton
@@ -326,7 +328,7 @@ const StudiesView = ({allowChanges}) => {
       </div>
 
       <div style={{ textAlign: 'right' }}>
-        { studies.length > 0 && pageCount > 1 &&
+        { studies.length > 0 &&
           <PageChanger 
             defaultSelected={pageSize}
             options={[10,25,50]}
@@ -349,9 +351,15 @@ const StudiesView = ({allowChanges}) => {
               </div>
             </th>
             <th>#</th>
-            <th>Title</th>
-            <th>Authors</th>
-            <th>Year</th>
+            <th onClick={ handleTitleSort } className='slrspot__studiesView-hover'>
+              Title{ sortTitleDirection === ASCENDING ? <AiOutlineSortAscending size={24}/> : <AiOutlineSortDescending size={24}/>}
+            </th>
+            <th onClick={ handleAuthorsSort } className='slrspot__studiesView-hover'>
+              Authors{ sortAuthorsDirection === ASCENDING ? <AiOutlineSortAscending size={24}/> : <AiOutlineSortDescending size={24}/>}
+            </th>
+            <th onClick={ handleYearSort } className='slrspot__studiesView-hover'>
+              Year{ sortYearDirection === ASCENDING ? <AiOutlineSortAscending size={24}/> : <AiOutlineSortDescending size={24}/>}
+            </th>
             <th>Folder</th>
           </tr>
         </thead>

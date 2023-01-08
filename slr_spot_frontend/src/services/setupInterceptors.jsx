@@ -1,7 +1,7 @@
 import axiosInstance from "./api";
 import { refreshToken } from "../actions/auth";
 import TokenService from "./token.service";
-import { logout } from "../actions/auth";
+import EventBus from "../common/EventBus";
 
 const setupInterceptors = (store) => {
   axiosInstance.interceptors.request.use(
@@ -43,6 +43,7 @@ const setupInterceptors = (store) => {
             
             return axiosInstance(originalConfig);
           } catch(_error) {
+            EventBus.dispatch('expirationLogout');
             return Promise.reject(_error);
           }
         }

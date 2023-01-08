@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import OptionHeader from '../optionHeader/OptionHeader';
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
-import EventBus from '../../../common/EventBus';
 import axiosInstance from '../../../services/api';
 import { INCLUSION_TYPE, EXCLUSION_TYPE } from './CriteriaTypes';
 import { useForm } from "react-hook-form";
@@ -57,9 +56,6 @@ const Criteria = (props) => {
       setCriteria(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, []);
 
