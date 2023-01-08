@@ -1,17 +1,19 @@
 .slrspot__studiesView-container {
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
   margin: 10px;
 }
 
 .slrspot__studiesView-search {
   display: flex;
   flex-direction: column;
-  width: 50%;
 }
 
 .slrspot__studiesView-folders, .slrspot__studiesView-duplicate {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .slrspot__studiesView-folders-select, .slrspot__studiesView-duplicate-option {
@@ -42,11 +44,15 @@
 }
 
 .slrspot__studiesView-duplicate-option {
-  margin-top: 5px;
   text-align: center;
 }
 
 .dropdown-menu {
   max-height: 200px;
   overflow-y: auto;
+}
+
+.slrspot__studiesView-hover:hover {
+  background-color: rgb(219, 219, 219);
+  cursor: pointer;
 }

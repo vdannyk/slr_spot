@@ -68,7 +68,7 @@ public class WebSecurityConfig {
         );
         customAuthFilter.setFilterProcessesUrl(AUTH_PATH);
         http.addFilter(customAuthFilter);
-        http.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthorizationFilter(userService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

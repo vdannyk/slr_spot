@@ -5,6 +5,7 @@ import com.dkwasniak.slr_spot_backend.folder.dto.FolderRequest;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,11 +27,13 @@ public class FolderController {
     private final FolderService folderService;
     private final FolderFacade folderFacade;
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping
     public ResponseEntity<List<Folder>> getFolders(@RequestParam Long reviewId) {
         return ResponseEntity.ok().body(folderService.getAllFoldersByReviewId(reviewId));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/tree")
     public ResponseEntity<List<Folder>> getFolderTree(@RequestParam Long reviewId) {
         return ResponseEntity.ok().body(folderService.getRootFolders(reviewId));

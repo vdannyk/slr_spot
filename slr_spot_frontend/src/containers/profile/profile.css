@@ -1,10 +1,10 @@
 .slrspot__profile {
   display: flex;
   flex-direction: column;
+  flex: 1;
   background-color: white;
   margin: 20px 20px;
   border-radius: 5px;
-  height: 86vh;
 }
 
 .slrspot__profile input {

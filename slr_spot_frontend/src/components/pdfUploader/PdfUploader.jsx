@@ -10,8 +10,6 @@ const PdfUploader = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // setSelectedFile(event.target.files[0].name)
-
     const formData = new FormData();
     formData.append('file', fileInput.current.files[0]);
 
@@ -24,8 +22,12 @@ const PdfUploader = (props) => {
       }
     })
     .then(response => {
-      console.log(response.data);
       props.setIsLoaded(true);
+      setProgress(0);
+    })
+    .catch((error) => {
+      props.setLoadingError(error.response.data.message);
+      setProgress(0);
     })
   }
 

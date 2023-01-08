@@ -12,8 +12,10 @@ import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,47 +39,65 @@ public class StudyController {
 
     private final StudyFacade studyFacade;
 
-    @GetMapping
-    public ResponseEntity<Page<Study>> getStudiesByReviewId(@RequestParam("reviewId") Long reviewId,
-                                                            @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.getStudiesByReviewId(reviewId, page, size));
+    @GetMapping("/{id}")
+    public ResponseEntity<Study> getStudyById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(studyFacade.getStudyById(id));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
+    @GetMapping
+    public ResponseEntity<Page<Study>> getStudies(@RequestParam("reviewId") Long reviewId,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size,
+                                                @RequestParam("sortProperty") SortProperty sortProperty,
+                                                @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.getStudiesByReviewId(reviewId, page, size, sortProperty, sortDirection));
+    }
+
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/to-be-reviewed")
     public ResponseEntity<Page<Study>> getStudiesToBeReviewed(@RequestParam("reviewId") Long reviewId,
                                                               @RequestParam("userId") Long userId,
                                                               @RequestParam Stage stage,
                                                               @RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewed(reviewId, userId, stage, page, size));
+                                                              @RequestParam(defaultValue = "10") int size,
+                                                              @RequestParam("sortProperty") SortProperty sortProperty,
+                                                              @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.getStudiesToBeReviewed(reviewId, userId, stage, page, size, sortProperty, sortDirection));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/conflicted")
     public ResponseEntity<Page<Study>> getStudiesConflicted(@RequestParam("reviewId") Long reviewId,
-                                                            @RequestParam("userId") Long userId,
                                                             @RequestParam Stage stage,
                                                             @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.getStudiesConflicted(reviewId, userId, stage, page, size));
+                                                            @RequestParam(defaultValue = "10") int size,
+                                                            @RequestParam("sortProperty") SortProperty sortProperty,
+                                                            @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.getStudiesConflicted(reviewId, stage, page, size, sortProperty, sortDirection));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/awaiting")
     public ResponseEntity<Page<Study>> getStudiesAwaiting(@RequestParam("reviewId") Long reviewId,
                                                             @RequestParam("userId") Long userId,
                                                             @RequestParam Stage stage,
                                                             @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.getStudiesAwaiting(reviewId, userId, stage, page, size));
+                                                            @RequestParam(defaultValue = "10") int size,
+                                                          @RequestParam("sortProperty") SortProperty sortProperty,
+                                                          @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.getStudiesAwaiting(reviewId, userId, stage, page, size, sortProperty, sortDirection));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/excluded")
     public ResponseEntity<Page<Study>> getStudiesExcluded(@RequestParam("reviewId") Long reviewId,
-                                                          @RequestParam("userId") Long userId,
                                                           @RequestParam Stage stage,
                                                           @RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.getStudiesExcluded(reviewId, userId, stage, page, size));
+                                                          @RequestParam(defaultValue = "10") int size,
+                                                          @RequestParam("sortProperty") SortProperty sortProperty,
+                                                          @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.getStudiesExcluded(reviewId, stage, page, size, sortProperty, sortDirection));
     }
 
     @DeleteMapping("/{id}")
@@ -86,6 +106,7 @@ public class StudyController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/duplicates")
     public ResponseEntity<Page<Study>> getDuplicates(@RequestParam Long reviewId,
                                                      @RequestParam(defaultValue = "0") int page,
@@ -93,11 +114,14 @@ public class StudyController {
         return ResponseEntity.ok().body(studyFacade.getDuplicates(reviewId, page, size));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/included")
     public ResponseEntity<Page<Study>> getIncludedStudies(@RequestParam Long reviewId,
                                                           @RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok().body(studyFacade.getIncludedStudies(reviewId, page, size));
+                                                          @RequestParam(defaultValue = "10") int size,
+                                                          @RequestParam("sortProperty") SortProperty sortProperty,
+                                                          @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok().body(studyFacade.getIncludedStudies(reviewId, page, size, sortProperty, sortDirection));
     }
 
     @GetMapping("/{id}/tags")
@@ -188,6 +212,7 @@ public class StudyController {
     @DeleteMapping("/{id}/full-text")
     @Transactional
     public ResponseEntity<Void> deleteFullTextDocument(@PathVariable Long id) {
+        studyFacade.deleteFullTextDocument(id);
         return ResponseEntity.ok().build();
     }
 
@@ -220,6 +245,7 @@ public class StudyController {
         return ResponseEntity.ok(studyFacade.getStudyHistory(id));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/by-folder/{folderId}")
     public ResponseEntity<Page<Study>> getStudiesByFolderId(@PathVariable Long folderId,
                                                             @RequestParam Long reviewId,
@@ -228,6 +254,7 @@ public class StudyController {
         return ResponseEntity.ok(studyFacade.getStudiesByFolderId(folderId, reviewId, page, size));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/to-be-reviewed/by-folder/{folderId}")
     public ResponseEntity<Page<Study>> getStudiesToBeReviewedByFolderId(@PathVariable Long folderId,
                                                                         @RequestParam("reviewId") Long reviewId,
@@ -238,6 +265,7 @@ public class StudyController {
         return ResponseEntity.ok(studyFacade.getStudiesToBeReviewedByFolderId(reviewId, folderId, userId, stage, page, size));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/conflicted/by-folder/{folderId}")
     public ResponseEntity<Page<Study>> getStudiesConflictedByFolderId(@PathVariable Long folderId,
                                                                       @RequestParam("reviewId") Long reviewId,
@@ -247,6 +275,7 @@ public class StudyController {
         return ResponseEntity.ok(studyFacade.getStudiesConflictedByFolderId(reviewId, folderId, stage, page, size));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/awaiting/by-folder/{folderId}")
     public ResponseEntity<Page<Study>> getStudiesAwaitingByFolderId(@PathVariable Long folderId,
                                                                     @RequestParam("reviewId") Long reviewId,
@@ -257,6 +286,7 @@ public class StudyController {
         return ResponseEntity.ok(studyFacade.getStudiesAwaitingByFolderId(reviewId, folderId, userId, stage, page, size));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/excluded/by-folder/{folderId}")
     public ResponseEntity<Page<Study>> getStudiesExcludedByFolderId(@PathVariable Long folderId,
                                                                     @RequestParam("reviewId") Long reviewId,
@@ -266,6 +296,7 @@ public class StudyController {
         return ResponseEntity.ok(studyFacade.getStudiesExcludedByFolderId(reviewId, folderId, stage, page, size));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/to-be-reviewed/search")
     public ResponseEntity<Page<Study>> searchStudiesToBeReviewed(@RequestParam("reviewId") Long reviewId,
                                                             @RequestParam("userId") Long userId,
@@ -273,57 +304,74 @@ public class StudyController {
                                                             @RequestParam("searchType") StudySearchType searchType,
                                                             @RequestParam("searchValue") String value,
                                                             @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudiesToBeReviewed(reviewId, userId, stage, searchType, value, page, size));
+                                                            @RequestParam(defaultValue = "10") int size,
+                                                             @RequestParam("sortProperty") SortProperty sortProperty,
+                                                             @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudiesToBeReviewed(reviewId, userId, stage, searchType, value, page, size, sortProperty, sortDirection));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/conflicted/search")
     public ResponseEntity<Page<Study>> searchStudiesConflicted(@RequestParam("reviewId") Long reviewId,
                                                             @RequestParam("stage") Stage stage,
                                                             @RequestParam("searchType") StudySearchType searchType,
                                                             @RequestParam("searchValue") String value,
                                                             @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudiesConflicted(reviewId, stage, searchType, value, page, size));
+                                                            @RequestParam(defaultValue = "10") int size,
+                                                            @RequestParam("sortProperty") SortProperty sortProperty,
+                                                            @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudiesConflicted(reviewId, stage, searchType, value, page, size, sortProperty, sortDirection));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/awaiting/search")
     public ResponseEntity<Page<Study>> searchStudiesAwaiting(@RequestParam("reviewId") Long reviewId,
-                                                                 @RequestParam("userId") Long userId,
-                                                                 @RequestParam("stage") Stage stage,
-                                                                 @RequestParam("searchType") StudySearchType searchType,
-                                                                 @RequestParam("searchValue") String value,
-                                                                 @RequestParam(defaultValue = "0") int page,
-                                                                 @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudiesAwaiting(reviewId, userId, stage, searchType, value, page, size));
+                                                             @RequestParam("userId") Long userId,
+                                                             @RequestParam("stage") Stage stage,
+                                                             @RequestParam("searchType") StudySearchType searchType,
+                                                             @RequestParam("searchValue") String value,
+                                                             @RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "10") int size,
+                                                             @RequestParam("sortProperty") SortProperty sortProperty,
+                                                             @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudiesAwaiting(reviewId, userId, stage, searchType, value, page, size, sortProperty, sortDirection));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/excluded/search")
     public ResponseEntity<Page<Study>> searchStudiesExcluded(@RequestParam("reviewId") Long reviewId,
                                                                @RequestParam("stage") Stage stage,
                                                                @RequestParam("searchType") StudySearchType searchType,
                                                                @RequestParam("searchValue") String value,
                                                                @RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudiesExcluded(reviewId, stage, searchType, value, page, size));
+                                                               @RequestParam(defaultValue = "10") int size,
+                                                               @RequestParam("sortProperty") SortProperty sortProperty,
+                                                               @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudiesExcluded(reviewId, stage, searchType, value, page, size, sortProperty, sortDirection));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/included/search")
     public ResponseEntity<Page<Study>> searchStudiesIncluded(@RequestParam("reviewId") Long reviewId,
                                                              @RequestParam("searchType") StudySearchType searchType,
                                                              @RequestParam("searchValue") String value,
                                                              @RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudiesIncluded(reviewId, searchType, value, page, size));
+                                                             @RequestParam(defaultValue = "10") int size,
+                                                             @RequestParam("sortProperty") SortProperty sortProperty,
+                                                             @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudiesIncluded(reviewId, searchType, value, page, size, sortProperty, sortDirection));
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/search")
     public ResponseEntity<Page<Study>> searchStudies(@RequestParam("reviewId") Long reviewId,
                                                      @RequestParam("searchType") StudySearchType searchType,
                                                      @RequestParam("searchValue") String value,
                                                      @RequestParam(defaultValue = "0") int page,
-                                                     @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(studyFacade.searchStudies(reviewId, searchType, value, page, size));
+                                                     @RequestParam(defaultValue = "10") int size,
+                                                     @RequestParam("sortProperty") SortProperty sortProperty,
+                                                     @RequestParam("sortDirection") Sort.Direction sortDirection) {
+        return ResponseEntity.ok(studyFacade.searchStudies(reviewId, searchType, value, page, size, sortProperty, sortDirection));
     }
 
 }

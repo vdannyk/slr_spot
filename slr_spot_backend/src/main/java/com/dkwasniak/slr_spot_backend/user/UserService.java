@@ -41,11 +41,7 @@ public class UserService implements UserDetailsService {
             throw new IllegalStateException("User " + username + " not activated");
         }
         User user = optUser.get();
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getEmail())
-                .password(user.getPassword())
-                .authorities(new HashSet<>())
-                .build();
+        return new UserPrincipal(user);
     }
 
     public User saveUser(User user) {

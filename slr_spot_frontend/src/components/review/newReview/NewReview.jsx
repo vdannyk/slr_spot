@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import axiosInstance from "../../../services/api";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import EventBus from '../../../common/EventBus';
 import ReviewInfo from './reviewInfo/ReviewInfo';
 import UsersBrowser from '../usersBrowser/UsersBrowser';
 import './newReview.css'
@@ -18,18 +17,14 @@ const NewReview = () => {
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const { user: currentUser } = useSelector((state) => state.auth);
-  const [questions, setQuestions] = useState(['test1', 'test2', 'test3']);
+  const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
     axiosInstance.get("/users/emails")
     .then((response) => {
-      console.log(response.data);
       setSearchedUsers(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, []);
 
@@ -49,7 +44,6 @@ const NewReview = () => {
     })
     .then((response) => {
       setLoading(false);
-      console.log(response.data)
       navigate("/reviews/" + response.data);
     });
   };

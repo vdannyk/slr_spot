@@ -9,14 +9,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 public class JwtUtils {
 
     private final static String SECRET = "secret";
-    private final static String ROLES_CLAIM = "roles";
-    private final static long JWT_EXPIRATION= 100 * 60 * 1000;
-    private final static long REFRESH_TOKEN_EXPIRATION = 200 * 60 * 1000;
+    private final static long JWT_EXPIRATION = TimeUnit.DAYS.toMillis(7L);
+    private final static long REFRESH_TOKEN_EXPIRATION = TimeUnit.DAYS.toMillis(31L);
     private static final String AUTHORIZATION_PREFIX = "Bearer ";
 
     public static DecodedJWT validateJwt(String jwt) {

@@ -172,10 +172,8 @@ public class StudyService {
         return studiesWithBasicInfo.stream().map(s -> IdentificationDto.builder().title(s.getTitle()).authors(s.getAuthors()).publicationYear(s.getPublicationYear()).build()).collect(Collectors.toSet());
     }
 
-    @Transactional
     public void addOperation(Study study, Operation operation) {
         study.addOperation(operation);
-        studyRepository.save(study);
     }
 
     public List<Operation> getStudyHistory(Study study) {

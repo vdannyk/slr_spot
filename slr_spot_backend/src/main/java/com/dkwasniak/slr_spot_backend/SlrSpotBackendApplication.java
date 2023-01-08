@@ -31,10 +31,4 @@ public class SlrSpotBackendApplication {
 		return objectMapper;
 	}
 
-	@Bean
-	public MultipartResolver multipartResolver() {
-		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-		resolver.setMaxUploadSize(5000000);
-		return resolver;
-	}
 }

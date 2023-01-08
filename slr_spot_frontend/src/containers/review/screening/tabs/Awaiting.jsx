@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import { ScreeningStudy, ScreeningOptions } from '../../../../components';
+import { ScreeningStudy, ScreeningOptions, PageChanger } from '../../../../components';
 import { AWAITING } from '../../../../constants/tabs';
 import axiosInstance from '../../../../services/api';
 import { useSelector } from "react-redux";
 import { OWNER, MEMBER, COOWNER } from '../../../../constants/roles';
 import { FULL_TEXT, TITLE_ABSTRACT } from '../../../../constants/studyStatuses';
 import { EVERYTHING_SEARCH } from '../../../../constants/searchTypes';
+import ReactPaginate from 'react-paginate';
 import '../screening.css';
 
 
@@ -23,35 +24,44 @@ const Awaiting = (props) => {
   var allowChanges = props.userRole && [OWNER, COOWNER, MEMBER].includes(props.userRole);
 
   const [searchType, setSearchType] = useState(EVERYTHING_SEARCH);
+  const [searchTerm, setSearchTerm] = useState('');
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [pageCount, setPageCount] = useState(0);
+  const [searchPerformed, setSearchPerformed] = useState(false);
 
-  function getStudies() {
-    var userId = currentUser.id;
-    if (props.isFullText) {
-      var stage = 'FULL_TEXT';
-      axiosInstance.get("/studies/awaiting", { params: {
-        reviewId, userId, stage
-      }})
-      .then((response) => {
-        setStudies(response.data.content)
-      })
-      .catch(() => {
-      });
-    } else {
-      var stage = 'TITLE_ABSTRACT';
-      axiosInstance.get("/studies/awaiting", { params: {
-        reviewId, userId, stage
-      }})
-      .then((response) => {
-        setStudies(response.data.content)
-      })
-      .catch(() => {
-      });
-    }
+  const [sortProperty, setSortProperty] = useState('TITLE');
+  const [sortDirection, setSortDirection] = useState('ASC');
+
+  function getStudies(page, size) {
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    axiosInstance.get("/studies/awaiting", { params: {
+      reviewId, stage, page, size, sortProperty, sortDirection
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setSearchPerformed(false);
+    })
+    .catch(() => {
+    });
+  }
+
+  function getStudiesSearch(searchValue, page, size) {
+    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
+    axiosInstance.get("/studies/awaiting/search", { params: {
+      reviewId, stage, searchType, searchValue, page, size, sortProperty, sortDirection
+    }})
+    .then((response) => {
+      setStudies(response.data.content);
+      setSearchPerformed(true);
+    })
+    .catch(() => {
+    });
   }
 
   useEffect(() => {
-    getStudies()
+    getStudies(0, pageSize);
   }, [props.isFullText, refreshStudies]);
 
   const handleStudiesUpdate = (id) => {
@@ -59,25 +69,30 @@ const Awaiting = (props) => {
   }
 
   const handleSearch = (searchValue) => {
-    var userId = currentUser.id;
-    var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     if (searchValue.trim().length > 0) {
-      axiosInstance.get("/studies/awaiting/search", { params: {
-        reviewId, userId, stage, searchType, searchValue 
-      }})
-      .then((response) => {
-        setStudies(response.data.content)
-      })
-      .catch(() => {
-      });
+      getStudiesSearch(searchValue, 0, pageSize);
+      setSearchTerm(searchValue);
     } else {
-      getStudies();
+      getStudies(0, pageSize);
     }
   }
 
   useEffect(() => {
     setShowHighlights(showTeamHighlights || showPersonalHighlights);
   }, [showTeamHighlights, showPersonalHighlights]);
+
+  const handlePageChange = (studyPage) => {
+    var page = studyPage.selected;
+    setCurrentPage(page);
+  }
+
+  useEffect(() => {
+    if (searchPerformed) {
+      getStudiesSearch(searchTerm, currentPage, pageSize);
+    } else {
+      getStudies(currentPage, pageSize);
+    }
+  }, [currentPage, pageSize, sortDirection, sortProperty]);
 
   return (
     <div className='slrspot__screening-studies'>
@@ -91,19 +106,47 @@ const Awaiting = (props) => {
         handleSearch={ handleSearch }
         setSearchType={ setSearchType }/>
 
-      { studies.map(study => (
-        <ScreeningStudy 
-          study={study} 
-          isShowAbstracts={ showAbstracts } 
-          triggerVote={ handleStudiesUpdate }
-          triggerRefresh={ () => setRefreshStudies(!refreshStudies)}
-          tab={AWAITING} 
-          isFullText={props.isFullText}
-          reviewTags={ props.reviewTags } 
-          allowChanges={ allowChanges }
-          showHighlights={ showHighlights } 
-          highlights={ showTeamHighlights ? props.teamHighlights : props.personalHighlights } />
-      ))}
+      <div style={{ textAlign: 'right' }}>
+        { studies.length > 0 &&
+          <PageChanger 
+            defaultSelected={pageSize}
+            options={[5,10,25]}
+            changePageSize={setPageSize}
+          />
+        }
+      </div>
+
+      { studies.length > 0 
+        ? studies.map(study => (
+          <ScreeningStudy 
+            study={study} 
+            isShowAbstracts={ showAbstracts } 
+            triggerVote={ handleStudiesUpdate }
+            triggerRefresh={ () => setRefreshStudies(!refreshStudies)}
+            tab={AWAITING} 
+            isFullText={props.isFullText}
+            reviewTags={ props.reviewTags } 
+            allowChanges={ allowChanges }
+            showHighlights={ showHighlights } 
+            highlights={ showTeamHighlights ? props.teamHighlights : props.personalHighlights } />
+        )) 
+        :
+        <div style={{ display: 'flex', flex:'1', alignItems: 'center', justifyContent: 'center', marginTop: '50px'}}>
+          <h1 style={{ textTransform: 'uppercase' }}>Studies not found</h1>
+        </div>
+      }
+
+      { studies.length > 0 && pageCount > 1 &&
+        <ReactPaginate
+          pageCount={pageCount}
+          pageRangeDisplayed={5}
+          marginPagesDisplayed={2}
+          onPageChange={handlePageChange}
+          forcePage={currentPage}
+          containerClassName="slrspot__pagination"
+          activeClassName="slrspot__pagination-active"
+        />
+      }
     </div>
   )
 }

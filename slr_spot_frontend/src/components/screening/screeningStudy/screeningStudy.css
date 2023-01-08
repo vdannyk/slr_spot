@@ -125,3 +125,15 @@
   margin-left: 5px;
   text-transform: capitalize;
 }
+
+.slrspot__screeningStudy-state {
+  display: flex;
+  flex-direction: row;
+}
+
+.slrspot__screeningStudy-state span {
+  font-size: 24px;
+  margin: 2px 0;
+  margin-left: 5px;
+  text-decoration: underline;
+}

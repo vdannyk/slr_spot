@@ -2,9 +2,12 @@ package com.dkwasniak.slr_spot_backend.user;
 
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
+import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,14 +39,17 @@ public class UserController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping
-    public ResponseEntity<List<UserDto>> getUsersByReviewId(@RequestParam Long reviewId) {
-        return ResponseEntity.ok().body(userFacade.getUsersByReviewId(reviewId));
+    public ResponseEntity<Page<UserReview>> getUsersByReviewId(@RequestParam Long reviewId,
+                                                               @RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok().body(userFacade.getUsersByReviewId(reviewId, page, size));
     }
 
     @GetMapping("/emails")
     public ResponseEntity<Set<String>> getUsersEmails() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        String username = ((UserPrincipal)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return ResponseEntity.ok().body(userFacade.getEmails(username));
     }
 
@@ -55,14 +61,14 @@ public class UserController {
 
     @PostMapping("/password/update")
     public ResponseEntity<Void> updatePassword(@RequestBody UpdatePasswordDto updatePasswordDto) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        String username = ((UserPrincipal)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         userFacade.updatePassword(username, updatePasswordDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/email/update")
     public ResponseEntity<String> updateEmail(@RequestBody UserDto userDto) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        String username = ((UserPrincipal)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         userFacade.updateEmail(username, userDto.getEmail());
         return ResponseEntity.ok().build();
     }
@@ -75,7 +81,7 @@ public class UserController {
 
     @PostMapping("/name/update")
     public ResponseEntity<String> updateName(@RequestBody UserDto userDto) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        String username = ((UserPrincipal)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         userFacade.updateName(username, userDto);
         return ResponseEntity.ok().build();
     }

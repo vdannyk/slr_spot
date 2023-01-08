@@ -36,7 +36,7 @@ public class DefaultEmailService implements EmailService {
             helper.setSubject(title);
             helper.setFrom(EMAIL_FROM);
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("Failed to send email", e);
             throw new IllegalStateException("failed to send email");
         }
@@ -56,7 +56,7 @@ public class DefaultEmailService implements EmailService {
             helper.setFrom(EMAIL_FROM);
             helper.setText(content, true);
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("Failed to send verification email", e);
             throw new IllegalStateException("Failed to send verification email");
         }
@@ -76,7 +76,7 @@ public class DefaultEmailService implements EmailService {
             helper.setFrom(EMAIL_FROM);
             helper.setText(content, true);
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("Failed to send reset password email", e);
             throw new IllegalStateException("Failed to send reset password email");
         }

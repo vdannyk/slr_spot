@@ -22,11 +22,11 @@ export { default as ContentPopup } from './popups/contentPopup/ContentPopup';
 export { default as Criteria } from './screening/criteria/Criteria';
 export { default as Tags } from './screening/tags/Tags';
 export { default as Keywords } from './screening/keywords/Keywords';
-export { default as UserKeywords } from './screening/keywords/userKeywords/UserKeywords';
 export { default as ScreeningMenu } from './screening/screeningMenu/ScreeningMenu';
 export { default as ScreeningCriteria } from './screening/screeningCriteria/ScreeningCriteria';
 export { default as ScreeningStudy } from './screening/screeningStudy/ScreeningStudy';
 export { default as ScreeningStudyInFolder } from './screening/screeningStudy/ScreeningStudyInFolder';
+export { default as ScreeningStudyFullText } from './screening/screeningStudy/ScreeningStudyFullText';
 export { default as ScreeningOptions } from './screening/screeningOptions/ScreeningOptions';
 export { default as StudyHistory } from './screening/screeningStudy/studyHistory/StudyHistory';
 export { default as StudyDiscussion } from './screening/screeningStudy/studyDiscussion/StudyDiscussion';
@@ -40,3 +40,8 @@ export { default as StudyFolderItem } from './study/studyFolderItem/StudyFolderI
 export { default as PdfUploader } from './pdfUploader/PdfUploader';
 
 export { default as PageChanger } from './pageChanger/PageChanger';
+
+export { default as SortField } from './sortField/SortField';
+export { default as SortOption } from './sortField/SortOption';
+
+export { default as AuthorizationCheck } from './authorizationCheck/AuthorizationCheck';

@@ -4,6 +4,7 @@ import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,6 +36,7 @@ public class ImportController {
         return ResponseEntity.ok().build();
     }
 
+    @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping
     public ResponseEntity<Page<Import>> getImportsByReviewId(@RequestParam Long reviewId,
                                                              @RequestParam(defaultValue = "0") int page,

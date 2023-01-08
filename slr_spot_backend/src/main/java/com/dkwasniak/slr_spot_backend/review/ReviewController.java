@@ -11,6 +11,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,9 +50,9 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewFacade.getPublicReviews(page, size));
     }
 
+    @PostAuthorize("hasViewAccess(#id)")
     @GetMapping("/{id}")
     public ResponseEntity<ReviewWithOwnerDto> getReviewById(@PathVariable Long id) {
-        // TODO Add validation if user can access this review
         return ResponseEntity.ok().body(reviewFacade.getReviewById(id));
     }
 
@@ -67,23 +69,27 @@ public class ReviewController {
         return ResponseEntity.created(uri).body(id);
     }
 
+    @PostAuthorize("hasFullAccess(#id)")
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateReview(@PathVariable Long id, @RequestBody ReviewDto reviewDto) {
         reviewFacade.updateReview(id, reviewDto);
         return ResponseEntity.ok().build();
     }
 
+    @PostAuthorize("hasFullAccess(#id)")
     @PostMapping("/{id}/members/{memberId}")
     public ResponseEntity<Void> removeMember(@PathVariable Long id, @PathVariable Long memberId) {
         reviewFacade.removeMember(id, memberId);
         return ResponseEntity.ok().build();
     }
 
+    @PostAuthorize("hasFullAccess(#id)")
     @GetMapping("/{id}/members/search")
     public ResponseEntity<Set<String>> getUsersAvailableToAdd(@PathVariable Long id) {
         return ResponseEntity.ok().body(reviewFacade.getUsersAvailableToAdd(id));
     }
 
+    @PostAuthorize("hasFullAccess(#id)")
     @PostMapping("/{id}/members")
     public ResponseEntity<Void> addMembers(@PathVariable Long id, @RequestBody ReviewMembersDto reviewMembersDto) {
         reviewFacade.addMembers(id, reviewMembersDto);
@@ -96,6 +102,7 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewFacade.getMemberRole(id, userId));
     }
 
+    @PostAuthorize("hasScreeningAccess(#id)")
     @GetMapping("/{id}/report")
     public ResponseEntity<Resource> generateReviewReport(@PathVariable Long id) {
         HttpHeaders httpHeaders = new HttpHeaders();

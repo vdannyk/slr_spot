@@ -5,7 +5,6 @@ import { AiFillFolder, AiFillFileText } from 'react-icons/ai';
 import { AiOutlineCheck, AiOutlineClose, AiFillPlusSquare } from 'react-icons/ai';
 import axiosInstance from '../../services/api';
 import { useParams } from "react-router-dom";
-import EventBus from '../../common/EventBus';
 import './folder.css';
 import StudyFolderItem from '../study/studyFolderItem/StudyFolderItem';
 import ReactPaginate from 'react-paginate';
@@ -125,9 +124,6 @@ const Folder = (props) => {
       props.triggerRemove(props.parentFolders.filter(item => item.id !== folderId));
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }
 
@@ -235,7 +231,7 @@ const Folder = (props) => {
           <AiFillFolder style={{ "marginRight": '5px'}}/>
           {name}
         </p>
-        { !props.isScreening && (
+        { !props.isScreening && props.allowChanges && (
           <p>
             <AiFillPlusSquare 
               className='slrspot__folder-option' 
@@ -286,6 +282,7 @@ const Folder = (props) => {
                     reviewTags={ props.reviewTags }
                     teamHighlights={ props.teamHighlights }
                     personalHighlights={ props.personalHighlights }
+                    allowChanges={ props.allowChanges }
                   />
                 </td>
               </tr>

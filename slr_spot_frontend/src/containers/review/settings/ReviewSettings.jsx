@@ -60,7 +60,6 @@ const ReviewSettings = (props) => {
     var description = formData.description;
     var isPublic = formData.isPublic;
     var screeningReviewers = formData.screeningReviewers;
-    console.log(formData);
     axiosInstance.put("/reviews/" + reviewId, {
       name, researchArea, description, isPublic, screeningReviewers, researchQuestions
     })
@@ -71,7 +70,11 @@ const ReviewSettings = (props) => {
   };
 
   if (!allowChanges) {
-    return <p>ACCESS NOT ALLOWED</p>
+    return (
+      <div className='slrspot__review-unauthorized'>
+        <h1>Access not allowed</h1>
+      </div>
+    )
   }
 
   return (

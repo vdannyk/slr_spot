@@ -3,3 +3,4 @@ export const CONFLICTED = "CONFLICTED";
 export const AWAITING = "AWAITING";
 export const EXCLUDED = "EXCLUDED";
 export const DISPLAY_ALL = "DISPLAY_ALL";
+export const RESULTS = "RESULTS";

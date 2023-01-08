@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import OptionHeader from '../optionHeader/OptionHeader';
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
-import EventBus from '../../../common/EventBus';
 import axiosInstance from '../../../services/api';
 import { INCLUSION_TYPE, EXCLUSION_TYPE } from './CriteriaTypes';
 import { useForm } from "react-hook-form";
@@ -57,9 +56,6 @@ const Criteria = (props) => {
       setCriteria(response.data);
     })
     .catch((error) => {
-      if (error.response && error.response.status === 403) {
-        EventBus.dispatch('expirationLogout');
-      }
     });
   }, []);
 
@@ -82,7 +78,6 @@ const Criteria = (props) => {
   }
 
   const confirmRemoveCriterion = () => {
-    console.log(criterionToRemove)
     axiosInstance.delete("/criteria/" + criterionToRemove.id)
     .then(() => {
       setShowCriterionRemoveConfirmation(false);
@@ -91,7 +86,6 @@ const Criteria = (props) => {
   }
 
   const onSubmitNewInclusionCriterion = (formData) => {
-    console.log(formData);
     onSubmitNewCriterion(formData.inclusionCriterion, INCLUSION_TYPE);
   }
 
@@ -108,7 +102,6 @@ const Criteria = (props) => {
     .then(() => {
       window.location.reload();
     });
-    console.log(name);
   }
 
   return (

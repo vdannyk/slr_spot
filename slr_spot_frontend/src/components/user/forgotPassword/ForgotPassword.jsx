@@ -15,12 +15,10 @@ const ForgotPassword = (props) => {
     .then(function (response) {
       // handle success
       setIsSuccessful(true);
-      console.log(response);
     })
     .catch(function (response) {
       // handle error
       setIsSuccessful(false);
-      console.log(response);
     });
   };
 

@@ -6,6 +6,7 @@ import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
 import com.dkwasniak.slr_spot_backend.document.Document;
 import com.dkwasniak.slr_spot_backend.file.FileService;
+import com.dkwasniak.slr_spot_backend.file.exception.NotAllowedFileContentTypeException;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -52,8 +54,13 @@ public class StudyFacade {
     private final ScreeningService screeningService;
     private final SearchProcessor searchProcessor;
 
-    public Page<Study> getStudiesByReviewId(Long reviewId, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+    public Study getStudyById(Long studyId) {
+        return studyService.getStudyById(studyId);
+    }
+
+    public Page<Study> getStudiesByReviewId(Long reviewId, int page, int size,
+                                            SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return studyService.getStudiesByReviewId(reviewId, pageRq);
     }
 
@@ -61,23 +68,27 @@ public class StudyFacade {
         studyService.removeStudyById(studyId);
     }
 
-    public Page<Study> getStudiesToBeReviewed(Long reviewId, Long userId, Stage stage, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+    public Page<Study> getStudiesToBeReviewed(Long reviewId, Long userId, Stage stage, int page, int size,
+                                              SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return studyService.getStudiesToBeReviewed(reviewId, userId, stage, pageRq);
     }
 
-    public Page<Study> getStudiesAwaiting(Long reviewId, Long userId, Stage stage, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+    public Page<Study> getStudiesAwaiting(Long reviewId, Long userId, Stage stage, int page, int size,
+                                          SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return studyService.getStudiesAwaiting(reviewId, userId, stage, pageRq);
     }
 
-    public Page<Study> getStudiesConflicted(Long reviewId, Long userId, Stage stage, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+    public Page<Study> getStudiesConflicted(Long reviewId, Stage stage, int page, int size,
+                                            SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return studyService.getStudiesByStageAndState(reviewId, stage, StudyState.CONFLICTED, pageRq);
     }
 
-    public Page<Study> getStudiesExcluded(Long reviewId, Long userId, Stage stage, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+    public Page<Study> getStudiesExcluded(Long reviewId, Stage stage, int page, int size,
+                                          SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return studyService.getStudiesByStageAndState(reviewId, stage, StudyState.EXCLUDED, pageRq);
     }
 
@@ -86,8 +97,9 @@ public class StudyFacade {
         return studyService.getStudiesByState(reviewId, StudyState.DUPLICATES, pageRq);
     }
 
-    public Page<Study> getIncludedStudies(Long reviewId, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+    public Page<Study> getIncludedStudies(Long reviewId, int page, int size,
+                                          SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return studyService.getStudiesByState(reviewId, StudyState.INCLUDED, pageRq);
     }
 
@@ -130,6 +142,7 @@ public class StudyFacade {
                 new Operation(String.format(OperationDescription.ADD_COMMENT.getDescription(), user.getEmail())));
     }
 
+    @Transactional
     public void addStudyScreeningDecision(Long studyId, ScreeningDecisionDto screeningDecisionDto) {
         Review review = reviewService.getReviewById(screeningDecisionDto.getReviewId());
         int requiredReviewers = review.getScreeningReviewers();
@@ -167,17 +180,18 @@ public class StudyFacade {
         return screeningService.getScreeningDecisionByStudyIdAndUserId(studyId, userId).getDecision();
     }
 
+    @Transactional
     public void restoreStudy(Long studyId) {
         Study study = studyService.getStudyById(studyId);
+        studyService.addOperation(study, new Operation(OperationDescription.RESTORE_TO_SCREENING.getDescription()));
         studyService.updateStudyStatus(study, StatusDto.of(study.getStage(), StudyState.TO_BE_REVIEWED));
         studyService.clearDecisions(study);
-        studyService.addOperation(study, new Operation(OperationDescription.RESTORE_TO_SCREENING.getDescription()));
     }
 
     public void markStudyAsDuplicate(Long studyId) {
         Study study = studyService.getStudyById(studyId);
-        studyService.updateStudyStatus(study, StatusDto.of(study.getStage(), StudyState.DUPLICATES));
         studyService.addOperation(study, new Operation(OperationDescription.MARK_DUPLICATE.getDescription()));
+        studyService.updateStudyStatus(study, StatusDto.of(study.getStage(), StudyState.DUPLICATES));
     }
 
     public void markStudiesAsDuplicate(List<Long> studiesId) {
@@ -202,6 +216,9 @@ public class StudyFacade {
 
 
     public Document addFullTextDocument(Long studyId, MultipartFile file) {
+        if (!fileService.isPdfFile(file.getContentType())) {
+            throw new NotAllowedFileContentTypeException();
+        }
         Study study = studyService.getStudyById(studyId);
         Document document = new Document();
         document.setName(file.getOriginalFilename());
@@ -220,9 +237,9 @@ public class StudyFacade {
     public void deleteFullTextDocument(Long studyId) {
         Study study = studyService.getStudyById(studyId);
         study.setFullText(null);
-        studyService.updateStudy(study);
         studyService.addOperation(study,
                 new Operation(OperationDescription.REMOVE_FULLTEXT.getDescription()));
+        studyService.updateStudy(study);
     }
 
     public int getStudiesCountByStatus(Long reviewId, String status) {
@@ -295,39 +312,43 @@ public class StudyFacade {
 
 
     public Page<Study> searchStudiesToBeReviewed(Long reviewId, Long userId, Stage stage, StudySearchType searchType,
-                                                 String searchValue, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+                                                 String searchValue, int page, int size,
+                                                 SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return searchProcessor.searchToBeReviewed(searchType, reviewId, userId, stage, StudyState.TO_BE_REVIEWED, searchValue, pageRq);
     }
 
     public Page<Study> searchStudiesConflicted(Long reviewId, Stage stage, StudySearchType searchType,
-                                               String searchValue, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+                                               String searchValue, int page, int size,
+                                               SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return searchProcessor.searchConflicted(searchType, reviewId, stage, StudyState.CONFLICTED, searchValue, pageRq);
     }
 
     public Page<Study> searchStudiesAwaiting(Long reviewId, Long userId, Stage stage, StudySearchType searchType,
-                                                 String searchValue, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+                                             String searchValue, int page, int size,
+                                             SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return searchProcessor.searchAwaiting(searchType, reviewId, userId, stage, StudyState.TO_BE_REVIEWED, searchValue, pageRq);
     }
 
     public Page<Study> searchStudiesExcluded(Long reviewId, Stage stage, StudySearchType searchType,
-                                               String searchValue, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+                                             String searchValue, int page, int size,
+                                             SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return searchProcessor.searchExcluded(searchType, reviewId, stage, StudyState.EXCLUDED, searchValue, pageRq);
     }
 
     public Page<Study> searchStudiesIncluded(Long reviewId, StudySearchType searchType,
-                                             String searchValue, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
+                                             String searchValue, int page, int size,
+                                             SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return searchProcessor.searchIncluded(searchType, reviewId, StudyState.INCLUDED, searchValue, pageRq);
     }
 
-    public Page<Study> searchStudies(Long reviewId, StudySearchType searchType, String searchValue, int page, int size) {
-        Pageable pageRq = PageRequest.of(page, size, Sort.by("title"));
-
+    public Page<Study> searchStudies(Long reviewId, StudySearchType searchType, String searchValue, int page, int size,
+                                     SortProperty sortProperty, Sort.Direction sortDirection) {
+        Pageable pageRq = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty.getName()));
         return searchProcessor.searchAll(searchType, reviewId, searchValue, pageRq);
     }
-
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../services/api';
 import { useParams } from 'react-router-dom';
 import Check from 'react-bootstrap/FormCheck';
-import { ContentPopup, PageChanger } from '../../../components'
+import { ContentPopup, PageChanger, SortOption } from '../../../components'
 import './results.css';
 import ExtractData from './ExtractData';
 import GenerateRaport from './GenerateRaport';
@@ -11,6 +11,7 @@ import ResultStudy from './ResultStudy';
 import { OWNER, MEMBER, COOWNER } from '../../../constants/roles';
 import { AUTHORS_SEARCH, AUTHORS_YEAR_SEARCH, TITLE_AUTHORS_SEARCH, TITLE_AUTHORS_YEAR_SEARCH, TITLE_SEARCH, TITLE_YEAR_SEARCH, YEAR_SEARCH, EVERYTHING_SEARCH } from '../../../constants/searchTypes';
 import ReactPaginate from 'react-paginate';
+
 
 const Results = (props) => {
   const [includedStudies, setIncludedStudies] = useState([]);
@@ -35,20 +36,37 @@ const Results = (props) => {
   const [pageCount, setPageCount] = useState(0);
   const [searchPerformed, setSearchPerformed] = useState(false);
 
-  function getStudies() {
-    var page = currentPage;
-    var size = pageSize;
+  const [sortProperty, setSortProperty] = useState('TITLE');
+  const [sortDirection, setSortDirection] = useState('ASC');
+
+  function getStudies(page, size) {
     axiosInstance.get("/studies/included", { params: {
-      reviewId, page, size
+      reviewId, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
-      console.log(response.data);
       setIncludedStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(false);
+      setCurrentPage(response.data.number);
+    });
+  }
+
+  function getStudiesSearch(page, size) {
+    axiosInstance.get("/studies/included/search", { params: {
+      reviewId, searchType, searchValue, page, size, sortProperty, sortDirection
+    }})
+    .then((response) => {
+      setIncludedStudies(response.data.content);
+      setPageCount(response.data.totalPages);
+      setSearchPerformed(true);
+      setCurrentPage(response.data.number);
+    })
+    .catch(() => {
     });
   }
 
   useEffect(() => {
-    getStudies();
+    getStudies(0, pageSize);
   }, []);
 
   useEffect(() => {
@@ -156,76 +174,26 @@ const Results = (props) => {
     }
   }
 
-  const handleSearch = (searchValue) => {
+  const handleSearch = () => {
     if (searchValue.trim().length > 0) {
-      axiosInstance.get("/studies/included/search", { params: {
-        reviewId, searchType, searchValue 
-      }})
-      .then((response) => {
-        setIncludedStudies(response.data.content)
-      })
-      .catch(() => {
-      });
+      getStudiesSearch(0, pageSize);
     } else {
-      getStudies();
+      getStudies(0, pageSize);
     }
   }
 
   const handlePageChange = (studyPage) => {
     var page = studyPage.selected;
-    var size = pageSize;
-    if (searchPerformed) {
-      axiosInstance.get("/studies/included/search", { params: {
-        reviewId, searchType, searchValue, page, size 
-      }})
-      .then((response) => {
-        setIncludedStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(true);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
-    } else {
-      axiosInstance.get("/studies/included", { params: {
-        reviewId, page, size
-      }})
-      .then((response) => {
-        setIncludedStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(false);
-        setCurrentPage(response.number);
-      });
-    }
+    setCurrentPage(page);
   }
 
   useEffect(() => {
-    var page = currentPage;
-    var size = pageSize;
     if (searchPerformed) {
-      axiosInstance.get("/studies/included/search", { params: {
-        reviewId, searchType, searchValue, page, size 
-      }})
-      .then((response) => {
-        setIncludedStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(true);
-        setCurrentPage(response.number);
-      })
-      .catch(() => {
-      });
+      getStudiesSearch(currentPage, pageSize);
     } else {
-      axiosInstance.get("/studies/included", { params: {
-        reviewId, page, size
-      }})
-      .then((response) => {
-        setIncludedStudies(response.data.content);
-        setPageCount(response.data.totalPages);
-        setSearchPerformed(false);
-        setCurrentPage(response.number);
-      });
+      getStudies(currentPage, pageSize);
     }
-  }, [pageSize]);
+  }, [currentPage, pageSize, sortProperty, sortDirection]);
 
   return (
     <div className='slrspot__review-results'>
@@ -239,7 +207,7 @@ const Results = (props) => {
           <div className='slrspot__screening-options-search'>
 
             <div className='slrspot__screening-options-search-term'>
-              <label onClick={ () => handleSearch(searchValue) }>Search</label>
+              <label style={{ cursor: 'pointer' }} onClick={ handleSearch }>Search</label>
               <input onChange={ handleSearchChange } placeholder={searchPlaceholder} />
             </div>
 
@@ -272,6 +240,11 @@ const Results = (props) => {
             </div>
           </div>
 
+          <SortOption 
+            setProperty={ setSortProperty }
+            setDirection={ setSortDirection }
+          />
+
           { allowChanges && 
             <div className='slrspot__screening-options-container-buttons'>
               <button onClick={ () => setShowExtractMenu(true) }>extract data</button>
@@ -284,29 +257,42 @@ const Results = (props) => {
       </div>
 
       <div className='slrspot__review-results-list'>
+        
         <div style={{ textAlign: 'right' }}>
-          <PageChanger 
-            defaultSelected={pageSize}
-            options={[5,10,25]}
-            changePageSize={setPageSize}
-          />
+          { includedStudies.length > 0 &&
+            <PageChanger 
+              defaultSelected={pageSize}
+              options={[5,10,25]}
+              changePageSize={setPageSize}
+            />
+          }
         </div>
-        <div className='slrspot__review-list-selectAll'>
-          <Check 
-            type='checkbox'
-            checked={ selected.length === includedStudies.length } 
-            onChange={ handleSelectAll }/>
-          <p>Select all</p>
-        </div>
-        { includedStudies.map(study => (
-          <ResultStudy 
-            study={ study } 
-            selected={ selected }
-            handleSelect= { () => handleSelect(study) }
-            allowChanges={ allowChanges } 
-            reviewTags={ reviewTags } 
-            triggerStudiesUpdate={ handleStudiesUpdate }/>
-        ))}
+
+        { includedStudies.length > 0 
+          ? <>
+            <div className='slrspot__review-list-selectAll'>
+              <Check 
+                type='checkbox'
+                checked={ selected.length === includedStudies.length } 
+                onChange={ handleSelectAll }/>
+              <p>Select all</p>
+            </div>
+            {includedStudies.map(study => (
+              <ResultStudy 
+                study={ study } 
+                selected={ selected }
+                handleSelect= { () => handleSelect(study) }
+                allowChanges={ allowChanges } 
+                reviewTags={ reviewTags } 
+                triggerStudiesUpdate={ handleStudiesUpdate }/>
+            ))}
+            </>
+          : 
+          <div style={{ display: 'flex', flex:'1', alignItems: 'center', justifyContent: 'center', marginTop: '50px'}}>
+            <h1 style={{ textTransform: 'uppercase' }}>Studies not found</h1>
+          </div>
+        }
+
         { includedStudies.length > 0 && pageCount > 1 &&
           <ReactPaginate
             pageCount={pageCount}
@@ -314,11 +300,13 @@ const Results = (props) => {
             marginPagesDisplayed={2}
             onPageChange={handlePageChange}
             forcePage={currentPage}
-            containerClassName="slrspot__folder-pagination"
-            activeClassName="slrspot__folder-pagination-active"
+            containerClassName="slrspot__pagination"
+            activeClassName="slrspot__pagination-active"
           />
-      }
+        }
+
       </div>
+
       { showExtractMenu && <ContentPopup content={<ExtractData selectedStudies={selected} />} triggerExit={ () => setShowExtractMenu(false)} /> }
       { showExportMenu && <ContentPopup content={<ExportStudies />} triggerExit={ () => setShowExportMenu(false)} /> }
       { showRaportMenu && <ContentPopup content={<GenerateRaport />} triggerExit={ () => setShowRaportMenu(false)} /> }

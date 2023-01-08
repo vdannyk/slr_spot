@@ -1,4 +1,9 @@
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:${POSTGRESQL-SERVER}/${POSTGRESQL-DATABASE-NAME}?sslmode=require
+    username: ${POSTGRESQL-USERNAME}
+    password: ${POSTGRESQL-PASSWORD}
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -10,20 +15,32 @@ spring:
           lob:
             non_contextual_creation: true
     defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
+  #  sql:
+  #    init:
+  #      mode: always
   mail:
     host: smtp.gmail.com
     port: 587
     username: slrspot.welcome@gmail.com
-    password: xxx
+    password: ${SMTP-PASSWORD}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-sources[0]:
+            credential:
+              managed-identity-enabled: true
+            endpoint: https://slrspot-secrets.vault.azure.net/
 
 mail:
   enabled: true

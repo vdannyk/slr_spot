@@ -77,6 +77,7 @@ const FolderTree = (props) => {
                   reviewTags={ props.reviewTags }
                   teamHighlights={ props.teamHighlights }
                   personalHighlights={ props.personalHighlights }
+                  allowChanges={ props.allowChanges }
                 />
               </td>
             </tr>

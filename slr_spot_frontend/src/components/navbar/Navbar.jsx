@@ -57,10 +57,10 @@ const Navbar = () => {
 
   const Menu = () => (
     <>
-      <p><Link to={'/about'}>about</Link></p>
-      <p><Link to={'/contact'}>contact</Link></p>
+      <p className="slrspot__navbar-link"><Link to={'/about'}>about</Link></p>
+      <p className="slrspot__navbar-link"><Link to={'/contact'}>contact</Link></p>
       { isLoggedIn && (
-        <p><Link to={'/reviews'}>reviews</Link></p>
+        <p className="slrspot__navbar-link" id='reviews'><Link to={'/reviews'}>reviews</Link></p>
       )}
     </>
   )

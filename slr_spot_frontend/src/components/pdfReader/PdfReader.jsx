@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import workerFilePath from 'pdfjs-dist/build/pdf.worker.min.js';
 import { BeatLoader } from 'react-spinners';
 
 const PdfReader = (props) => {

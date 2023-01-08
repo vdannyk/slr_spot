@@ -1,5 +1,7 @@
 package com.dkwasniak.slr_spot_backend.jwt;
 
+import com.dkwasniak.slr_spot_backend.user.User;
+import com.dkwasniak.slr_spot_backend.user.UserPrincipal;
 import com.dkwasniak.slr_spot_backend.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -44,8 +45,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authResult) throws IOException {
-        String username = ((User) authResult.getPrincipal()).getUsername();
-        com.dkwasniak.slr_spot_backend.user.User user = userService.getUserByEmail(username);
+        User user = ((UserPrincipal) authResult.getPrincipal()).getUser();
         String jwtToken = generateJwt(user, request);
         String refreshToken = generateRefreshToken(user, request);
         JwtResponse jwtResponse = new JwtResponse(
