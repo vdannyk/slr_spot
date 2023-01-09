@@ -4,12 +4,14 @@ import { login } from "../../../actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { BeatLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 
 
 const SignIn = (props) => {
   const [loading, setLoading] = useState(false);
   const {register, handleSubmit, formState: { errors }} = useForm();
   const { message } = useSelector(state => state.message);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -18,7 +20,9 @@ const SignIn = (props) => {
 
     dispatch(login(formData.email, formData.password))
       .then(() => {
-        window.location.reload();
+        props.popupTrigger(false);
+        setLoading(false);
+        navigate('/');
       })
       .catch(() => {
         setLoading(false);
