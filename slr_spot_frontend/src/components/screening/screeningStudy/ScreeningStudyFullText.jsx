@@ -68,6 +68,7 @@ const ScreeningStudyFullText = (props) => {
     })
     .then(() => {
       navigate('/reviews/' + props.reviewId + '/screening/full-text');
+      // window.location.reload();
     })
     .catch(() => {
     });

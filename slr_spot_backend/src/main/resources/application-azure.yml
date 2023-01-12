@@ -15,9 +15,6 @@ spring:
           lob:
             non_contextual_creation: true
     defer-datasource-initialization: true
-  #  sql:
-  #    init:
-  #      mode: always
   mail:
     host: smtp.gmail.com
     port: 587
