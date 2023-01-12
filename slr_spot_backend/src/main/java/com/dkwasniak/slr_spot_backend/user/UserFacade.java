@@ -3,8 +3,6 @@ package com.dkwasniak.slr_spot_backend.user;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationToken;
 import com.dkwasniak.slr_spot_backend.confirmationToken.ConfirmationTokenService;
 import com.dkwasniak.slr_spot_backend.email.EmailService;
-import com.dkwasniak.slr_spot_backend.review.Review;
-import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleService;
 import com.dkwasniak.slr_spot_backend.user.dto.UpdatePasswordDto;
 import com.dkwasniak.slr_spot_backend.user.dto.UserDto;
@@ -12,14 +10,12 @@ import com.dkwasniak.slr_spot_backend.userReview.UserReview;
 import com.dkwasniak.slr_spot_backend.userReview.UserReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
@@ -36,13 +32,16 @@ public class UserFacade {
     private final UserReviewService userReviewService;
     private final ReviewRoleService reviewRoleService;
 
+    @Value("${client.url}")
+    private String CLIENT_URL;
+
     public long createUser(User user) {
         User savedUser = userService.saveUser(user);
 
         ConfirmationToken confirmationToken = confirmationTokenService.createConfirmationToken(savedUser);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String activationLink = String.format("http://localhost:3000/activate/%s", confirmationToken.getToken());
+        String activationLink = String.format(CLIENT_URL + "/activate/%s", confirmationToken.getToken());
         emailService.sendVerificationEmail(user.getEmail(), activationLink);
         return savedUser.getId();
     }
@@ -64,7 +63,7 @@ public class UserFacade {
         confirmationToken.setNewEmail(newEmail);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String activationLink = String.format("http://localhost:3000/email/confirm/%s", confirmationToken.getToken());
+        String activationLink = String.format(CLIENT_URL + "/email/confirm/%s", confirmationToken.getToken());
         emailService.sendVerificationEmail(newEmail, activationLink);
     }
 

@@ -1,11 +1,26 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://database:5432/slr-database
+    url: jdbc:postgresql://localhost:5432/slr-database
     username: postgres
     password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    #    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
   mail:
-    host: maildev
+    host: localhost
     port: 1025
     username: test
     password: test

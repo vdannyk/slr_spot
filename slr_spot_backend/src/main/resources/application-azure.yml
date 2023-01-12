@@ -26,10 +26,6 @@ spring:
           auth: true
           starttls:
             enable: true
-  servlet:
-    multipart:
-      max-file-size: 25MB
-      max-request-size: 25MB
   cloud:
     azure:
       keyvault:
@@ -39,5 +35,5 @@ spring:
               managed-identity-enabled: true
             endpoint: https://slrspot-secrets.vault.azure.net/
 
-mail:
-  enabled: true
+jwt:
+  secret: ${JWT-SECRET}
