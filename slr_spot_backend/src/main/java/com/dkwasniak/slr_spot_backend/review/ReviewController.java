@@ -7,6 +7,7 @@ import com.dkwasniak.slr_spot_backend.review.dto.ReviewsPageDto;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleEnum;
 import com.dkwasniak.slr_spot_backend.util.EndpointConstants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -32,6 +33,9 @@ import java.util.Set;
 public class ReviewController {
 
     private final ReviewFacade reviewFacade;
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
     @GetMapping
     public ResponseEntity<ReviewsPageDto> getReviewsByUser(

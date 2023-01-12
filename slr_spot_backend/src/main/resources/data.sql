@@ -48,38 +48,38 @@ INSERT INTO roles(NAME) VALUES ('COOWNER');
 INSERT INTO roles(NAME) VALUES ('MEMBER');
 INSERT INTO roles(NAME) VALUES ('GUEST');
 
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Co robią żółwie', 'Nauki przyrodnicze', 'Wszystko o żółwiach i nie tylko', true, 2, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Testy jednostkowe', 'Inżynieria oprogramowania', 'Metody testowania tworzonego oprogramowania poprzez wykonywanie testów weryfikujących poprawność działania pojedynczych elementów programu – np. metod lub obiektów w programowaniu obiektowym lub procedur w programowaniu proceduralnym.', true, 2, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('IntellijIdea i jego skróty', 'Oprogramowanie', 'Klawisze, szybkie akcje, ułatwienie pracy każdego programisty i nie tylko', true, 2, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Co dobrego daje Postman', 'Oprogramowanie', 'Żadania wysyłane i żądania otrzymywanie to w dzisiejszych czasach codzienność', false, 2, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Leki na ból głowy', 'Medycyna', 'Każdego boli czasem głowa ale nikt nie wie czemu go boli głowa dopóki się nie dowie dlaczego go boli głowa i w tym bólu głowy wszystko tak tkwi', false, 2, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Przykładowy przegląd1', 'Przykładowy przegląd1', 'Przykładowy przegląd1', true, 1, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Przykładowy przegląd2', 'Przykładowy przegląd2', 'Przykładowy przegląd2', true, 1, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Przykładowy przegląd3', 'Przykładowy przegląd3', 'Przykładowy przegląd3', true, 1, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Przykładowy przegląd4', 'Przykładowy przegląd4', 'Przykładowy przegląd4', true, 1, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Przykładowy przegląd5', 'Przykładowy przegląd5', 'Przykładowy przegląd5', true, 1, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Przykładowy przegląd6', 'Przykładowy przegląd6', 'Przykładowy przegląd6', true, 1, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Przykładowy przegląd7', 'Przykładowy przegląd7', 'Przykładowy przegląd7', true, 1, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Przykładowy przegląd8', 'Przykładowy przegląd8', 'Przykładowy przegląd8', true, 1, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Przykładowy przegląd9', 'Przykładowy przegląd9', 'Przykładowy przegląd9', true, 1, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Przykładowy przegląd10', 'Przykładowy przegląd10', 'Przykładowy przegląd10', true, 1, 0);
-INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_REMOVED_DUPLICATES)
-VALUES ('Przykładowy przegląd11', 'Przykładowy przegląd11', 'Przykładowy przegląd11', true, 1, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Co robią żółwie', 'Nauki przyrodnicze', 'Wszystko o żółwiach i nie tylko', true, 2, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Testy jednostkowe', 'Inżynieria oprogramowania', 'Metody testowania tworzonego oprogramowania poprzez wykonywanie testów weryfikujących poprawność działania pojedynczych elementów programu – np. metod lub obiektów w programowaniu obiektowym lub procedur w programowaniu proceduralnym.', true, 2, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('IntellijIdea i jego skróty', 'Oprogramowanie', 'Klawisze, szybkie akcje, ułatwienie pracy każdego programisty i nie tylko', true, 2, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Co dobrego daje Postman', 'Oprogramowanie', 'Żadania wysyłane i żądania otrzymywanie to w dzisiejszych czasach codzienność', false, 2, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Leki na ból głowy', 'Medycyna', 'Każdego boli czasem głowa ale nikt nie wie czemu go boli głowa dopóki się nie dowie dlaczego go boli głowa i w tym bólu głowy wszystko tak tkwi', false, 2, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Przykładowy przegląd1', 'Przykładowy przegląd1', 'Przykładowy przegląd1', true, 1, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Przykładowy przegląd2', 'Przykładowy przegląd2', 'Przykładowy przegląd2', true, 1, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Przykładowy przegląd3', 'Przykładowy przegląd3', 'Przykładowy przegląd3', true, 1, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Przykładowy przegląd4', 'Przykładowy przegląd4', 'Przykładowy przegląd4', true, 1, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Przykładowy przegląd5', 'Przykładowy przegląd5', 'Przykładowy przegląd5', true, 1, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Przykładowy przegląd6', 'Przykładowy przegląd6', 'Przykładowy przegląd6', true, 1, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Przykładowy przegląd7', 'Przykładowy przegląd7', 'Przykładowy przegląd7', true, 1, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Przykładowy przegląd8', 'Przykładowy przegląd8', 'Przykładowy przegląd8', true, 1, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Przykładowy przegląd9', 'Przykładowy przegląd9', 'Przykładowy przegląd9', true, 1, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Przykładowy przegląd10', 'Przykładowy przegląd10', 'Przykładowy przegląd10', true, 1, 0, 0);
+INSERT INTO reviews(TITLE, RESEARCH_AREA, DESCRIPTION, IS_PUBLIC, SCREENING_REVIEWERS, NUM_OF_IMPORTED_STUDIES, NUM_OF_REMOVED_DUPLICATES)
+VALUES ('Przykładowy przegląd11', 'Przykładowy przegląd11', 'Przykładowy przegląd11', true, 1, 0, 0);
 
 -- Projekt 1
 INSERT INTO users_reviews(ROLE_ID, USER_ID, REVIEW_ID) VALUES (1, 1, 1);

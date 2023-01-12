@@ -35,9 +35,10 @@ const Awaiting = (props) => {
   const [sortDirection, setSortDirection] = useState('ASC');
 
   function getStudies(page, size) {
+    var userId = currentUser.id;
     var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     axiosInstance.get("/studies/awaiting", { params: {
-      reviewId, stage, page, size, sortProperty, sortDirection
+      reviewId, userId, stage, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setStudies(response.data.content);
@@ -48,9 +49,10 @@ const Awaiting = (props) => {
   }
 
   function getStudiesSearch(searchValue, page, size) {
+    var userId = currentUser.id;
     var stage = props.isFullText ? FULL_TEXT : TITLE_ABSTRACT;
     axiosInstance.get("/studies/awaiting/search", { params: {
-      reviewId, stage, searchType, searchValue, page, size, sortProperty, sortDirection
+      reviewId, userId, stage, searchType, searchValue, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
       setStudies(response.data.content);

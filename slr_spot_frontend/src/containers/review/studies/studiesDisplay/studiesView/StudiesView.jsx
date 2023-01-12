@@ -83,12 +83,12 @@ const StudiesView = ({allowChanges}) => {
       reviewId, page, size, sortProperty, sortDirection
     }})
     .then((response) => {
-      console.log(response.data)
       setStudies(response.data.content);
       setPageCount(response.data.totalPages);
       setSearchPerformed(false);
       setLoading(false);
       setCurrentPage(response.data.number);
+      setSelected([]);
     })
     .catch(() => {
     });
@@ -103,6 +103,7 @@ const StudiesView = ({allowChanges}) => {
       setPageCount(response.data.totalPages);
       setSearchPerformed(true);
       setCurrentPage(response.data.number);
+      setSelected([]);
     })
     .catch(() => {
     });

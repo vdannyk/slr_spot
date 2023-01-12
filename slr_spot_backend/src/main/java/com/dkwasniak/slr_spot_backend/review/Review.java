@@ -42,6 +42,7 @@ public class Review {
     private String description;
     private Boolean isPublic;
     private Integer screeningReviewers;
+    private Integer numOfImportedStudies;
     private Integer numOfRemovedDuplicates;
 
     @OneToMany(mappedBy = "review", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
@@ -77,16 +78,18 @@ public class Review {
         this.description = description;
         this.isPublic = isPublic;
         this.screeningReviewers = screeningReviewers;
+        this.numOfImportedStudies = 0;
         this.numOfRemovedDuplicates = 0;
     }
 
     public Review(String title, String researchArea, String description,
-                  Boolean isPublic, Integer screeningReviewers, Integer numOfRemovedDuplicates) {
+                  Boolean isPublic, Integer screeningReviewers, Integer numOfImportedStudies, Integer numOfRemovedDuplicates) {
         this.title = title;
         this.researchArea = researchArea;
         this.description = description;
         this.isPublic = isPublic;
         this.screeningReviewers = screeningReviewers;
+        this.numOfImportedStudies = numOfImportedStudies;
         this.numOfRemovedDuplicates = numOfRemovedDuplicates;
     }
 
