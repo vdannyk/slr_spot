@@ -21,9 +21,10 @@ const PdfUploader = (props) => {
         setProgress(Math.round((event.loaded * 100) / event.total));
       }
     })
-    .then(response => {
+    .then(() => {
       props.setIsLoaded(true);
       setProgress(0);
+      props.setLoadingError('');
     })
     .catch((error) => {
       props.setLoadingError(error.response.data.message);
