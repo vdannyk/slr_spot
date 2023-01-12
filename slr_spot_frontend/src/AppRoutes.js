@@ -13,7 +13,8 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<HomePage />} />
 
-      <Route path="signin" element={<SignInPage />} />
+      <Route path="signin" element={!isLoggedIn ? <HomePage isAccessPopup={true} isSignInPopup={true} isSignUpPopup={false}/> : <Navigate to='/' />} />
+      <Route path="signup" element={!isLoggedIn ? <HomePage isAccessPopup={true} isSignInPopup={false} isSignUpPopup={true}/> : <Navigate to='/' />} />
       <Route path="profile" element={isLoggedIn ? <Profile /> : <Navigate to='/' />} />
       <Route path="password-recovery/:resetToken" element={<PasswordRecovery />} />
       <Route path="activate/:confirmationToken" element={<AccountActivation />} />

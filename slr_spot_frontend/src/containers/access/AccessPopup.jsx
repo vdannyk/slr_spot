@@ -23,6 +23,7 @@ const AccessPopup = (props) => {
               <SignIn 
                 signInTrigger={props.setIsSignIn}
                 signUpTrigger={props.setIsSignUp}
+                popupTrigger={props.setTrigger}
                 forgotPasswordTrigger={setIsForgotPassword}
               />
             )}
@@ -30,6 +31,7 @@ const AccessPopup = (props) => {
               <SignUp 
                 signInTrigger={props.setIsSignIn}
                 signUpTrigger={props.setIsSignUp}
+                popupTrigger={props.setTrigger}
               />
             )}
             { isForgotPassword && (
