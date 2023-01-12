@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../../services/api';
 import { useParams } from 'react-router-dom';
 import { OWNER, COOWNER } from '../../../../constants/roles';
+import ReactPaginate from 'react-paginate';
+import { PageChanger } from '../../../../components';
 import './duplicates.css';
 
 const Duplicates = (props) => {
@@ -9,18 +11,38 @@ const Duplicates = (props) => {
   const { reviewId } = useParams();
   var allowChanges = props.userRole && [OWNER, COOWNER].includes(props.userRole);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [pageCount, setPageCount] = useState(0);
+  const [searchPerformed, setSearchPerformed] = useState(false);
+
   useEffect(() => {
+    getDuplicates(0, pageSize);
+  }, []);
+
+  function getDuplicates(page, size) {
     axiosInstance.get("/studies/duplicates", { params: {
-      reviewId
+      reviewId, page, size
     }})
     .then((response) => {
       setDuplicates(response.data.content);
+      setPageCount(response.data.totalPages);
+      setCurrentPage(response.data.number);
     });
-  }, []);
+  }
 
   const handleStudiesUpdate = (id) => {
     setDuplicates(duplicates.filter(study => study.id !== id));
   }
+
+  const handlePageChange = (studyPage) => {
+    var page = studyPage.selected;
+    setCurrentPage(page);
+  }
+
+  useEffect(() => {
+    getDuplicates(currentPage, pageSize);
+  }, [currentPage, pageSize]);
 
   const StudyDuplicate = ({study, allowChanges}) => {
     const [showAbstract, setShowAbstract] = useState(false);
@@ -92,6 +114,17 @@ const Duplicates = (props) => {
       <div className='slrspot__review-studiesDisplay-header'>
         <h1>Marked duplicates</h1>
       </div>
+
+      <div style={{ textAlign: 'right' }}>
+        { duplicates.length > 0 &&
+          <PageChanger 
+            defaultSelected={pageSize}
+            options={[5,10,25]}
+            changePageSize={setPageSize}
+          />
+        }
+      </div>
+
       <div className='slrspot__review-duplicates-container'>
         { duplicates.map(study => (
           <StudyDuplicate 
@@ -100,6 +133,18 @@ const Duplicates = (props) => {
           />
         ))}
       </div>
+
+      { duplicates.length > 0 && pageCount > 1 &&
+        <ReactPaginate
+          pageCount={pageCount}
+          pageRangeDisplayed={5}
+          marginPagesDisplayed={2}
+          onPageChange={handlePageChange}
+          forcePage={currentPage}
+          containerClassName="slrspot__folder-pagination"
+          activeClassName="slrspot__folder-pagination-active"
+        />
+      }
     </div>
   )
 }
