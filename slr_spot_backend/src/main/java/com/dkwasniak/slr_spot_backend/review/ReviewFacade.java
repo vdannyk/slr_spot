@@ -118,7 +118,7 @@ public class ReviewFacade {
                         .members(review.getUsers()
                                 .stream()
                                 .filter(u -> !ReviewRoleEnum.OWNER.name().equals(u.getRole().getName())).map(u -> u.getUser().getFirstName() + " " + u.getUser().getLastName() + " - " + u.getRole().getName()).collect(Collectors.toList()))
-                        .totalStudiesImported(0)
+                        .totalStudiesImported(review.getNumOfImportedStudies())
                         .removedDuplicates(review.getNumOfRemovedDuplicates())
                         .selectedStudies(studyService.getStudiesCountByState(reviewId, StudyState.INCLUDED))
                 .build());

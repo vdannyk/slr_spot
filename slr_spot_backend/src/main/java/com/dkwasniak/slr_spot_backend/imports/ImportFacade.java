@@ -56,6 +56,9 @@ public class ImportFacade {
         review.setNumOfRemovedDuplicates(
                 review.getNumOfRemovedDuplicates() + deduplicationDto.getNumOfRemovedDuplicates()
         );
+        review.setNumOfImportedStudies(
+                review.getNumOfImportedStudies() + studies.size()
+        );
 
         User user = userService.getUserById(importContext.getUserId());
         Import studyImport = new Import(

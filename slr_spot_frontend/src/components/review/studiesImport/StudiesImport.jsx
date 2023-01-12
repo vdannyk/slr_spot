@@ -54,11 +54,8 @@ const StudiesImport = (props) => {
       window.location.reload()
     })
     .catch((error) => {
-      const message =
-        (error.response &&
-        error.response.data &&
-        error.response.data.message);
-      setErrorMsg(message);
+      console.log(error);
+      setErrorMsg(error.response.data.message);
     });
   }
 
