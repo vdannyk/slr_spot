@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -33,8 +34,10 @@ public class KeyWord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(length = 40)
     private String name;
 
+    @Column(length = 40)
     @Enumerated(EnumType.STRING)
     private CriterionType type;
 
@@ -51,12 +54,6 @@ public class KeyWord {
     public KeyWord(String name, CriterionType type) {
         this.name = name;
         this.type = type;
-    }
-
-    public KeyWord(String name, CriterionType type, Review review) {
-        this.name = name;
-        this.type = type;
-        this.review = review;
     }
 
 }

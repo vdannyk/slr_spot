@@ -1,25 +1,17 @@
 package com.dkwasniak.slr_spot_backend.study.writer;
 
-import com.dkwasniak.slr_spot_backend.file.exception.FileLoadingException;
 import com.dkwasniak.slr_spot_backend.study.Study;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXFormatter;
-import org.jbibtex.BibTeXParser;
 import org.jbibtex.Key;
-import org.jbibtex.ParseException;
 import org.jbibtex.StringValue;
 import org.springframework.core.io.InputStreamResource;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class BibWriter {

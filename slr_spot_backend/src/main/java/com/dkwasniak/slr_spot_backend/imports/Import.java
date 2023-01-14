@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -40,9 +40,13 @@ public class Import {
     private Long id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime date;
+    @Column(length = 100)
     private String searchValue;
+    @Column(length = 40)
     private String source;
+    @Column(length = 1000)
     private String additionalInformation;
+    @Column(length = 100)
     private String performedBy;
     private Integer numOfImportedStudies;
     private Integer numOfRemovedDuplicates;

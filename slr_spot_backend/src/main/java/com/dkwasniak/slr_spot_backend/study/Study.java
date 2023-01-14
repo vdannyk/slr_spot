@@ -46,18 +46,25 @@ public class Study {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 1000)
+    @Column(length = 250)
     private String title;
-    @Column(length = 1000)
+    @Column(length = 400)
     private String authors;
+    @Column(length = 250)
     private String journalTitle;
     private Integer publicationYear;
+
+    @Column(length = 40)
     private String volume;
+    @Column(length = 250)
     private String doi;
+    @Column(length = 250)
     private String url;
     @Column(length = 5000)
     private String documentAbstract;
+    @Column(length = 8)
     private String issn;
+    @Column(length = 40)
     private String language;
 
     @OneToOne(mappedBy = "study", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
