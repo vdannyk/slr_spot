@@ -34,10 +34,11 @@ public class KeyWordController {
     @PostAuthorize("hasViewAccess(#reviewId)")
     @GetMapping("/personal")
     public ResponseEntity<Set<KeyWord>> getUserKeywords(@RequestParam Long reviewId,
-                                                    @RequestParam Long userId) {
+                                                        @RequestParam Long userId) {
         return ResponseEntity.ok().body(keyWordFacade.getKeyWords(reviewId, userId));
     }
 
+    @PostAuthorize("hasScreeningAccess(#keyWordDto.reviewId)")
     @PostMapping
     public ResponseEntity<Long> addKeyword(@RequestBody KeyWordDto keyWordDto) {
         long id = keyWordFacade.addKeyWord(keyWordDto);
@@ -46,6 +47,7 @@ public class KeyWordController {
         return ResponseEntity.created(uri).body(id);
     }
 
+    @PostAuthorize("hasScreeningAccess(#keyWordDto.reviewId)")
     @PostMapping("/personal")
     public ResponseEntity<Long> addUserKeyword(@RequestBody KeyWordDto keyWordDto) {
         long id = keyWordFacade.addKeyWord(keyWordDto);
@@ -54,8 +56,10 @@ public class KeyWordController {
         return ResponseEntity.created(uri).body(id);
     }
 
+    @PostAuthorize("hasScreeningAccess(#reviewId)")
     @DeleteMapping("/{keywordId}")
-    public ResponseEntity<Void> removeKeyword(@PathVariable Long keywordId) {
+    public ResponseEntity<Void> removeKeyword(@PathVariable Long keywordId,
+                                              @RequestParam Long reviewId) {
         keyWordFacade.removeKeyWord(keywordId);
         return ResponseEntity.ok().build();
     }
