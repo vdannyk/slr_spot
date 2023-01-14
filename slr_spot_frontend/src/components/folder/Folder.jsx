@@ -119,7 +119,9 @@ const Folder = (props) => {
   }
 
   const handleRemoveFolder = (folderId) => {
-    axiosInstance.delete("/folders/" + folderId)
+    axiosInstance.delete("/folders/" + folderId, { params: {
+      reviewId
+    }})
     .then(() => {
       props.triggerRemove(props.parentFolders.filter(item => item.id !== folderId));
     })

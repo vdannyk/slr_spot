@@ -39,6 +39,7 @@ public class FolderController {
         return ResponseEntity.ok().body(folderService.getRootFolders(reviewId));
     }
 
+    @PostAuthorize("hasScreeningAccess(#folderRequest.reviewId)")
     @PostMapping
     public ResponseEntity<Long> addFolder(@RequestBody FolderRequest folderRequest) {
         long id = folderFacade.addFolder(folderRequest);
@@ -54,8 +55,9 @@ public class FolderController {
         return ResponseEntity.ok().build();
     }
 
+    @PostAuthorize("hasScreeningAccess(#reviewId)")
     @DeleteMapping("/{folderId}")
-    public ResponseEntity<Void> deleteFolder(@PathVariable Long folderId) {
+    public ResponseEntity<Void> deleteFolder(@PathVariable Long folderId, @RequestParam Long reviewId) {
         folderFacade.removeFolderById(folderId);
         return ResponseEntity.ok().build();
     }

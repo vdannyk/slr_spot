@@ -39,8 +39,9 @@ public class TagController {
         return ResponseEntity.created(uri).body(id);
     }
 
+    @PostAuthorize("hasScreeningAccess(#reviewId)")
     @DeleteMapping("/{tagId}")
-    public ResponseEntity<Void> removeTag(@PathVariable Long tagId) {
+    public ResponseEntity<Void> removeTag(@PathVariable Long tagId, @RequestParam Long reviewId) {
         tagFacade.removeTag(tagId);
         return ResponseEntity.ok().build();
     }

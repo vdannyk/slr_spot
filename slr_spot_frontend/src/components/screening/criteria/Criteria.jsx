@@ -78,7 +78,9 @@ const Criteria = (props) => {
   }
 
   const confirmRemoveCriterion = () => {
-    axiosInstance.delete("/criteria/" + criterionToRemove.id)
+    axiosInstance.delete("/criteria/" + criterionToRemove.id, { params: {
+      reviewId
+    }})
     .then(() => {
       setShowCriterionRemoveConfirmation(false);
       window.location.reload();

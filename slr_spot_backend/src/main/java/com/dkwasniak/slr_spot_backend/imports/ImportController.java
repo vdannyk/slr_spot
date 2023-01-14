@@ -24,14 +24,16 @@ public class ImportController {
 
     private final ImportFacade importFacade;
 
+    @PostAuthorize("hasScreeningAccess(#importContext.reviewId)")
     @PostMapping
     public ResponseEntity<Void> saveImport(@ModelAttribute ImportContext importContext) {
         importFacade.importStudies(importContext);
         return ResponseEntity.ok().build();
     }
 
+    @PostAuthorize("hasScreeningAccess(#reviewId)")
     @DeleteMapping("/{importId}")
-    public ResponseEntity<Void> deleteImport(@PathVariable Long importId) {
+    public ResponseEntity<Void> deleteImport(@PathVariable Long importId, @RequestParam Long reviewId) {
         importFacade.removeImportById(importId);
         return ResponseEntity.ok().build();
     }
