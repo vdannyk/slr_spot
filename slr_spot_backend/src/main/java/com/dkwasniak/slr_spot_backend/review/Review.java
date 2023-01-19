@@ -4,7 +4,7 @@ import com.dkwasniak.slr_spot_backend.criterion.Criterion;
 import com.dkwasniak.slr_spot_backend.folder.Folder;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
-import com.dkwasniak.slr_spot_backend.researchQuestion.ResearchQuestion;
+import com.dkwasniak.slr_spot_backend.review.researchQuestion.ResearchQuestion;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.user.User;

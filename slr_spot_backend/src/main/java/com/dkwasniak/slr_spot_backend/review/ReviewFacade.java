@@ -1,7 +1,7 @@
 package com.dkwasniak.slr_spot_backend.review;
 
 import com.dkwasniak.slr_spot_backend.imports.ImportService;
-import com.dkwasniak.slr_spot_backend.researchQuestion.ResearchQuestion;
+import com.dkwasniak.slr_spot_backend.review.researchQuestion.ResearchQuestion;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewWithOwnerDto;

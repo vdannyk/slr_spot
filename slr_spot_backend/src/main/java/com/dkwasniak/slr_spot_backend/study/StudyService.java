@@ -8,6 +8,7 @@ import com.dkwasniak.slr_spot_backend.study.dto.IdentificationDto;
 import com.dkwasniak.slr_spot_backend.study.dto.StatusDto;
 import com.dkwasniak.slr_spot_backend.study.exception.StudyNotFoundException;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
+import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -99,7 +100,8 @@ public class StudyService {
     }
 
     @Transactional
-    public void addScreeningDecisionToStudy(Study study, ScreeningDecision screeningDecision) {
+    public void addScreeningDecisionToStudy(User user, Study study, ScreeningDecision screeningDecision) {
+        user.addScreeningDecision(screeningDecision);
         study.addScreeningDecision(screeningDecision);
         studyRepository.save(study);
     }
@@ -107,20 +109,33 @@ public class StudyService {
     public StatusDto verifyStudyStatus(Study study, int requiredReviewers) {
         StudyState currentState = study.getState();
         Stage stage = study.getStage();
-        List<ScreeningDecision> screeningDecisions = study.getScreeningDecisions();
 
-        if (screeningDecisions.stream().filter(sd -> Decision.INCLUDE.equals(sd.getDecision())).count() >= requiredReviewers) {
-            if (Stage.TITLE_ABSTRACT.equals(stage)) {
+        if (Stage.TITLE_ABSTRACT.equals(stage)) {
+            List<ScreeningDecision> screeningDecisions = study.getScreeningDecisions()
+                    .stream()
+                    .filter(sd -> Stage.TITLE_ABSTRACT.equals(sd.getStage())).collect(Collectors.toList());
+            if (screeningDecisions.stream().filter(sd -> Decision.INCLUDE.equals(sd.getDecision()) ).count() >= requiredReviewers) {
                 return StatusDto.of(Stage.FULL_TEXT, StudyState.TO_BE_REVIEWED);
+            } else if (screeningDecisions.stream().filter(sd -> Decision.EXCLUDE.equals(sd.getDecision())).count() >= requiredReviewers) {
+                return StatusDto.of(stage, StudyState.EXCLUDED);
+            } else if (screeningDecisions.size() >= requiredReviewers) {
+                return StatusDto.of(stage, StudyState.CONFLICTED);
             } else {
-                return StatusDto.of(Stage.FULL_TEXT, StudyState.INCLUDED);
+                return StatusDto.of(stage, currentState);
             }
-        } else if (screeningDecisions.stream().filter(sd -> Decision.EXCLUDE.equals(sd.getDecision())).count() >= requiredReviewers) {
-            return StatusDto.of(stage, StudyState.EXCLUDED);
-        } else if (screeningDecisions.size() >= requiredReviewers) {
-            return StatusDto.of(stage, StudyState.CONFLICTED);
         } else {
-            return StatusDto.of(stage, currentState);
+            List<ScreeningDecision> screeningDecisions = study.getScreeningDecisions()
+                    .stream()
+                    .filter(sd -> Stage.FULL_TEXT.equals(sd.getStage())).collect(Collectors.toList());
+            if (screeningDecisions.stream().filter(sd -> Decision.INCLUDE.equals(sd.getDecision()) ).count() >= requiredReviewers) {
+                return StatusDto.of(Stage.FULL_TEXT, StudyState.INCLUDED);
+            } else if (screeningDecisions.stream().filter(sd -> Decision.EXCLUDE.equals(sd.getDecision())).count() >= requiredReviewers) {
+                return StatusDto.of(stage, StudyState.EXCLUDED);
+            } else if (screeningDecisions.size() >= requiredReviewers) {
+                return StatusDto.of(stage, StudyState.CONFLICTED);
+            } else {
+                return StatusDto.of(stage, currentState);
+            }
         }
     }
 

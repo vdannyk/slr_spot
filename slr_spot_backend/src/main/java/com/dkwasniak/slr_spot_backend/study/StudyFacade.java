@@ -4,7 +4,7 @@ import com.dkwasniak.slr_spot_backend.comment.Comment;
 import com.dkwasniak.slr_spot_backend.comment.CommentService;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
-import com.dkwasniak.slr_spot_backend.document.Document;
+import com.dkwasniak.slr_spot_backend.study.document.Document;
 import com.dkwasniak.slr_spot_backend.file.FileService;
 import com.dkwasniak.slr_spot_backend.file.exception.NotAllowedFileContentTypeException;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
@@ -141,7 +141,6 @@ public class StudyFacade {
                 new Operation(String.format(OperationDescription.ADD_COMMENT.getDescription(), user.getEmail())));
     }
 
-    @Transactional
     public void addStudyScreeningDecision(Long studyId, ScreeningDecisionDto screeningDecisionDto) {
         Review review = reviewService.getReviewById(screeningDecisionDto.getReviewId());
         int requiredReviewers = review.getScreeningReviewers();
@@ -151,32 +150,32 @@ public class StudyFacade {
 
             Optional<ScreeningDecision> oldDecision = user.getScreeningDecisions()
                     .stream()
-                    .filter(sd -> Objects.equals(sd.getStudy().getId(), studyId)).findFirst();
+                    .filter(sd -> Objects.equals(sd.getStudy().getId(), studyId) && screeningDecisionDto.getStage().equals(sd.getStage())).findFirst();
 
             if (oldDecision.isPresent() && oldDecision.get().getStage().equals(screeningDecisionDto.getStage())) {
-                screeningService.updateDecision(oldDecision.get(), screeningDecisionDto.getDecision());
                 studyService.addOperation(study,
                         new Operation(String.format(OperationDescription.CHANGE_VOTE.getDescription(), user.getEmail())));
+                screeningService.updateDecision(oldDecision.get(), screeningDecisionDto.getDecision());
             } else {
                 ScreeningDecision screeningDecision = new ScreeningDecision(
-                        user, study, screeningDecisionDto.getDecision(), screeningDecisionDto.getStage()
+                        screeningDecisionDto.getDecision(), screeningDecisionDto.getStage()
                 );
-                studyService.addScreeningDecisionToStudy(study, screeningDecision);
                 studyService.addOperation(study,
                         new Operation(String.format(OperationDescription.VOTE.getDescription(), user.getEmail())));
+                studyService.addScreeningDecisionToStudy(user, study, screeningDecision);
             }
             StatusDto newStatus = studyService.verifyStudyStatus(study, requiredReviewers);
             if (!newStatus.getStage().equals(study.getStage()) || !newStatus.getState().equals(study.getState())) {
-                studyService.updateStudyStatus(study, newStatus);
                 studyService.addOperation(study,
                         new Operation(String.format(OperationDescription.CHANGE_STATUS.getDescription(),
                                 newStatus.getStage().name() + " " + newStatus.getState().name())));
+                studyService.updateStudyStatus(study, newStatus);
             }
         }
     }
 
-    public Decision getScreeningDecisionByUser(Long studyId, Long userId) {
-        return screeningService.getScreeningDecisionByStudyIdAndUserId(studyId, userId).getDecision();
+    public Decision getScreeningDecisionByUser(Long studyId, Long userId, Stage stage) {
+        return screeningService.getScreeningDecisionByStudyIdAndUserId(studyId, userId, stage).getDecision();
     }
 
     @Transactional

@@ -1,4 +1,4 @@
-package com.dkwasniak.slr_spot_backend.researchQuestion;
+package com.dkwasniak.slr_spot_backend.review.researchQuestion;
 
 import com.dkwasniak.slr_spot_backend.review.Review;
 import com.fasterxml.jackson.annotation.JsonIgnore;

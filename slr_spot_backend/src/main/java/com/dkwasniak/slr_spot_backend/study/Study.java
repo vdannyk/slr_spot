@@ -1,7 +1,7 @@
 package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.comment.Comment;
-import com.dkwasniak.slr_spot_backend.document.Document;
+import com.dkwasniak.slr_spot_backend.study.document.Document;
 import com.dkwasniak.slr_spot_backend.folder.Folder;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
@@ -62,7 +62,7 @@ public class Study {
     private String url;
     @Column(length = 5000)
     private String documentAbstract;
-    @Column(length = 8)
+    @Column(length = 40)
     private String issn;
     @Column(length = 40)
     private String language;
@@ -94,7 +94,7 @@ public class Study {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    @OneToMany(mappedBy = "study", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @OneToMany(mappedBy = "study", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
     private List<ScreeningDecision> screeningDecisions = new ArrayList<>();
 
@@ -128,6 +128,7 @@ public class Study {
 
     public void addScreeningDecision(ScreeningDecision screeningDecision) {
         this.screeningDecisions.add(screeningDecision);
+        screeningDecision.setStudy(this);
     }
 
     public void setDocument(Document document) {

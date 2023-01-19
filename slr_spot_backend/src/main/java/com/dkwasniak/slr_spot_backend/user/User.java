@@ -56,7 +56,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<KeyWord> keywords = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
     private Set<ScreeningDecision> screeningDecisions = new HashSet<>();
 
@@ -69,6 +69,11 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public void addScreeningDecision(ScreeningDecision screeningDecision) {
+        this.screeningDecisions.add(screeningDecision);
+        screeningDecision.setUser(this);
     }
 
 }

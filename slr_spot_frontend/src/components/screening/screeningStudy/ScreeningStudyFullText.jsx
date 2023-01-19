@@ -115,6 +115,7 @@ const ScreeningStudyFullText = (props) => {
         <AwaitingOptions 
           handleVote={ handleVote }
           study={ study }
+          stage={FULL_TEXT}
         />
       )
     } else {

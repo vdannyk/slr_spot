@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.screeningDecision;
 
+import com.dkwasniak.slr_spot_backend.study.Stage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class ScreeningService {
         screeningRepository.save(screeningDecision);
     }
 
-    public ScreeningDecision getScreeningDecisionByStudyIdAndUserId(Long studyId, Long userId) {
-        return screeningRepository.findByStudy_IdAndUser_Id(studyId, userId).orElseThrow();
+    public ScreeningDecision getScreeningDecisionByStudyIdAndUserId(Long studyId, Long userId, Stage stage) {
+        return screeningRepository.findByStudy_IdAndUser_IdAndStage(studyId, userId, stage).orElseThrow();
     }
 }

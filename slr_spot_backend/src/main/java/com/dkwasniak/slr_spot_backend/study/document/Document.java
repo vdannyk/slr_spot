@@ -1,4 +1,4 @@
-package com.dkwasniak.slr_spot_backend.document;
+package com.dkwasniak.slr_spot_backend.study.document;
 
 import com.dkwasniak.slr_spot_backend.study.Study;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,7 +32,7 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 40)
+    @Column(length = 100)
     private String name;
 
     @Lob
