@@ -44,4 +44,11 @@ public class FolderService {
     public void removeFolderById(Long id) {
         folderRepository.deleteById(id);
     }
+
+    public boolean isExistingFolder(String name, Long reviewId, Long parentId) {
+        if (parentId != null) {
+            return folderRepository.existsByNameAndReview_IdAndParent_Id(name, reviewId, parentId);
+        }
+        return folderRepository.existsByNameAndReview_Id(name, reviewId);
+    }
 }

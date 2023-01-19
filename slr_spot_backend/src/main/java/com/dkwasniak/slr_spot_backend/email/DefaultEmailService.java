@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @RequiredArgsConstructor

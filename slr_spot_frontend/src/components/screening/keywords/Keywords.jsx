@@ -83,7 +83,9 @@ const Keywords = (props) => {
   }
 
   const confirmRemoveKeyword= () => {
-    axiosInstance.delete("/keywords/" + keywordToRemove.id)
+    axiosInstance.delete("/keywords/" + keywordToRemove.id, { params: {
+      reviewId
+    }})
     .then(() => {
       setShowKeywordRemoveConfirmation(false);
       window.location.reload();

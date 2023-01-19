@@ -56,7 +56,7 @@ const StudiesSearch = (props) => {
       <p>Studies can be imported using files with given formats:</p>
         <ul>
           <li>CSV</li>
-          {/* <li>RIS</li> */}
+          <li>RIS</li>
           <li>BibTeX</li>
           {/* <li>XLS</li> */}
         </ul>
@@ -75,7 +75,9 @@ const StudiesSearch = (props) => {
   }
 
   const confirmRemoveImport = () => {
-    axiosInstance.delete("/imports/" + importToRemove.id)
+    axiosInstance.delete("/imports/" + importToRemove.id, { params: {
+      reviewId
+    }})
     .then(() => {
       setShowImportRemoveConfirmation(false);
       window.location.reload();

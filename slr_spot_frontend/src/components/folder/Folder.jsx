@@ -15,7 +15,7 @@ import ContentPopup from '../popups/contentPopup/ContentPopup';
 
 
 const Folder = (props) => {
-  const {register, handleSubmit, formState: { errors }} = useForm();
+  const {register, handleSubmit, formState: { errors }, reset} = useForm();
   const [isExpanded, setIsExpanded] = useState(false);
   const [showInput, setShowInput] = useState(false);
 
@@ -113,13 +113,16 @@ const Folder = (props) => {
       }; 
       setChildren(oldArray => [...oldArray, folder]);
       setShowInput(false);
+      reset();
     })
     .catch(() => {
     });
   }
 
   const handleRemoveFolder = (folderId) => {
-    axiosInstance.delete("/folders/" + folderId)
+    axiosInstance.delete("/folders/" + folderId, { params: {
+      reviewId
+    }})
     .then(() => {
       props.triggerRemove(props.parentFolders.filter(item => item.id !== folderId));
     })
@@ -250,7 +253,7 @@ const Folder = (props) => {
             { childrenStudies.length > 0 && childrenStudies.map((study, idx) => (
               <tr key={idx}>
                   <td>
-                    <StudyFolderItem study={study} handleShowStudy={ handleShowStudy } />
+                    <StudyFolderItem study={study} handleShowStudy={ handleShowStudy } isScreening={ props.isScreening } />
                   </td>
               </tr>
             ))}

@@ -31,6 +31,7 @@ public class CriterionController {
         return ResponseEntity.ok().body(criterionFacade.getCriteriaByReviewId(reviewId));
     }
 
+    @PostAuthorize("hasScreeningAccess(#criterionDto.reviewId)")
     @PostMapping
     public ResponseEntity<Long> addCriterion(@RequestBody CriterionDto criterionDto) {
         long id = criterionFacade.addCriterion(criterionDto);
@@ -39,8 +40,9 @@ public class CriterionController {
         return ResponseEntity.created(uri).body(id);
     }
 
+    @PostAuthorize("hasScreeningAccess(#reviewId)")
     @DeleteMapping("/{criterionId}")
-    public ResponseEntity<Void> deleteCriterion(@PathVariable Long criterionId) {
+    public ResponseEntity<Void> deleteCriterion(@PathVariable Long criterionId, @RequestParam Long reviewId) {
         criterionFacade.removeCriterion(criterionId);
         return ResponseEntity.ok().build();
     }

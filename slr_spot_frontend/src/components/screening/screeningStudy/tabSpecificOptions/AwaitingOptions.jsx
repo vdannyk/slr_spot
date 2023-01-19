@@ -9,6 +9,7 @@ const AwaitingOptions = (props) => {
 
   useEffect(() => {
     var userId = currentUser.id;
+    var stage = props.stage
     axiosInstance.get("/studies/" + props.study.id + "/screening_decision", { params: {
       userId
     }})

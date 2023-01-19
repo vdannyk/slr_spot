@@ -4,7 +4,7 @@ import com.dkwasniak.slr_spot_backend.criterion.Criterion;
 import com.dkwasniak.slr_spot_backend.folder.Folder;
 import com.dkwasniak.slr_spot_backend.imports.Import;
 import com.dkwasniak.slr_spot_backend.keyWord.KeyWord;
-import com.dkwasniak.slr_spot_backend.researchQuestion.ResearchQuestion;
+import com.dkwasniak.slr_spot_backend.review.researchQuestion.ResearchQuestion;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.tag.Tag;
 import com.dkwasniak.slr_spot_backend.user.User;
@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,8 +38,11 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 50)
     private String title;
+    @Column(length = 50)
     private String researchArea;
+    @Column(length = 4000)
     private String description;
     private Boolean isPublic;
     private Integer screeningReviewers;

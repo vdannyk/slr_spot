@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -40,7 +41,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 40)
     private String firstName;
+    @Column(length = 40)
     private String lastName;
     private String email;
     private String password;
@@ -53,7 +56,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<KeyWord> keywords = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
     private Set<ScreeningDecision> screeningDecisions = new HashSet<>();
 
@@ -66,6 +69,11 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public void addScreeningDecision(ScreeningDecision screeningDecision) {
+        this.screeningDecisions.add(screeningDecision);
+        screeningDecision.setUser(this);
     }
 
 }

@@ -24,8 +24,6 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     int countAllByStudyImport_Review_IdAndState(long reviewId, StudyState state);
     Page<Study> findAllByStudyImport_Review_IdAndFolder_IdAndStageAndState(long reviewId, long folderId, Stage stage, StudyState studyState, Pageable pageable);
 
-//    Page<Study> findAllByStudyImport_Review_IdAndTags_
-
     @Query("SELECT s " +
             "FROM Study s " +
             "LEFT OUTER JOIN Import i " +

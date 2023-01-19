@@ -24,7 +24,11 @@ const FoldersView = ({allowChanges}) => {
     <div>
       { loading 
         ? <BeatLoader /> 
-        : <FolderTree folders={folders} foldersChange={setFolders} allowChanges={ allowChanges }/>}
+        : <FolderTree 
+            folders={folders} 
+            foldersChange={setFolders} 
+            allowChanges={ allowChanges }
+          />}
     </div>
   );
   

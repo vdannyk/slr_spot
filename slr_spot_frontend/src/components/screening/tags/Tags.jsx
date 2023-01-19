@@ -44,7 +44,9 @@ const Tags = (props) => {
   }
 
   const confirmRemoveTag = () => {
-    axiosInstance.delete("/tags/" + tagToRemove.id)
+    axiosInstance.delete("/tags/" + tagToRemove.id, { params: {
+      reviewId
+    }})
     .then(() => {
       setShowTagRemoveConfirmation(false);
       window.location.reload();

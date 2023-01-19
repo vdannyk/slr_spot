@@ -15,6 +15,12 @@ public class FolderFacade {
     private final ReviewService reviewService;
 
     public long addFolder(FolderRequest folderRequest) {
+        if (folderService.isExistingFolder(folderRequest.getName(), folderRequest.getReviewId(), folderRequest.getParentId())) {
+            throw new IllegalStateException("Folder already exists in review context");
+        }
+        if (folderRequest.getName() == null || folderRequest.getName().trim().isEmpty()) {
+            throw new IllegalStateException("Folder name cannot be empty");
+        }
         Folder folder = new Folder(folderRequest.getName());
         if (!isNull(folderRequest.getParentId())) {
             folder.setParent(folderService.getFolderById(folderRequest.getParentId()));

@@ -80,8 +80,9 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
 
     useEffect(() => {
       var userId = currentUser.id;
+      var stage = isFullText ? FULL_TEXT : TITLE_ABSTRACT
       axiosInstance.get("/studies/" + study.id + "/screening_decision", { params: {
-        userId
+        userId, stage
       }})
       .then((response) => {
         setCurrentVote(response.data);

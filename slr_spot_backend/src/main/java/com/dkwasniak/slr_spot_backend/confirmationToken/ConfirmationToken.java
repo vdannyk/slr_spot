@@ -23,7 +23,7 @@ public class ConfirmationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String token;
     @Column(nullable = false)
     private LocalDateTime createdAt;

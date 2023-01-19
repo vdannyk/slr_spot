@@ -8,7 +8,7 @@ import Folder from './Folder';
 
 
 const FolderTree = (props) => {
-  const {register, handleSubmit, formState: { errors }} = useForm();
+  const {register, handleSubmit, formState: { errors }, reset} = useForm();
   const [showInput, setShowInput] = useState(false);
   const { reviewId } = useParams();
 
@@ -26,6 +26,7 @@ const FolderTree = (props) => {
       };
       props.foldersChange(oldArray => [...oldArray, folder]);
       setShowInput(false);
+      reset();
     })
     .catch(() => {
     });

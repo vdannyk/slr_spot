@@ -126,6 +126,7 @@ const ScreeningStudyInFolder = (props) => {
         <AwaitingOptions 
           handleVote={ handleVote }
           study={ props.study }
+          stage={props.isFullText ? FULL_TEXT : TITLE_ABSTRACT}
         />
       )
     } else {

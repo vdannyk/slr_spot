@@ -1,13 +1,13 @@
-package com.dkwasniak.slr_spot_backend.document;
+package com.dkwasniak.slr_spot_backend.study.document;
 
 import com.dkwasniak.slr_spot_backend.study.Study;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,6 +32,7 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 100)
     private String name;
 
     @Lob

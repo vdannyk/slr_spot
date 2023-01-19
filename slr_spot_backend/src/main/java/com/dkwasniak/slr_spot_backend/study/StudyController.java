@@ -2,7 +2,7 @@ package com.dkwasniak.slr_spot_backend.study;
 
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentDto;
 import com.dkwasniak.slr_spot_backend.comment.dto.CommentRequest;
-import com.dkwasniak.slr_spot_backend.document.Document;
+import com.dkwasniak.slr_spot_backend.study.document.Document;
 import com.dkwasniak.slr_spot_backend.operation.Operation;
 import com.dkwasniak.slr_spot_backend.screeningDecision.Decision;
 import com.dkwasniak.slr_spot_backend.screeningDecision.dto.ScreeningDecisionDto;
@@ -163,8 +163,9 @@ public class StudyController {
 
     @GetMapping("/{id}/screening_decision")
     public ResponseEntity<Decision> getScreeningDecisionByUser(@PathVariable Long id,
-                                                               @RequestParam Long userId) {
-        return ResponseEntity.ok().body(studyFacade.getScreeningDecisionByUser(id, userId));
+                                                               @RequestParam Long userId,
+                                                               @RequestParam Stage stage) {
+        return ResponseEntity.ok().body(studyFacade.getScreeningDecisionByUser(id, userId, stage));
     }
 
     @PutMapping("/{id}/restore")

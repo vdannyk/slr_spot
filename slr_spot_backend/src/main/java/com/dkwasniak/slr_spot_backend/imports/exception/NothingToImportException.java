@@ -1,4 +1,4 @@
-package com.dkwasniak.slr_spot_backend.imports.excception;
+package com.dkwasniak.slr_spot_backend.imports.exception;
 
 public class NothingToImportException extends RuntimeException {
 

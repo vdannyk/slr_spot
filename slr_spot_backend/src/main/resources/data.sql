@@ -1,6 +1,6 @@
 -- Aktywne konta
 INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
-VALUES ('Daniel', 'Danielowski', 'danny@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
+VALUES ('Daniel', 'Kwasniak', 'danny@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
 INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
 VALUES ('Bruno', 'Wróblewski', 'bruno@gmail.com', '$2a$12$EQYycNG5NRX8ZLLjd14c.OrFcqh0hbGplRZj8QIdUrAn2383ApwLG', true);
 INSERT INTO users(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IS_ACTIVATED)
