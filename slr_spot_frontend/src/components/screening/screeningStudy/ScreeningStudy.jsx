@@ -253,7 +253,9 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
         isFullText={ isFullText } 
         study={ study }
         allowChanges={ allowChanges } 
-        tab={ tab } />
+        tab={ tab } 
+        refreshTrigger={ refresh }
+      />
       
       <StudyTags 
         studyId={ study.id } 
