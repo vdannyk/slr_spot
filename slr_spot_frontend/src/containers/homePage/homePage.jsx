@@ -11,6 +11,11 @@ const HomePage = (props) => {
   const { isLoggedIn } = useSelector(state => state.auth);
   const navigate = useNavigate();
 
+  const onLoginClick = () => {
+    setIsAccessPopup(true);
+    setIsSignInPopup(true);
+  };
+
   return (
     <div className="slrspot__homePage gradient__bg">
 
@@ -49,7 +54,7 @@ const HomePage = (props) => {
             </div>
             { isLoggedIn 
             ? <button onClick={ () => navigate('/reviews') }>Get started!</button> 
-            : <button onClick={ () => setIsSignInPopup(true) }>Get started!</button>
+            : <button onClick={ onLoginClick }>Get started!</button>
             }
           </div>
 
