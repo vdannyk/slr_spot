@@ -65,7 +65,9 @@ public class StudyMapper {
                     .issn(tryGetElement(headers[8], csvRecord))
                     .language(tryGetElement(headers[9], csvRecord))
                     .build();
-            studies.add(study);
+            if (!hasMissingRequiredFields(study)) {
+                studies.add(study);
+            }
         }
         return studies;
     }
