@@ -19,6 +19,17 @@ const StudyTags = (props) => {
     });
   }, []);
 
+  useEffect(() => {
+    setShowAdd(false);
+    var studyId = props.studyId;
+    axiosInstance.get("/studies/" + studyId + "/tags")
+    .then((response) => {
+      setTags(response.data);
+    })
+    .catch(() => {
+    });
+  }, [props.refreshTrigger]);
+
   const handleRemoveTag = (tag) => {
     var studyId = props.studyId;
     axiosInstance.delete("/studies/" + studyId + "/tags/" + tag.id)
