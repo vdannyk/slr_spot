@@ -120,7 +120,13 @@ const NewReview = () => {
             { isMembersSettings && 
               <div className='slrspot__newReview-settings-buttons'>
                 <button onClick={onReviewsClick}>previous</button>
-                <button type="submit">create review</button>
+                {watch('name').trim().length == 0 ? 
+                  <>
+                    <p className="slrspot__input-error" style={{ alignSelf: 'center', fontSize: '16px'}}>Review name is required</p>
+                  </>
+                  :
+                  <button type="submit">create review</button>
+                }
               </div>
             }
           </div>
