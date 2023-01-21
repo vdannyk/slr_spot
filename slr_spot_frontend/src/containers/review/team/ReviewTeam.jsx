@@ -60,7 +60,7 @@ const ReviewTeam = (props) => {
   const onRemoveMemberClick = (triggerPopup, item) => {
     setIsRemoveMemberConfirmation(triggerPopup);
     setMemberNameToRemove(item.firstName + ' ' + item.lastName);
-    setMemberId(item.userId);
+    setMemberId(item.id);
   }
 
   const onCancelRemoveMember = () => {
@@ -154,7 +154,7 @@ const ReviewTeam = (props) => {
           <td>
             {item.role.name !== OWNER && 
               <AiOutlineClose 
-                onClick={ () => onRemoveMemberClick(true, item) } 
+                onClick={ () => onRemoveMemberClick(true, item.user) } 
                 style={ {color: 'red', cursor: 'pointer'} }
               />
             }
