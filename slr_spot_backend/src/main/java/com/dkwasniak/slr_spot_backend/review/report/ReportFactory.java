@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.review.report;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -17,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +26,7 @@ import java.util.Objects;
 import static java.util.Objects.isNull;
 
 @Component
+@Slf4j
 public class ReportFactory {
 
     private static final float FONT_SIZE = 14;
@@ -53,8 +56,9 @@ public class ReportFactory {
 
             document.addPage(page);
 
-            PDImageXObject pdImage = PDImageXObject.createFromFile(
-                    Objects.requireNonNull(getClass().getResource("/slrspot_logo.png")).getPath(), document
+            PDImageXObject pdImage = PDImageXObject.createFromByteArray(document,
+                    Objects.requireNonNull(getClass().getResourceAsStream("/slrspot_logo.png")).readAllBytes(),
+                    "slrspot_logo.png"
             );
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
@@ -201,6 +205,7 @@ public class ReportFactory {
             document.save(outputStream);
             return new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         } catch (IOException e) {
+            log.error("Report error: ", e);
             throw new IllegalStateException("Error while generating report");
         }
     }
