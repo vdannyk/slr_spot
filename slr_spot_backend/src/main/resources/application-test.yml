@@ -9,6 +9,31 @@ spring:
   datasource:
     driver-class-name:
     url: jdbc:hsqldb:mem:scratchdb
+  sql:
+    init:
+      mode: never
+  mail:
+    host: localhost
+    port: 1025
+    username: test
+    password: test
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
 
 mail:
   enabled: false
+
+jwt:
+  secret: "secret"
+
+client:
+  url: "http://test"
