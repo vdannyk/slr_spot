@@ -2,6 +2,7 @@ package com.dkwasniak.slr_spot_backend.userReview;
 
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRole;
 import com.dkwasniak.slr_spot_backend.reviewRole.ReviewRoleEnum;
+import com.dkwasniak.slr_spot_backend.userReview.exception.RoleChangeNotAllowedException;
 import com.dkwasniak.slr_spot_backend.userReview.exception.UserReviewNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,7 @@ public class UserReviewService {
     public void changeUserReviewRole(UserReview userReview, ReviewRole newRole) {
         ReviewRole reviewRole = userReview.getRole();
         if (ReviewRoleEnum.OWNER.name().equals(reviewRole.getName())) {
-            throw new IllegalStateException();
+            throw new RoleChangeNotAllowedException();
         }
         userReview.setRole(newRole);
     }
