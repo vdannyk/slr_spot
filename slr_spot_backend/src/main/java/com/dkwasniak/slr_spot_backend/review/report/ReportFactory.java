@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Objects.isNull;
 
@@ -43,8 +44,8 @@ public class ReportFactory {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 PDDocument document = new PDDocument();
         ) {
-            FONT = PDType0Font.load(document, new File("LiberationSans-Regular.ttf"));
-            FONT_BOLD = PDType0Font.load(document, new File("LiberationSans-Bold.ttf"));
+            FONT = PDType0Font.load(document, getClass().getResourceAsStream("/LiberationSans-Regular.ttf"));
+            FONT_BOLD = PDType0Font.load(document, getClass().getResourceAsStream("/LiberationSans-Bold.ttf"));
             PDPage page = new PDPage();
             PageData pageData;
             pageWidth = page.getMediaBox().getWidth();
@@ -52,7 +53,9 @@ public class ReportFactory {
 
             document.addPage(page);
 
-            PDImageXObject pdImage = PDImageXObject.createFromFile("slrspot_logo.png", document);
+            PDImageXObject pdImage = PDImageXObject.createFromFile(
+                    Objects.requireNonNull(getClass().getResource("/slrspot_logo.png")).getPath(), document
+            );
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
             float pageCenterWidth = (pageWidth - IMAGE_WIDTH) / 2;
