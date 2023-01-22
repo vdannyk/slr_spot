@@ -31,8 +31,7 @@ public class ScreeningDecision {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    @EmbeddedId
-//    private ScreeningDecisionId id;
+
     @ManyToOne
     @JoinColumn(name = "study_id")
     @JsonIgnore
@@ -42,12 +41,6 @@ public class ScreeningDecision {
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
-//    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//    @MapsId("userId")
-//    private User user;
-//    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//    @MapsId("studyId")
-//    private Study study;
 
     @Enumerated(EnumType.STRING)
     private Decision decision;
@@ -56,7 +49,6 @@ public class ScreeningDecision {
     private Stage stage;
 
     public ScreeningDecision(Decision decision, Stage stage) {
-//        this.id = new ScreeningDecisionId(user.getId(), study.getId());
         this.decision = decision;
         this.stage = stage;
     }
