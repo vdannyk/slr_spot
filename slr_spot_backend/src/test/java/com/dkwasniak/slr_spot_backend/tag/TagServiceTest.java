@@ -1,9 +1,6 @@
 package com.dkwasniak.slr_spot_backend.tag;
 
 import com.dkwasniak.slr_spot_backend.tag.exception.TagNotFoundException;
-import com.dkwasniak.slr_spot_backend.user.User;
-import com.dkwasniak.slr_spot_backend.userReview.exception.UserReviewNotFoundException;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
