@@ -1,5 +1,8 @@
 package com.dkwasniak.slr_spot_backend.confirmationToken;
 
+import com.dkwasniak.slr_spot_backend.confirmationToken.exception.ConfirmationTokenExpiredException;
+import com.dkwasniak.slr_spot_backend.confirmationToken.exception.ConfirmationTokenNotFoundException;
+import com.dkwasniak.slr_spot_backend.confirmationToken.exception.EmailAlreadyConfirmedException;
 import com.dkwasniak.slr_spot_backend.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,16 +34,16 @@ public class ConfirmationTokenService {
 
     public ConfirmationToken getConfirmationToken(String token) {
         return confirmationTokenRepository.findByToken(token)
-                .orElseThrow(() -> new IllegalStateException("Token not found"));
+                .orElseThrow(ConfirmationTokenNotFoundException::new);
     }
 
     public int confirmToken(ConfirmationToken token) {
         if (checkIfTokenConfirmed(token)) {
-            throw new IllegalStateException("Email already confirmed");
+            throw new EmailAlreadyConfirmedException();
         }
 
         if (checkIfTokenExpired(token)) {
-            throw new IllegalStateException("Token expired");
+            throw new ConfirmationTokenExpiredException(token.getExpiresAt().toString());
         }
         return confirmationTokenRepository.updateConfirmedAt(token.getToken(), LocalDateTime.now());
     }
