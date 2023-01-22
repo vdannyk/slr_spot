@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.tag;
 
+import com.dkwasniak.slr_spot_backend.tag.exception.TagNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class TagService {
 
     public Tag getTagById(Long id) {
         return tagRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new TagNotFoundException(id));
     }
 
 
