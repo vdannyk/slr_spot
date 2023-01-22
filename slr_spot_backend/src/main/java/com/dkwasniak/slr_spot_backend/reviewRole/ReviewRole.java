@@ -19,4 +19,8 @@ public class ReviewRole {
     private Long id;
     @Column(length = 40)
     private String name;
+
+    public ReviewRole(String name) {
+        this.name = name;
+    }
 }
