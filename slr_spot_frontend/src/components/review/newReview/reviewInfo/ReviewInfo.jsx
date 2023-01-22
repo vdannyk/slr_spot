@@ -84,6 +84,7 @@ const ReviewInfo = ({register, errors, questions, setQuestions}) => {
         name='screeningReviewers'
         type='number'
         min={1}
+        defaultValue={2}
       />
 
       <label>Public review</label>
