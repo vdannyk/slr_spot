@@ -106,14 +106,4 @@ public class UserService implements UserDetailsService {
         return userRepository.getEmails();
     }
 
-    public UserDto toUserDto(UserReview userReview) {
-        return UserDto.builder()
-                .userId(userReview.getUser().getId())
-                .firstName(userReview.getUser().getFirstName())
-                .lastName(userReview.getUser().getLastName())
-                .email(userReview.getUser().getEmail())
-                .role(userReview.getRole().getName())
-                .build();
-    }
-
 }
