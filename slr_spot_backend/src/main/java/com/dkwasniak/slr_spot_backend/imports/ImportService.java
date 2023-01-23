@@ -13,10 +13,6 @@ public class ImportService {
 
     private final ImportRepository importRepository;
 
-    public void saveImport(Import studyImport) {
-        importRepository.save(studyImport);
-    }
-
     public Page<Import> getImportsByReviewId(long reviewId, int page, int size) {
         PageRequest pageRq = PageRequest.of(page, size, Sort.by("date"));
         return importRepository.findByReview_Id(reviewId, pageRq);

@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ActiveProfiles("test")
@@ -22,9 +23,9 @@ public class RisReaderTest {
             "VL  - 27\n" +
             "IS  - 18\n" +
             "SP  - 2892\n" +
-            "EP  - 2896" +
-            "ER  - " +
-            "" +
+            "EP  - 2896\n" +
+            "ER  - \n" +
+            "\n" +
             "TI  - Test title 2\n" +
             "T2  - Journal\n" +
             "VL  - 127\n" +
@@ -32,7 +33,7 @@ public class RisReaderTest {
             "EP  - 221\n" +
             "PY  - 2023\n" +
             "DO  - 10.1016/j.jes\n" +
-            "AU  - Test" +
+            "AU  - Test\n" +
             "ER  - ";
 
     @InjectMocks
@@ -46,6 +47,7 @@ public class RisReaderTest {
         var res = risReader.read(mockMultipartFile);
 
         assertNotNull(res);
+        assertEquals(2, res.size());
     }
 
 }
