@@ -1,6 +1,5 @@
 package com.dkwasniak.slr_spot_backend.review;
 
-import com.dkwasniak.slr_spot_backend.imports.ImportService;
 import com.dkwasniak.slr_spot_backend.review.researchQuestion.ResearchQuestion;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewMembersDto;
 import com.dkwasniak.slr_spot_backend.review.dto.ReviewDto;
@@ -31,7 +30,6 @@ public class ReviewFacade {
 
     private final ReviewService reviewService;
     private final UserService userService;
-    private final ImportService importService;
     private final ReviewRoleService roleService;
     private final UserReviewService userReviewService;
     private final ReportFactory reportFactory;
