@@ -16,8 +16,6 @@ import java.util.List;
 
 public class BibWriter {
 
-    private final static String[] DEFAULT_BIB_HEADERS = {"title", "author", "journal", "year", "volume", "doi", "url", "abstract", "issn", "language"};
-
     public InputStreamResource write(List<Study> studies) {
         try (
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
