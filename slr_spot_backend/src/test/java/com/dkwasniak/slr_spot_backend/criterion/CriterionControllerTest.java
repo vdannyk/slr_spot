@@ -39,8 +39,6 @@ public class CriterionControllerTest {
     private CriterionFacade criterionFacade;
     @Autowired
     private ObjectMapper objectMapper;
-    @MockBean
-    private SecurityContext securityContext;
 
     @Test
     void getCriteria_shouldReturnCriteria_whenExists() throws Exception {

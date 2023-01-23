@@ -16,10 +16,6 @@ public class KeyWordService {
         return keywordRepository.findByReview_IdAndUserNull(reviewId);
     }
 
-    public KeyWord getById(long id) {
-        return keywordRepository.findById(id).orElseThrow();
-    }
-
     public Set<KeyWord> getKeyWordsByReviewIdAndUserId(long reviewId, long userId) {
         return keywordRepository.findByReview_IdAndUser_Id(reviewId, userId);
     }
