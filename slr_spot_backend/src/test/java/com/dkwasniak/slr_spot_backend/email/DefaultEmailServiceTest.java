@@ -12,6 +12,7 @@ import org.thymeleaf.TemplateEngine;
 import javax.mail.internet.MimeMessage;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -34,6 +35,26 @@ public class DefaultEmailServiceTest {
         when(mailSender.createMimeMessage()).thenReturn(mock(MimeMessage.class));
 
         emailService.sendEmail("me", "you", "test");
+
+        verify(mailSender, times(1)).send((MimeMessage) any());
+    }
+
+    @Test
+    public void sendVerificationEmail_shouldSendEmail_whenCorrectMessage() {
+        when(mailSender.createMimeMessage()).thenReturn(mock(MimeMessage.class));
+        when(templateEngine.process(anyString(), any())).thenReturn("test");
+
+        emailService.sendVerificationEmail("me", "link");
+
+        verify(mailSender, times(1)).send((MimeMessage) any());
+    }
+
+    @Test
+    public void sendResetPasswordEmail_shouldSendEmail_whenCorrectMessage() {
+        when(mailSender.createMimeMessage()).thenReturn(mock(MimeMessage.class));
+        when(templateEngine.process(anyString(), any())).thenReturn("test");
+
+        emailService.sendResetPasswordEmail("me", "link");
 
         verify(mailSender, times(1)).send((MimeMessage) any());
     }
