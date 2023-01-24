@@ -39,7 +39,7 @@ const UpdateEmail = () => {
       <div className='slrspot__updateEmail-popup'>
         <p>You have to sign in again after changing email.</p>
         <p>You will be redirected to the home page automatically in: {counter}</p>
-        <button>Redirect now</button>
+        <button onClick={() => navigate('/')}>Redirect now</button>
       </div>
     </div>
   )
