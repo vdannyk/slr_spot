@@ -23,7 +23,7 @@ const ExpirationLogout = (props) => {
       <div className='slrspot__expirationLogout-container'>
         <p>You have to sign in again after access token expiration.</p>
         <p>You will be redirected to the home page automatically in: {counter}</p>
-        <button onClick={ () => navigate('/') }>Redirect now</button>
+        <button onClick={ () => { navigate('/'); props.trigger(false); } }>Redirect now</button>
       </div>
     </div>
   )
