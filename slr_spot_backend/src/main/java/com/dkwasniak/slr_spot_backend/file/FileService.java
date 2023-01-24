@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.file;
 
+import com.dkwasniak.slr_spot_backend.dataExtraction.DataExtractionUtils;
 import com.dkwasniak.slr_spot_backend.dataExtraction.ExtractionField;
 import com.dkwasniak.slr_spot_backend.file.exception.FileLoadingException;
 import com.dkwasniak.slr_spot_backend.file.exception.NotAllowedFileContentTypeException;
@@ -67,10 +68,6 @@ public class FileService {
         return RIS_MEDIA_TYPE.equals(contentType);
     }
 
-    public boolean isXlsFile(String contentType) {
-        return XLS_MEDIA_TYPE.equals(contentType);
-    }
-
     public boolean isPdfFile(String contentType) {
         return MediaType.APPLICATION_PDF_VALUE.equals(contentType);
     }
@@ -102,10 +99,6 @@ public class FileService {
         }
     }
 
-    private List<CSVRecord> loadFromRis(MultipartFile multipartFile) {
-        return null;
-    }
-
     public InputStreamResource exportCsv(List<ExtractionField> extractionFields, String[] headers, List<Study> studies) {
         CSVFormat format = CSVFormat.Builder.create().setHeader(headers).build();
         try (
@@ -113,39 +106,13 @@ public class FileService {
             CSVPrinter printer = new CSVPrinter(new PrintWriter(outputStream), format);
         ) {
             for (var study : studies) {
-                printer.printRecord(extractionFields.stream().map(e -> getField(study, e)).collect(Collectors.toList()));
+                printer.printRecord(extractionFields.stream().map(e -> DataExtractionUtils.getField(study, e)).collect(Collectors.toList()));
             }
             printer.flush();
 
             return new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         } catch (IOException e) {
             throw new IllegalStateException("Error while extracting data");
-        }
-    }
-
-    private String getField(Study study, ExtractionField field) {
-        switch (field) {
-            case AUTHORS -> {
-                return study.getAuthors();
-            }
-            case TITLE -> {
-                return study.getTitle();
-            }
-            case JOURNAL -> {
-                return study.getJournalTitle();
-            }
-            case ABSTRACT -> {
-                return study.getDocumentAbstract();
-            }
-            case PUBLICATIONYEAR -> {
-                return String.valueOf(study.getPublicationYear());
-            }
-            case DOI -> {
-                return study.getDoi();
-            }
-            default -> {
-                throw new IllegalStateException("Unable to map extraction field");
-            }
         }
     }
 

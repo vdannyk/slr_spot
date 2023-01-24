@@ -39,10 +39,6 @@ public class StudyService {
         studyRepository.deleteById(studyId);
     }
 
-    public void saveAll(List<Study> studies) {
-        studyRepository.saveAll(studies);
-    }
-
     public Page<Study> getStudiesToBeReviewed(Long reviewId, Long userId, Stage stage, Pageable pageable) {
         return studyRepository.findAllToBeReviewed(reviewId, userId, stage, StudyState.TO_BE_REVIEWED, pageable);
     }

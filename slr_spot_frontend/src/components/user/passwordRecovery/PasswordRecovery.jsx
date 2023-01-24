@@ -79,8 +79,8 @@ const PasswordRecovery = () => {
 
   return (
     <div className="slrspot___passwordRecovery">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="slrspot___passwordRecovery-box">
+      <div className="slrspot___passwordRecovery-box">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <h1>Set new password</h1>
           <input
             {...register("password", { 
@@ -110,8 +110,10 @@ const PasswordRecovery = () => {
             <p className="slrspot__signIn-error">This field is required</p>
           }
           <button type='submit' className='slrspot__passwordRecovery-submitBtn'>Reset password</button>
-        </div> 
-      </form>
+        </form>
+
+        <button className='slrspot__passwordRecovery-submitBtn' style={{ backgroundColor: 'grey'}} onClick={() => navigate('/')}>Home</button>
+      </div> 
     </div>
   )
 }

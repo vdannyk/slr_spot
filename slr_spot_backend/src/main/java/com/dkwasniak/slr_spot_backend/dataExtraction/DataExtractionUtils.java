@@ -1,5 +1,6 @@
 package com.dkwasniak.slr_spot_backend.dataExtraction;
 
+import com.dkwasniak.slr_spot_backend.dataExtraction.exception.UnableToExtractFieldException;
 import com.dkwasniak.slr_spot_backend.study.Study;
 
 public class DataExtractionUtils {
@@ -25,7 +26,7 @@ public class DataExtractionUtils {
                 return study.getDoi();
             }
             default -> {
-                throw new IllegalStateException("Unable to map extraction field");
+                throw new UnableToExtractFieldException(field.toString());
             }
         }
     }

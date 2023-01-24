@@ -1,6 +1,7 @@
 package com.dkwasniak.slr_spot_backend.reviewRole;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="roles")
 @Getter
+@NoArgsConstructor
 public class ReviewRole {
 
     @Id
@@ -19,4 +21,8 @@ public class ReviewRole {
     private Long id;
     @Column(length = 40)
     private String name;
+
+    public ReviewRole(String name) {
+        this.name = name;
+    }
 }

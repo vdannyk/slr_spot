@@ -1,6 +1,4 @@
 FROM openjdk:17-oracle
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
 WORKDIR /app
 
 COPY .mvn/ .mvn

@@ -7,7 +7,7 @@ import './fullTextField.css';
 import { BeatLoader } from 'react-spinners';
 
 
-const FullTextField = ({ study, isFullText, allowChanges, tab }) => {
+const FullTextField = ({ study, isFullText, allowChanges, tab, refreshTrigger }) => {
   const navigate = useNavigate();
   const [fullTextFilename, setFulltextFilename] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -22,6 +22,13 @@ const FullTextField = ({ study, isFullText, allowChanges, tab }) => {
     .catch((error) => {
     });
   }, [isLoaded]);
+
+  useEffect(() => {
+    axiosInstance.get('/studies/' + study.id + "/full-text/name")
+    .then((response) => {
+      setFulltextFilename(response.data);
+    })
+  }, [refreshTrigger]);
 
   const handleRemove = () => {
     axiosInstance.delete('/studies/' + study.id + "/full-text")

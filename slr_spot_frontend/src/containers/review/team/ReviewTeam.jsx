@@ -60,7 +60,7 @@ const ReviewTeam = (props) => {
   const onRemoveMemberClick = (triggerPopup, item) => {
     setIsRemoveMemberConfirmation(triggerPopup);
     setMemberNameToRemove(item.firstName + ' ' + item.lastName);
-    setMemberId(item.userId);
+    setMemberId(item.id);
   }
 
   const onCancelRemoveMember = () => {
@@ -93,7 +93,7 @@ const ReviewTeam = (props) => {
   }
   
   const handleChangeRole = () => {
-    var userId = selectedChangeRoleMember.userId;
+    var userId = selectedChangeRoleMember.user.id;
     var role = newRole;
     axiosInstance.put("/users/" + userId + "/role", null, { params: {
       reviewId, role
@@ -126,9 +126,9 @@ const ReviewTeam = (props) => {
   const MemberRole = ({item}) => {
     return (
       <>
-        { selectedChangeRoleMember && selectedChangeRoleMember.userId === item.userId 
+        { selectedChangeRoleMember && selectedChangeRoleMember.user.id === item.user.id 
           ? 
-            <RoleDropdown currentRole={ item.role }/>
+            <RoleDropdown currentRole={ item.role.name }/>
           : 
             <>
               {item.role.name}
@@ -154,7 +154,7 @@ const ReviewTeam = (props) => {
           <td>
             {item.role.name !== OWNER && 
               <AiOutlineClose 
-                onClick={ () => onRemoveMemberClick(true, item) } 
+                onClick={ () => onRemoveMemberClick(true, item.user) } 
                 style={ {color: 'red', cursor: 'pointer'} }
               />
             }

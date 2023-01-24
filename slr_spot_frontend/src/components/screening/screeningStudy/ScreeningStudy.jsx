@@ -19,6 +19,7 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
   const [showAbstract, setShowAbstract] = useState(isShowAbstracts);
   const [showDiscussion, setShowDiscussion] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const { reviewId } = useParams();
   const { user: currentUser } = useSelector((state) => state.auth);
 
@@ -46,6 +47,7 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
         triggerRefresh();
       } else {
         triggerVote(study.id);
+        setRefresh(!refresh);
       }
     })
     .catch(() => {
@@ -251,12 +253,16 @@ const ScreeningStudy = ({ study, isShowAbstracts, triggerVote, triggerRefresh,
         isFullText={ isFullText } 
         study={ study }
         allowChanges={ allowChanges } 
-        tab={ tab } />
+        tab={ tab } 
+        refreshTrigger={ refresh }
+      />
       
       <StudyTags 
         studyId={ study.id } 
         reviewTags={ reviewTags } 
-        allowChanges={ allowChanges }/>
+        allowChanges={ allowChanges }
+        refreshTrigger={ refresh }  
+      />
         
       <div className='slrspot__screeningStudy-options'>
         <button onClick={ () => setShowDiscussion(true)}>discussion</button>

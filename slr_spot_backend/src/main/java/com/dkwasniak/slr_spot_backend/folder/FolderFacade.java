@@ -1,6 +1,8 @@
 package com.dkwasniak.slr_spot_backend.folder;
 
 import com.dkwasniak.slr_spot_backend.folder.dto.FolderRequest;
+import com.dkwasniak.slr_spot_backend.folder.exception.FolderAlreadyExistsException;
+import com.dkwasniak.slr_spot_backend.folder.exception.InvalidFolderNameException;
 import com.dkwasniak.slr_spot_backend.review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,10 +18,10 @@ public class FolderFacade {
 
     public long addFolder(FolderRequest folderRequest) {
         if (folderService.isExistingFolder(folderRequest.getName(), folderRequest.getReviewId(), folderRequest.getParentId())) {
-            throw new IllegalStateException("Folder already exists in review context");
+            throw new FolderAlreadyExistsException(folderRequest.getName());
         }
         if (folderRequest.getName() == null || folderRequest.getName().trim().isEmpty()) {
-            throw new IllegalStateException("Folder name cannot be empty");
+            throw new InvalidFolderNameException();
         }
         Folder folder = new Folder(folderRequest.getName());
         if (!isNull(folderRequest.getParentId())) {

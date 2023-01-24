@@ -91,8 +91,6 @@ public class ImportFacade {
             studies = loadStudiesFromBib(file);
         } else if (fileService.isRisFile(contentType)){
             studies = loadStudiesFromRis(file);
-        } else if (fileService.isXlsFile(contentType)) {
-            studies = new ArrayList<>();
         } else {
             throw new IllegalStateException();
         }
