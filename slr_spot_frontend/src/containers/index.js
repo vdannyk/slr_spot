@@ -1,6 +1,8 @@
 export { default as Footer } from './footer/Footer';
 export { default as AccessPopup } from './access/AccessPopup';
 export { default as HomePage } from './homePage/HomePage';
+export { default as AboutPage } from './about/AboutPage';
+export { default as ContactPage } from './contact/ContactPage';
 
 export { default as Reviews } from './reviews/Reviews';
 

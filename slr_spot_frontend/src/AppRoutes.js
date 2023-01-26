@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSelector } from "react-redux";
-import { ReviewHome, ReviewTeam, ReviewSettings, HomePage, Profile, Review, Reviews, ScreeningSettings, StudiesSearch, StudiesDisplay, Screening, Duplicates, Results } from './containers';
+import { ReviewHome, ReviewTeam, ReviewSettings, HomePage, Profile, Review, Reviews, ScreeningSettings, StudiesSearch, StudiesDisplay, Screening, Duplicates, Results, AboutPage, ContactPage } from './containers';
 import { NewReview, SignInPage, AccountActivation, PasswordRecovery, UpdateEmail, Criteria, Tags, Keywords } from './components';
 import FullTextStudy from './containers/fullTextStudy/FullTextStudy';
 
@@ -12,6 +12,8 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/contact" element={<ContactPage />} />
 
       <Route path="signin" element={!isLoggedIn ? <HomePage isAccessPopup={true} isSignInPopup={true} isSignUpPopup={false}/> : <Navigate to='/' />} />
       <Route path="signup" element={!isLoggedIn ? <HomePage isAccessPopup={true} isSignInPopup={false} isSignUpPopup={true}/> : <Navigate to='/' />} />
