@@ -11,8 +11,8 @@ const Footer = () => {
               <div className='slrspot__footer-infoField'>
                 <h3>About</h3>
                 <ul>
-                    <li><a href="#">Application</a></li>
-                    <li><a href="#">Author</a></li>
+                    <li><a href="/about">Application</a></li>
+                    <li><a href="/contact">Author</a></li>
                 </ul>
               </div>
               <div className='slrspot__footer-infoField'>
